@@ -1,0 +1,41 @@
+modules = ["python-3.11"]
+
+[nix]
+channel = "stable-25_05"
+
+[workflows]
+runButton = "Project"
+
+[[workflows.workflow]]
+name = "Project"
+mode = "parallel"
+author = "agent"
+
+[[workflows.workflow.tasks]]
+task = "workflow.run"
+args = "Crypto Trading Server"
+
+[[workflows.workflow.tasks]]
+task = "workflow.run"
+args = "crypto_trading_server"
+
+[[workflows.workflow]]
+name = "Crypto Trading Server"
+author = "agent"
+
+[[workflows.workflow.tasks]]
+task = "shell.exec"
+args = "pip install flask ccxt && python main_server.py"
+waitForPort = 5000
+
+[[workflows.workflow]]
+name = "crypto_trading_server"
+author = "agent"
+
+[[workflows.workflow.tasks]]
+task = "shell.exec"
+args = "pip install flask ccxt python-dotenv"
+
+[[ports]]
+localPort = 5000
+externalPort = 80
