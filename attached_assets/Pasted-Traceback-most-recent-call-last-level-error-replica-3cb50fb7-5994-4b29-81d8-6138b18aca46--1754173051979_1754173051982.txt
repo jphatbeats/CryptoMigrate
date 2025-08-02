@@ -1,0 +1,93 @@
+Traceback (most recent call last):
+level:
+"error"
+replica: 3cb50fb7-5994-4b29-81d8-6138b18aca46
+View in Context
+
+Copy as JSON
+
+  File "/app/main_server.py", line 8, in <module>
+
+    from logger_config import setup_logging
+
+ModuleNotFoundError: No module named 'logger_config'
+
+Traceback (most recent call last):
+
+  File "/app/main_server.py", line 8, in <module>
+
+    from logger_config import setup_logging
+
+ModuleNotFoundError: No module named 'logger_config'
+
+Traceback (most recent call last):
+
+  File "/app/main_server.py", line 8, in <module>
+
+    from logger_config import setup_logging
+
+ModuleNotFoundError: No module named 'logger_config'
+
+Traceback (most recent call last):
+
+  File "/app/main_server.py", line 8, in <module>
+
+    from logger_config import setup_logging
+
+ModuleNotFoundError: No module named 'logger_config'
+
+Traceback (most recent call last):
+
+  File "/app/main_server.py", line 8, in <module>
+
+    from logger_config import setup_logging
+
+ModuleNotFoundError: No module named 'logger_config'
+
+Traceback (most recent call last):
+
+  File "/app/main_server.py", line 8, in <module>
+
+    from logger_config import setup_logging
+
+ModuleNotFoundError: No module named 'logger_config'
+
+Traceback (most recent call last):
+
+  File "/app/main_server.py", line 8, in <module>
+
+    from logger_config import setup_logging
+
+ModuleNotFoundError: No module named 'logger_config'
+
+Traceback (most recent call last):
+
+  File "/app/main_server.py", line 8, in <module>
+
+    from logger_config import setup_logging
+
+ModuleNotFoundError: No module named 'logger_config'
+
+Traceback (most recent call last):
+
+  File "/app/main_server.py", line 8, in <module>
+
+    from logger_config import setup_logging
+
+ModuleNotFoundError: No module named 'logger_config'
+
+Traceback (most recent call last):
+
+  File "/app/main_server.py", line 8, in <module>
+
+    from logger_config import setup_logging
+
+ModuleNotFoundError: No module named 'logger_config'
+
+Traceback (most recent call last):
+
+  File "/app/main_server.py", line 8, in <module>
+
+    from logger_config import setup_logging
+
+ModuleNotFoundError: No module named 'logger_config'
