@@ -2,7 +2,7 @@
 
 This is a Python-based cryptocurrency trading server that provides a unified API interface for interacting with multiple cryptocurrency exchanges through the CCXT library. Successfully migrated from Replit to Railway with comprehensive error handling to resolve CCXT import errors.
 
-The server acts as a middleware layer that abstracts away the complexities of different exchange APIs, providing standardized endpoints for market data retrieval, trading operations, and account management across 10 exchanges: Binance, Kraken, Blofin, OKX, Bybit, Bitget, Coinbase, Huobi, Kucoin, and MEXC.
+The server acts as a middleware layer that abstracts away the complexities of different exchange APIs, providing standardized endpoints for market data retrieval, trading operations, and account management across 3 specific exchanges: BingX, Kraken, and Blofin.
 
 The system features robust error handling and logging capabilities, with non-blocking CCXT imports that allow the server to start successfully even if individual exchanges fail. All 30 endpoints are operational with graceful degradation for unavailable exchanges.
 
@@ -12,7 +12,7 @@ The system features robust error handling and logging capabilities, with non-blo
 - ✅ Added comprehensive error handling for all API endpoints
 - ✅ Server starts successfully with all 30 endpoints operational
 - ✅ Added root endpoint (/) with API documentation
-- ✅ All 10 exchanges initialize without "RaiseExchange" errors
+- ✅ All 3 target exchanges (BingX, Kraken, Blofin) initialize without "RaiseExchange" errors
 
 # User Preferences
 

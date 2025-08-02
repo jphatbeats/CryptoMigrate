@@ -17,10 +17,10 @@ class ExchangeManager:
     def _initialize_exchanges(self):
         """Initialize all available exchanges with error handling"""
         exchange_configs = {
-            'binance': {
-                'apiKey': os.getenv('BINANCE_API_KEY', ''),
-                'secret': os.getenv('BINANCE_SECRET', ''),
-                'sandbox': os.getenv('BINANCE_SANDBOX', 'false').lower() == 'true',
+            'bingx': {
+                'apiKey': os.getenv('BINGX_API_KEY', ''),
+                'secret': os.getenv('BINGX_SECRET', ''),
+                'sandbox': os.getenv('BINGX_SANDBOX', 'false').lower() == 'true',
                 'enableRateLimit': True,
             },
             'kraken': {
@@ -34,50 +34,6 @@ class ExchangeManager:
                 'secret': os.getenv('BLOFIN_SECRET', ''),
                 'password': os.getenv('BLOFIN_PASSPHRASE', ''),
                 'sandbox': os.getenv('BLOFIN_SANDBOX', 'false').lower() == 'true',
-                'enableRateLimit': True,
-            },
-            'okx': {
-                'apiKey': os.getenv('OKX_API_KEY', ''),
-                'secret': os.getenv('OKX_SECRET', ''),
-                'password': os.getenv('OKX_PASSPHRASE', ''),
-                'sandbox': os.getenv('OKX_SANDBOX', 'false').lower() == 'true',
-                'enableRateLimit': True,
-            },
-            'bybit': {
-                'apiKey': os.getenv('BYBIT_API_KEY', ''),
-                'secret': os.getenv('BYBIT_SECRET', ''),
-                'sandbox': os.getenv('BYBIT_SANDBOX', 'false').lower() == 'true',
-                'enableRateLimit': True,
-            },
-            'bitget': {
-                'apiKey': os.getenv('BITGET_API_KEY', ''),
-                'secret': os.getenv('BITGET_SECRET', ''),
-                'password': os.getenv('BITGET_PASSPHRASE', ''),
-                'sandbox': os.getenv('BITGET_SANDBOX', 'false').lower() == 'true',
-                'enableRateLimit': True,
-            },
-            'coinbase': {
-                'apiKey': os.getenv('COINBASE_API_KEY', ''),
-                'secret': os.getenv('COINBASE_SECRET', ''),
-                'password': os.getenv('COINBASE_PASSPHRASE', ''),
-                'sandbox': os.getenv('COINBASE_SANDBOX', 'false').lower() == 'true',
-                'enableRateLimit': True,
-            },
-            'huobi': {
-                'apiKey': os.getenv('HUOBI_API_KEY', ''),
-                'secret': os.getenv('HUOBI_SECRET', ''),
-                'enableRateLimit': True,
-            },
-            'kucoin': {
-                'apiKey': os.getenv('KUCOIN_API_KEY', ''),
-                'secret': os.getenv('KUCOIN_SECRET', ''),
-                'password': os.getenv('KUCOIN_PASSPHRASE', ''),
-                'sandbox': os.getenv('KUCOIN_SANDBOX', 'false').lower() == 'true',
-                'enableRateLimit': True,
-            },
-            'mexc': {
-                'apiKey': os.getenv('MEXC_API_KEY', ''),
-                'secret': os.getenv('MEXC_SECRET', ''),
                 'enableRateLimit': True,
             }
         }
