@@ -20,6 +20,11 @@ The system features robust error handling and logging capabilities, with non-blo
   - `/api/kraken/balance` - Kraken balance (original pattern)
   - `/api/bingx/klines/{symbol}` - BingX candlestick data
 - ✅ **RAILWAY STARTUP OPTIMIZATION**: Added threaded=True and proper error handling for Railway deployment reliability
+- ✅ **FIXED API CREDENTIAL INJECTION**: Updated fallback ExchangeManager to properly pass API credentials to exchange instances (Railway deployment fix)
+- ✅ **ADDED CRYPTO NEWS ENDPOINTS**: Integrated crypto news functionality with 3 endpoints:
+  - `/api/crypto-news/breaking-news` - Breaking crypto news with filtering
+  - `/api/crypto-news/top-mentioned` - Top mentioned crypto tickers
+  - `/api/crypto-news/sentiment` - Sentiment analysis for crypto
 
 # User Preferences
 

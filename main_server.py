@@ -17,6 +17,14 @@ except ImportError:
     )
 
 try:
+    from crypto_news_alerts import get_general_crypto_news, get_top_mentioned_tickers, get_sentiment_analysis
+    crypto_news_available = True
+except ImportError:
+    crypto_news_available = False
+    logger = logging.getLogger(__name__)
+    logger.warning("Crypto news alerts module not available")
+
+try:
     from error_handler import handle_exchange_error, ExchangeNotAvailableError
 except ImportError:
     # Fallback error handling
@@ -995,6 +1003,111 @@ def get_market_data(exchange):
     except Exception as e:
         logger.error(f"Error getting market data for {exchange}: {str(e)}")
         return jsonify({'error': 'Internal server error'}), 500
+
+# ============================================================================
+# CRYPTO NEWS ENDPOINTS
+# ============================================================================
+
+@app.route('/api/crypto-news/breaking-news', methods=['GET'])
+def get_breaking_crypto_news():
+    """Get breaking crypto news with filtering options"""
+    if not crypto_news_available:
+        return jsonify({'error': 'Crypto news service not available'}), 503
+    
+    try:
+        # Extract query parameters
+        hours = request.args.get('hours', 24, type=int)
+        items = request.args.get('items', 50, type=int)
+        exclude_portfolio = request.args.get('exclude_portfolio', 'false').lower() == 'true'
+        sentiment = request.args.get('sentiment')
+        source = request.args.get('source')
+        topic = request.args.get('topic')
+        search = request.args.get('search')
+        
+        # Get general crypto news (breaking news equivalent)
+        result = get_general_crypto_news(
+            items=items,
+            sentiment=sentiment,
+            source=source,
+            topic=topic,
+            search=search
+        )
+        
+        return jsonify({
+            'status': 'success',
+            'count': len(result.get('data', [])),
+            'articles': result.get('data', []),
+            'parameters': {
+                'hours': hours,
+                'items': items,
+                'exclude_portfolio': exclude_portfolio,
+                'sentiment': sentiment,
+                'source': source,
+                'topic': topic,
+                'search': search
+            },
+            'timestamp': datetime.now().isoformat()
+        })
+    except Exception as e:
+        logger.error(f"Error getting breaking crypto news: {str(e)}")
+        return jsonify({'error': 'Failed to fetch crypto news'}), 500
+
+@app.route('/api/crypto-news/top-mentioned', methods=['GET'])
+def get_top_mentioned():
+    """Get top mentioned crypto tickers"""
+    if not crypto_news_available:
+        return jsonify({'error': 'Crypto news service not available'}), 503
+    
+    try:
+        date = request.args.get('date', 'last7days')
+        cache = request.args.get('cache', 'false').lower() == 'true'
+        
+        result = get_top_mentioned_tickers(date=date, cache=cache)
+        
+        return jsonify({
+            'status': 'success',
+            'count': len(result.get('data', [])),
+            'tickers': result.get('data', []),
+            'parameters': {
+                'date': date,
+                'cache': cache
+            },
+            'timestamp': datetime.now().isoformat()
+        })
+    except Exception as e:
+        logger.error(f"Error getting top mentioned tickers: {str(e)}")
+        return jsonify({'error': 'Failed to fetch top mentioned tickers'}), 500
+
+@app.route('/api/crypto-news/sentiment', methods=['GET'])
+def get_crypto_sentiment():
+    """Get sentiment analysis for crypto tickers"""
+    if not crypto_news_available:
+        return jsonify({'error': 'Crypto news service not available'}), 503
+    
+    try:
+        tickers = request.args.get('tickers')
+        section = request.args.get('section')
+        date = request.args.get('date', 'last30days')
+        
+        result = get_sentiment_analysis(
+            tickers=tickers,
+            section=section,
+            date=date
+        )
+        
+        return jsonify({
+            'status': 'success',
+            'data': result.get('data', []),
+            'parameters': {
+                'tickers': tickers,
+                'section': section,
+                'date': date
+            },
+            'timestamp': datetime.now().isoformat()
+        })
+    except Exception as e:
+        logger.error(f"Error getting sentiment analysis: {str(e)}")
+        return jsonify({'error': 'Failed to fetch sentiment analysis'}), 500
 
 @app.errorhandler(Exception)
 def handle_unexpected_error(error):
