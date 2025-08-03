@@ -763,25 +763,78 @@ async def run_trading_analysis():
             risk_alerts = await fetch_railway_api("/api/crypto-news/risk-alerts")
             opportunities = await fetch_railway_api("/api/crypto-news/opportunity-scanner")
             
-            # Send breaking news to #alerts channel
+            # Send breaking news to #alerts channel with clickable links
             if breaking_news and breaking_news.get('news'):
                 news_message = f"🚨 **BREAKING CRYPTO NEWS** 🚨\n"
                 for item in breaking_news['news'][:3]:  # Top 3 news
-                    news_message += f"• {item.get('title', 'Market Update')}\n"
+                    title = item.get('title', 'Market Update')
+                    url = item.get('url', item.get('link', ''))
+                    source = item.get('source_name', item.get('source', ''))
+                    tickers = item.get('tickers', [])
+                    
+                    if url:
+                        news_message += f"📰 **[{title}]({url})**\n"
+                    else:
+                        news_message += f"📰 **{title}**\n"
+                    
+                    if source:
+                        news_message += f"📰 {source}"
+                    if tickers:
+                        news_message += f" | 🎯 {', '.join(tickers[:3])}"
+                    news_message += f"\n\n"
+                
                 await send_discord_alert(news_message, 'alerts')
             
-            # Send risk alerts to #alerts channel  
+            # Send risk alerts to #alerts channel with urgency indicators
             if risk_alerts and risk_alerts.get('alerts'):
                 risk_message = f"⚠️ **RISK ALERTS** ⚠️\n"
                 for alert in risk_alerts['alerts'][:3]:  # Top 3 risks
-                    risk_message += f"• {alert.get('message', 'Risk detected')}\n"
+                    title = alert.get('title', alert.get('message', 'Risk detected'))
+                    url = alert.get('url', alert.get('link', ''))
+                    urgency = alert.get('urgency', 'MEDIUM')
+                    source = alert.get('source_name', alert.get('source', ''))
+                    tickers = alert.get('tickers', [])
+                    
+                    # Urgency indicator
+                    urgency_emoji = "🔴" if urgency == "HIGH" else "🟡" if urgency == "MEDIUM" else "🟢"
+                    
+                    if url:
+                        risk_message += f"{urgency_emoji} **[{title}]({url})**\n"
+                    else:
+                        risk_message += f"{urgency_emoji} **{title}**\n"
+                    
+                    if source:
+                        risk_message += f"📰 {source}"
+                    if tickers:
+                        risk_message += f" | ⚠️ {', '.join(tickers[:3])}"
+                    risk_message += f"\n\n"
+                
                 await send_discord_alert(risk_message, 'alerts')
             
-            # Send opportunities to #alpha-scans channel
+            # Send opportunities to #alpha-scans channel with clickable links
             if opportunities and opportunities.get('opportunities'):
                 opp_message = f"🎯 **TRADING OPPORTUNITIES** 🎯\n"
                 for opp in opportunities['opportunities'][:3]:  # Top 3 opportunities
-                    opp_message += f"• {opp.get('symbol', '')} - {opp.get('signal', 'Signal detected')}\n"
+                    title = opp.get('title', f"{opp.get('symbol', '')} - {opp.get('signal', 'Signal detected')}")
+                    url = opp.get('url', opp.get('link', ''))
+                    symbol = opp.get('symbol', '')
+                    source = opp.get('source_name', opp.get('source', ''))
+                    sentiment = opp.get('sentiment', '')
+                    
+                    if url:
+                        opp_message += f"🚀 **[{title}]({url})**\n"
+                    else:
+                        opp_message += f"🚀 **{title}**\n"
+                    
+                    if symbol:
+                        opp_message += f"💰 **{symbol}**"
+                    if source:
+                        opp_message += f" | 📰 {source}"
+                    if sentiment:
+                        sentiment_emoji = "📈" if sentiment.lower() == "positive" else "📉" if sentiment.lower() == "negative" else "➡️"
+                        opp_message += f" | {sentiment_emoji} {sentiment.title()}"
+                    opp_message += f"\n\n"
+                
                 await send_discord_alert(opp_message, 'alpha_scans')
                 
             print("📰 Enhanced alerts sent to appropriate Discord channels")
