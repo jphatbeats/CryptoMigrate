@@ -390,28 +390,67 @@ components:
       name: token
       description: "Use: ayimav7nlptgzetysg9dwhqteampvoirtfx5orqk"
 
-# USAGE EXAMPLES FOR CHATGPT:
+# COMPREHENSIVE USAGE EXAMPLES FOR CHATGPT:
 
-# PORTFOLIO INTELLIGENCE:
-# "Show me risk alerts for my BTC, ETH, SOL portfolio"
-# → /api/v1?tickers-include=BTC,ETH,SOL&sentiment=negative&source=Coindesk,Reuters&items=15
+## BASIC TICKER QUERIES:
+# "Bitcoin news" → /api/v1?tickers=BTC&items=3&token=API_KEY
+# "News on Bitcoin, Ethereum, or Ripple" → /api/v1?tickers=BTC,ETH,XRP&items=3&token=API_KEY
 
-# OPPORTUNITY SCANNING:
-# "Find bullish signals and price movements today"  
-# → /api/v1/category?section=general&topicOR=pricemovement,Institutions&sentiment=positive&date=today
+## ADVANCED TICKER LOGIC:
+# "News mentioning ALL of BTC, ETH, and XRP together" → /api/v1?tickers-include=BTC,ETH,XRP&items=3&token=API_KEY
+# "News ONLY about Bitcoin, no other coins" → /api/v1?tickers-only=BTC&items=3&token=API_KEY
 
-# BREAKING NEWS:
-# "What's trending in crypto right now?"
-# → /api/v1/trending-headlines
+## TOPIC-BASED INTELLIGENCE:
+# "NFT market news" → /api/v1/category?section=general&topic=NFT&items=3&token=API_KEY
+# "Mining news about Bitcoin" → /api/v1?tickers=BTC&topic=mining&items=3&token=API_KEY
+# "Regulation news" → /api/v1/category?section=general&topic=regulations&items=3&token=API_KEY
+# "News about hard forks" → /api/v1/category?section=alltickers&search=Hard+Fork&items=50&token=API_KEY
 
-# REGULATORY INTELLIGENCE:
-# "Any SEC or regulation news affecting institutions?"
-# → /api/v1/category?section=general&topic=regulations&search=SEC,institutional&source=CNBC,Reuters
+## SENTIMENT ANALYSIS:
+# "Negative news about Ripple" → /api/v1?tickers=XRP&sentiment=negative&items=3&token=API_KEY
+# "Bullish signals for my portfolio" → /api/v1?tickers-include=BTC,ETH,SOL&sentiment=positive&items=15&token=API_KEY
 
-# WHALE ACTIVITY:
-# "Show me whale movements and large transactions"
-# → /api/v1/category?section=general&topic=Whales&date=today&items=20
+## SOURCE QUALITY FILTERING:
+# "Bitcoin news from premium sources only" → /api/v1?tickers=BTC&source=Reuters,Forbes,CNBC,Bloomberg+Technology&items=10&token=API_KEY
+# "Crypto news from industry leaders" → /api/v1?tickers=BTC,ETH&source=Coindesk,CryptoSlate,The+Block,Decrypt&items=15&token=API_KEY
+# "Exclude low-quality sources" → /api/v1?tickers=BTC&sourceexclude=Coingape,Benzinga&items=3&token=API_KEY
 
-# TECHNICAL ANALYSIS:
-# "Get technical analysis and price forecasts for Bitcoin"
-# → /api/v1?tickers=BTC&topic=Tanalysis,priceforecast&source=CryptoSlate,The+Block
+## TIME-BASED QUERIES:
+# "Bitcoin news from last 7 days" → /api/v1?tickers=BTC&date=last7days&items=10&token=API_KEY
+# "Ultra-fresh news from last 15 minutes" → /api/v1?tickers=BTC&date=last15min&items=5&token=API_KEY
+# "News between yesterday 4PM and today 9AM" → /api/v1?tickers=BTC&datetimerange=yesterday+160000-today+090000&items=3&token=API_KEY
+
+## SPECIALIZED CONTENT:
+# "Video news about Bitcoin" → /api/v1?tickers=BTC&type=video&items=3&token=API_KEY
+# "Download Bitcoin news as CSV" → /api/v1?tickers=BTC&datatype=csv&items=3&token=API_KEY
+
+## SEARCH-BASED INTELLIGENCE:
+# "News about Elon Musk and Dogecoin" → /api/v1?tickers=DOGE&search=Elon+Musk&items=3&token=API_KEY
+# "Lawsuit news about XRP" → /api/v1?tickers=XRP&search=Lawsuit&items=3&token=API_KEY
+
+## MARKET INTELLIGENCE ENDPOINTS:
+# "What's trending right now?" → /api/v1/trending-headlines?token=API_KEY
+# "Most mentioned coins this week" → /api/v1/top-mention?date=last7days&token=API_KEY
+# "Ethereum sentiment statistics" → /api/v1/stat?tickers=ETH&date=last7days&token=API_KEY
+# "Upcoming crypto events" → /api/v1/events?token=API_KEY
+# "Daily market digest" → /api/v1/sundown-digest?token=API_KEY
+
+## COMPLEX PORTFOLIO INTELLIGENCE:
+# "Risk alerts for my entire portfolio from top sources"
+# → /api/v1?tickers-include=BTC,ETH,SOL,ADA,DOT&sentiment=negative&source=Reuters,Coindesk,CryptoSlate&date=today&items=20&token=API_KEY
+
+# "Opportunity scanning with whale activity and price movements"
+# → /api/v1/category?section=general&topicOR=Whales,pricemovement,Institutions&sentiment=positive&date=today&items=25&token=API_KEY
+
+# "Regulatory intelligence affecting major coins"
+# → /api/v1/category?section=general&topic=regulations&search=SEC,CFTC,institutional&source=CNBC,Reuters,Forbes&items=15&token=API_KEY
+
+# "Technical analysis and forecasts from crypto experts"
+# → /api/v1/category?section=general&topicOR=Tanalysis,priceforecast&source=CryptoSlate,The+Block,Crypto+Briefing&date=today&items=20&token=API_KEY
+
+## INSTITUTIONAL-GRADE QUERIES:
+# "Breaking institutional adoption news"
+# → /api/v1/category?section=general&topic=Institutions&sentiment=positive&source=Forbes,Reuters,Business+Insider&date=today&sortby=rank&items=15&token=API_KEY
+
+# "Government CBDC developments"
+# → /api/v1/category?section=general&topicOR=Digital+Yuan,Digital+Dollar,Digital+Euro&source=Reuters,CNBC,Forbes&date=last7days&items=20&token=API_KEY
