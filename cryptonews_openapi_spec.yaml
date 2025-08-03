@@ -22,8 +22,39 @@ info:
     - today, yesterday, last7days, last30days
     - Custom range: datetimerange=yesterday+160000-today+090000
     
-    ## PREMIUM SOURCES:
-    - Coindesk, CryptoSlate, The+Block, Decrypt, Forbes, CNBC, Reuters
+    ## ALL AVAILABLE NEWS SOURCES (75+ sources):
+    
+    ### TIER 1 - INSTITUTIONAL/PREMIUM:
+    - Reuters, Forbes, CNBC, CNN, Bloomberg+Technology, Bloomberg+Markets+and+Finance
+    - Business+Insider, Fox+Business, Yahoo+Finance, The+Motley+Fool
+    
+    ### TIER 2 - CRYPTO INDUSTRY LEADERS:
+    - Coindesk, CryptoSlate, The+Block, Decrypt, NewsBTC, The+Daily+Hodl
+    - Bitcoin+Magazine, Blockworks, Crypto+Briefing, Modern+Consensus
+    
+    ### TIER 3 - SPECIALIZED CRYPTO MEDIA:
+    - AMBCrypto, BeInCrypto, Bitcoinist, CryptoPotato, Cryptopolitan
+    - CryptoTicker, CryptoNinjas, UToday, The+Cryptonomist, Finbold
+    - FinanceMagnates, DailyFX, FxEmpire, DCForecasts, Investorplace
+    
+    ### TIER 4 - BROAD CRYPTO COVERAGE:
+    - Bitcoin, Blockchain+News, Blockonomi, Blockgeeks, CoinMarketCap
+    - Coinspeaker, Crypto+Daily, Crypto+Economy, CryptoNews, Crypto+News
+    - Cryptoknowmics, Cryptoverze, Dailycoin, EWN, Inside+Bitcoins
+    - LiveBitcoinNews, Trustnodes, Zycrypto, InvestingCube
+    
+    ### TIER 5 - EMERGING/REGIONAL:
+    - Benzinga, Coingape, Coindoo, Coinfomania, Coin+Idol, Coincu
+    - Coinnounce, Coinquora, Coinspress, Cointribune, CrowdFundInsider
+    - Crypto+Mufasa, CryptoNewsFlash, Crypto+Reporter, BlockchainReporter
+    - Bitcoinworld, TCU, The+Currency+Analytics, TheNewsCrypto
+    - Tokenpost, Vauld, 8BTC, Bitcoinist
+    
+    ## SOURCE FILTERING EXAMPLES:
+    - Premium only: source=Reuters,Forbes,CNBC,Bloomberg+Technology
+    - Crypto leaders: source=Coindesk,CryptoSlate,The+Block,Decrypt
+    - Exclude low quality: sourceexclude=Coingape,Benzinga,Coincu
+    - Video sources: source=CNBC,Bloomberg+Technology,Yahoo+Finance
     
     ## SEARCH INTELLIGENCE:
     Use + for spaces in search terms: Hard+Fork, Elon+Musk, Price+Prediction
@@ -105,16 +136,25 @@ paths:
             example: "yesterday+160000-today+090000"
         - name: source
           in: query
-          description: "Include only these sources: Coindesk,Reuters,CNBC"
+          description: |
+            Include only these sources. Choose by quality tier:
+            - Premium: Reuters,Forbes,CNBC,Bloomberg+Technology
+            - Crypto Leaders: Coindesk,CryptoSlate,The+Block,Decrypt
+            - Video: CNBC,Bloomberg+Technology,Yahoo+Finance
           schema:
             type: string
             example: "Coindesk,CryptoSlate,The+Block"
+            enum: ["Reuters", "Forbes", "CNBC", "CNN", "Bloomberg+Technology", "Bloomberg+Markets+and+Finance", "Business+Insider", "Fox+Business", "Yahoo+Finance", "The+Motley+Fool", "Coindesk", "CryptoSlate", "The+Block", "Decrypt", "NewsBTC", "The+Daily+Hodl", "Bitcoin+Magazine", "Blockworks", "Crypto+Briefing", "Modern+Consensus", "AMBCrypto", "BeInCrypto", "Bitcoinist", "CryptoPotato", "Cryptopolitan", "CryptoTicker", "CryptoNinjas", "UToday", "The+Cryptonomist", "Finbold", "FinanceMagnates", "DailyFX", "FxEmpire", "DCForecasts", "Investorplace", "Bitcoin", "Blockchain+News", "Blockonomi", "Blockgeeks", "CoinMarketCap", "Coinspeaker", "Crypto+Daily", "Crypto+Economy", "CryptoNews", "Crypto+News", "Cryptoknowmics", "Cryptoverze", "Dailycoin", "EWN", "Inside+Bitcoins", "LiveBitcoinNews", "Trustnodes", "Zycrypto", "InvestingCube"]
         - name: sourceexclude
           in: query
-          description: "Exclude these sources: Coingape,Benzinga"
+          description: |
+            Exclude these sources (commonly excluded low-quality sources):
+            - Low quality: Coingape,Benzinga,Coincu,Coindoo
+            - Regional/emerging: 8BTC,Bitcoinworld,Tokenpost
           schema:
             type: string
             example: "Coingape,Benzinga"
+            enum: ["Coingape", "Benzinga", "Coincu", "Coindoo", "Coinfomania", "Coin+Idol", "Coinnounce", "Coinquora", "Coinspress", "Cointribune", "8BTC", "Bitcoinworld", "Tokenpost", "Vauld"]
         - name: search
           in: query
           description: "Search for specific terms (use + for spaces): Elon+Musk"
@@ -236,9 +276,13 @@ paths:
             example: "Hard+Fork"
         - name: source
           in: query
-          description: "Source filter: Coindesk,Reuters"
+          description: |
+            Source filter by quality tier:
+            - Premium: Reuters,Forbes,CNBC,Bloomberg+Technology
+            - Leaders: Coindesk,CryptoSlate,The+Block,Decrypt
           schema:
             type: string
+            example: "Coindesk,Reuters"
         - name: sortby
           in: query
           description: "Sort by rank or date"
