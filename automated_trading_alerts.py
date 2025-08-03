@@ -658,15 +658,31 @@ async def run_trading_analysis_async():
                 print("📰 No relevant enhanced alerts found")
         except Exception as e:
             print(f"❌ Enhanced alerts error: {e}")
-            # Fallback to original news alerts
+            # Use new prioritized alerts endpoint
             try:
-                from crypto_news_alerts import generate_news_alerts
-                news_alerts = generate_news_alerts()
-                if news_alerts:
-                    print(f"📰 Fallback: Found {len(news_alerts)} news alerts")
-                    alerts.extend(news_alerts)
-            except Exception as fallback_e:
-                print(f"❌ Fallback news alerts error: {fallback_e}")
+                import aiohttp
+                async with aiohttp.ClientSession() as session:
+                    async with session.get(f"{RAILWAY_API_URL}/api/alerts/prioritized?limit=10&urgency=HIGH") as response:
+                        if response.status == 200:
+                            data = await response.json()
+                            priority_alerts = data.get('alerts', [])
+                            if priority_alerts:
+                                print(f"📰 Found {len(priority_alerts)} high priority alerts")
+                                # Convert to our alert format
+                                for alert in priority_alerts:
+                                    alerts.append({
+                                        'type': 'priority_news',
+                                        'title': alert.get('title', ''),
+                                        'urgency': alert.get('urgency', 'HIGH'),
+                                        'source': alert.get('source_name', ''),
+                                        'tickers': alert.get('tickers', [])
+                                    })
+                            else:
+                                print("📰 No high priority alerts found")
+                        else:
+                            print(f"❌ Priority alerts API error: {response.status}")
+            except Exception as priority_e:
+                print(f"❌ Priority alerts error: {priority_e}")
 
         # Save all alerts
         if alerts:

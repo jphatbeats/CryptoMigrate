@@ -159,6 +159,49 @@ class CryptoNewsAPI:
         
         return self._make_request('', params)
     
+    def get_prioritized_alerts(self, limit: int = 20, urgency_filter: str = None) -> Dict[str, Any]:
+        """Get news with urgency prioritization based on source quality and timeframe"""
+        params = {
+            'items': min(limit, 50),
+            'date': 'last2hours',  # Recent for urgency
+            'sortby': 'rank',
+            'source': 'Coindesk,CryptoSlate,The+Block,Decrypt'  # Tier 1 only
+        }
+        
+        result = self._make_request('', params)
+        
+        # Add urgency scoring to each article
+        if result.get('data'):
+            for article in result['data']:
+                source = article.get('source_name', article.get('source', ''))
+                sentiment = article.get('sentiment', 'neutral').lower()
+                
+                # Calculate urgency score
+                urgency_score = 0
+                if source in ['Coindesk', 'CryptoSlate', 'The Block', 'Decrypt']:
+                    urgency_score += 3  # Tier 1 sources
+                elif source in ['NewsBTC', 'CryptoPotato', 'BeInCrypto']:
+                    urgency_score += 2  # Tier 2 sources
+                else:
+                    urgency_score += 1  # Tier 3 sources
+                
+                if sentiment == 'positive':
+                    urgency_score += 2
+                elif sentiment == 'negative':
+                    urgency_score += 3  # Negative news is more urgent
+                
+                # Assign urgency level
+                if urgency_score >= 5:
+                    article['urgency'] = 'HIGH'
+                elif urgency_score >= 3:
+                    article['urgency'] = 'MEDIUM'
+                else:
+                    article['urgency'] = 'LOW'
+                
+                article['urgency_score'] = urgency_score
+        
+        return result
+    
     def monitor_portfolio_threats(self, holdings: List[str], limit: int = 15) -> Dict[str, Any]:
         """Monitor specific threats to portfolio holdings"""
         if not holdings:
