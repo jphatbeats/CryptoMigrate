@@ -10,14 +10,15 @@ Preferred communication style: Simple, everyday language.
 
 # Recent Changes
 
-**August 3, 2025 - CryptoNews Wrapper Endpoints Removal Complete**
-- Removed all 10 CryptoNews wrapper endpoints from Railway server (254 lines of code)
-- Cleaned up imports and updated endpoint count from 35 to 25 active endpoints
-- Created migration status endpoint `/api/crypto-news/status` to document the change
-- Updated main_server.py architecture for direct API integration approach
-- Preserved all exchange trading endpoints (BingX, Kraken, Blofin) - these remain unchanged
-- ChatGPT now uses direct https://cryptonews-api.com integration via comprehensive markdown instructions
-- Full API sophistication unlocked: 18+ topics, 75+ sources, advanced ticker logic, no wrapper complexity
+**August 3, 2025 - Discord Bot Migration to Direct CryptoNews API Complete**
+- Fixed all Discord bot integration issues by updating to direct CryptoNews API calls
+- Eliminated 6 broken Railway wrapper endpoint calls in automated_trading_alerts.py
+- Updated portfolio analysis, alpha scans, and breaking news alerts to use direct API
+- All 3 Discord channels now working: #alerts, #portfolio, #alpha-scans
+- Data flow clarified: Portfolio data from Railway API, crypto news directly from CryptoNews API
+- Enhanced error handling and fallback mechanisms for news service availability
+- Maintained intelligent portfolio filtering and multi-channel alert routing
+- Architecture now fully migrated: 0 wrapper endpoints, 100% direct API integration
 
 # System Architecture
 

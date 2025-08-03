@@ -642,11 +642,19 @@ async def run_portfolio_analysis():
         rsi_alerts = analyze_trading_conditions(positions)
         alerts.extend(rsi_alerts)
         
-        # Get portfolio-specific news
-        portfolio_news = await fetch_railway_api("/api/crypto-news/portfolio")
+        # Get portfolio-specific news using direct CryptoNews API
+        if crypto_news_available:
+            from crypto_news_alerts import get_portfolio_symbols, get_advanced_ticker_news
+            portfolio_symbols = get_portfolio_symbols()
+            if portfolio_symbols:
+                portfolio_news = get_advanced_ticker_news(portfolio_symbols, mode="any", items=10, sentiment=None)
+            else:
+                portfolio_news = None
+        else:
+            portfolio_news = None
         
         # Format portfolio message
-        if alerts or (portfolio_news and portfolio_news.get('articles')):
+        if alerts or (portfolio_news and portfolio_news.get('data')):
             portfolio_message = f"📊 **PORTFOLIO UPDATE** 📊\n\n"
             
             # Add trading signals
@@ -657,11 +665,11 @@ async def run_portfolio_analysis():
                 portfolio_message += f"\n"
             
             # Add relevant news
-            if portfolio_news and portfolio_news.get('articles'):
+            if portfolio_news and portfolio_news.get('data'):
                 portfolio_message += f"📰 **PORTFOLIO NEWS:**\n"
-                for article in portfolio_news['articles'][:2]:
+                for article in portfolio_news['data'][:2]:
                     title = article.get('title', 'Market Update')
-                    url = article.get('url', article.get('link', ''))
+                    url = article.get('news_url', article.get('url', ''))
                     source = article.get('source_name', article.get('source', ''))
                     tickers = article.get('tickers', [])
                     
@@ -701,10 +709,20 @@ async def run_alpha_analysis():
             print("⚠️ Alpha analysis sent fallback message due to unavailable crypto news module")
             return
         
-        # Get comprehensive market intelligence
-        opportunities = await fetch_railway_api("/api/crypto-news/opportunity-scanner?limit=10")
-        bullish_signals = await fetch_railway_api("/api/crypto-news/bullish-signals?limit=5")
-        market_intelligence = await fetch_railway_api("/api/crypto-news/market-intelligence?limit=5")
+        # Get comprehensive market intelligence using direct CryptoNews API
+        from crypto_news_alerts import get_general_crypto_news, get_top_mentioned_tickers
+        
+        # Get opportunities (positive sentiment news)
+        opportunities_data = get_general_crypto_news(items=10, sentiment='positive')
+        opportunities = {'opportunities': opportunities_data.get('data', [])} if opportunities_data else None
+        
+        # Get bullish signals (top mentioned tickers with positive sentiment)
+        bullish_data = get_top_mentioned_tickers(date="last7days")
+        bullish_signals = {'signals': bullish_data.get('data', [])} if bullish_data else None
+        
+        # Get market intelligence (general trending news)
+        market_data = get_general_crypto_news(items=5, sentiment=None)
+        market_intelligence = {'intelligence': market_data.get('data', [])} if market_data else None
         
         alpha_message = f"🎯 **ALPHA SCAN REPORT** 🎯\n"
         alpha_message += f"⏰ {datetime.now().strftime('%Y-%m-%d %H:%M UTC')}\n\n"
@@ -714,8 +732,8 @@ async def run_alpha_analysis():
             alpha_message += f"🚀 **TRADING OPPORTUNITIES:**\n"
             for opp in opportunities['opportunities'][:3]:
                 title = opp.get('title', 'Opportunity detected')
-                url = opp.get('url', opp.get('link', ''))
-                symbol = opp.get('symbol', '')
+                url = opp.get('news_url', opp.get('url', ''))
+                tickers = opp.get('tickers', [])
                 source = opp.get('source_name', opp.get('source', ''))
                 sentiment = opp.get('sentiment', '')
                 
@@ -724,8 +742,8 @@ async def run_alpha_analysis():
                 else:
                     alpha_message += f"💰 **{title}**\n"
                 
-                if symbol:
-                    alpha_message += f"🎯 **{symbol}** | "
+                if tickers:
+                    alpha_message += f"🎯 **{', '.join(tickers[:2])}** | "
                 if source:
                     alpha_message += f"📰 {source} | "
                 if sentiment:
@@ -964,20 +982,45 @@ async def run_trading_analysis():
         # Step 4: Google Sheets sync disabled
         print("\n📊 Step 4: Google Sheets sync disabled by user")
 
-        # Step 5: Generate enhanced news and market alerts using Railway API
+        # Step 5: Generate enhanced news and market alerts using direct CryptoNews API
         print("\n📰 Step 5: Fetching enhanced crypto intelligence...")
         try:
-            # Get breaking news and risk alerts for #alerts channel
-            breaking_news = await fetch_railway_api("/api/crypto-news/breaking-news")
-            risk_alerts = await fetch_railway_api("/api/crypto-news/risk-alerts")
-            opportunities = await fetch_railway_api("/api/crypto-news/opportunity-scanner")
+            # Get breaking news and risk alerts for #alerts channel using direct API
+            if crypto_news_available:
+                from crypto_news_alerts import get_general_crypto_news, get_portfolio_symbols, filter_bearish_flags, filter_bullish_signals
+                
+                # Get breaking/trending news
+                breaking_news = get_general_crypto_news(items=20, sentiment=None)
+                
+                # Get portfolio symbols for risk filtering
+                portfolio_symbols = get_portfolio_symbols()
+                
+                # Filter for risk alerts (negative sentiment + portfolio symbols)
+                risk_alerts = None
+                if portfolio_symbols and breaking_news.get('data'):
+                    risk_articles = []
+                    for article in breaking_news['data']:
+                        article_tickers = article.get('tickers', [])
+                        # Check if any portfolio symbols are mentioned with negative sentiment
+                        if any(symbol in article_tickers for symbol in portfolio_symbols):
+                            if article.get('sentiment') == 'negative':
+                                risk_articles.append(article)
+                    if risk_articles:
+                        risk_alerts = {'alerts': risk_articles}
+                
+                # Get opportunities (positive sentiment news for trending symbols)
+                opportunities = get_general_crypto_news(items=15, sentiment='positive')
+            else:
+                breaking_news = None
+                risk_alerts = None
+                opportunities = None
             
             # Send breaking news to #alerts channel with clickable links
-            if breaking_news and breaking_news.get('news'):
+            if breaking_news and breaking_news.get('data'):
                 news_message = f"🚨 **BREAKING CRYPTO NEWS** 🚨\n"
-                for item in breaking_news['news'][:3]:  # Top 3 news
+                for item in breaking_news['data'][:3]:  # Top 3 news
                     title = item.get('title', 'Market Update')
-                    url = item.get('url', item.get('link', ''))
+                    url = item.get('news_url', item.get('url', ''))
                     source = item.get('source_name', item.get('source', ''))
                     tickers = item.get('tickers', [])
                     
@@ -999,7 +1042,7 @@ async def run_trading_analysis():
                 risk_message = f"⚠️ **RISK ALERTS** ⚠️\n"
                 for alert in risk_alerts['alerts'][:3]:  # Top 3 risks
                     title = alert.get('title', alert.get('message', 'Risk detected'))
-                    url = alert.get('url', alert.get('link', ''))
+                    url = alert.get('news_url', alert.get('url', ''))
                     urgency = alert.get('urgency', 'MEDIUM')
                     source = alert.get('source_name', alert.get('source', ''))
                     tickers = alert.get('tickers', [])
@@ -1021,12 +1064,12 @@ async def run_trading_analysis():
                 await send_discord_alert(risk_message, 'alerts')
             
             # Send opportunities to #alpha-scans channel with clickable links
-            if opportunities and opportunities.get('opportunities'):
+            if opportunities and opportunities.get('data'):
                 opp_message = f"🎯 **TRADING OPPORTUNITIES** 🎯\n"
-                for opp in opportunities['opportunities'][:3]:  # Top 3 opportunities
-                    title = opp.get('title', f"{opp.get('symbol', '')} - {opp.get('signal', 'Signal detected')}")
-                    url = opp.get('url', opp.get('link', ''))
-                    symbol = opp.get('symbol', '')
+                for opp in opportunities['data'][:3]:  # Top 3 opportunities
+                    title = opp.get('title', 'Signal detected')
+                    url = opp.get('news_url', opp.get('url', ''))
+                    tickers = opp.get('tickers', [])
                     source = opp.get('source_name', opp.get('source', ''))
                     sentiment = opp.get('sentiment', '')
                     
@@ -1035,8 +1078,8 @@ async def run_trading_analysis():
                     else:
                         opp_message += f"🚀 **{title}**\n"
                     
-                    if symbol:
-                        opp_message += f"💰 **{symbol}**"
+                    if tickers:
+                        opp_message += f"💰 **{', '.join(tickers[:2])}**"
                     if source:
                         opp_message += f" | 📰 {source}"
                     if sentiment:
