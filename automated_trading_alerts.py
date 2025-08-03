@@ -13,11 +13,17 @@ from datetime import datetime
 import pytz
 import schedule
 import threading
+import asyncio
+import aiohttp
+import requests
 
 # We'll integrate with the Discord bot instead of webhooks
 
 # Google Sheets NoCode API URL
 GOOGLE_SHEETS_API_URL = "https://v1.nocodeapi.com/computerguy81/google_sheets/QxNdANWVhHvvXSzL"
+
+# Railway API Configuration  
+RAILWAY_API_URL = "https://titan-trading-2-production.up.railway.app"
 
 
 def cleanup_old_files(keep_count=3):
@@ -401,6 +407,89 @@ def prepare_alert_data(alerts):
         print(f"❌ Error preparing alert data: {e}")
         return None
 
+async def generate_enhanced_alerts(positions_df):
+    """Generate enhanced alerts using Railway API intelligence"""
+    enhanced_alerts = []
+    
+    try:
+        # Extract unique symbols from positions
+        if positions_df is not None and not positions_df.empty:
+            symbols = positions_df['symbol'].unique().tolist()
+            portfolio_symbols = [symbol.replace('-USDT', '').replace('/USD', '') for symbol in symbols[:10]]  # Top 10
+        else:
+            portfolio_symbols = ['BTC', 'ETH', 'SOL']  # Default portfolio
+        
+        print(f"🔍 Analyzing {len(portfolio_symbols)} symbols: {', '.join(portfolio_symbols)}")
+        
+        async with aiohttp.ClientSession() as session:
+            # Get portfolio-specific news
+            portfolio_url = f"{RAILWAY_API_URL}/api/crypto-news/portfolio"
+            portfolio_params = {'symbols': ','.join(portfolio_symbols)}
+            
+            async with session.get(portfolio_url, params=portfolio_params) as response:
+                if response.status == 200:
+                    portfolio_news = await response.json()
+                    if portfolio_news.get('success') and portfolio_news.get('data', {}).get('articles'):
+                        articles = portfolio_news['data']['articles'][:3]  # Top 3
+                        for article in articles:
+                            enhanced_alerts.append({
+                                'type': 'portfolio_news',
+                                'symbol': 'PORTFOLIO',
+                                'platform': 'News',
+                                'message': f"📰 {article.get('title', 'News update')[:80]}... ({article.get('source_name', 'Unknown')})"
+                            })
+            
+            # Get risk alerts  
+            risk_url = f"{RAILWAY_API_URL}/api/crypto-news/risk-alerts"
+            async with session.get(risk_url) as response:
+                if response.status == 200:
+                    risk_data = await response.json()
+                    if risk_data.get('success') and risk_data.get('data', {}).get('alerts'):
+                        risk_articles = risk_data['data']['alerts'][:2]  # Top 2
+                        for article in risk_articles:
+                            enhanced_alerts.append({
+                                'type': 'risk_alert',
+                                'symbol': 'MARKET',
+                                'platform': 'Risk',
+                                'message': f"⚠️ {article.get('title', 'Risk warning')[:80]}..."
+                            })
+            
+            # Get bullish signals
+            bullish_url = f"{RAILWAY_API_URL}/api/crypto-news/bullish-signals"
+            async with session.get(bullish_url) as response:
+                if response.status == 200:
+                    bullish_data = await response.json()
+                    if bullish_data.get('success') and bullish_data.get('data', {}).get('signals'):
+                        bullish_articles = bullish_data['data']['signals'][:2]  # Top 2
+                        for article in bullish_articles:
+                            enhanced_alerts.append({
+                                'type': 'bullish_signal',
+                                'symbol': 'MARKET',
+                                'platform': 'Signals',
+                                'message': f"📈 {article.get('title', 'Bullish signal')[:80]}..."
+                            })
+            
+            # Get trading opportunities
+            opp_url = f"{RAILWAY_API_URL}/api/crypto-news/opportunity-scanner"
+            async with session.get(opp_url) as response:
+                if response.status == 200:
+                    opp_data = await response.json()
+                    if opp_data.get('success') and opp_data.get('data', {}).get('opportunities'):
+                        opportunities = opp_data['data']['opportunities'][:2]  # Top 2
+                        for opp in opportunities:
+                            enhanced_alerts.append({
+                                'type': 'opportunity',
+                                'symbol': 'MARKET',
+                                'platform': 'Opportunities',
+                                'message': f"🔍 {opp.get('title', 'Trading opportunity')[:80]}..."
+                            })
+        
+        return enhanced_alerts
+        
+    except Exception as e:
+        print(f"❌ Error in enhanced alerts: {e}")
+        return []
+
 def save_alerts_for_bot(alerts):
     """Save alerts to a file that the Discord bot can read"""
     if not alerts:
@@ -423,6 +512,81 @@ def save_alerts_for_bot(alerts):
         print(f"❌ Error saving alerts for bot: {e}")
         return False
 
+
+async def run_trading_analysis_async():
+    """Async version of trading analysis with enhanced alerts"""
+    print(f"\n🎯 ANALYSIS STARTED: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}")
+    print("=" * 60)
+
+    try:
+        # Step 1: Convert CSV to JSON
+        print("\n📋 Step 1: Converting positions CSV to JSON...")
+        positions = convert_csv_to_json()
+        if not positions:
+            print("❌ No positions data available - skipping analysis")
+            return
+
+        print(f"✅ Loaded {len(positions)} positions for analysis")
+        
+        # Convert to DataFrame for enhanced analysis
+        positions_df = pd.DataFrame(positions) if positions else None
+
+        # Step 2: Analyze trading conditions
+        print("\n🔍 Step 2: Analyzing trading conditions...")
+        alerts = analyze_trading_conditions(positions)
+
+        # Step 3: Process alerts for Discord bot
+        print("\n📤 Step 3: Processing alerts...")
+        if alerts:
+            print(f"🚨 Found {len(alerts)} trading alerts!")
+        else:
+            print("✅ No alerts triggered - all positions within normal parameters")
+            alerts = []  # Initialize empty list
+
+        # Step 4: Google Sheets sync disabled
+        print("\n📊 Step 4: Google Sheets sync disabled by user")
+
+        # Step 5: Generate enhanced news and market alerts using Railway API
+        print("\n📰 Step 5: Fetching enhanced crypto intelligence...")
+        try:
+            enhanced_alerts = await generate_enhanced_alerts(positions_df)
+            if enhanced_alerts:
+                print(f"📰 Found {len(enhanced_alerts)} enhanced alerts from Railway API")
+                alerts.extend(enhanced_alerts)
+            else:
+                print("📰 No relevant enhanced alerts found")
+        except Exception as e:
+            print(f"❌ Enhanced alerts error: {e}")
+            # Fallback to original news alerts
+            try:
+                from crypto_news_alerts import generate_news_alerts
+                news_alerts = generate_news_alerts()
+                if news_alerts:
+                    print(f"📰 Fallback: Found {len(news_alerts)} news alerts")
+                    alerts.extend(news_alerts)
+            except Exception as fallback_e:
+                print(f"❌ Fallback news alerts error: {fallback_e}")
+
+        # Save all alerts
+        if alerts:
+            success = save_alerts_for_bot(alerts)
+            if success:
+                print(f"✅ Saved {len(alerts)} total alerts for Discord bot")
+            else:
+                print("❌ Failed to save alerts")
+
+        # Step 6: GitHub upload disabled
+        print("\n📤 Step 6: GitHub upload disabled by user")
+
+        # Step 7: Clean up old files
+        print("\n🧹 Step 7: Cleaning up old files...")
+        cleanup_old_files(keep_count=3)  # Keep 3 most recent files
+
+        print("\n🎯 Enhanced trading analysis completed successfully!")
+        print("⏰ Next analysis in 1 hour...")
+
+    except Exception as e:
+        print(f"❌ Error in trading analysis: {e}")
 
 def run_trading_analysis():
     """Main function to run complete trading analysis"""
@@ -462,19 +626,26 @@ def run_trading_analysis():
         # Step 4: Google Sheets sync disabled
         print("\n📊 Step 4: Google Sheets sync disabled by user")
 
-        # Step 5: Generate news alerts
-        print("\n📰 Step 5: Fetching crypto news alerts...")
+        # Step 5: Generate enhanced news and market alerts using Railway API
+        print("\n📰 Step 5: Fetching enhanced crypto intelligence...")
         try:
-            from crypto_news_alerts import generate_news_alerts
-            news_alerts = generate_news_alerts()
-            if news_alerts:
-                print(f"📰 Found {len(news_alerts)} news alerts")
-                # Add news alerts to main alerts for Discord
-                alerts.extend(news_alerts)
+            enhanced_alerts = await generate_enhanced_alerts(positions_df)
+            if enhanced_alerts:
+                print(f"📰 Found {len(enhanced_alerts)} enhanced alerts from Railway API")
+                alerts.extend(enhanced_alerts)
             else:
-                print("📰 No relevant news alerts found")
+                print("📰 No relevant enhanced alerts found")
         except Exception as e:
-            print(f"❌ News alerts error: {e}")
+            print(f"❌ Enhanced alerts error: {e}")
+            # Fallback to original news alerts
+            try:
+                from crypto_news_alerts import generate_news_alerts
+                news_alerts = generate_news_alerts()
+                if news_alerts:
+                    print(f"📰 Fallback: Found {len(news_alerts)} news alerts")
+                    alerts.extend(news_alerts)
+            except Exception as fallback_e:
+                print(f"❌ Fallback news alerts error: {fallback_e}")
 
         # Step 6: GitHub upload disabled
         print("\n📤 Step 6: GitHub upload disabled by user")

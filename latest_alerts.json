@@ -1,12 +1,13 @@
 {
-  "timestamp": "2025-08-01 03:05 PM CST",
-  "total_alerts": 20,
+  "timestamp": "2025-08-03 03:52 PM CST",
+  "total_alerts": 23,
   "alert_types": {
     "oversold": 7,
     "losing_trade": 7,
     "overbought": 2,
     "no_stop_loss": 2,
-    "high_profit": 2
+    "high_profit": 2,
+    "breaking_news": 3
   },
   "alerts": [
     {
@@ -164,13 +165,34 @@
       "pnl": -15227.58,
       "margin": 1.0,
       "message": "\ud83d\udea8 $SUPER/USD is down -15227.6%. Capital preservation - review position."
+    },
+    {
+      "type": "breaking_news",
+      "symbol": "MARKET",
+      "platform": "Breaking",
+      "message": "\ud83d\udea8 NFT Sales Spike in July\u2014but Still Miles Below 2024's Highs... (Bitcoin)"
+    },
+    {
+      "type": "breaking_news",
+      "symbol": "MARKET",
+      "platform": "Breaking",
+      "message": "\ud83d\udea8 Crypto market cools in August after ETF-driven summer rally... (Cryptopolitan)"
+    },
+    {
+      "type": "breaking_news",
+      "symbol": "MARKET",
+      "platform": "Breaking",
+      "message": "\ud83d\udea8 The token is dead, long live the token... (Cointelegraph)"
     }
   ],
   "summary_parts": [
-    "\u26a0\ufe0f Overbought: 2",
     "\ud83d\udcc9 Oversold: 7",
-    "\u2757Losing: 7",
-    "\ud83d\udea8 No SL: 2",
-    "\ud83d\udcb0 High Profit: 2"
-  ]
+    "\u26a0\ufe0f Losing Trade: 7",
+    "\u26a0\ufe0f Overbought: 2",
+    "\ud83d\udea8 No Stop Loss: 2",
+    "\ud83d\udcb0 High Profit: 2",
+    "\ud83d\udea8 Breaking News: 3"
+  ],
+  "enhanced_intelligence": true,
+  "railway_api_status": "connected"
 }
