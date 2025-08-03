@@ -229,30 +229,64 @@ class SmartTradingBot:
         return alert[:2000]
 
 class DiscordBot:
-    """Discord bot integration"""
+    """Enhanced Discord bot integration with multi-channel support"""
     
-    def __init__(self, webhook_url: str, trading_bot: SmartTradingBot):
-        self.webhook_url = webhook_url
+    def __init__(self, webhook_urls: dict, trading_bot: SmartTradingBot):
+        # Support both single webhook (legacy) and multi-channel webhooks
+        if isinstance(webhook_urls, str):
+            # Legacy single webhook - use for all channels
+            self.webhook_urls = {
+                'alerts': webhook_urls,
+                'portfolio': webhook_urls,
+                'alpha_scans': webhook_urls
+            }
+        else:
+            # Multi-channel webhook URLs
+            self.webhook_urls = webhook_urls
         self.trading_bot = trading_bot
         
-    async def send_alert(self, message: str):
-        """Send alert to Discord via webhook"""
+    async def send_alert(self, message: str, channel: str = 'alerts'):
+        """Send alert to specific Discord channel via webhook"""
+        webhook_url = self.webhook_urls.get(channel)
+        if not webhook_url:
+            logger.warning(f"No webhook URL configured for channel: {channel}")
+            return
+            
         if not self.trading_bot.session:
             await self.trading_bot.start_session()
             
+        # Customize username based on channel
+        usernames = {
+            'alerts': 'Market Alerts Bot',
+            'portfolio': 'Portfolio Analysis Bot', 
+            'alpha_scans': 'Alpha Scanner Bot'
+        }
+        
         payload = {
             "content": message,
-            "username": "Smart Trading Bot"
+            "username": usernames.get(channel, "Smart Trading Bot")
         }
         
         try:
-            async with self.trading_bot.session.post(self.webhook_url, json=payload) as response:
+            async with self.trading_bot.session.post(webhook_url, json=payload) as response:
                 if response.status == 204:
-                    logger.info("Discord alert sent successfully")
+                    logger.info(f"Discord alert sent successfully to #{channel}")
                 else:
-                    logger.error(f"Discord alert failed: {response.status}")
+                    logger.error(f"Discord alert failed for #{channel}: {response.status}")
         except Exception as e:
-            logger.error(f"Discord send error: {e}")
+            logger.error(f"Discord send error for #{channel}: {e}")
+    
+    async def send_to_alerts(self, message: str):
+        """Send to #alerts channel"""
+        await self.send_alert(message, 'alerts')
+    
+    async def send_to_portfolio(self, message: str):
+        """Send to #portfolio channel"""
+        await self.send_alert(message, 'portfolio')
+    
+    async def send_to_alpha_scans(self, message: str):
+        """Send to #alpha-scans channel"""
+        await self.send_alert(message, 'alpha_scans')
 
 class TelegramBot:
     """Telegram bot integration"""
@@ -292,24 +326,36 @@ class AlertScheduler:
         self.telegram_bot = telegram_bot
         self.running = False
         
-    async def send_to_platforms(self, message: str):
-        """Send message to all configured platforms"""
+    async def send_to_platforms(self, message: str, channel: str = 'alerts'):
+        """Send message to all configured platforms with channel routing"""
         tasks = []
         if self.discord_bot:
-            tasks.append(self.discord_bot.send_alert(message))
+            tasks.append(self.discord_bot.send_alert(message, channel))
         if self.telegram_bot:
             tasks.append(self.telegram_bot.send_alert(message))
             
         if tasks:
             await asyncio.gather(*tasks, return_exceptions=True)
     
+    async def send_to_alerts(self, message: str):
+        """Send to #alerts channel - breaking news, risks"""
+        await self.send_to_platforms(message, 'alerts')
+    
+    async def send_to_portfolio(self, message: str):
+        """Send to #portfolio channel - position analysis"""
+        await self.send_to_platforms(message, 'portfolio')
+    
+    async def send_to_alpha_scans(self, message: str):
+        """Send to #alpha-scans channel - opportunities"""
+        await self.send_to_platforms(message, 'alpha_scans')
+    
     async def breaking_news_loop(self):
-        """Breaking news alert loop"""
+        """Breaking news alert loop - goes to #alerts channel"""
         while self.running:
             try:
                 news_data = await self.trading_bot.get_breaking_news_alerts()
                 alert = self.trading_bot.format_breaking_news_alert(news_data)
-                await self.send_to_platforms(alert)
+                await self.send_to_alerts(alert)  # Route to #alerts
                 
                 await asyncio.sleep(self.trading_bot.alert_intervals['breaking_news'])
             except Exception as e:
@@ -317,12 +363,12 @@ class AlertScheduler:
                 await asyncio.sleep(60)
     
     async def portfolio_check_loop(self):
-        """Portfolio check alert loop"""
+        """Portfolio check alert loop - goes to #portfolio channel"""
         while self.running:
             try:
                 portfolio_data = await self.trading_bot.get_portfolio_insights()
                 alert = self.trading_bot.format_portfolio_alert(portfolio_data)
-                await self.send_to_platforms(alert)
+                await self.send_to_portfolio(alert)  # Route to #portfolio
                 
                 await asyncio.sleep(self.trading_bot.alert_intervals['portfolio_check'])
             except Exception as e:
@@ -330,12 +376,12 @@ class AlertScheduler:
                 await asyncio.sleep(60)
     
     async def opportunity_scan_loop(self):
-        """Opportunity scanning alert loop"""
+        """Opportunity scanning alert loop - goes to #alpha-scans channel"""
         while self.running:
             try:
                 opp_data = await self.trading_bot.scan_trading_opportunities()
                 alert = self.trading_bot.format_opportunity_alert(opp_data)
-                await self.send_to_platforms(alert)
+                await self.send_to_alpha_scans(alert)  # Route to #alpha-scans
                 
                 await asyncio.sleep(self.trading_bot.alert_intervals['opportunities'])
             except Exception as e:
@@ -343,7 +389,7 @@ class AlertScheduler:
                 await asyncio.sleep(60)
     
     async def risk_alert_loop(self):
-        """Risk alert loop"""
+        """Risk alert loop - goes to #alerts channel"""
         while self.running:
             try:
                 risk_data = await self.trading_bot.get_risk_alerts()
@@ -351,7 +397,7 @@ class AlertScheduler:
                 
                 # Only send if there are actual risks
                 if "No immediate risk alerts" not in alert:
-                    await self.send_to_platforms(alert)
+                    await self.send_to_alerts(alert)  # Route to #alerts
                 
                 await asyncio.sleep(self.trading_bot.alert_intervals['risk_alerts'])
             except Exception as e:
@@ -386,15 +432,26 @@ async def main():
     """Main entry point"""
     # Configuration - Set these environment variables
     RAILWAY_API_URL = os.getenv('RAILWAY_API_URL', 'https://titan-trading-2-production.up.railway.app')
-    DISCORD_WEBHOOK = os.getenv('DISCORD_WEBHOOK_URL')
+    
+    # Multi-channel Discord webhook configuration
+    DISCORD_WEBHOOKS = {
+        'alerts': os.getenv('DISCORD_ALERTS_WEBHOOK'),        # Channel ID: 1398000506068009032
+        'portfolio': os.getenv('DISCORD_PORTFOLIO_WEBHOOK'),  # Channel ID: 1399451217372905584  
+        'alpha_scans': os.getenv('DISCORD_ALPHA_WEBHOOK')     # Channel ID: 1399790636990857277
+    }
+    
+    # Legacy single webhook support
+    LEGACY_DISCORD_WEBHOOK = os.getenv('DISCORD_WEBHOOK_URL')
+    
     TELEGRAM_BOT_TOKEN = os.getenv('TELEGRAM_BOT_TOKEN')
     TELEGRAM_CHAT_ID = os.getenv('TELEGRAM_CHAT_ID')
     
     # Initialize trading bot
     trading_bot = SmartTradingBot(RAILWAY_API_URL)
     
-    # Initialize platform bots
-    discord_bot = DiscordBot(DISCORD_WEBHOOK, trading_bot) if DISCORD_WEBHOOK else None
+    # Initialize Discord bot with multi-channel support
+    discord_webhooks = DISCORD_WEBHOOKS if any(DISCORD_WEBHOOKS.values()) else LEGACY_DISCORD_WEBHOOK
+    discord_bot = DiscordBot(discord_webhooks, trading_bot) if discord_webhooks else None
     telegram_bot = TelegramBot(TELEGRAM_BOT_TOKEN, TELEGRAM_CHAT_ID, trading_bot) if TELEGRAM_BOT_TOKEN and TELEGRAM_CHAT_ID else None
     
     if not discord_bot and not telegram_bot:
