@@ -8,6 +8,16 @@ The core architecture consists of a Flask-based API server deployed on Railway t
 
 Preferred communication style: Simple, everyday language.
 
+# Recent Changes
+
+**August 3, 2025 - CryptoNews API Direct Integration Analysis**
+- Analyzed complete CryptoNews API capabilities through real endpoint examples
+- Identified sophisticated ticker logic: tickers (OR), tickers-include (AND), tickers-only (exclusive)
+- Documented 18+ topic categories (NFT, Mining, regulations, Whales, pricemovement, etc.)
+- Created comprehensive OpenAPI specification for ChatGPT direct integration
+- Recommendation: Remove wrapper endpoints, let ChatGPT call real API directly
+- User preference: Unlock full CryptoNews API sophistication for ChatGPT intelligence
+
 # System Architecture
 
 ## Core Components
