@@ -301,6 +301,128 @@ def exchanges_status():
     """Get status of all exchanges"""
     return jsonify(exchange_manager.get_exchange_status())
 
+# Custom endpoints matching your original API schema
+@app.route('/api/live/all-exchanges', methods=['GET'])
+def get_all_exchanges():
+    """Get live positions and orders from all exchanges (BingX & Blofin)"""
+    try:
+        result = {
+            'timestamp': datetime.now().isoformat(),
+            'exchanges': {}
+        }
+        
+        for exchange_name in ['bingx', 'blofin']:
+            try:
+                if exchange_name in exchange_manager.get_available_exchanges():
+                    positions = trading_functions.get_positions(exchange_name)
+                    orders = trading_functions.get_orders(exchange_name)
+                    result['exchanges'][exchange_name] = {
+                        'status': 'success',
+                        'positions': positions,
+                        'orders': orders
+                    }
+                else:
+                    result['exchanges'][exchange_name] = {
+                        'status': 'unavailable',
+                        'positions': {},
+                        'orders': []
+                    }
+            except Exception as e:
+                result['exchanges'][exchange_name] = {
+                    'status': 'error',
+                    'error': str(e),
+                    'positions': {},
+                    'orders': []
+                }
+        
+        return jsonify(result)
+    except Exception as e:
+        logger.error(f"Error getting all exchanges: {str(e)}")
+        return jsonify({'error': 'Internal server error'}), 500
+
+@app.route('/api/live/bingx-positions', methods=['GET'])
+def get_bingx_positions():
+    """Get live positions from BingX exchange"""
+    try:
+        result = {
+            'timestamp': datetime.now().isoformat(),
+            'source': 'bingx'
+        }
+        
+        if 'bingx' in exchange_manager.get_available_exchanges():
+            positions = trading_functions.get_positions('bingx')
+            orders = trading_functions.get_orders('bingx')
+            
+            result['positions'] = {
+                'code': 0,
+                'data': {
+                    'positions': positions if isinstance(positions, list) else [positions]
+                }
+            }
+            result['orders'] = {
+                'code': 0,
+                'data': {
+                    'orders': orders if isinstance(orders, list) else [orders]
+                }
+            }
+        else:
+            result['positions'] = {'code': -1, 'data': {'positions': []}}
+            result['orders'] = {'code': -1, 'data': {'orders': []}}
+        
+        return jsonify(result)
+    except Exception as e:
+        logger.error(f"Error getting BingX positions: {str(e)}")
+        return jsonify({
+            'timestamp': datetime.now().isoformat(),
+            'source': 'bingx',
+            'positions': {'code': -1, 'data': {'positions': []}},
+            'orders': {'code': -1, 'data': {'orders': []}},
+            'error': str(e)
+        }), 500
+
+@app.route('/api/live/blofin-positions', methods=['GET'])
+def get_blofin_positions():
+    """Get live positions from Blofin exchange"""
+    try:
+        result = {
+            'timestamp': datetime.now().isoformat(),
+            'source': 'blofin'
+        }
+        
+        if 'blofin' in exchange_manager.get_available_exchanges():
+            positions = trading_functions.get_positions('blofin')
+            orders = trading_functions.get_orders('blofin')
+            
+            result['positions'] = positions if isinstance(positions, list) else [positions]
+            result['orders'] = orders if isinstance(orders, list) else [orders]
+        else:
+            result['positions'] = []
+            result['orders'] = []
+        
+        return jsonify(result)
+    except Exception as e:
+        logger.error(f"Error getting Blofin positions: {str(e)}")
+        return jsonify({
+            'timestamp': datetime.now().isoformat(),
+            'source': 'blofin',
+            'positions': [],
+            'orders': [],
+            'error': str(e)
+        }), 500
+
+@app.route('/api/kraken/balance', methods=['GET'])
+def get_kraken_balance():
+    """Get Kraken account balance (your original endpoint)"""
+    try:
+        if 'kraken' in exchange_manager.get_available_exchanges():
+            result = trading_functions.get_balance('kraken')
+            return jsonify(result)
+        else:
+            return jsonify({'error': 'Kraken exchange not available'}), 503
+    except Exception as e:
+        logger.error(f"Error getting Kraken balance: {str(e)}")
+        return jsonify({'error': 'Internal server error'}), 500
+
 @app.route('/api/ticker/<exchange>/<symbol>', methods=['GET'])
 def get_ticker(exchange, symbol):
     """Get ticker for a specific symbol on an exchange"""
