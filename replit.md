@@ -10,9 +10,16 @@ The system features robust error handling and logging capabilities, with non-blo
 - ✅ Fixed Railway deployment CCXT import errors
 - ✅ Implemented non-blocking exchange initialization 
 - ✅ Added comprehensive error handling for all API endpoints
-- ✅ Server starts successfully with all 30 endpoints operational
+- ✅ Server starts successfully with all 35 endpoints operational
 - ✅ Added root endpoint (/) with API documentation
 - ✅ All 3 target exchanges (BingX, Kraken, Blofin) initialize without "RaiseExchange" errors
+- ✅ **RESTORED CUSTOM API ENDPOINTS**: Added original Replit API schema
+  - `/api/live/all-exchanges` - Multi-exchange live data
+  - `/api/live/bingx-positions` - BingX custom format positions
+  - `/api/live/blofin-positions` - Blofin positions  
+  - `/api/kraken/balance` - Kraken balance (original pattern)
+  - `/api/bingx/klines/{symbol}` - BingX candlestick data
+- ✅ **RAILWAY STARTUP OPTIMIZATION**: Added threaded=True and proper error handling for Railway deployment reliability
 
 # User Preferences
 

@@ -952,8 +952,23 @@ def handle_unexpected_error(error):
     return jsonify({'error': 'An unexpected error occurred'}), 500
 
 if __name__ == '__main__':
-    logger.info("Starting crypto trading server...")
-    logger.info(f"Available exchanges: {exchange_manager.get_available_exchanges()}")
-    
-    port = int(os.getenv('PORT', 5000))
-    app.run(host='0.0.0.0', port=port, debug=False)
+    try:
+        logger.info("Starting crypto trading server...")
+        logger.info(f"Available exchanges: {exchange_manager.get_available_exchanges()}")
+        
+        port = int(os.getenv('PORT', 5000))
+        logger.info(f"Starting server on port {port}")
+        
+        # Railway-optimized startup
+        app.run(
+            host='0.0.0.0', 
+            port=port, 
+            debug=False,
+            threaded=True,
+            use_reloader=False
+        )
+    except Exception as e:
+        logger.error(f"Failed to start server: {e}")
+        import traceback
+        logger.error(traceback.format_exc())
+        raise
