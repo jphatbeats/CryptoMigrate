@@ -21,10 +21,31 @@ The system features robust error handling and logging capabilities, with non-blo
   - `/api/bingx/klines/{symbol}` - BingX candlestick data
 - ✅ **RAILWAY STARTUP OPTIMIZATION**: Added threaded=True and proper error handling for Railway deployment reliability
 - ✅ **FIXED API CREDENTIAL INJECTION**: Updated fallback ExchangeManager to properly pass API credentials to exchange instances (Railway deployment fix)
-- ✅ **ADDED CRYPTO NEWS ENDPOINTS**: Integrated crypto news functionality with 3 endpoints:
+- ✅ **COMPLETED FULL API SCHEMA**: Added all 28 missing endpoints from ChatGPT schema:
+  **Crypto News Intelligence (8 endpoints):**
   - `/api/crypto-news/breaking-news` - Breaking crypto news with filtering
-  - `/api/crypto-news/top-mentioned` - Top mentioned crypto tickers
-  - `/api/crypto-news/sentiment` - Sentiment analysis for crypto
+  - `/api/crypto-news/portfolio` - Portfolio-specific crypto news
+  - `/api/crypto-news/symbols/{symbols}` - News by specific symbols
+  - `/api/crypto-news/risk-alerts` - Risk warnings and alerts
+  - `/api/crypto-news/bullish-signals` - Bullish sentiment analysis
+  - `/api/crypto-news/opportunity-scanner` - Trading opportunities
+  - `/api/crypto-news/market-intelligence` - Comprehensive market analysis
+  - `/api/crypto-news/pump-dump-detector` - Pump and dump detection
+  **BingX Analysis (3 endpoints):**
+  - `/api/bingx/market-analysis/{symbol}` - Market analysis with orderbook
+  - `/api/bingx/candlestick-analysis/{symbol}` - Candlestick patterns
+  - `/api/bingx/multi-timeframe/{symbol}` - Multi-timeframe analysis
+  **Kraken Trading Suite (6 endpoints):**
+  - `/api/kraken/positions` - Account positions
+  - `/api/kraken/trade-history` - Historical trades
+  - `/api/kraken/orders` - Active orders
+  - `/api/kraken/market-data/{symbol}` - Comprehensive market data
+  - `/api/kraken/portfolio-performance` - Performance metrics
+  - `/api/kraken/asset-allocation` - Asset allocation breakdown
+  - `/api/kraken/trading-stats` - Trading statistics
+  **ChatGPT AI Analysis (2 endpoints):**
+  - `/api/chatgpt/account-summary` - AI-powered account analysis
+  - `/api/chatgpt/portfolio-analysis` - AI portfolio recommendations
 
 # User Preferences
 
