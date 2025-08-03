@@ -47,16 +47,33 @@ except ImportError:
             try:
                 import ccxt
                 exchange_configs = {
-                    'bingx': {},
-                    'kraken': {},
-                    'blofin': {},
+                    'bingx': {
+                        'apiKey': os.getenv('BINGX_API_KEY', ''),
+                        'secret': os.getenv('BINGX_SECRET', ''),
+                        'sandbox': os.getenv('BINGX_SANDBOX', 'false').lower() == 'true',
+                        'enableRateLimit': True,
+                    },
+                    'kraken': {
+                        'apiKey': os.getenv('KRAKEN_API_KEY', ''),
+                        'secret': os.getenv('KRAKEN_SECRET', ''),
+                        'sandbox': os.getenv('KRAKEN_SANDBOX', 'false').lower() == 'true',
+                        'enableRateLimit': True,
+                    },
+                    'blofin': {
+                        'apiKey': os.getenv('BLOFIN_API_KEY', ''),
+                        'secret': os.getenv('BLOFIN_SECRET', ''),
+                        'password': os.getenv('BLOFIN_PASSPHRASE', ''),
+                        'sandbox': os.getenv('BLOFIN_SANDBOX', 'false').lower() == 'true',
+                        'enableRateLimit': True,
+                    }
                 }
                 
-                for exchange_name in exchange_configs:
+                for exchange_name, config in exchange_configs.items():
                     try:
                         if hasattr(ccxt, exchange_name):
                             exchange_class = getattr(ccxt, exchange_name)
-                            self.exchanges[exchange_name] = exchange_class()
+                            self.exchanges[exchange_name] = exchange_class(config)
+                            logger.info(f"Initialized {exchange_name} with config: {bool(config.get('apiKey'))}")
                     except Exception as e:
                         logger.warning(f"Failed to initialize {exchange_name}: {e}")
             except ImportError:
@@ -71,10 +88,22 @@ except ImportError:
             return list(self.exchanges.keys())
         
         def get_exchange_status(self):
+            detailed_status = {}
+            for name, exchange in self.exchanges.items():
+                # Check if exchange has API credentials
+                if hasattr(exchange, 'apiKey') and exchange.apiKey:
+                    status = 'connected'
+                else:
+                    status = 'public_only'
+                detailed_status[name] = {
+                    'status': status, 
+                    'error': None,
+                    'has_credentials': bool(hasattr(exchange, 'apiKey') and exchange.apiKey)
+                }
             return {
                 'available_exchanges': self.get_available_exchanges(),
                 'failed_exchanges': {},
-                'detailed_status': {name: {'status': 'public_only', 'error': None} for name in self.exchanges}
+                'detailed_status': detailed_status
             }
 
 try:
