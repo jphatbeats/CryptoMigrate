@@ -9,3 +9,7 @@ requests==2.31.0
 aiohttp
 ccxt
 pandas
+aiohttp
+pandas
+pytz
+schedule

@@ -17,7 +17,15 @@ import asyncio
 import aiohttp
 import requests
 
-# We'll integrate with the Discord bot instead of webhooks
+# Discord Multi-Channel Configuration
+DISCORD_WEBHOOKS = {
+    'alerts': os.getenv('DISCORD_ALERTS_WEBHOOK'),        # Breaking news, risks (1398000506068009032)
+    'portfolio': os.getenv('DISCORD_PORTFOLIO_WEBHOOK'),  # Portfolio analysis (1399451217372905584)  
+    'alpha_scans': os.getenv('DISCORD_ALPHA_WEBHOOK')     # Trading opportunities (1399790636990857277)
+}
+
+# Legacy single webhook support (backward compatible)
+LEGACY_DISCORD_WEBHOOK = os.getenv('DISCORD_WEBHOOK_URL')
 
 # Google Sheets NoCode API URL
 GOOGLE_SHEETS_API_URL = "https://v1.nocodeapi.com/computerguy81/google_sheets/QxNdANWVhHvvXSzL"
@@ -356,6 +364,55 @@ def send_to_google_sheets():
         return False
 
 
+async def fetch_railway_api(endpoint):
+    """Fetch data from Railway API"""
+    try:
+        url = f"{RAILWAY_API_URL}{endpoint}"
+        async with aiohttp.ClientSession() as session:
+            async with session.get(url) as response:
+                if response.status == 200:
+                    return await response.json()
+                else:
+                    print(f"❌ Railway API error {response.status} for {endpoint}")
+                    return None
+    except Exception as e:
+        print(f"❌ Railway API fetch error: {e}")
+        return None
+
+async def send_discord_alert(message, channel='portfolio'):
+    """Send alert to Discord channel via webhook"""
+    try:
+        # Get webhook URL
+        webhook_url = DISCORD_WEBHOOKS.get(channel) or LEGACY_DISCORD_WEBHOOK
+        if not webhook_url:
+            print(f"❌ No Discord webhook configured for {channel}")
+            return False
+        
+        # Channel-specific bot names
+        bot_names = {
+            'alerts': 'Market Alerts Bot',
+            'portfolio': 'Portfolio Analysis Bot',
+            'alpha_scans': 'Alpha Scanner Bot'
+        }
+        
+        payload = {
+            "content": message,
+            "username": bot_names.get(channel, "Trading Alerts Bot")
+        }
+        
+        async with aiohttp.ClientSession() as session:
+            async with session.post(webhook_url, json=payload) as response:
+                if response.status == 204:
+                    print(f"✅ Discord alert sent to #{channel}")
+                    return True
+                else:
+                    print(f"❌ Discord webhook failed: {response.status}")
+                    return False
+                    
+    except Exception as e:
+        print(f"❌ Discord send error: {e}")
+        return False
+
 def prepare_alert_data(alerts):
     """Prepare alert data for Discord bot integration"""
     if not alerts:
@@ -588,7 +645,7 @@ async def run_trading_analysis_async():
     except Exception as e:
         print(f"❌ Error in trading analysis: {e}")
 
-def run_trading_analysis():
+async def run_trading_analysis():
     """Main function to run complete trading analysis"""
     print("\n" + "=" * 60)
     print("🤖 AUTOMATED TRADING ANALYSIS STARTING")
@@ -611,15 +668,27 @@ def run_trading_analysis():
         print("\n🔍 Step 2: Analyzing trading conditions...")
         alerts = analyze_trading_conditions(positions)
 
-        # Step 3: Process alerts for Discord bot
+        # Step 3: Process alerts for Discord bot and send to channels
         print("\n📤 Step 3: Processing alerts...")
         if alerts:
             print(f"🚨 Found {len(alerts)} trading alerts!")
+            
+            # Save alerts to JSON (existing functionality)
             success = save_alerts_for_bot(alerts)
             if success:
                 print("✅ Alerts saved for Discord bot")
             else:
                 print("❌ Failed to save alerts")
+            
+            # Send portfolio alerts to #portfolio channel
+            try:
+                alert_data = prepare_alert_data(alerts)
+                if alert_data and alert_data.get('message'):
+                    portfolio_message = f"💼 **PORTFOLIO ANALYSIS** 💼\n{alert_data['message']}"
+                    await send_discord_alert(portfolio_message, 'portfolio')
+            except Exception as e:
+                print(f"❌ Error sending portfolio alerts: {e}")
+                
         else:
             print("✅ No alerts triggered - all positions within normal parameters")
 
@@ -629,21 +698,44 @@ def run_trading_analysis():
         # Step 5: Generate enhanced news and market alerts using Railway API
         print("\n📰 Step 5: Fetching enhanced crypto intelligence...")
         try:
-            enhanced_alerts = await generate_enhanced_alerts(positions_df)
-            if enhanced_alerts:
-                print(f"📰 Found {len(enhanced_alerts)} enhanced alerts from Railway API")
-                alerts.extend(enhanced_alerts)
-            else:
-                print("📰 No relevant enhanced alerts found")
+            # Get breaking news and risk alerts for #alerts channel
+            breaking_news = await fetch_railway_api("/api/crypto-news/breaking-news")
+            risk_alerts = await fetch_railway_api("/api/crypto-news/risk-alerts")
+            opportunities = await fetch_railway_api("/api/crypto-news/opportunity-scanner")
+            
+            # Send breaking news to #alerts channel
+            if breaking_news and breaking_news.get('news'):
+                news_message = f"🚨 **BREAKING CRYPTO NEWS** 🚨\n"
+                for item in breaking_news['news'][:3]:  # Top 3 news
+                    news_message += f"• {item.get('title', 'Market Update')}\n"
+                await send_discord_alert(news_message, 'alerts')
+            
+            # Send risk alerts to #alerts channel  
+            if risk_alerts and risk_alerts.get('alerts'):
+                risk_message = f"⚠️ **RISK ALERTS** ⚠️\n"
+                for alert in risk_alerts['alerts'][:3]:  # Top 3 risks
+                    risk_message += f"• {alert.get('message', 'Risk detected')}\n"
+                await send_discord_alert(risk_message, 'alerts')
+            
+            # Send opportunities to #alpha-scans channel
+            if opportunities and opportunities.get('opportunities'):
+                opp_message = f"🎯 **TRADING OPPORTUNITIES** 🎯\n"
+                for opp in opportunities['opportunities'][:3]:  # Top 3 opportunities
+                    opp_message += f"• {opp.get('symbol', '')} - {opp.get('signal', 'Signal detected')}\n"
+                await send_discord_alert(opp_message, 'alpha_scans')
+                
+            print("📰 Enhanced alerts sent to appropriate Discord channels")
+            
         except Exception as e:
             print(f"❌ Enhanced alerts error: {e}")
-            # Fallback to original news alerts
+            # Fallback to original news alerts for #alerts channel
             try:
                 from crypto_news_alerts import generate_news_alerts
                 news_alerts = generate_news_alerts()
                 if news_alerts:
                     print(f"📰 Fallback: Found {len(news_alerts)} news alerts")
-                    alerts.extend(news_alerts)
+                    fallback_message = f"📰 **CRYPTO NEWS UPDATE** 📰\n{str(news_alerts)[:500]}..."
+                    await send_discord_alert(fallback_message, 'alerts')
             except Exception as fallback_e:
                 print(f"❌ Fallback news alerts error: {fallback_e}")
 
@@ -685,11 +777,11 @@ def main():
 
     # Run initial analysis
     print("\n🎯 Running initial analysis...")
-    run_trading_analysis()
+    asyncio.run(run_trading_analysis())
 
     # Schedule hourly runs
     print("\n⏰ Setting up hourly schedule...")
-    schedule.every().hour.do(run_trading_analysis)
+    schedule.every().hour.do(lambda: asyncio.run(run_trading_analysis()))
 
     # Start scheduler in background thread
     scheduler_thread = threading.Thread(target=run_scheduler, daemon=True)
@@ -715,7 +807,7 @@ def run_automated_alerts():
     print("📋 Alerts will be processed by Discord bot integration")
     
     # Run the analysis
-    run_trading_analysis()
+    asyncio.run(run_trading_analysis())
     print("✅ Automated alerts completed!")
 
 
