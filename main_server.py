@@ -313,6 +313,28 @@ def exchanges_status():
     """Get status of all exchanges"""
     return jsonify(exchange_manager.get_exchange_status())
 
+@app.route('/debug/env', methods=['GET'])
+def debug_environment():
+    """Debug endpoint to check environment variables (for Railway debugging)"""
+    try:
+        env_debug = {
+            'has_bingx_api_key': bool(os.getenv('BINGX_API_KEY')),
+            'has_bingx_secret': bool(os.getenv('BINGX_SECRET')),
+            'has_kraken_api_key': bool(os.getenv('KRAKEN_API_KEY')),
+            'has_kraken_secret': bool(os.getenv('KRAKEN_SECRET')),
+            'has_blofin_api_key': bool(os.getenv('BLOFIN_API_KEY')),
+            'has_blofin_secret': bool(os.getenv('BLOFIN_SECRET')),
+            'has_blofin_passphrase': bool(os.getenv('BLOFIN_PASSPHRASE')),
+            'bingx_api_key_length': len(os.getenv('BINGX_API_KEY', '')),
+            'bingx_secret_length': len(os.getenv('BINGX_SECRET', '')),
+            'exchange_manager_type': str(type(exchange_manager).__name__),
+            'exchange_manager_module': str(type(exchange_manager).__module__)
+        }
+        return jsonify(env_debug)
+    except Exception as e:
+        logger.error(f"Error in debug endpoint: {str(e)}")
+        return jsonify({'error': str(e)}), 500
+
 @app.route('/api/live/all-exchanges', methods=['GET'])
 def get_all_exchanges():
     """Get live positions and orders from all exchanges (BingX & Blofin)"""
