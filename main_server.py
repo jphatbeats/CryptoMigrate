@@ -1033,20 +1033,22 @@ def get_breaking_crypto_news():
             search=search
         )
         
+        # Return simplified format for ChatGPT compatibility
+        articles = result.get('data', [])
         return jsonify({
-            'status': 'success',
-            'count': len(result.get('data', [])),
-            'articles': result.get('data', []),
-            'parameters': {
-                'hours': hours,
-                'items': items,
-                'exclude_portfolio': exclude_portfolio,
-                'sentiment': sentiment,
-                'source': source,
-                'topic': topic,
-                'search': search
+            'success': True,
+            'data': {
+                'articles': articles,
+                'count': len(articles),
+                'filters': {
+                    'hours': hours,
+                    'items': items,
+                    'sentiment': sentiment,
+                    'source': source,
+                    'topic': topic
+                }
             },
-            'timestamp': datetime.now().isoformat()
+            'message': f'Found {len(articles)} breaking crypto news articles'
         })
     except Exception as e:
         logger.error(f"Error getting breaking crypto news: {str(e)}")
@@ -1064,15 +1066,14 @@ def get_top_mentioned():
         
         result = get_top_mentioned_tickers(date=date, cache=cache)
         
+        tickers = result.get('data', [])
         return jsonify({
-            'status': 'success',
-            'count': len(result.get('data', [])),
-            'tickers': result.get('data', []),
-            'parameters': {
-                'date': date,
-                'cache': cache
+            'success': True,
+            'data': {
+                'tickers': tickers,
+                'count': len(tickers)
             },
-            'timestamp': datetime.now().isoformat()
+            'message': f'Found {len(tickers)} top mentioned crypto tickers'
         })
     except Exception as e:
         logger.error(f"Error getting top mentioned tickers: {str(e)}")
@@ -1095,15 +1096,15 @@ def get_crypto_sentiment():
             date=date
         )
         
+        sentiment_data = result.get('data', [])
         return jsonify({
-            'status': 'success',
-            'data': result.get('data', []),
-            'parameters': {
-                'tickers': tickers,
-                'section': section,
-                'date': date
+            'success': True,
+            'data': {
+                'sentiment_analysis': sentiment_data,
+                'tickers_analyzed': tickers,
+                'period': date
             },
-            'timestamp': datetime.now().isoformat()
+            'message': f'Sentiment analysis completed for {tickers or "crypto market"}'
         })
     except Exception as e:
         logger.error(f"Error getting sentiment analysis: {str(e)}")
@@ -1121,12 +1122,15 @@ def get_portfolio_crypto_news():
         
         result = get_general_crypto_news(items=50, search=','.join(portfolio_symbols))
         
+        articles = result.get('data', [])
         return jsonify({
-            'status': 'success',
-            'count': len(result.get('data', [])),
-            'articles': result.get('data', []),
-            'portfolio_symbols': portfolio_symbols,
-            'timestamp': datetime.now().isoformat()
+            'success': True,
+            'data': {
+                'articles': articles,
+                'count': len(articles),
+                'portfolio_symbols': portfolio_symbols
+            },
+            'message': f'Found {len(articles)} news articles for portfolio symbols'
         })
     except Exception as e:
         logger.error(f"Error getting portfolio crypto news: {str(e)}")
@@ -1144,12 +1148,15 @@ def get_crypto_news_by_symbols(symbols):
         
         result = get_general_crypto_news(items=50, search=','.join(symbol_list))
         
+        articles = result.get('data', [])
         return jsonify({
-            'status': 'success',
-            'count': len(result.get('data', [])),
-            'articles': result.get('data', []),
-            'symbols': symbol_list,
-            'timestamp': datetime.now().isoformat()
+            'success': True,
+            'data': {
+                'articles': articles,
+                'count': len(articles),
+                'symbols': symbol_list
+            },
+            'message': f'Found {len(articles)} news articles for {len(symbol_list)} symbols'
         })
     except Exception as e:
         logger.error(f"Error getting crypto news by symbols: {str(e)}")
