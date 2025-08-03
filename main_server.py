@@ -17,12 +17,16 @@ except ImportError:
     )
 
 try:
-    from crypto_news_alerts import get_general_crypto_news, get_top_mentioned_tickers, get_sentiment_analysis
+    from crypto_news_api import (
+        crypto_news_api, get_breaking_crypto_news, get_crypto_risk_alerts,
+        get_crypto_bullish_signals, scan_crypto_opportunities, 
+        get_market_intelligence, detect_pump_dump_signals
+    )
     crypto_news_available = True
 except ImportError:
     crypto_news_available = False
     logger = logging.getLogger(__name__)
-    logger.warning("Crypto news alerts module not available")
+    logger.warning("Crypto news API module not available")
 
 try:
     from error_handler import handle_exchange_error, ExchangeNotAvailableError
@@ -1118,9 +1122,12 @@ def get_portfolio_crypto_news():
     
     try:
         portfolio_symbols = request.args.get('symbols', '').split(',')
-        hours = request.args.get('hours', 24, type=int)
+        if portfolio_symbols == ['']:
+            portfolio_symbols = []
         
-        result = get_general_crypto_news(items=50, search=','.join(portfolio_symbols))
+        limit = request.args.get('limit', 15, type=int)
+        
+        result = crypto_news_api.get_portfolio_news(portfolio_symbols, limit=limit)
         
         articles = result.get('data', [])
         return jsonify({
@@ -1144,9 +1151,10 @@ def get_crypto_news_by_symbols(symbols):
     
     try:
         symbol_list = symbols.split(',')
-        hours = request.args.get('hours', 24, type=int)
+        limit = request.args.get('limit', 10, type=int)
+        mode = request.args.get('mode', 'broad')  # broad, intersection, laser
         
-        result = get_general_crypto_news(items=50, search=','.join(symbol_list))
+        result = crypto_news_api.get_news_by_symbols(symbol_list, limit=limit, mode=mode)
         
         articles = result.get('data', [])
         return jsonify({
@@ -1154,7 +1162,8 @@ def get_crypto_news_by_symbols(symbols):
             'data': {
                 'articles': articles,
                 'count': len(articles),
-                'symbols': symbol_list
+                'symbols': symbol_list,
+                'mode': mode
             },
             'message': f'Found {len(articles)} news articles for {len(symbol_list)} symbols'
         })
@@ -1163,19 +1172,23 @@ def get_crypto_news_by_symbols(symbols):
         return jsonify({'error': 'Failed to fetch symbol news'}), 500
 
 @app.route('/api/crypto-news/risk-alerts', methods=['GET'])
-def get_crypto_risk_alerts():
+def get_crypto_risk_alerts_endpoint():
     """Get crypto risk alerts and warnings"""
     if not crypto_news_available:
         return jsonify({'error': 'Crypto news service not available'}), 503
     
     try:
-        result = get_general_crypto_news(items=30, sentiment='Negative', search='risk,warning,alert,crash')
+        limit = request.args.get('limit', 20, type=int)
+        severity = request.args.get('severity', 'high')
+        
+        result = crypto_news_api.get_risk_alerts(limit=limit, severity=severity)
         
         return jsonify({
             'status': 'success',
             'count': len(result.get('data', [])),
             'alerts': result.get('data', []),
             'alert_type': 'risk_warnings',
+            'severity': severity,
             'timestamp': datetime.now().isoformat()
         })
     except Exception as e:
@@ -1183,19 +1196,23 @@ def get_crypto_risk_alerts():
         return jsonify({'error': 'Failed to fetch risk alerts'}), 500
 
 @app.route('/api/crypto-news/bullish-signals', methods=['GET'])
-def get_crypto_bullish_signals():
+def get_crypto_bullish_signals_endpoint():
     """Get bullish crypto signals and positive news"""
     if not crypto_news_available:
         return jsonify({'error': 'Crypto news service not available'}), 503
     
     try:
-        result = get_general_crypto_news(items=30, sentiment='Positive', search='bullish,rally,surge,pump,moon')
+        limit = request.args.get('limit', 15, type=int)
+        timeframe = request.args.get('timeframe', 'last6hours')
+        
+        result = crypto_news_api.get_bullish_signals(limit=limit, timeframe=timeframe)
         
         return jsonify({
             'status': 'success',
             'count': len(result.get('data', [])),
             'signals': result.get('data', []),
             'signal_type': 'bullish_sentiment',
+            'timeframe': timeframe,
             'timestamp': datetime.now().isoformat()
         })
     except Exception as e:
@@ -1203,30 +1220,34 @@ def get_crypto_bullish_signals():
         return jsonify({'error': 'Failed to fetch bullish signals'}), 500
 
 @app.route('/api/crypto-news/opportunity-scanner', methods=['GET'])
-def scan_crypto_opportunities():
+def scan_crypto_opportunities_endpoint():
     """Scan for crypto trading opportunities in news"""
     if not crypto_news_available:
         return jsonify({'error': 'Crypto news service not available'}), 503
     
     try:
-        result = get_general_crypto_news(items=40, search='opportunity,breakout,new listing,partnership,adoption')
+        sectors = request.args.get('sectors', 'AI,DeFi,Gaming,RWA,Layer2').split(',')
+        limit = request.args.get('limit', 25, type=int)
+        
+        result = crypto_news_api.scan_opportunities(sectors=sectors, limit=limit)
         
         opportunities = []
         for article in result.get('data', []):
-            if any(keyword in article.get('title', '').lower() for keyword in ['opportunity', 'breakout', 'partnership', 'adoption']):
-                opportunities.append({
-                    'title': article.get('title'),
-                    'source': article.get('source_name'),
-                    'sentiment': article.get('sentiment'),
-                    'tickers': article.get('tickers', []),
-                    'opportunity_type': 'news_based',
-                    'date': article.get('date')
-                })
+            opportunities.append({
+                'title': article.get('title'),
+                'source': article.get('source_name', article.get('source')),
+                'sentiment': article.get('sentiment'),
+                'tickers': article.get('tickers', []),
+                'opportunity_type': 'sector_based',
+                'date': article.get('date'),
+                'url': article.get('url')
+            })
         
         return jsonify({
             'status': 'success',
             'count': len(opportunities),
             'opportunities': opportunities,
+            'sectors_scanned': sectors,
             'scan_type': 'news_opportunities',
             'timestamp': datetime.now().isoformat()
         })
@@ -1235,23 +1256,24 @@ def scan_crypto_opportunities():
         return jsonify({'error': 'Failed to scan opportunities'}), 500
 
 @app.route('/api/crypto-news/market-intelligence', methods=['GET'])
-def get_market_intelligence():
+def get_market_intelligence_endpoint():
     """Get comprehensive market intelligence"""
     if not crypto_news_available:
         return jsonify({'error': 'Crypto news service not available'}), 503
     
     try:
-        news_result = get_general_crypto_news(items=20)
-        sentiment_result = get_top_mentioned_tickers()
+        comprehensive = request.args.get('comprehensive', 'true').lower() == 'true'
+        
+        result = crypto_news_api.get_market_intelligence(comprehensive=comprehensive)
         
         return jsonify({
             'status': 'success',
             'market_overview': {
-                'latest_news': news_result.get('data', [])[:10],
-                'trending_tickers': sentiment_result.get('data', [])[:10],
-                'market_sentiment': 'mixed'  # Could be calculated from news sentiment
+                'latest_news': result.get('data', [])[:15],
+                'comprehensive': comprehensive,
+                'data_source': 'tier_1_sources'
             },
-            'intelligence_type': 'comprehensive',
+            'intelligence_type': 'comprehensive' if comprehensive else 'summary',
             'timestamp': datetime.now().isoformat()
         })
     except Exception as e:
@@ -1259,26 +1281,27 @@ def get_market_intelligence():
         return jsonify({'error': 'Failed to fetch market intelligence'}), 500
 
 @app.route('/api/crypto-news/pump-dump-detector', methods=['GET'])
-def detect_pump_dump_signals():
+def detect_pump_dump_signals_endpoint():
     """Detect potential pump and dump signals"""
     if not crypto_news_available:
         return jsonify({'error': 'Crypto news service not available'}), 503
     
     try:
-        result = get_general_crypto_news(items=30, search='pump,dump,manipulation,whale,unusual volume')
+        limit = request.args.get('limit', 20, type=int)
+        
+        result = crypto_news_api.detect_pump_dump_signals(limit=limit)
         
         signals = []
         for article in result.get('data', []):
-            title_lower = article.get('title', '').lower()
-            if any(keyword in title_lower for keyword in ['pump', 'dump', 'whale', 'unusual', 'manipulation']):
-                signals.append({
-                    'title': article.get('title'),
-                    'source': article.get('source_name'),
-                    'tickers': article.get('tickers', []),
-                    'signal_type': 'pump_dump_warning',
-                    'confidence': 'medium',
-                    'date': article.get('date')
-                })
+            signals.append({
+                'title': article.get('title'),
+                'source': article.get('source_name', article.get('source')),
+                'tickers': article.get('tickers', []),
+                'signal_type': 'pump_dump_warning',
+                'confidence': 'medium',
+                'date': article.get('date'),
+                'url': article.get('url')
+            })
         
         return jsonify({
             'status': 'success',

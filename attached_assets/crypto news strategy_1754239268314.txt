@@ -1,0 +1,411 @@
+cryptonews strategy  
+
+🧠 How to Weaponize Crypto News
+🎯 1. Early Entry Detection (Sniper Mode)
+Use getBreakingCryptoNews, getCryptoBullishSignals, scanCryptoOpportunities with:
+
+Filters: sentiment=positive, category=meme, ai, layer2
+
+Look for tokens that:
+
+Appear in 2+ articles within 6 hours
+
+Are not yet pumping but show:
+
+Dev partnership (Intel, Ubisoft, etc.)
+
+Ecosystem fund, grant, or L2 launch
+
+Listing rumors or minor CEX adds
+
+🟢 If the article drops before price moves, tag as Sniper Setup or Runner.
+
+“News before move = sniper edge.”
+
+🔄 2. Rotation Tracking
+Use getMarketIntelligence and scanCryptoOpportunities
+
+Run scans by sector:
+
+AI# 🚀 CryptoNews Alpha Strategy - Premium Edition
+
+**Mission:** Use advanced news intelligence with surgical precision filtering to detect catalysts, manage portfolio risk, and execute asymmetric trades before the market catches on.
+
+---
+
+## 🔥 Core Arsenal (New Endpoints)
+
+**CryptoNews API Premium** provides:
+
+- 📈 **Ticker News** (`/api/v1`) - Advanced filtering with 3 ticker modes
+- 🗞️ **Category News** (`/api/v1/category`) - Market-wide intelligence (general, alltickers)
+- 🎯 **Tickers Database** (`/api/v1/account/tickersdbv2`) - Complete symbol universe
+- 📊 **Advanced Analytics** - Real-time sentiment, topics, and source filtering
+- ⚡ **Historical Intelligence** - Date/time precision back to Dec 2020
+- 🔍 **Surgical Search** - Topic, keyword, and Boolean logic filtering
+
+All data with **premium access** = unlimited pagination + advanced features.
+
+---
+
+## 🎯 The Three Ticker Modes (Game Changer)
+
+| Mode | Parameter | Strategy Use |
+|------|-----------|--------------|
+| **Broad Net** | `tickers=BTC,ETH,SOL` | Market pulse, narrative detection |
+| **Intersection** | `tickers-include=BTC,ETH` | Cross-chain partnerships, correlated moves |
+| **Laser Focus** | `tickers-only=WIF` | Pure alpha on specific positions |
+
+---
+
+## ⚡ Real-Time Alpha Hunting Patterns
+
+### 🚨 **The Breaking Catalyst Scanner**
+```
+date=last5min + sentiment=positive + search=partnership,listing,announcement + sortby=rank
+```
+**Purpose:** Catch market-moving news within 5 minutes
+**Action:** Immediate position entry if confluence aligns
+
+### 🎯 **The Portfolio Threat Detector**
+```
+tickers=[YOUR_HOLDINGS] + sentiment=negative + date=last2hours + sortby=rank
+```
+**Purpose:** Real-time risk monitoring for current positions
+**Action:** Position sizing down or exit alerts
+
+### 💎 **The Hidden Gem Hunter**
+```
+section=alltickers + sentiment=positive + search=partnership,adoption + source=Coindesk,CryptoSlate + date=last6hours
+```
+**Purpose:** Find coins getting positive catalysts before mainstream coverage
+**Action:** Add to watchlist, run technical confluence
+
+### 🔄 **The Narrative Rotation Detector**
+```
+topicOR=AI,DeFi,Gaming,RWA + sentiment=positive + date=last24hours + sortby=rank
+```
+**Purpose:** Identify which sectors are gaining momentum
+**Action:** Sector rotation and allocation shifts
+
+---
+
+## 🛡️ Portfolio Protection Protocols
+
+### **Daily Risk Sweep**
+```
+tickers=[ALL_HOLDINGS] + sentiment=negative + date=last12hours + search=hack,exploit,rug,delisting
+```
+**Triggers:**
+- **RED ALERT:** Immediate exit if multiple negative sources
+- **YELLOW:** Reduce position size by 50%
+- **GREEN:** Monitor but hold
+
+### **Catalyst Confirmation**
+```
+tickers=[HOLDINGS] + sentiment=positive + search=announcement,partnership,listing + date=last24hours
+```
+**Actions:**
+- Scale UP positions with confirmed positive catalysts
+- Take profits if news already priced in
+- Monitor for follow-up developments
+
+---
+
+## 🔍 Advanced Filtering Tactics
+
+### **Source Hierarchy Execution**
+- **Tier 1 (Instant Action):** `source=Coindesk,CryptoSlate,The+Block,Decrypt`
+- **Tier 2 (Confirm First):** `source=NewsBTC,CryptoPotato,BeInCrypto`
+- **Tier 3 (Social Signal Only):** `source=CryptoNews,Cryptopolitan`
+
+### **Time-Based Alpha Strategies**
+- **Ultra-Fast (0-15min):** `date=last5min` → Immediate execution
+- **Early Bird (15min-2h):** `date=last2hours` → Position building
+- **Confirmation (2-24h):** `date=last24hours` → Trend validation
+- **Historical Context:** `date=last7days` → Sentiment shift detection
+
+### **Sentiment Arbitrage**
+- **FUD Reversal:** `sentiment=negative + date=last7days` → Look for oversold quality
+- **Momentum Building:** `sentiment=positive + date=last2hours` → Early momentum plays
+- **Mixed Signals:** Compare `sentiment=positive` vs `sentiment=negative` on same ticker
+
+---
+
+## 🎯 Execution Framework
+
+### **Entry Signals (GREEN LIGHT)**
+```
+✅ Positive sentiment + High-tier source + Recent timestamp + Specific keywords
+✅ Keywords: "partnership", "listing", "binance", "coinbase", "institutional", "adoption"
+✅ Combined with: RSI < 70, social momentum building, or technical breakout
+```
+
+### **Exit Signals (RED LIGHT)**
+```
+❌ Negative sentiment + Multiple sources + Risk keywords
+❌ Keywords: "hack", "exploit", "rug", "sec", "delisting", "lawsuit"
+❌ Combined with: Volume spike down, whale exits, or technical breakdown
+```
+
+### **Hold/Monitor Signals (YELLOW LIGHT)**
+```
+⚠️ Mixed sentiment + Lower-tier sources + Older timestamps
+⚠️ Conflicting information requiring additional confirmation
+⚠️ News without technical or social confluence
+```
+
+---
+
+## 🚀 Trade Execution Playbook
+
+### **1. Morning Market Scan (9 AM EST)**
+```
+# Check overnight developments
+date=last8hours + sortby=rank + sentiment=positive
+
+# Portfolio health check
+tickers=[HOLDINGS] + sentiment=negative + date=last12hours
+
+# Sector momentum pulse
+topicOR=AI,DeFi,Gaming + date=last24hours + sentiment=positive
+```
+
+### **2. Midday Alpha Hunt (1 PM EST)**
+```
+# Breaking opportunities
+date=last4hours + sentiment=positive + search=partnership,listing + sortby=rank
+
+# Competitive threats to holdings
+search=[COMPETITOR_NAMES] + sentiment=positive + date=last6hours
+
+# Narrative trend shifts
+section=alltickers + sentiment=positive + date=last6hours
+```
+
+### **3. Evening Strategy Review (6 PM EST)**
+```
+# Tomorrow's catalysts
+search=announcement,earnings,launch + date=last24hours + sentiment=positive
+
+# Risk assessment
+tickers=[HOLDINGS] + sentiment=negative + date=last24hours + sortby=rank
+
+# Sector rotation signals
+topicOR=DeFi,AI,Gaming,RWA + date=last24hours
+```
+
+---
+
+## 💎 Advanced Search Combinations
+
+### **The Correlation Play**
+```
+tickers-include=BTC,ETH + sentiment=positive + search=institutional,etf
+```
+*Find news affecting both BTC and ETH for correlated plays*
+
+### **The Sector Momentum**
+```
+topic=DeFi + sentiment=positive + date=last24hours + source=Coindesk,CryptoSlate
+```
+*Identify DeFi sector catalysts from premium sources*
+
+### **The FUD Opportunity**
+```
+tickers-only=SPECIFIC_COIN + sentiment=negative + date=last7days
+```
+*Find oversold opportunities in quality projects with temporary FUD*
+
+### **The Breakout Confirmation**
+```
+search=volume,breakout,resistance + sentiment=positive + date=last2hours
+```
+*Technical breakouts confirmed by news catalysts*
+
+---
+
+## 🧠 Confluence Decision Matrix
+
+| News Signal | Technical | Social | Action |
+|-------------|-----------|--------|--------|
+| 🟢 Strong Positive | 🟢 Breakout | 🟢 Rising | 🚀 **FULL SEND** |
+| 🟢 Strong Positive | 🟡 Neutral | 🟢 Rising | 📈 **SCALE IN** |
+| 🟢 Strong Positive | 🔴 Overextended | 🟡 Mixed | ⏳ **WAIT** |
+| 🔴 Strong Negative | 🔴 Breakdown | 🔴 Falling | 🚨 **EXIT FAST** |
+| 🔴 Strong Negative | 🟢 Support | 🟡 Mixed | 👀 **MONITOR** |
+| 🟡 Mixed | Any | Any | 🔄 **SEEK CONFLUENCE** |
+
+---
+
+## ⚠️ Risk Management Rules
+
+### **Position Sizing Based on News Quality**
+- **Tier 1 Source + High Sentiment + Recent:** 3-5% position
+- **Tier 2 Source + Medium Sentiment:** 1-2% position  
+- **Tier 3 Source + Any Sentiment:** 0.5% position (social signal only)
+
+### **Stop-Loss Triggers**
+- **News-Based:** Multiple negative sources confirm threat
+- **Technical:** Break key support with negative news confluence
+- **Time-Based:** No positive follow-up within 48 hours of initial catalyst
+
+### **Profit-Taking Strategy**
+- **25% at 2x:** Lock in base case
+- **25% at 5x:** Secure major gains
+- **50% runner:** Let winners run with trailing stops
+
+---
+
+## 🔄 Portfolio Optimization Signals
+
+### **Rebalancing Triggers**
+- **Sector Rotation:** One sector shows 3+ consecutive days of positive/negative news flow
+- **Risk Concentration:** 3+ holdings in same sector with negative sentiment
+- **Opportunity Cost:** New opportunities showing stronger catalysts than current holdings
+
+### **Allocation Adjustments**
+- **Increase:** Positive catalyst + technical setup + social momentum
+- **Decrease:** Negative news + technical weakness + social decline
+- **Rotate:** Sector showing momentum while current positions stagnant
+
+---
+
+## 🎯 Success Metrics & KPIs
+
+### **News Intelligence Effectiveness**
+- **Alpha Capture Rate:** % of news-driven moves caught within 1 hour
+- **Risk Avoidance:** % of major drawdowns avoided through early detection
+- **Confluence Success:** Win rate when 2+ signals align
+
+### **Portfolio Performance**
+- **News-Driven Returns:** Attribution to news-based entries/exits
+- **Risk-Adjusted Alpha:** Sharpe ratio improvement from news intelligence
+- **Market Outperformance:** Benchmark beating through superior information
+
+---
+
+## 🚨 Emergency Protocols
+
+### **Market-Wide Crisis**
+```
+search=crash,liquidation,systemic + sentiment=negative + date=last1hour + sortby=rank
+```
+**Action:** Immediate risk-off, hedge positions, preserve capital
+
+### **Regulatory Threats**
+```
+search=SEC,regulation,ban + sentiment=negative + date=last6hours + sortby=rank
+```
+**Action:** Assess impact on holdings, rotate to safety if needed
+
+### **Black Swan Events**
+```
+search=hack,exploit,emergency + sentiment=negative + date=last30min + sortby=rank
+```
+**Action:** Identify affected protocols, exit if in portfolio
+
+---
+
+## 💡 Pro Tips for Maximum Alpha
+
+1. **Speed is Everything:** Use `date=last5min` for immediate opportunities
+2. **Quality Sources:** Always prioritize Tier 1 sources for execution
+3. **Confluence is King:** Never act on news alone - seek technical/social confirmation
+4. **Portfolio First:** Protect existing positions before hunting new opportunities
+5. **Document Everything:** Track news-driven trades for pattern recognition
+
+---
+
+**Remember:** This isn't just news consumption - it's **weaponized information advantage**. Use these patterns to stay ahead of the market, protect your capital, and capture asymmetric opportunities that others miss.
+
+**NOW GO DOMINATE THE MARKET!** 🚀💎🔥
+
+L2
+
+RWA
+
+Memecoins
+
+Infrastructure
+
+Watch for:
+
+Spike in mentions across multiple coins in the same narrative
+
+Articles hinting at upcoming token utility, staking, governance, or rollouts
+
+🧠 When a sector rotation starts, move capital early, especially from lagging bags.
+
+🧯 3. Scam / Rug / Exploit Detection
+Use getCryptoRiskAlerts and filter by:
+
+“Matched flags”: honeypot, blacklist, admin key, exploit, unusual permission, sudden mint
+
+Red flags:
+
+News mentions of smart contract vulnerabilities (Curve, Friend.tech)
+
+Suspicious new token launch with big hype but no audit
+
+Project controls upgrade or pause functions secretly
+
+News spike + no price movement = likely botted/fake pump
+
+⚠️ If risk + no real volume → do not enter
+
+⛏️ 4. Hidden Gem Mining
+Use:
+
+scanCryptoOpportunities (opportunity type = pump, partnership)
+
+getBreakingCryptoNews with exclude_portfolio=true
+
+Look for:
+
+Projects with small caps, but high confidence in news signals
+
+News from mid-tier sources before majors pick it up
+
+Sentiment = positive, but no Reddit/Twitter traction yet
+
+These are pre-viral — sniper level entries if TA confirms (RSI, BB squeeze, etc.)
+
+❌ 5. Exit Triggers & Risk Monitoring
+Use:
+
+getCryptoRiskAlerts
+
+getCryptoNewsBySymbols(symbols=...)
+
+Exit when:
+
+Coin you're holding gets flagged in risk news
+
+Sentiment flips negative across multiple sources
+
+News includes keywords: hack, rug, delist, frozen, FBI, probe, legal, stolen
+
+→ Tag trades as cut, or rotate immediately unless it's a long-term conviction vault.
+
+🧩 6. News-Based Trade Grading
+Grade setups using:
+
+Grade	Conditions
+🟢 Sniper	Fresh positive news + no price move yet + RSI < 50
+🟡 Momentum	Positive news + already moving + confirmed volume
+🔴 Avoid	High hype + negative news or rug flags
+
+🧭 News-Driven Playbook Examples
+🚨 News: “Fetch.ai partners with Intel”
+Action: Backtest FET RSI & MACD
+
+Tag: Sniper if price flat
+
+Upgrade: If Twitter volume confirms, it’s a Runner
+
+💥 News: “Friend.tech contract flagged as centralized”
+Action: Check wallet inflows
+
+If holding: Immediate risk review
+
