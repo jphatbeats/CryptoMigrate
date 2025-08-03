@@ -1,87 +1,8 @@
 # Overview
 
-This is a Python-based cryptocurrency trading server that provides a unified API interface for interacting with multiple cryptocurrency exchanges through the CCXT library. Successfully migrated from Replit to Railway with comprehensive error handling to resolve CCXT import errors.
+This is a comprehensive cryptocurrency trading automation system that provides real-time market intelligence, automated portfolio monitoring, and multi-channel Discord alerting. The system integrates live exchange data from BingX, Kraken, and Blofin exchanges through CCXT, combines it with crypto news intelligence, and delivers actionable trading alerts through Discord webhooks.
 
-The server acts as a middleware layer that abstracts away the complexities of different exchange APIs, providing standardized endpoints for market data retrieval, trading operations, and account management across 3 specific exchanges: BingX, Kraken, and Blofin.
-
-The system features robust error handling and logging capabilities, with non-blocking CCXT imports that allow the server to start successfully even if individual exchanges fail. All 30 endpoints are operational with graceful degradation for unavailable exchanges.
-
-## Recent Changes (August 2025)
-- ✅ Fixed Railway deployment CCXT import errors
-- ✅ Implemented non-blocking exchange initialization 
-- ✅ Added comprehensive error handling for all API endpoints
-- ✅ Server starts successfully with all 35 endpoints operational
-- ✅ Added root endpoint (/) with API documentation
-- ✅ All 3 target exchanges (BingX, Kraken, Blofin) initialize without "RaiseExchange" errors
-- ✅ **RESTORED CUSTOM API ENDPOINTS**: Added original Replit API schema
-  - `/api/live/all-exchanges` - Multi-exchange live data
-  - `/api/live/bingx-positions` - BingX custom format positions
-  - `/api/live/blofin-positions` - Blofin positions  
-  - `/api/kraken/balance` - Kraken balance (original pattern)
-  - `/api/bingx/klines/{symbol}` - BingX candlestick data
-- ✅ **RAILWAY STARTUP OPTIMIZATION**: Added threaded=True and proper error handling for Railway deployment reliability
-- ✅ **FIXED API CREDENTIAL INJECTION**: Updated fallback ExchangeManager to properly pass API credentials to exchange instances (Railway deployment fix)
-- ✅ **ENHANCED DISCORD/TELEGRAM BOT SYSTEM**: Integrated existing sophisticated bot with Railway API intelligence
-  - Enhanced existing `automated_trading_alerts.py` with Railway API integration
-  - Created `enhanced_bot_integration.py` for fetching market intelligence
-  - Combined traditional trading analysis with AI-powered market intelligence
-  - Bot now provides 6 types of intelligent alerts:
-    • Traditional: oversold, overbought, losing trades, no stop loss, high profit
-    • Enhanced: portfolio news, risk alerts, bullish signals, opportunities, breaking news, pump/dump detection
-  - All alerts automatically saved to `latest_alerts.json` for Discord/Telegram bot consumption
-  - Provides automated alerts that ChatGPT cannot deliver
-- ✅ **ENHANCED EXISTING DISCORD BOT SYSTEM**: Enhanced existing `automated_trading_alerts.py` with multi-channel support
-  - **#alerts channel** (1398000506068009032): Breaking news, risk alerts, market updates from Railway API
-  - **#portfolio channel** (1399451217372905584): Portfolio analysis, position alerts, trading signals (hourly)
-  - **#alpha-scans channel** (1399790636990857277): Trading opportunities from Railway API intelligence
-  - Added async Discord webhook functionality to existing working file
-  - Backward compatible with existing single webhook setup (DISCORD_WEBHOOK_URL)
-  - Multi-channel support via DISCORD_ALERTS_WEBHOOK, DISCORD_PORTFOLIO_WEBHOOK, DISCORD_ALPHA_WEBHOOK
-  - Integrated Railway API endpoints for intelligent content routing
-- ✅ **COMPLETED FULL API SCHEMA**: Added all 28 missing endpoints from ChatGPT schema:
-  **Crypto News Intelligence (8 endpoints):**
-  - `/api/crypto-news/breaking-news` - Breaking crypto news with filtering
-  - `/api/crypto-news/portfolio` - Portfolio-specific crypto news
-  - `/api/crypto-news/symbols/{symbols}` - News by specific symbols
-  - `/api/crypto-news/risk-alerts` - Risk warnings and alerts
-  - `/api/crypto-news/bullish-signals` - Bullish sentiment analysis
-  - `/api/crypto-news/opportunity-scanner` - Trading opportunities
-  - `/api/crypto-news/market-intelligence` - Comprehensive market analysis
-  - `/api/crypto-news/pump-dump-detector` - Pump and dump detection
-  **BingX Analysis (3 endpoints):**
-  - `/api/bingx/market-analysis/{symbol}` - Market analysis with orderbook
-  - `/api/bingx/candlestick-analysis/{symbol}` - Candlestick patterns
-  - `/api/bingx/multi-timeframe/{symbol}` - Multi-timeframe analysis
-  **Kraken Trading Suite (6 endpoints):**
-  - `/api/kraken/positions` - Account positions
-  - `/api/kraken/trade-history` - Historical trades
-  - `/api/kraken/orders` - Active orders
-  - `/api/kraken/market-data/{symbol}` - Comprehensive market data
-  - `/api/kraken/portfolio-performance` - Performance metrics
-  - `/api/kraken/asset-allocation` - Asset allocation breakdown
-  - `/api/kraken/trading-stats` - Trading statistics
-  **ChatGPT AI Analysis (2 endpoints):**
-  - `/api/chatgpt/account-summary` - AI-powered account analysis
-  - `/api/chatgpt/portfolio-analysis` - AI portfolio recommendations
-- ✅ **REAL CRYPTO NEWS API INTEGRATION**: Replaced mock data with authentic CryptoNews API
-  - Integrated real CryptoNews API with token authentication
-  - Added `crypto_news_api.py` module with comprehensive filtering capabilities
-  - Implemented three ticker modes: broad, intersection, laser focus
-  - Added Tier 1 source prioritization (Coindesk, CryptoSlate, The Block, Decrypt)
-  - Real-time data with timeframe filtering (last5min to last30days)
-  - Sentiment analysis and urgency scoring for all news articles
-- ✅ **ADVANCED PORTFOLIO MANAGEMENT**: Added intelligent portfolio monitoring system
-  - **Portfolio Holdings Management**: `/api/portfolio/holdings` - Store and manage user holdings
-  - **Risk Monitoring**: `/api/portfolio/risk-monitor` - Real-time threat detection for specific holdings
-  - **Correlation Analysis**: `/api/portfolio/correlation-plays` - Find multi-asset opportunities
-  - **Priority Alerts**: `/api/alerts/prioritized` - Urgency-based alert system (HIGH/MEDIUM/LOW)
-  - **Performance Tracking**: `/api/performance/news-tracking` - Monitor news accuracy and ROI
-  - All endpoints include urgency scoring based on source quality and sentiment analysis
-- ✅ **LIVE DATA APPROACH**: Eliminated CSV/JSON file dependencies for real-time accuracy
-  - Updated `automated_trading_alerts.py` to use live Railway API data instead of CSV exports
-  - Direct API calls to Railway server for current position data from all exchanges
-  - Real-time PnL calculations instead of stale file-based data
-  - Enhanced Discord bot integration with prioritized alerts endpoint
+The core architecture consists of a Flask-based API server deployed on Railway that serves as the central intelligence hub, complemented by Python automation scripts that analyze trading positions, monitor market conditions, and generate intelligent alerts. The system provides both traditional technical analysis (RSI, PnL monitoring) and enhanced market intelligence through crypto news APIs.
 
 # User Preferences
 
@@ -89,62 +10,98 @@ Preferred communication style: Simple, everyday language.
 
 # System Architecture
 
-## Core Design Pattern
-The application follows a layered architecture pattern with clear separation of concerns:
+## Core Components
 
-- **HTTP API Layer**: Flask-based REST API that handles incoming requests and response formatting
-- **Business Logic Layer**: TradingFunctions class that implements trading operations and market data retrieval
-- **Exchange Management Layer**: ExchangeManager class that handles CCXT exchange initialization and connection management
-- **Error Handling Layer**: Comprehensive error handling system with custom exceptions and decorators
+**Flask API Server (`main_server.py`)**
+- Centralized REST API providing 35+ endpoints for market data, news intelligence, and trading operations
+- Deployed on Railway with threaded execution for reliability
+- Implements comprehensive error handling with graceful degradation when exchanges fail
+- Provides unified interface abstracting complexity of multiple exchange APIs
 
-## Error Handling Strategy
-The system implements a robust error handling mechanism using Python decorators and custom exceptions:
+**Exchange Management (`exchange_manager.py`)**
+- Non-blocking CCXT exchange initialization allowing server startup even if individual exchanges fail
+- Supports BingX, Kraken, and Blofin with credential injection from environment variables
+- Implements robust error handling with categorized exception types for network, authentication, and API errors
+- Maintains exchange status tracking and failed exchange logging
 
-- **Custom Exception Hierarchy**: `ExchangeNotAvailableError` for connection/initialization issues and `ExchangeAPIError` for API-related problems
-- **Decorator Pattern**: `@handle_exchange_error` decorator that wraps trading functions to catch and categorize different types of exchange errors
-- **Graceful Degradation**: Failed exchanges are tracked separately, allowing the system to continue operating with available exchanges
+**Trading Functions (`trading_functions.py`)**
+- Standardized trading operations (get_ticker, get_balance, get_ohlcv, etc.) across all exchanges
+- Error handling decorators that convert exchange-specific errors to consistent API responses
+- Supports market data retrieval, account management, and order book analysis
 
-## Exchange Management
-The ExchangeManager uses a factory pattern to initialize and manage multiple exchange connections:
+**Automated Alert System (`automated_trading_alerts.py`)**
+- Real-time portfolio monitoring analyzing CSV/JSON position files
+- Technical analysis including RSI calculations, PnL tracking, and risk management alerts
+- Multi-channel Discord webhook integration with intelligent content routing
+- Backward compatibility with single webhook configurations
 
-- **Environment-based Configuration**: API credentials and settings loaded from environment variables
-- **Connection Pooling**: Maintains active connections to multiple exchanges simultaneously
-- **Health Monitoring**: Tracks the status of each exchange connection and provides status reporting
+## Data Flow Architecture
 
-## Logging Architecture
-Centralized logging system with both console and file output:
+**Position Data Processing**
+- Supports both CSV and JSON position files with automatic latest file detection
+- File cleanup system maintaining only recent position snapshots
+- Real-time analysis of trading conditions with configurable alert thresholds
 
-- **Structured Logging**: Consistent log format across all components with timestamps and severity levels
-- **Environment Configuration**: Log level configurable through environment variables
-- **File Rotation**: Daily log files with fallback to console-only logging if file system access fails
+**News Intelligence Pipeline**
+- Integration with CryptoNews API for portfolio-specific news filtering
+- Sentiment analysis and risk detection for held positions
+- Opportunity scanning for new trading setups
+- Breaking news monitoring with impact assessment
 
-## API Design
-RESTful API design with resource-based endpoints:
+**Alert Classification System**
+- Traditional alerts: oversold/overbought signals, losing trades, missing stop losses, high profit alerts
+- Enhanced intelligence alerts: portfolio news, risk warnings, bullish signals, trading opportunities, pump/dump detection
+- Intelligent routing to appropriate Discord channels based on alert type and urgency
 
-- **Health Monitoring**: `/health` endpoint for service status checks
-- **Exchange Status**: `/exchanges/status` for monitoring exchange connectivity
-- **Market Data**: Resource-based endpoints for tickers, orderbooks, trades, and OHLCV data
-- **Standardized Error Responses**: Consistent error response format with appropriate HTTP status codes
+## Multi-Channel Discord Integration
+
+**Channel Strategy**
+- **#alerts**: Breaking news, risk alerts, market updates (every 4 hours)
+- **#portfolio**: Position analysis, trading signals, PnL monitoring (hourly)  
+- **#alpha-scans**: Trading opportunities, early entry signals (twice daily)
+
+**Webhook Management**
+- Environment variable configuration for multiple webhook URLs
+- Fallback to legacy single webhook for backward compatibility
+- Asynchronous Discord message delivery with rate limiting
+
+## Error Handling and Reliability
+
+**Exchange Error Management**
+- Categorized error types: ExchangeNotAvailableError, ExchangeAPIError
+- Non-blocking initialization prevents single exchange failures from stopping the entire system
+- Comprehensive logging with structured error categorization
+
+**API Resilience**
+- Graceful degradation when external services (news APIs, exchanges) are unavailable
+- Fallback mechanisms for core functionality
+- Request timeout handling and retry logic
 
 # External Dependencies
 
-## Core Framework
-- **Flask**: Web framework for HTTP API server
-- **CCXT**: Cryptocurrency exchange trading library for unified exchange access
+## Cryptocurrency Exchanges
+- **BingX**: Primary exchange for futures trading with custom position formatting
+- **Kraken**: Traditional exchange integration with balance monitoring
+- **Blofin**: Alternative exchange for portfolio diversification
+- **CCXT Library**: Unified interface for cryptocurrency exchange APIs
 
-## Supported Exchanges
-- **Binance**: Global cryptocurrency exchange
-- **Kraken**: US-based cryptocurrency exchange
-- **Blofin**: Professional trading platform
-- **OKX**: Global cryptocurrency exchange
-- **Bybit**: Derivatives and spot trading exchange
+## News and Intelligence APIs
+- **CryptoNews API**: Real-time cryptocurrency news with sentiment analysis and advanced filtering
+- **Railway API**: Internal API endpoints for market intelligence and risk assessment
 
-## Configuration Requirements
-- **Environment Variables**: All exchange API credentials and configuration loaded from environment variables
-- **API Keys**: Each exchange requires API key, secret, and potentially passphrase
-- **Sandbox Support**: Optional sandbox/testnet mode for each exchange
+## Communication and Deployment
+- **Discord Webhooks**: Multi-channel alert delivery system
+- **Railway Platform**: Cloud deployment with automatic scaling and environment management
+- **Google Sheets NoCode API**: Data persistence and external integrations
 
-## System Dependencies
-- **Python Logging**: Built-in logging framework for application monitoring
-- **OS Module**: Environment variable access and file system operations
-- **DateTime**: Timestamp generation for logging and API responses
+## Python Dependencies
+- **Flask/Flask-CORS**: Web framework for API server
+- **pandas**: Data manipulation and analysis for trading positions
+- **aiohttp**: Asynchronous HTTP client for external API calls
+- **schedule/pytz**: Task scheduling and timezone management
+- **requests**: HTTP client for external service integration
+
+## Development and Monitoring
+- **OpenAI API**: Intelligence enhancement for market analysis
+- **Logging Framework**: Structured logging with file and console output
+- **Environment Variables**: Secure credential management for all external services
