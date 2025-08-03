@@ -1,0 +1,127 @@
+Important: The Timezone of all news are displayed is Eastern Timezone (GMT -0400).
+
+
+
+GET Crypto Ticker News
+Use this endpoint to retreieve news for one ticker/symbol. In this example "BTC" is the ticker for Bitcoin.
+
+https://cryptonews-api.com/api/v1?tickers=BTC&items=3&page=1&token=ayimav7nlptgzetysg9dwhqteampvoirtfx5orqk
+ Visit
+
+If you want to retrieve news for multiple tickers/symbols separate them with a comma. Below example will search for news where BTC or ETH or XRP is mentioned.
+
+https://cryptonews-api.com/api/v1?tickers=BTC,ETH,XRP&items=3&page=1&token=ayimav7nlptgzetysg9dwhqteampvoirtfx5orqk
+ Visit
+
+
+----
+
+GET Crypto Ticker News Advanced
+If you want to retrieve news that include multiple tickers use below endpoint. Below example will search for news items where all 3 coins: BTC, ETH and XRP are mentioned in the same article.
+
+https://cryptonews-api.com/api/v1?tickers-include=BTC,ETH,XRP&items=3&page=1&token=ayimav7nlptgzetysg9dwhqteampvoirtfx5orqk
+ Visit
+
+If you want to retrieve soloed out news for only a specific ticker use below endpoint. Below example will showcase news where only BTC is mentioned in the article and no other ticker is mentioned
+
+https://cryptonews-api.com/api/v1?tickers-only=BTC&items=3&page=1&token=ayimav7nlptgzetysg9dwhqteampvoirtfx5orqk
+ Visit
+
+Important: These endpoints will reduce amount of news results. For broader news results use our regular "Crypto Ticker News" endpoint.
+
+---
+
+GET General Crypto News
+Use below endpoint to retrieve General Crypto News.
+
+https://cryptonews-api.com/api/v1/category?section=general&items=3&page=1&token=ayimav7nlptgzetysg9dwhqteampvoirtfx5orqk
+ Visit
+
+--
+
+GET Tickers DB
+Use below endpoint to view all tickers/symbols in our Database. This endpoint can be accessed once per day (non-trial).
+
+https://cryptonews-api.com/api/v1/account/tickersdbv2?token=ayimav7nlptgzetysg9dwhqteampvoirtfx5orqk
+ Visit
+
+--
+
+STRING Default Parameters
+Number of news items returned. Items value must be between 1 and 100. This parameter is required.
+
+&items=50
+
+Use below parameter if you would like to download the data as a .csv file.
+
+&datatype=csv
+
+
+--
+
+STRING Filter on News Sources
+Use below parameters if you want to filter on news sources. Use a comma if you would like to include/exclude multiple news sources. To view the list of all news sources: Click here
+
+&source=Coindesk
+
+&sourceexclude=Coindesk
+
+
+--
+
+STRING Filter on Type & Sentiment
+Use below parameters if you only would like to retrieve video or article news.
+
+&type=video
+&type=article
+
+Use this parameter if you would like to filter only on neutral, positive or negative news.
+
+&sentiment=positive
+&sentiment=negative
+
+
+--
+
+STRING Sort by Rank
+Use this parameter if you would like to sort by importance. This parameter uses our rank score algorithm. Sort by Rank is only compatible with Crypto Ticker News endpoint. It provides a better user experience for sites and apps. Adding &days will sort by rank but for the last X days.
+
+&sortby=rank
+ 
+&sortby=rank&days=3
+
+By default our news is sorted by date (newest first). If you would like to showcase oldest news first, use below parameter:
+
+&sortby=oldestfirst
+
+
+--
+
+STRING More News Results
+Use the page parameter if you would like to obtain more news results. Basic plans are limited to 5 pages (500 news results).
+
+&page=2
+&page=3
+
+
+--
+
+STRING Optional Parameters
+Use these parameters if you would like to retrieve News ID, Event ID or Rank Score. You can also combine them by using a comma.
+
+&extra-fields=id
+&extra-fields=eventid
+&extra-fields=id,eventid,rankscore
+
+Retrieve news item by news_id (id). You may query for multiple news id's by using a comma.
+
+&news_id=123455,123456
+
+Need information/explanation on the response? Use our Metadata parameter:
+
+&metadata=1
+
+
+--
+
+

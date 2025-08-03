@@ -1,0 +1,235 @@
+news sources
+
+AMBCrypto
+&source=AMBCrypto
+
+BeInCrypto
+&source=BeInCrypto
+
+Benzinga
+&source=Benzinga
+
+Bitcoin.com
+&source=Bitcoin
+
+Bitcoin Magazine
+&source=Bitcoin+Magazine
+
+Bitcoinist
+&source=Bitcoinist
+
+Bitcoinworld
+&source=Bitcoinworld
+
+Blockchain News
+&source=Blockchain+News
+
+BlockchainReporter
+&source=BlockchainReporter
+
+Blockgeeks
+&source=Blockgeeks
+
+Blockonomi
+&source=Blockonomi
+
+Blockworks
+&source=Blockworks
+
+Bloomberg Markets and Finance (video)
+&Bloomberg+Markets+and+Finance
+
+Bloomberg Technology (video)
+&source=Bloomberg+Technology
+
+Business Insider
+&source=Business+Insider
+
+CNBC (video)
+&source=CNBC
+
+CNBC Television (video)
+&source=CNBC+Television
+
+CNN
+&source=CNN
+
+Coindesk
+&source=Coindesk
+
+Coindoo
+&source=Coindoo
+
+Coinfomania
+&source=Coinfomania
+
+Coingape
+&source=Coingape
+
+Coin Idol
+&source=Coin+Idol
+
+Coincu
+&source=Coincu
+
+CoinMarketCap
+&source=CoinMarketCap
+
+Coinnounce
+&source=Coinnounce
+
+Coinquora
+&source=Coinquora
+
+Coinspeaker
+&source=Coinspeaker
+
+Coinspress
+&source=Coinspress
+
+Cointribune
+&source=Cointribune
+
+CrowdFundInsider
+&source=CrowdFundInsider
+
+Crypto Briefing
+&source=Crypto+Briefing
+
+Crypto Daily
+&source=Crypto+Daily
+
+Crypto Economy
+&source=Crypto+Economy
+
+Cryptoknowmics
+&source=Cryptoknowmics
+
+Crypto Mufasa
+&source=Crypto Mufasa
+
+CryptoNews
+&source=CryptoNews
+
+Crypto News Flash
+&source=CryptoNewsFlash
+
+Crypto.news
+&source=Crypto+News
+
+CryptoNinjas
+&source=CryptoNinjas
+
+Cryptopolitan
+&source=Cryptopolitan
+
+CryptoPotato
+&source=CryptoPotato
+
+Crypto Reporter
+&source=Crypto+Reporter
+
+CryptoSlate
+&source=CryptoSlate
+
+CryptoTicker
+&source=CryptoTicker
+
+Cryptoverze
+&source=Cryptoverze
+
+DailyCoin
+&source=Dailycoin
+
+Daily FX
+&source=DailyFX
+
+DC Forecasts
+&source=DCForecasts
+
+Decrypt
+&source=Decrypt
+
+Ethereum World News
+&source=EWN
+
+FinanceMagnates
+&source=FinanceMagnates
+
+Finbold
+&source=Finbold
+
+Forbes
+&source=Forbes
+
+Fox Business
+&source=Fox+Business
+
+FX Empire
+&source=FxEmpire
+
+Inside Bitcoins
+&source=Inside+Bitcoins
+
+InvestingCube
+&source=InvestingCube
+
+Investorplace
+&source=Investorplace
+
+Koinpost
+&source=Koinpost
+
+Live Bitcoin News
+&source=LiveBitcoinNews
+
+Modern Consensus
+&source=Modern+Consensus
+
+NewsBTC
+&source=NewsBTC
+
+Reuters
+&source=Reuters
+
+The Block
+&source=The+Block
+
+The Crypto Updates
+&source=TCU
+
+The Cryptonomist
+&source=The+Cryptonomist
+
+The Currency Analytics
+&source=The+Currency+Analytics
+
+The Daily Hodl
+&source=The+Daily+Hodl
+
+The Motley Fool
+&source=The+Motley+Fool
+
+The News Crypto
+&source=TheNewsCrypto
+
+Tokenpost
+&source=Tokenpost
+
+Trustnode
+&source=Trustnodes
+
+UToday
+&source=UToday
+
+Vauld
+&source=Vauld
+
+Yahoo Finance (video)
+&source=Yahoo+Finance
+
+Zycrypto
+&source=Zycrypto
+
+8BTC
+&source=8BTC

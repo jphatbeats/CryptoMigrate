@@ -28,19 +28,25 @@ class CryptoNewsAPI:
             return {'error': str(e), 'data': []}
     
     def get_breaking_news(self, limit: int = 10, sentiment: str = None, 
-                         date_filter: str = "last2hours") -> Dict[str, Any]:
+                         date_filter: str = "last60min") -> Dict[str, Any]:
         """Get breaking crypto news with filtering"""
         params = {
+            'section': 'general',
             'items': min(limit, 50),
             'sortby': 'rank',
-            'date': date_filter,
-            'source': 'Coindesk,CryptoSlate,The+Block,Decrypt'  # Tier 1 sources
+            'source': 'Coindesk,CryptoSlate,The+Block,Decrypt'  # Tier 1 sources from docs
         }
         
+        # Only add date filter if it's one of the valid options from docs
+        valid_dates = ['last5min', 'last10min', 'last15min', 'last30min', 'last45min', 
+                      'last60min', 'today', 'yesterday', 'last7days', 'last30days']
+        if date_filter in valid_dates:
+            params['date'] = date_filter
+            
         if sentiment:
             params['sentiment'] = sentiment.lower()
             
-        return self._make_request('', params)
+        return self._make_request('/category', params)
     
     def get_portfolio_news(self, tickers: List[str], limit: int = 15) -> Dict[str, Any]:
         """Get news specific to user's portfolio holdings"""
@@ -50,7 +56,7 @@ class CryptoNewsAPI:
         params = {
             'tickers': ','.join(tickers),
             'items': min(limit, 50),
-            'date': 'last24hours',
+            'date': 'today',  # Use valid date from docs
             'sortby': 'rank'
         }
         
@@ -76,33 +82,36 @@ class CryptoNewsAPI:
     
     def get_risk_alerts(self, limit: int = 20, severity: str = "high") -> Dict[str, Any]:
         """Get risk-related crypto news and alerts"""
-        risk_keywords = "hack,exploit,rug,delisting,SEC,regulation,lawsuit,scam,vulnerability"
-        
         params = {
+            'section': 'general',
             'items': min(limit, 50),
             'sentiment': 'negative',
-            'search': risk_keywords,
-            'date': 'last24hours',
+            'search': 'hack,exploit,rug+pull,delisting,SEC,regulation,lawsuit,scam,vulnerability',
+            'date': 'today',  # Use valid date from docs
             'sortby': 'rank',
             'source': 'Coindesk,CryptoSlate,The+Block,Decrypt,Forbes'
         }
         
-        return self._make_request('', params)
+        return self._make_request('/category', params)
     
-    def get_bullish_signals(self, limit: int = 15, timeframe: str = "last6hours") -> Dict[str, Any]:
+    def get_bullish_signals(self, limit: int = 15, timeframe: str = "today") -> Dict[str, Any]:
         """Get bullish sentiment and positive catalyst news"""
-        bullish_keywords = "partnership,listing,binance,coinbase,institutional,adoption,breakthrough"
-        
         params = {
+            'section': 'general',
             'items': min(limit, 50),
             'sentiment': 'positive',
-            'search': bullish_keywords,
-            'date': timeframe,
+            'search': 'partnership,listing,binance,coinbase,institutional,adoption,breakthrough',
             'sortby': 'rank',
             'source': 'Coindesk,CryptoSlate,The+Block,Decrypt'
         }
         
-        return self._make_request('', params)
+        # Only add valid date filters
+        valid_dates = ['last5min', 'last10min', 'last15min', 'last30min', 'last45min', 
+                      'last60min', 'today', 'yesterday', 'last7days', 'last30days']
+        if timeframe in valid_dates:
+            params['date'] = timeframe
+            
+        return self._make_request('/category', params)
     
     def scan_opportunities(self, sectors: List[str] = None, limit: int = 25) -> Dict[str, Any]:
         """Scan for trading opportunities across sectors"""
@@ -113,8 +122,8 @@ class CryptoNewsAPI:
             'section': 'alltickers',
             'items': min(limit, 50),
             'sentiment': 'positive',
-            'topicOR': ','.join(sectors),
-            'date': 'last12hours',
+            'topicOR': '+'.join(sectors),  # Use + for topics per API docs
+            'date': 'today',  # Use valid date from docs
             'sortby': 'rank'
         }
         
@@ -134,16 +143,15 @@ class CryptoNewsAPI:
     
     def detect_pump_dump_signals(self, limit: int = 20) -> Dict[str, Any]:
         """Detect potential pump and dump patterns in news"""
-        pump_dump_keywords = "pump,dump,manipulation,whale,unusual+volume,massive+buy,coordinated"
-        
         params = {
+            'section': 'general',
             'items': min(limit, 50),
-            'search': pump_dump_keywords,
-            'date': 'last6hours',
+            'search': 'pump,dump,manipulation,whale,unusual+volume,massive+buy,coordinated',
+            'date': 'today',  # Use valid date from docs
             'sortby': 'rank'
         }
         
-        return self._make_request('', params)
+        return self._make_request('/category', params)
     
     def get_ultra_fresh_news(self, minutes: int = 5) -> Dict[str, Any]:
         """Get ultra-fresh news for immediate opportunities"""
