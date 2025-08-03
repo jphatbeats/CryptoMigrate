@@ -114,19 +114,41 @@ class CryptoNewsAPI:
         return self._make_request('/category', params)
     
     def scan_opportunities(self, sectors: List[str] = None, limit: int = 25) -> Dict[str, Any]:
-        """Scan for trading opportunities across sectors"""
+        """Scan for trading opportunities across sectors using predefined topics"""
         if not sectors:
-            sectors = ['AI', 'DeFi', 'Gaming', 'RWA', 'Layer2']
+            # Use actual topic parameters from API docs
+            sectors = ['NFT', 'Mining', 'pricemovement', 'Institutions', 'Upgrade']
             
         params = {
             'section': 'alltickers',
             'items': min(limit, 50),
             'sentiment': 'positive',
-            'topicOR': '+'.join(sectors),  # Use + for topics per API docs
-            'date': 'today',  # Use valid date from docs
+            'topicOR': ','.join(sectors),  # Topics use comma separation
+            'date': 'today',
             'sortby': 'rank'
         }
         
+        return self._make_request('/category', params)
+    
+    def get_by_topic(self, topics: List[str], limit: int = 20, 
+                     logic: str = "OR") -> Dict[str, Any]:
+        """Get news by specific topics using AND or OR logic"""
+        if not topics:
+            return {'data': [], 'message': 'No topics provided'}
+            
+        params = {
+            'section': 'general',
+            'items': min(limit, 50),
+            'sortby': 'rank',
+            'date': 'today'
+        }
+        
+        # Use topicOR or topic based on logic preference
+        if logic.upper() == "OR":
+            params['topicOR'] = ','.join(topics)
+        else:
+            params['topic'] = ','.join(topics)  # AND logic
+            
         return self._make_request('/category', params)
     
     def get_market_intelligence(self, comprehensive: bool = True) -> Dict[str, Any]:
