@@ -448,10 +448,12 @@ class TradingIntelligence:
             8. degen_score: Always 9-10 for new/micro tokens
 
             **REQUIREMENTS**:
-            - If no small/new tokens found, say "No degen opportunities detected today"
-            - Never recommend established coins (>$1B market cap)
+            - Always provide some analysis even with limited data
+            - If no small/new tokens found, suggest manual research methods
+            - Never recommend established coins (>$1B market cap)  
             - Focus on tokens trading on DEXs, not major exchanges
             - Look for community-driven tokens, not VC-backed projects
+            - Provide general degen trading tips when specific opportunities are limited
             """
             
             response = self.client.chat.completions.create(

@@ -1074,9 +1074,9 @@ async def run_degen_memes_scan():
         if lunarcrush_data and lunarcrush_data.get('trending_coins'):
             trending_coins = [coin for coin in lunarcrush_data['trending_coins'] if coin not in major_coins]
         
-        # Get AI analysis for degen opportunities
+        # Get AI analysis for degen opportunities (run even with limited data)
         ai_degen_analysis = None
-        if openai_available and (viral_plays or trending_coins):
+        if openai_available:
             try:
                 degen_scan_data = {
                     'viral_plays': viral_plays,
@@ -1087,7 +1087,8 @@ async def run_degen_memes_scan():
                     'risk_tolerance': 'very_high',
                     'major_coins_excluded': major_coins,
                     'focus': 'new_launches_and_meme_coins_only',
-                    'timestamp': datetime.now().isoformat()
+                    'timestamp': datetime.now().isoformat(),
+                    'fallback_analysis': viral_plays is None and not trending_coins
                 }
                 ai_degen_analysis = trading_ai.scan_degen_opportunities(degen_scan_data)
                 print("✅ AI degen analysis completed")
@@ -1142,18 +1143,24 @@ async def run_degen_memes_scan():
                     degen_message += f"\n"
                     viral_count += 1
         
-        # DexScreener trending (actual new/viral tokens)
+        # DexScreener trending (actual new/viral tokens)  
+        dex_count = 0
         if dex_trending and dex_trending.get('pairs'):
             degen_message += f"🔥 **DEXSCREENER HOT:**\n"
-            for pair in dex_trending['pairs'][:4]:
+            for pair in dex_trending['pairs'][:8]:  # Check more pairs
                 token_name = pair.get('baseToken', {}).get('name', 'Unknown')
                 symbol = pair.get('baseToken', {}).get('symbol', '')
                 price_change = pair.get('priceChange', {}).get('h24', 0)
                 volume = pair.get('volume', {}).get('h24', 0)
                 
-                if price_change > 50:  # Only show big movers
-                    change_emoji = "🚀" if price_change > 100 else "📈"
-                    degen_message += f"{change_emoji} **${symbol}** ({token_name}) +{price_change:.1f}% | Vol: ${volume:,.0f}\n"
+                # Show any meaningful movement (lowered threshold)
+                if price_change != 0 and abs(price_change) > 5:  
+                    change_emoji = "🚀" if price_change > 50 else "📈" if price_change > 0 else "📉"
+                    degen_message += f"{change_emoji} **${symbol}** ({token_name}) {price_change:+.1f}% | Vol: ${volume:,.0f}\n"
+                    dex_count += 1
+                    
+            if dex_count == 0:
+                degen_message += "⚠️ No major price movements detected in trending tokens\n"
             degen_message += f"\n"
         
         # Social trending (Small caps only)
