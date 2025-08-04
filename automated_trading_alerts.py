@@ -63,7 +63,8 @@ except ImportError as e:
 DISCORD_WEBHOOKS = {
     'alerts': os.getenv('DISCORD_ALERTS_WEBHOOK'),        # Breaking news, risks (1398000506068009032)
     'portfolio': os.getenv('DISCORD_PORTFOLIO_WEBHOOK'),  # Portfolio analysis (1399451217372905584)  
-    'alpha_scans': os.getenv('DISCORD_ALPHA_WEBHOOK')     # Trading opportunities (1399790636990857277)
+    'alpha_scans': os.getenv('DISCORD_ALPHA_WEBHOOK'),    # Trading opportunities (1399790636990857277)
+    'degen_memes': os.getenv('DISCORD_DEGEN_WEBHOOK')     # Degen/meme opportunities (1401971493096915067)
 }
 
 # Legacy single webhook support (backward compatible)
@@ -1081,6 +1082,92 @@ async def send_sundown_digest_backup():
     except Exception as e:
         print(f"❌ Backup Sundown Digest error: {e}")
 
+async def send_degen_meme_alerts():
+    """Send dedicated degen/meme coin alerts to #degen-memes channel"""
+    try:
+        print("\n🐸 DEGEN MEME ALERTS - Scanning for meme coin opportunities...")
+        
+        if not degen_news_available:
+            print("❌ Degen news aggregator not available for meme alerts")
+            return
+        
+        # Get degen opportunities using the enhanced DEXScreener integration
+        degen_data = get_degen_news(limit=5)
+        trending_degen = get_trending_degen_coins(limit=5)
+        
+        # Format message for #degen-memes channel
+        meme_message = f"🐸 **DEGEN MEME ALERT** 🐸\n"
+        meme_message += f"⏰ {datetime.now().strftime('%Y-%m-%d %H:%M UTC')}\n\n"
+        
+        # Add DEXScreener boosted tokens (aligned with API docs)
+        dex_trending = []
+        for item in trending_degen:
+            if item.get('source_type') == 'dexscreener_boosted':
+                dex_trending.append(item)
+        
+        if dex_trending:
+            meme_message += f"🚀 **DEXScreener Boosted Tokens:**\n"
+            for token in dex_trending[:3]:
+                symbol = ', '.join(token.get('tickers', ['UNKNOWN']))
+                boost_amount = token.get('boost_amount', 0)
+                chain = token.get('chain', 'unknown')
+                url = token.get('url', '')
+                
+                if url:
+                    meme_message += f"• **[{symbol}]({url})** - ${boost_amount:.0f} boost on {chain}\n"
+                else:
+                    meme_message += f"• **{symbol}** - ${boost_amount:.0f} boost on {chain}\n"
+            meme_message += f"\n"
+        
+        # Add CoinGecko trending
+        cg_trending = []
+        for item in trending_degen:
+            if item.get('source_type') == 'coingecko_trending':
+                cg_trending.append(item)
+        
+        if cg_trending:
+            meme_message += f"📈 **CoinGecko Trending:**\n"
+            for coin in cg_trending[:3]:
+                symbol = ', '.join(coin.get('tickers', ['UNKNOWN']))
+                meme_message += f"• **{symbol}** - Trending on CoinGecko\n"
+            meme_message += f"\n"
+        
+        # Add meme coin news
+        if degen_data:
+            meme_message += f"📰 **Meme Coin News:**\n"
+            for article in degen_data[:2]:
+                title = article.get('title', 'Unknown')
+                source = article.get('source_name', 'Unknown')
+                tickers = article.get('tickers', [])
+                
+                # Truncate title for Discord
+                if len(title) > 70:
+                    title = title[:67] + "..."
+                
+                meme_message += f"• **{title}**\n"
+                meme_message += f"  {source}"
+                if tickers:
+                    meme_message += f" | {', '.join(tickers[:2])}"
+                meme_message += f"\n"
+            meme_message += f"\n"
+        
+        # Add footer
+        meme_message += f"⏰ Next Degen Scan: "
+        current_hour = datetime.now().hour
+        if current_hour < 8:
+            meme_message += "08:30 UTC"
+        elif current_hour < 15:
+            meme_message += "15:30 UTC"
+        else:
+            meme_message += "22:30 UTC"
+        
+        # Send to dedicated degen-memes channel
+        await send_discord_alert(meme_message, 'degen_memes')
+        print("✅ Degen meme alerts sent to Discord #degen-memes channel")
+        
+    except Exception as e:
+        print(f"❌ Degen meme alerts error: {e}")
+
 async def check_breaking_alerts():
     """Check for breaking news every 15 minutes with AI analysis - only sends if urgent"""
     try:
@@ -1478,6 +1565,11 @@ def main():
     # Alpha scans twice daily (9 AM and 9 PM)
     schedule.every().day.at("09:00").do(lambda: asyncio.run(run_alpha_analysis()))
     schedule.every().day.at("21:00").do(lambda: asyncio.run(run_alpha_analysis()))
+    
+    # Degen meme alerts to dedicated channel (3 times daily)
+    schedule.every().day.at("08:30").do(lambda: asyncio.run(send_degen_meme_alerts()))
+    schedule.every().day.at("15:30").do(lambda: asyncio.run(send_degen_meme_alerts()))
+    schedule.every().day.at("22:30").do(lambda: asyncio.run(send_degen_meme_alerts()))
     
     # Breaking news alerts check every 15 minutes (only sends if urgent)
     schedule.every(15).minutes.do(lambda: asyncio.run(check_breaking_alerts()))

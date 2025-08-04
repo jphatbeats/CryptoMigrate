@@ -16,6 +16,9 @@ Preferred communication style: Simple, everyday language.
 - Enhanced AI opportunity analysis to include degen opportunities alongside traditional signals
 - Multi-source degen intelligence: trending coins, meme coin news, and early-stage opportunities
 - Perfect architecture separation: Railway handles exchange data + Discord alerts, ChatGPT has DEXScreener
+- Added new Discord #degen-memes channel (1401971493096915067) with dedicated alerts 3x daily
+- DEXScreener API integration aligned with official docs using /token-boosts/latest/v1 and /token-boosts/top/v1
+- Real-time boosted token data with proper chain info, boost amounts, and direct DEXScreener links
 
 **August 4, 2025 - Sundown Digest Integration Complete**
 - Added daily CryptoNews Sundown Digest to Discord alerts system
@@ -102,6 +105,7 @@ Preferred communication style: Simple, everyday language.
 - **#alerts**: Breaking news, risk alerts, market updates (every 15 min) + Sundown Digest (Mon-Fri 7pm ET)
 - **#portfolio**: Position analysis, trading signals, PnL monitoring (hourly)  
 - **#alpha-scans**: Trading opportunities, early entry signals (twice daily)
+- **#degen-memes**: Dedicated degen/meme coin opportunities with DEXScreener boosted tokens (3x daily)
 
 **Webhook Management**
 - Environment variable configuration for multiple webhook URLs
