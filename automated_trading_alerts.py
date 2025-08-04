@@ -840,12 +840,90 @@ async def send_sundown_digest():
             digest_message += f"⏰ Next digest: Tomorrow 7:00 PM ET"
             
             await send_discord_alert(digest_message, 'alerts')
+            
+            # Mark as delivered to prevent backup delivery
+            now_et = datetime.now(pytz.timezone('US/Eastern'))
+            today_key = f"digest_{now_et.strftime('%Y-%m-%d')}"
+            digest_delivery_tracker.add(today_key)
+            
             print("✅ Sundown Digest sent to Discord #alerts channel")
         else:
             print("❌ Invalid digest data structure")
             
     except Exception as e:
         print(f"❌ Sundown Digest error: {e}")
+
+# Track digest delivery to prevent duplicates
+digest_delivery_tracker = set()
+
+async def send_sundown_digest_backup():
+    """Backup Sundown Digest delivery at 7:15 PM ET - only sends if main delivery failed"""
+    try:
+        print("\n🌅 SUNDOWN DIGEST BACKUP - Checking if main delivery succeeded...")
+        
+        # Generate unique key for today's digest
+        now_et = datetime.now(pytz.timezone('US/Eastern'))
+        today_key = f"digest_{now_et.strftime('%Y-%m-%d')}"
+        
+        # Check if we already delivered today's digest
+        if today_key in digest_delivery_tracker:
+            print("✅ Main Sundown Digest already delivered today - skipping backup")
+            return
+        
+        print("⚠️ Main Sundown Digest not delivered - sending backup now...")
+        
+        if not crypto_news_available:
+            print("❌ Crypto news module not available for backup digest")
+            return
+        
+        # Skip weekends
+        if now_et.weekday() > 4:
+            print("📅 Skipping backup digest - Weekend")
+            return
+        
+        # Get digest and send
+        from crypto_news_api import get_sundown_digest
+        digest_data = get_sundown_digest()
+        
+        if not digest_data or not digest_data.get('data'):
+            print("❌ No Sundown Digest available from API for backup")
+            return
+        
+        digest_article = digest_data['data'][0] if digest_data.get('data') else None
+        
+        if digest_article:
+            title = digest_article.get('title', 'Daily Market Digest')
+            text = digest_article.get('text', digest_article.get('summary', ''))
+            url = digest_article.get('news_url', digest_article.get('url', ''))
+            source = digest_article.get('source_name', digest_article.get('source', 'CryptoNews'))
+            
+            # Create backup digest message with indicator
+            digest_message = f"🌅 **SUNDOWN DIGEST** (Backup Delivery) 🌅\n"
+            digest_message += f"📅 {now_et.strftime('%A, %B %d, %Y')}\n\n"
+            
+            if url:
+                digest_message += f"📰 **[{title}]({url})**\n\n"
+            else:
+                digest_message += f"📰 **{title}**\n\n"
+            
+            if text:
+                summary = text[:800] + "..." if len(text) > 800 else text
+                digest_message += f"{summary}\n\n"
+            
+            digest_message += f"📰 Source: {source}\n"
+            digest_message += f"⏰ Next digest: Tomorrow 7:00 PM ET"
+            
+            await send_discord_alert(digest_message, 'alerts')
+            
+            # Mark as delivered to prevent future backups today
+            digest_delivery_tracker.add(today_key)
+            
+            print("✅ Backup Sundown Digest sent to Discord #alerts channel")
+        else:
+            print("❌ Invalid digest data structure for backup")
+            
+    except Exception as e:
+        print(f"❌ Backup Sundown Digest error: {e}")
 
 async def check_breaking_alerts():
     """Check for breaking news every 15 minutes - only sends if urgent"""
@@ -1227,6 +1305,13 @@ def main():
     schedule.every().wednesday.at("23:00").do(lambda: asyncio.run(send_sundown_digest()))
     schedule.every().thursday.at("23:00").do(lambda: asyncio.run(send_sundown_digest()))
     schedule.every().friday.at("23:00").do(lambda: asyncio.run(send_sundown_digest()))
+    
+    # Backup Sundown Digest at 7:15 PM ET (23:15 UTC) in case the 7 PM delivery fails
+    schedule.every().monday.at("23:15").do(lambda: asyncio.run(send_sundown_digest_backup()))
+    schedule.every().tuesday.at("23:15").do(lambda: asyncio.run(send_sundown_digest_backup()))
+    schedule.every().wednesday.at("23:15").do(lambda: asyncio.run(send_sundown_digest_backup()))
+    schedule.every().thursday.at("23:15").do(lambda: asyncio.run(send_sundown_digest_backup()))
+    schedule.every().friday.at("23:15").do(lambda: asyncio.run(send_sundown_digest_backup()))
 
     # Start scheduler in background thread
     scheduler_thread = threading.Thread(target=run_scheduler, daemon=True)
