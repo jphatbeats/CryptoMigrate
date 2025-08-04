@@ -522,16 +522,36 @@ async def fetch_dexscreener_trending():
     """Fetch trending tokens from DexScreener API for real degen plays"""
     try:
         async with aiohttp.ClientSession() as session:
-            # Get trending pairs from DexScreener
-            url = "https://api.dexscreener.com/latest/dex/search?q=trending"
-            async with session.get(url, timeout=10) as response:
+            # Get boosted tokens (trending with social momentum)
+            boosted_url = "https://api.dexscreener.com/token-boosts/latest/v1"
+            async with session.get(boosted_url, timeout=10) as response:
                 if response.status == 200:
-                    data = await response.json()
-                    pairs = data.get('pairs', []) if data else []
-                    print(f"✅ DexScreener trending data fetched: {len(pairs)} pairs")
-                    return {'pairs': pairs}
+                    boosted_data = await response.json()
+                    print(f"✅ DexScreener boosted tokens fetched: {len(boosted_data)} tokens")
+                    
+                    # Also get top boosted for maximum momentum
+                    top_boosted_url = "https://api.dexscreener.com/token-boosts/top/v1"
+                    async with session.get(top_boosted_url, timeout=10) as response2:
+                        if response2.status == 200:
+                            top_boosted_data = await response2.json()
+                            print(f"✅ DexScreener top boosted fetched: {len(top_boosted_data)} tokens")
+                            
+                            return {
+                                'latest_boosted': boosted_data,
+                                'top_boosted': top_boosted_data,
+                                'type': 'boosted_trending'
+                            }
+                        else:
+                            return {'latest_boosted': boosted_data, 'type': 'latest_only'}
                 else:
-                    print(f"❌ DexScreener API error: {response.status}")
+                    print(f"❌ DexScreener boosted API error: {response.status}")
+                    # Fallback to token profiles for new launches
+                    profiles_url = "https://api.dexscreener.com/token-profiles/latest/v1"
+                    async with session.get(profiles_url, timeout=10) as response3:
+                        if response3.status == 200:
+                            profiles_data = await response3.json()
+                            print(f"✅ DexScreener profiles fallback: {len(profiles_data)} new tokens")
+                            return {'latest_profiles': profiles_data, 'type': 'new_launches'}
                     return None
     except Exception as e:
         print(f"❌ DexScreener fetch error: {e}")

@@ -1,0 +1,238 @@
+# 🚀 DexScreener Alpha Hunter - Usage Instructions
+
+## 💎 MISSION: FIND GEMS BEFORE THEY MOON
+
+DexScreener is your **early DEX gem discovery engine**. Use it to find tokens before they hit major exchanges, catch volume spikes, and identify trending opportunities across all chains.
+
+---
+
+## 🔥 CRITICAL SUCCESS PATTERNS
+
+### 🎯 **THE ALPHA HUNTING WORKFLOW**
+
+**1. MORNING SCAN (Daily 9 AM)**
+```
+Step 1: getLatestBoostedTokens - Find trending tokens with social momentum
+Step 2: getTopBoostedTokens - Identify highest momentum plays  
+Step 3: Cross-reference with CryptoNews for catalyst confirmation
+Step 4: Use LunarCrush to validate social sentiment
+```
+
+**2. BREAKOUT DETECTION (Every 2 hours)**
+```
+Step 1: searchDexPairs with trending symbols from news/social
+Step 2: getPairDetails for volume/liquidity analysis
+Step 3: getTokenPairs to find best trading venues
+Step 4: Confirm entry signals before alerting
+```
+
+**3. NEW LAUNCH MONITORING (Evening 6 PM)**
+```
+Step 1: getLatestTokenProfiles - Newest token launches
+Step 2: getTokenInfo for each promising profile
+Step 3: Check De.Fi for contract security risks
+Step 4: Build watchlist for tomorrow's monitoring
+```
+
+---
+
+## 🛠️ ENDPOINT MASTERY GUIDE
+
+### 🔍 **searchDexPairs** - Your Primary Alpha Tool
+**Use for:** Finding any token across all DEXs and chains
+**Best practices:**
+- Search by ticker symbol: `q=PEPE` 
+- Search by pair: `q=SOL/USDC`
+- Search by contract: `q=So11111111111111111111111111111111111111112`
+- Look for: Volume spikes, new listings, price momentum
+
+**🚨 Alpha Signals:**
+- Volume >$100K in last 24h
+- Price change >50% in last 6h
+- Multiple DEX listings (liquidity growth)
+- Recent creation date (new gem potential)
+
+### 📊 **getPairDetails** - Deep Dive Analysis
+**Use for:** Detailed analysis of specific trading pairs
+**Key metrics to analyze:**
+- **Liquidity:** >$50K for safer plays, >$10K minimum
+- **Volume:** Consistent or increasing over time
+- **Price Impact:** <3% for $1K trades (good liquidity)
+- **Holder Count:** Growing holder base indicates interest
+
+**🚨 Red Flags:**
+- Liquidity <$5K (rug risk)
+- Single whale holder >50% supply
+- No recent transactions (dead project)
+- Suspicious price patterns (pump and dump)
+
+### 🎪 **getLatestBoostedTokens** - Social Momentum Hunter
+**Use for:** Finding tokens with paid social promotion
+**What to look for:**
+- Recent boost activity (last 24h)
+- Multiple boost types (trending + featured)
+- Organic engagement beyond paid promotion
+- Strong community metrics
+
+**⚡ Momentum Confirmation:**
+- Cross-check with LunarCrush Galaxy Score
+- Verify news catalysts with CryptoNews
+- Check social sentiment trends
+
+### 👑 **getTopBoostedTokens** - Maximum Momentum Plays
+**Use for:** Highest conviction momentum trades
+**Priority ranking:**
+1. Multiple active boosts + news catalyst
+2. Social sentiment alignment (LunarCrush positive)
+3. Technical breakout confirmation
+4. Strong liquidity and volume
+
+### 🆕 **getLatestTokenProfiles** - Ground Floor Opportunities
+**Use for:** Brand new token launches and profiles
+**Evaluation criteria:**
+- Team transparency and social links
+- Clear use case and roadmap
+- Community engagement metrics
+- Security audit status (check De.Fi)
+
+**🔥 Early Entry Signals:**
+- Professional website and documentation
+- Active social media presence
+- Growing Telegram/Discord community
+- Upcoming exchange listings mentioned
+
+### 🏦 **getTokenInfo** - Multi-Token Analysis
+**Use for:** Bulk analysis of multiple tokens (up to 30)
+**Best practices:**
+- Compare similar tokens in same category
+- Analyze market cap vs. competitors
+- Track price correlations
+- Identify undervalued opportunities
+
+### 🔄 **getTokenPairs** - Liquidity Venue Analysis
+**Use for:** Finding best trading venues for specific tokens
+**Optimization factors:**
+- Highest liquidity pools
+- Lowest slippage tolerance
+- Best price execution
+- DEX reputation and security
+
+---
+
+## ⚡ CONFLUENCE DECISION MATRIX
+
+### 🟢 **GREEN LIGHT SIGNALS (STRONG BUY)**
+**Require ALL 4 confirmations:**
+1. **DexScreener:** Volume spike >200%, liquidity >$50K, boosted status
+2. **CryptoNews:** Positive catalyst (partnership, listing, development)
+3. **LunarCrush:** Rising Galaxy Score, positive sentiment trend
+4. **De.Fi:** Clean security scan, no recent exploits
+
+### 🟡 **YELLOW LIGHT SIGNALS (WATCH LIST)**
+**Require 2-3 confirmations:**
+- Strong DexScreener metrics but no news catalyst
+- Positive news but low social momentum
+- Good fundamentals but recent market downtrend
+
+### 🔴 **RED LIGHT SIGNALS (AVOID)**
+**Any single factor triggers avoidance:**
+- Low liquidity (<$10K) on DexScreener
+- Negative security findings from De.Fi
+- Bearish sentiment trend on LunarCrush
+- No organic social engagement despite boosts
+
+---
+
+## 🎯 SPECIFIC SEARCH STRATEGIES
+
+### 🔥 **Volume Breakout Hunter**
+```
+1. searchDexPairs for trending categories (AI, Gaming, DeFi)
+2. Filter results by 24h volume >$500K
+3. getPairDetails for liquidity confirmation
+4. Cross-reference with news catalysts
+5. Validate social momentum
+```
+
+### 💎 **New Gem Detector**
+```
+1. getLatestTokenProfiles for newest launches
+2. getTokenInfo for each promising profile
+3. Check creation date <7 days
+4. Analyze team and community strength
+5. Verify contract security
+```
+
+### 🚀 **Momentum Confirmation System**
+```
+1. getTopBoostedTokens for highest momentum
+2. getPairDetails for each top candidate
+3. Compare vs. similar market cap tokens
+4. Confirm with technical analysis from BingX
+5. Execute via your trading platforms
+```
+
+---
+
+## ⚠️ RISK MANAGEMENT PROTOCOLS
+
+### 🛡️ **Position Sizing Based on DexScreener Data**
+- **High Confidence (4/4 signals):** 3-5% portfolio allocation
+- **Medium Confidence (3/4 signals):** 1-2% portfolio allocation  
+- **Low Confidence (2/4 signals):** 0.5% portfolio allocation
+- **Speculation only:** <0.5% portfolio allocation
+
+### 🚨 **Exit Triggers**
+- Liquidity drops below entry level
+- Volume decreases >70% from peak
+- Social boost activity stops completely
+- Negative security events detected
+- Technical breakdown confirmed on charts
+
+### 📊 **Daily Monitoring Checklist**
+- [ ] Morning boost scan completed
+- [ ] Volume breakout alerts reviewed
+- [ ] New token profiles analyzed
+- [ ] Risk assessments updated
+- [ ] Confluence confirmations verified
+- [ ] Position sizes optimized
+- [ ] Exit strategies updated
+
+---
+
+## 🎪 RATE LIMIT OPTIMIZATION
+
+### ⚡ **High Priority Calls (300/min limit):**
+- searchDexPairs - Use for urgent alpha hunting
+- getPairDetails - Deep dive analysis
+- getTokenInfo - Multi-token research
+
+### 🎯 **Medium Priority Calls (60/min limit):**
+- getLatestBoostedTokens - Morning scans
+- getTopBoostedTokens - Momentum confirmation
+- getLatestTokenProfiles - Evening research
+
+**🔥 Pro Tip:** Batch your requests efficiently:
+- Morning: Focus on boost endpoints for momentum
+- Midday: Use search and pair endpoints for analysis  
+- Evening: Profile and research endpoints for tomorrow's prep
+
+---
+
+## 💰 SUCCESS METRICS & KPIs
+
+### 📈 **Track These DexScreener Metrics:**
+- Average entry timing vs. peak price
+- Hit rate on boosted token predictions
+- Liquidity assessment accuracy
+- Volume breakout success rate
+- New launch identification speed
+
+### 🎯 **Monthly Performance Goals:**
+- 70%+ hit rate on GREEN LIGHT signals
+- <5% allocation to failed positions
+- Average 3x return on successful picks
+- <24h average discovery-to-entry time
+- Zero security incident exposure
+
+Remember: DexScreener finds WHERE the alpha is, but always confirm WHY with your other APIs before executing trades!
