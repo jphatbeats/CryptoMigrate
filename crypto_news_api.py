@@ -329,6 +329,14 @@ class CryptoNewsAPI:
         }
         
         return self._make_request('', params)
+    
+    def get_sundown_digest(self) -> Dict[str, Any]:
+        """Get daily Sundown Digest - comprehensive end-of-day market summary"""
+        params = {
+            'items': 1  # Sundown digest is typically one comprehensive article
+        }
+        
+        return self._make_request('/sundown-digest', params)
 
 # Singleton instance for easy importing
 crypto_news_api = CryptoNewsAPI()
@@ -357,3 +365,7 @@ def get_market_intelligence() -> Dict[str, Any]:
 def detect_pump_dump_signals(limit: int = 20) -> Dict[str, Any]:
     """Detect pump dump signals (backward compatible)"""
     return crypto_news_api.detect_pump_dump_signals(limit=limit)
+
+def get_sundown_digest() -> Dict[str, Any]:
+    """Get daily Sundown Digest - comprehensive market wrap-up (Mon-Fri 7pm ET)"""
+    return crypto_news_api.get_sundown_digest()

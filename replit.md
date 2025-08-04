@@ -10,6 +10,12 @@ Preferred communication style: Simple, everyday language.
 
 # Recent Changes
 
+**August 4, 2025 - Sundown Digest Integration Complete**
+- Added daily CryptoNews Sundown Digest to Discord alerts system
+- Professional market wrap-up delivered Mon-Fri at 7:00 PM ET to #alerts channel
+- Comprehensive end-of-day analysis with clickable links and source attribution
+- Automated scheduling with weekend detection and Eastern timezone handling
+
 **August 4, 2025 - CryptoNews API Search Fix Complete**
 - Fixed critical ticker search issues preventing ChatGPT from finding crypto news
 - Implemented hybrid search strategy: direct ticker search + search parameter fallback
@@ -78,7 +84,7 @@ Preferred communication style: Simple, everyday language.
 ## Multi-Channel Discord Integration
 
 **Channel Strategy**
-- **#alerts**: Breaking news, risk alerts, market updates (every 4 hours)
+- **#alerts**: Breaking news, risk alerts, market updates (every 15 min) + Sundown Digest (Mon-Fri 7pm ET)
 - **#portfolio**: Position analysis, trading signals, PnL monitoring (hourly)  
 - **#alpha-scans**: Trading opportunities, early entry signals (twice daily)
 

@@ -790,6 +790,63 @@ async def run_alpha_analysis():
     except Exception as e:
         print(f"❌ Alpha analysis error: {e}")
 
+async def send_sundown_digest():
+    """Send daily Sundown Digest to #alerts channel (Mon-Fri 7pm ET)"""
+    try:
+        print("\n🌅 SUNDOWN DIGEST - Getting daily market wrap-up...")
+        
+        if not crypto_news_available:
+            print("❌ Crypto news module not available for Sundown Digest")
+            return
+        
+        # Check if it's a weekday (Monday = 0, Friday = 4)
+        now_et = datetime.now(pytz.timezone('US/Eastern'))
+        if now_et.weekday() > 4:  # Saturday = 5, Sunday = 6
+            print("📅 Skipping Sundown Digest - Weekend (no digest available)")
+            return
+        
+        # Get Sundown Digest from CryptoNews API
+        from crypto_news_api import get_sundown_digest
+        digest_data = get_sundown_digest()
+        
+        if not digest_data or not digest_data.get('data'):
+            print("❌ No Sundown Digest available from CryptoNews API")
+            return
+        
+        # Format the digest for Discord
+        digest_article = digest_data['data'][0] if digest_data.get('data') else None
+        
+        if digest_article:
+            title = digest_article.get('title', 'Daily Market Digest')
+            text = digest_article.get('text', digest_article.get('summary', ''))
+            url = digest_article.get('news_url', digest_article.get('url', ''))
+            source = digest_article.get('source_name', digest_article.get('source', 'CryptoNews'))
+            
+            # Create comprehensive digest message
+            digest_message = f"🌅 **SUNDOWN DIGEST** 🌅\n"
+            digest_message += f"📅 {now_et.strftime('%A, %B %d, %Y')}\n\n"
+            
+            if url:
+                digest_message += f"📰 **[{title}]({url})**\n\n"
+            else:
+                digest_message += f"📰 **{title}**\n\n"
+            
+            # Add summary if available (truncate to keep under Discord limit)
+            if text:
+                summary = text[:800] + "..." if len(text) > 800 else text
+                digest_message += f"{summary}\n\n"
+            
+            digest_message += f"📰 Source: {source}\n"
+            digest_message += f"⏰ Next digest: Tomorrow 7:00 PM ET"
+            
+            await send_discord_alert(digest_message, 'alerts')
+            print("✅ Sundown Digest sent to Discord #alerts channel")
+        else:
+            print("❌ Invalid digest data structure")
+            
+    except Exception as e:
+        print(f"❌ Sundown Digest error: {e}")
+
 async def check_breaking_alerts():
     """Check for breaking news every 15 minutes - only sends if urgent"""
     try:
@@ -1130,9 +1187,10 @@ def main():
     print("🚀 AUTOMATED TRADING ALERTS SYSTEM")
     print("=" * 50)
     print("📊 MULTI-CHANNEL DISCORD INTEGRATION:")
-    print("  🚨 #alerts: Breaking news & market crashes (as needed)")
+    print("  🚨 #alerts: Breaking news, risk alerts & Sundown Digest")
     print("  📊 #portfolio: Hourly analysis & trading signals")
     print("  🎯 #alpha-scans: Comprehensive reports (9AM & 9PM)")
+    print("  🌅 Sundown Digest: Mon-Fri 7:00 PM ET market wrap-up")
     print("=" * 50)
     print("📈 Features:")
     print("  • RSI Analysis (Overbought > 72, Oversold < 28)")
@@ -1162,6 +1220,13 @@ def main():
     
     # Breaking news alerts check every 15 minutes (only sends if urgent)
     schedule.every(15).minutes.do(lambda: asyncio.run(check_breaking_alerts()))
+    
+    # Sundown Digest every weekday at 7 PM ET (11 PM UTC during EST, 10 PM UTC during EDT)
+    schedule.every().monday.at("23:00").do(lambda: asyncio.run(send_sundown_digest()))
+    schedule.every().tuesday.at("23:00").do(lambda: asyncio.run(send_sundown_digest()))
+    schedule.every().wednesday.at("23:00").do(lambda: asyncio.run(send_sundown_digest()))
+    schedule.every().thursday.at("23:00").do(lambda: asyncio.run(send_sundown_digest()))
+    schedule.every().friday.at("23:00").do(lambda: asyncio.run(send_sundown_digest()))
 
     # Start scheduler in background thread
     scheduler_thread = threading.Thread(target=run_scheduler, daemon=True)
