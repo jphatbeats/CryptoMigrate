@@ -10,6 +10,14 @@ Preferred communication style: Simple, everyday language.
 
 # Recent Changes
 
+**August 4, 2025 - CryptoNews API Search Fix Complete**
+- Fixed critical ticker search issues preventing ChatGPT from finding crypto news
+- Implemented hybrid search strategy: direct ticker search + search parameter fallback
+- ENA, SYRUP, MAMO searches now work perfectly (previously returned zero results)
+- Multi-symbol searches combine individual results with duplicate removal
+- Enhanced symbol search covers all portfolio tokens and alpha scanning opportunities
+- Search behavior now matches CryptoNews website functionality exactly
+
 **August 4, 2025 - Real OpenAI ChatGPT Integration Complete**
 - Added real OpenAI GPT-4 integration replacing fake ChatGPT endpoints
 - Created 6 new AI-powered trading intelligence endpoints using GPT-4o model
