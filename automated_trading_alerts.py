@@ -1123,11 +1123,21 @@ async def run_degen_memes_scan():
         if ai_degen_analysis and not ai_degen_analysis.get('error'):
             degen_message += f"🤖 **AI DEGEN ANALYSIS:**\n"
             
-            # High risk/high reward setups
+            # High risk/high reward setups (clean formatting)
             if 'viral_opportunities' in ai_degen_analysis:
                 viral_opps = ai_degen_analysis['viral_opportunities'][:3]
                 for i, opp in enumerate(viral_opps, 1):
-                    degen_message += f"💎 {i}. {opp}\n"
+                    if isinstance(opp, dict):
+                        token = opp.get('token', 'Unknown')
+                        desc = opp.get('description', 'Viral opportunity')[:50]
+                        url = opp.get('url', '').rstrip(',')  # Remove trailing comma
+                        if url:
+                            degen_message += f"💎 {i}. **[{token}]({url})** - {desc}\n"
+                        else:
+                            degen_message += f"💎 {i}. **{token}** - {desc}\n"
+                    else:
+                        # Handle string format
+                        degen_message += f"💎 {i}. {str(opp)[:60]}\n"
             
             # Risk warning (important for degen plays)
             if 'risk_warning' in ai_degen_analysis:
@@ -1180,18 +1190,30 @@ async def run_degen_memes_scan():
                         boost_amount = token.get('amount', 0)
                         chain_id = token.get('chainId', 'multi')
                         
-                        # Extract token info from URL if available
+                        # Extract token info from URL and token address
                         token_url = token.get('url', '')
-                        token_name = 'VIRAL'
-                        if '/tokens/' in token_url:
-                            try:
-                                token_part = token_url.split('/tokens/')[-1]
-                                if '-' in token_part:
-                                    token_name = token_part.split('-')[0][:8].upper()
-                            except:
-                                pass
+                        token_address = token.get('tokenAddress', '')
+                        chain_id = token.get('chainId', 'solana')
                         
-                        degen_message += f"🚀 **${token_name}** - {description}\n"
+                        # Try to extract symbol from description first, then URL
+                        description_text = description.upper()
+                        
+                        # Look for common token patterns in description
+                        import re
+                        symbol_match = re.search(r'\b([A-Z]{2,10})\b', description_text)
+                        if symbol_match and symbol_match.group(1) not in ['OFFICIAL', 'TOKEN', 'COIN', 'NEW', 'THE']:
+                            token_name = symbol_match.group(1)
+                        elif token_address:
+                            # Use first 6 chars of token address as fallback
+                            token_name = token_address[:6].upper()
+                        else:
+                            token_name = 'NEW'
+                        
+                        # Clean URL (remove trailing comma if present)
+                        clean_url = token_url.rstrip(',')
+                        
+                        # Format token entry with clickable link
+                        degen_message += f"🚀 **[${token_name}]({clean_url})** - {description}\n"
                         degen_message += f"   💰 Boost: ${boost_amount} | Chain: {chain_id}\n"
                         dex_count += 1
                     except Exception as token_error:

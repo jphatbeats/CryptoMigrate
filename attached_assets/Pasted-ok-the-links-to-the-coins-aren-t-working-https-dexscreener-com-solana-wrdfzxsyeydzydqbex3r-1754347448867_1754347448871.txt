@@ -1,0 +1,43 @@
+ok the links to the coins aren't working   
+
+
+https://dexscreener.com/solana/wrdfzxsyeydzydqbex3rjzn1drfaerqujq8poqxbonk', not working!
+https://dexscreener.com/solana/wrdfzxsyeydzydqbex3rjzn1drfaerqujq8poqxbonk  working!
+remove ', and itll work
+
+the icons for the coins are like this https://dd.dexscreener.com/ds-data/tokens/solana/token address here.png?size=lg&key=key here
+example https://dd.dexscreener.com/ds-data/tokens/solana/WrdfzxsyEYDZYDqBEx3RjZn1dRFaerqujq8poQxbonk.png?size=lg&key=149df8
+        https://dd.dexscreener.com/ds-data/tokens/solana/6ieMTp3XMjtLUGzzqEwekdgPCgBt9aW8nAE6uhuBBAGS.png?size=lg&key=a58aee
+
+i got those links off of the dexscreener website  i just clicked the icon and copied the address so you can see how its formatted maybe you can add the actual icon to the discord when suggesting coins from dexscreener instead of the dexscreener logo..  ill show you what it looks like  it doesn't even say anything about the coin..   
+
+now on to the data..   this is what i got
+
+🚀 **DEGEN MEMES & VIRAL PLAYS** 🚀
+⏰ 2025-08-04 22:08 UTC
+
+🤖 **AI DEGEN ANALYSIS:**
+💎 1. {'token': 'LARP', 'description': 'Literally A Retarded Play', 'url': 'https://dexscreener.com/solana/4hw9jxdaidd72f95hmnivkwqrgkfmysthjzypfztpump', 'social_links': [{'label': 'Website', 'url': 'http://larpsol.org'}, {'type': 'twitter', 'url': 'https://x.com/larpteck'}], 'chain': 'Solana'}
+💎 2. {'token': 'LIZARD OFFICIAL', 'description': 'LIZARD OFFICIAL', 'url': 'https://dexscreener.com/solana/wrdfzxsyeydzydqbex3rjzn1drfaerqujq8poqxbonk', 'social_links': [{'url': 'https://www.tiktok.com/@igreenscreenthings?lang=en'}, {'type': 'twitter', 'url': 'https://x.com/i/communities/1952470438208278784'}], 'chain': 'Solana'}
+⚠️ **Risk**: EXTREME RISK - New tokens can go to zero instantly
+
+🔥 **DEXSCREENER BOOSTED (VIRAL MOMENTUM):**
+🚀 **$VIRAL** - Literally A Retarded Play
+   💰 Boost: $30 | Chain: solana
+🚀 **$VIRAL** - New viral token
+   💰 Boost: $10 | Chain: solana
+🚀 **$VIRAL** - LIZARD OFFICIAL
+   💰 Boost: $100 | Chain: solana
+🚀 **$VIRAL** - 100% of Fees raised goes directly to PCRF to help feed the c...
+   💰 Boost: $100 | Chain: solana
+🚀 **$VIRAL** - Simpson predicted this.
+   💰 Boost: $10 | Chain: solana
+🚀 **$VIRAL** - Hold, survive 30s, and take the THRONE
+   💰 Boost: $10 | Chain: solana
+
+
+im not able to easily identify the name .. theres alot of code left in the final product
+it says viral like 30 times and i dont know why lol  ..  is this a tokens name?  or are you trying to tell me its going viral?
+im confused    
+
+we are getting there though ..   im loving our progress  and i do like how it actually gave me some results sorta
