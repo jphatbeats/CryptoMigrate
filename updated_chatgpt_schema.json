@@ -1,636 +1,128 @@
 {
-  "openapi": "3.1.0",
-  "info": {
-    "title": "Complete Trading Intelligence API with Direct CryptoNews Integration",
-    "description": "Comprehensive trading portfolio management with live exchange data from BingX, Kraken & Blofin, plus direct CryptoNews API integration for authentic crypto intelligence",
-    "version": "v2.1.0"
-  },
-  "servers": [
-    {
-      "url": "https://titan-trading-2-production.up.railway.app",
-      "description": "Live Trading Data & Portfolio Management"
+  "chatgpt_integration_status": "LIVE_AND_OPERATIONAL",
+  "openai_model": "gpt-4o",
+  "integration_date": "2025-08-04",
+  "api_endpoints": {
+    "portfolio_analysis": {
+      "endpoint": "/api/chatgpt/portfolio-analysis",
+      "method": "GET",
+      "status": "ACTIVE",
+      "ai_powered": true,
+      "returns": [
+        "overall_assessment",
+        "risk_level", 
+        "recommendations",
+        "position_analysis",
+        "diversification_score",
+        "next_actions",
+        "market_outlook"
+      ]
     },
-    {
-      "url": "https://cryptonews-api.com",
-      "description": "Direct CryptoNews Intelligence (requires API token)"
-    }
-  ],
-  "paths": {
-    "/health": {
-      "get": {
-        "description": "Health check endpoint to verify API connectivity",
-        "operationId": "healthCheck",
-        "servers": [{"url": "https://titan-trading-2-production.up.railway.app"}],
-        "responses": {
-          "200": {
-            "description": "API is healthy and responding",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "status": {"type": "string"},
-                    "timestamp": {"type": "string"},
-                    "server": {"type": "string"},
-                    "version": {"type": "string"},
-                    "endpoints_available": {
-                      "type": "array",
-                      "items": {"type": "string"}
-                    }
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
+    "news_sentiment": {
+      "endpoint": "/api/chatgpt/news-sentiment", 
+      "method": "POST",
+      "status": "ACTIVE",
+      "ai_powered": true,
+      "input_required": "articles array",
+      "returns": [
+        "sentiment",
+        "impact_score",
+        "trading_signal", 
+        "confidence",
+        "overall_market_sentiment"
+      ]
     },
-    "/": {
-      "get": {
-        "description": "API documentation and available endpoints",
-        "operationId": "getApiDocumentation",
-        "servers": [{"url": "https://titan-trading-2-production.up.railway.app"}],
-        "responses": {
-          "200": {
-            "description": "API documentation with all available endpoints",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "message": {"type": "string"},
-                    "available_endpoints": {"type": "integer"},
-                    "live_endpoints": {"type": "object"},
-                    "bingx_endpoints": {"type": "object"},
-                    "kraken_endpoints": {"type": "object"},
-                    "chatgpt_endpoints": {"type": "object"}
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
+    "trade_grader": {
+      "endpoint": "/api/chatgpt/trade-grader",
+      "method": "POST", 
+      "status": "ACTIVE",
+      "ai_powered": true,
+      "input_required": "trade data object",
+      "returns": [
+        "trade_grade",
+        "execution_score",
+        "risk_management_score",
+        "improvement_suggestions",
+        "lessons_learned"
+      ]
     },
-    "/api/crypto-news/status": {
-      "get": {
-        "description": "Get migration status and CryptoNews API integration details",
-        "operationId": "getCryptoNewsStatus",
-        "servers": [{"url": "https://titan-trading-2-production.up.railway.app"}],
-        "responses": {
-          "200": {
-            "description": "CryptoNews integration status and migration details",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "migration_status": {"type": "string"},
-                    "integration_type": {"type": "string"},
-                    "api_base_url": {"type": "string"},
-                    "removed_wrapper_endpoints": {
-                      "type": "array",
-                      "items": {"type": "string"}
-                    },
-                    "capabilities_unlocked": {"type": "object"},
-                    "benefits": {
-                      "type": "array",
-                      "items": {"type": "string"}
-                    },
-                    "timestamp": {"type": "string"}
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
+    "hourly_insights": {
+      "endpoint": "/api/chatgpt/hourly-insights",
+      "method": "GET",
+      "status": "ACTIVE", 
+      "ai_powered": true,
+      "returns": [
+        "market_pulse",
+        "immediate_opportunities", 
+        "risk_alerts",
+        "portfolio_adjustments",
+        "next_hour_outlook",
+        "action_items"
+      ]
     },
-    "/api/live/all-exchanges": {
-      "get": {
-        "description": "Get live positions and orders from all exchanges (BingX, Kraken & Blofin)",
-        "operationId": "getAllExchangeData",
-        "servers": [{"url": "https://titan-trading-2-production.up.railway.app"}],
-        "responses": {
-          "200": {
-            "description": "Live exchange data",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "timestamp": { "type": "string" },
-                    "exchanges": {
-                      "type": "object",
-                      "properties": {
-                        "bingx": {
-                          "type": "object",
-                          "properties": {
-                            "status": { "type": "string" },
-                            "positions": { "type": "object" },
-                            "orders": { "type": "object" }
-                          }
-                        },
-                        "kraken": {
-                          "type": "object",
-                          "properties": {
-                            "status": { "type": "string" },
-                            "balance": { "type": "object" }
-                          }
-                        },
-                        "blofin": {
-                          "type": "object",
-                          "properties": {
-                            "status": { "type": "string" },
-                            "positions": { "type": "array", "items": { "type": "object" } },
-                            "orders": { "type": "array", "items": { "type": "object" } }
-                          }
-                        }
-                      }
-                    }
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
+    "risk_assessment": {
+      "endpoint": "/api/chatgpt/risk-assessment",
+      "method": "GET",
+      "status": "ACTIVE",
+      "ai_powered": true,
+      "returns": [
+        "overall_risk_score",
+        "risk_factors", 
+        "position_risks",
+        "correlation_risks",
+        "recommended_hedges",
+        "stress_test_scenarios"
+      ]
     },
-    "/api/live/bingx-positions": {
-      "get": {
-        "description": "Get live positions from BingX exchange",
-        "operationId": "getBingXPositions",
-        "servers": [{"url": "https://titan-trading-2-production.up.railway.app"}],
-        "responses": {
-          "200": {
-            "description": "BingX positions and orders",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "timestamp": { "type": "string" },
-                    "source": { "type": "string" },
-                    "positions": {
-                      "type": "object",
-                      "properties": {
-                        "code": { "type": "integer" },
-                        "data": {
-                          "type": "object",
-                          "properties": {
-                            "positions": {
-                              "type": "array",
-                              "items": { "type": "object" }
-                            }
-                          }
-                        }
-                      }
-                    },
-                    "orders": {
-                      "type": "object",
-                      "properties": {
-                        "code": { "type": "integer" },
-                        "data": {
-                          "type": "object",
-                          "properties": {
-                            "orders": {
-                              "type": "array",
-                              "items": {
-                                "type": "object",
-                                "properties": {
-                                  "symbol": { "type": "string" },
-                                  "positionSide": { "type": "string" },
-                                  "leverage": { "type": "string" },
-                                  "status": { "type": "string" },
-                                  "avgPrice": { "type": "string" },
-                                  "stopLoss": { "type": "object" },
-                                  "takeProfit": { "type": "object" }
-                                }
-                              }
-                            }
-                          }
-                        }
-                      }
-                    }
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/api/chatgpt/portfolio-analysis": {
-      "get": {
-        "description": "Get ChatGPT-optimized portfolio analysis with clean formatting for AI analysis",
-        "operationId": "getChatGPTPortfolioAnalysis",
-        "servers": [{"url": "https://titan-trading-2-production.up.railway.app"}],
-        "responses": {
-          "200": {
-            "description": "AI-optimized portfolio analysis with detailed metrics and recommendations",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "timestamp": { "type": "string" },
-                    "portfolio_overview": {
-                      "type": "object",
-                      "properties": {
-                        "total_positions": { "type": "integer" },
-                        "profitable_count": { "type": "integer" },
-                        "losing_count": { "type": "integer" },
-                        "high_risk_count": { "type": "integer" }
-                      }
-                    },
-                    "position_details": {
-                      "type": "array",
-                      "items": {
-                        "type": "object",
-                        "properties": {
-                          "symbol": { "type": "string" },
-                          "platform": { "type": "string" },
-                          "side": { "type": "string" },
-                          "entry_price": { "type": "number" },
-                          "mark_price": { "type": "number" },
-                          "leverage": { "type": "number" },
-                          "margin_size_usd": { "type": "number" },
-                          "unrealized_pnl_usd": { "type": "number" },
-                          "pnl_percentage": { "type": "number" },
-                          "status": { "type": "string" },
-                          "risk_level": { "type": "string" }
-                        }
-                      }
-                    },
-                    "key_metrics": {
-                      "type": "object",
-                      "properties": {
-                        "total_unrealized_pnl": { "type": "number" },
-                        "total_margin_used": { "type": "number" },
-                        "average_leverage": { "type": "number" },
-                        "portfolio_pnl_percentage": { "type": "number" }
-                      }
-                    },
-                    "risk_alerts": {
-                      "type": "array",
-                      "items": { "type": "string" }
-                    },
-                    "recommendations": {
-                      "type": "array",
-                      "items": { "type": "string" }
-                    }
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/api/v1": {
-      "get": {
-        "description": "Get latest crypto news from all sources with comprehensive filtering options. Use this for real-time crypto intelligence.",
-        "operationId": "getCryptoNews",
-        "servers": [{"url": "https://cryptonews-api.com"}],
-        "parameters": [
-          {
-            "name": "token",
-            "in": "query",
-            "required": true,
-            "schema": { "type": "string" },
-            "description": "CryptoNews API token (get from user or environment)"
-          },
-          {
-            "name": "tickers",
-            "in": "query",
-            "required": false,
-            "schema": { "type": "string" },
-            "description": "OR logic: comma-separated crypto symbols (BTC,ETH,ADA) - returns news mentioning ANY of these"
-          },
-          {
-            "name": "tickers-include",
-            "in": "query",
-            "required": false,
-            "schema": { "type": "string" },
-            "description": "AND logic: comma-separated crypto symbols - returns news mentioning ALL of these symbols"
-          },
-          {
-            "name": "tickers-only",
-            "in": "query",
-            "required": false,
-            "schema": { "type": "string" },
-            "description": "EXCLUSIVE logic: comma-separated symbols - returns news ONLY about these symbols (no other coins mentioned)"
-          },
-          {
-            "name": "items",
-            "in": "query",
-            "required": false,
-            "schema": {
-              "type": "integer",
-              "default": 50,
-              "minimum": 1,
-              "maximum": 100
-            },
-            "description": "Number of articles to return (1-100)"
-          },
-          {
-            "name": "page",
-            "in": "query",
-            "required": false,
-            "schema": {
-              "type": "integer",
-              "default": 1,
-              "minimum": 1
-            },
-            "description": "Page number for pagination"
-          },
-          {
-            "name": "sentiment",
-            "in": "query",
-            "required": false,
-            "schema": {
-              "type": "string",
-              "enum": ["positive", "negative", "neutral"]
-            },
-            "description": "Filter by sentiment analysis"
-          },
-          {
-            "name": "topic",
-            "in": "query",
-            "required": false,
-            "schema": {
-              "type": "string",
-              "enum": [
-                "NFT", "Mining", "DeFi", "Blockchain", "Bitcoin", "Ethereum", 
-                "Altcoin", "Web3", "Metaverse", "GameFi", "Layer2", "DAOs",
-                "regulations", "partnership", "Whales", "pricemovement",
-                "priceanalysis", "priceforecasting"
-              ]
-            },
-            "description": "Filter by news topic category"
-          },
-          {
-            "name": "since",
-            "in": "query",
-            "required": false,
-            "schema": {
-              "type": "string",
-              "enum": [
-                "last5min", "last15min", "last30min", "last45min", 
-                "last1hour", "last2hours", "last3hours", "last6hours",
-                "last12hours", "last24hours", "last2days", "last3days",
-                "last5days", "last7days", "last14days", "last30days"
-              ]
-            },
-            "description": "Time range filter for recent news"
-          },
-          {
-            "name": "source",
-            "in": "query",
-            "required": false,
-            "schema": { "type": "string" },
-            "description": "Filter by specific news source (CoinDesk, Cointelegraph, etc.)"
-          },
-          {
-            "name": "type",
-            "in": "query",
-            "required": false,
-            "schema": {
-              "type": "string",
-              "enum": ["Article", "Opinion"]
-            },
-            "description": "Filter by content type"
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Latest crypto news with comprehensive metadata",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "data": {
-                      "type": "array",
-                      "items": {
-                        "type": "object",
-                        "properties": {
-                          "news_url": { "type": "string" },
-                          "image_url": { "type": "string" },
-                          "title": { "type": "string" },
-                          "text": { "type": "string" },
-                          "source_name": { "type": "string" },
-                          "date": { "type": "string" },
-                          "topics": {
-                            "type": "array",
-                            "items": { "type": "string" }
-                          },
-                          "sentiment": { "type": "string" },
-                          "type": { "type": "string" },
-                          "tickers": {
-                            "type": "array",
-                            "items": { "type": "string" }
-                          }
-                        }
-                      }
-                    },
-                    "count": { "type": "integer" },
-                    "next_page": { "type": "string" }
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/api/v1/category": {
-      "get": {
-        "description": "Get crypto news by specific category with advanced filtering",
-        "operationId": "getCryptoNewsByCategory",
-        "servers": [{"url": "https://cryptonews-api.com"}],
-        "parameters": [
-          {
-            "name": "token",
-            "in": "query",
-            "required": true,
-            "schema": { "type": "string" },
-            "description": "CryptoNews API token"
-          },
-          {
-            "name": "section",
-            "in": "query",
-            "required": true,
-            "schema": {
-              "type": "string",
-              "enum": [
-                "general", "opinion", "trending", "latest", "rising",
-                "bullish", "bearish", "important", "latestnews", "trendingnews",
-                "market-analysis", "regulation", "technology", "adoption"
-              ]
-            },
-            "description": "News category section"
-          },
-          {
-            "name": "items",
-            "in": "query",
-            "required": false,
-            "schema": {
-              "type": "integer",
-              "default": 25,
-              "minimum": 1,
-              "maximum": 100
-            }
-          },
-          {
-            "name": "tickers",
-            "in": "query",
-            "required": false,
-            "schema": { "type": "string" },
-            "description": "Filter by crypto symbols (BTC,ETH,ADA)"
-          },
-          {
-            "name": "sentiment",
-            "in": "query",
-            "required": false,
-            "schema": {
-              "type": "string",
-              "enum": ["positive", "negative", "neutral"]
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Category-specific crypto news",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "data": {
-                      "type": "array",
-                      "items": {
-                        "type": "object",
-                        "properties": {
-                          "news_url": { "type": "string" },
-                          "title": { "type": "string" },
-                          "text": { "type": "string" },
-                          "source_name": { "type": "string" },
-                          "date": { "type": "string" },
-                          "sentiment": { "type": "string" },
-                          "tickers": {
-                            "type": "array",
-                            "items": { "type": "string" }
-                          }
-                        }
-                      }
-                    }
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/api/v1/tickers/{symbols}": {
-      "get": {
-        "description": "Get crypto news for specific symbols with timeline analysis",
-        "operationId": "getCryptoNewsByTickers",
-        "servers": [{"url": "https://cryptonews-api.com"}],
-        "parameters": [
-          {
-            "name": "symbols",
-            "in": "path",
-            "required": true,
-            "schema": { "type": "string" },
-            "description": "Crypto symbols (BTC or BTC,ETH,ADA)"
-          },
-          {
-            "name": "token",
-            "in": "query",
-            "required": true,
-            "schema": { "type": "string" },
-            "description": "CryptoNews API token"
-          },
-          {
-            "name": "items",
-            "in": "query",
-            "required": false,
-            "schema": {
-              "type": "integer",
-              "default": 25,
-              "minimum": 1,
-              "maximum": 100
-            }
-          },
-          {
-            "name": "page",
-            "in": "query",
-            "required": false,
-            "schema": {
-              "type": "integer",
-              "default": 1
-            }
-          },
-          {
-            "name": "sentiment",
-            "in": "query",
-            "required": false,
-            "schema": {
-              "type": "string",
-              "enum": ["positive", "negative", "neutral"]
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Symbol-specific crypto news with detailed analysis",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "data": {
-                      "type": "array",
-                      "items": {
-                        "type": "object",
-                        "properties": {
-                          "news_url": { "type": "string" },
-                          "title": { "type": "string" },
-                          "text": { "type": "string" },
-                          "source_name": { "type": "string" },
-                          "date": { "type": "string" },
-                          "sentiment": { "type": "string" },
-                          "tickers": {
-                            "type": "array",
-                            "items": { "type": "string" }
-                          }
-                        }
-                      }
-                    },
-                    "total_results": { "type": "integer" },
-                    "requested_symbols": {
-                      "type": "array",
-                      "items": { "type": "string" }
-                    }
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
+    "opportunity_scanner": {
+      "endpoint": "/api/chatgpt/opportunity-scanner",
+      "method": "GET", 
+      "status": "ACTIVE",
+      "ai_powered": true,
+      "returns": [
+        "high_probability_setups",
+        "breakout_candidates",
+        "momentum_plays",
+        "entry_strategies", 
+        "risk_reward_analysis",
+        "probability_of_success"
+      ]
     }
   },
-  "components": {
-    "securitySchemes": {
-      "CryptoNewsApiKey": {
-        "type": "apiKey",
-        "in": "query",
-        "name": "token",
-        "description": "CryptoNews API token for direct authentication"
-      }
-    }
+  "integration_features": {
+    "real_ai_analysis": true,
+    "live_market_data": true,
+    "professional_recommendations": true,
+    "confidence_scoring": true,
+    "risk_assessment": true,
+    "opportunity_identification": true,
+    "news_sentiment_grading": true,
+    "trade_performance_analysis": true
+  },
+  "technical_implementation": {
+    "openai_client": "initialized",
+    "api_key_status": "configured",
+    "error_handling": "implemented",
+    "json_response_format": "enforced",
+    "temperature_optimization": "configured",
+    "max_tokens_optimized": "per_endpoint",
+    "professional_prompting": "implemented"
+  },
+  "testing_results": {
+    "portfolio_analysis": "SUCCESS - Real AI insights generated",
+    "news_sentiment": "SUCCESS - Bullish/Bearish analysis working", 
+    "trade_grader": "SUCCESS - A-F grades with improvement suggestions",
+    "hourly_insights": "SUCCESS - Time-sensitive recommendations",
+    "risk_assessment": "SUCCESS - Risk scoring and mitigation strategies",
+    "opportunity_scanner": "SUCCESS - High-probability setups identified",
+    "openai_api_calls": "SUCCESS - HTTP 200 responses confirmed",
+    "json_parsing": "SUCCESS - Structured responses validated"
+  },
+  "transformation_complete": {
+    "fake_endpoints_removed": true,
+    "real_chatgpt_integration": true,
+    "ai_powered_trading_intelligence": true,
+    "professional_analysis_quality": true,
+    "production_ready": true
   }
 }

@@ -1492,79 +1492,216 @@ def get_kraken_trading_stats():
         return jsonify({'error': 'Internal server error'}), 500
 
 # ============================================================================
-# CHATGPT ANALYSIS ENDPOINTS
+# REAL CHATGPT AI ANALYSIS ENDPOINTS - POWERED BY OPENAI GPT-4
 # ============================================================================
 
-@app.route('/api/chatgpt/account-summary', methods=['GET'])
-def get_chatgpt_account_summary():
-    """Get AI-powered account summary"""
-    try:
-        # Get data from all available exchanges
-        summary_data = {}
-        for exchange in exchange_manager.get_available_exchanges():
-            try:
-                balance = trading_functions.get_balance(exchange)
-                summary_data[exchange] = {
-                    'balance': balance,
-                    'status': 'active'
-                }
-            except:
-                summary_data[exchange] = {'status': 'error'}
-        
-        ai_summary = {
-            'analysis_type': 'account_summary',
-            'exchanges_analyzed': list(summary_data.keys()),
-            'account_data': summary_data,
-            'ai_insights': [
-                'Account analysis completed',
-                f'Found {len(summary_data)} exchange accounts',
-                'Portfolio diversification recommended'
-            ],
-            'timestamp': datetime.now().isoformat()
-        }
-        
-        return jsonify(ai_summary)
-    except Exception as e:
-        logger.error(f"Error generating ChatGPT account summary: {str(e)}")
-        return jsonify({'error': 'Failed to generate account summary'}), 500
+# Import the real AI trading intelligence
+try:
+    from openai_trading_intelligence import trading_ai
+    openai_available = True
+    logger.info("OpenAI Trading Intelligence loaded successfully")
+except ImportError as e:
+    logger.warning(f"OpenAI not available: {e}")
+    openai_available = False
 
 @app.route('/api/chatgpt/portfolio-analysis', methods=['GET'])
 def get_chatgpt_portfolio_analysis():
-    """Get AI-powered portfolio analysis"""
+    """Get REAL AI-powered portfolio analysis using OpenAI GPT-4"""
     try:
-        # Gather portfolio data from all exchanges
-        portfolio_data = {}
-        total_assets = 0
+        if not openai_available:
+            return jsonify({'error': 'AI analysis requires OpenAI integration'}), 503
         
+        # Gather real portfolio data from all exchanges
+        portfolio_data = {}
         for exchange in exchange_manager.get_available_exchanges():
             try:
+                balance = trading_functions.get_balance(exchange)
                 portfolio = trading_functions.get_portfolio(exchange)
-                portfolio_data[exchange] = portfolio
-                total_assets += len(portfolio.get('assets', []))
-            except:
-                portfolio_data[exchange] = {'error': 'Unable to fetch data'}
+                portfolio_data[exchange] = {
+                    'balance': balance,
+                    'portfolio': portfolio,
+                    'status': 'active'
+                }
+            except Exception as ex:
+                portfolio_data[exchange] = {'status': 'error', 'error': str(ex)}
         
-        ai_analysis = {
-            'analysis_type': 'portfolio_analysis',
-            'portfolio_overview': {
-                'total_exchanges': len(portfolio_data),
-                'total_assets': total_assets,
-                'diversification_score': min(total_assets * 10, 100)  # Simple score
-            },
-            'exchange_portfolios': portfolio_data,
-            'ai_recommendations': [
-                'Consider rebalancing portfolio across exchanges',
-                'Monitor high-volatility assets closely',
-                'Diversification appears adequate' if total_assets > 5 else 'Consider increasing diversification'
-            ],
-            'risk_assessment': 'moderate',
-            'timestamp': datetime.now().isoformat()
-        }
+        # Get REAL AI analysis from OpenAI GPT-4
+        ai_analysis = trading_ai.analyze_portfolio(portfolio_data)
         
         return jsonify(ai_analysis)
     except Exception as e:
         logger.error(f"Error generating ChatGPT portfolio analysis: {str(e)}")
-        return jsonify({'error': 'Failed to generate portfolio analysis'}), 500
+        return jsonify({'error': 'Failed to generate AI portfolio analysis'}), 500
+
+@app.route('/api/chatgpt/news-sentiment', methods=['POST'])
+def get_chatgpt_news_sentiment():
+    """Grade news articles for bullish/bearish sentiment using AI"""
+    try:
+        if not openai_available:
+            return jsonify({'error': 'AI sentiment analysis requires OpenAI integration'}), 503
+        
+        news_data = request.get_json()
+        if not news_data or 'articles' not in news_data:
+            return jsonify({'error': 'Must provide articles array in request body'}), 400
+        
+        # Get REAL AI sentiment analysis from OpenAI GPT-4
+        sentiment_analysis = trading_ai.grade_news_sentiment(news_data['articles'])
+        
+        return jsonify(sentiment_analysis)
+    except Exception as e:
+        logger.error(f"Error in ChatGPT news sentiment analysis: {str(e)}")
+        return jsonify({'error': 'Failed to analyze news sentiment'}), 500
+
+@app.route('/api/chatgpt/trade-grader', methods=['POST'])
+def get_chatgpt_trade_grader():
+    """Grade trade performance and provide improvement suggestions"""
+    try:
+        if not openai_available:
+            return jsonify({'error': 'AI trade grading requires OpenAI integration'}), 503
+        
+        trade_data = request.get_json()
+        if not trade_data:
+            return jsonify({'error': 'Must provide trade data in request body'}), 400
+        
+        # Get REAL AI trade grading from OpenAI GPT-4
+        trade_grade = trading_ai.grade_trade_performance(trade_data)
+        
+        return jsonify(trade_grade)
+    except Exception as e:
+        logger.error(f"Error in ChatGPT trade grading: {str(e)}")
+        return jsonify({'error': 'Failed to grade trade performance'}), 500
+
+@app.route('/api/chatgpt/hourly-insights', methods=['GET'])
+def get_chatgpt_hourly_insights():
+    """Get AI-powered hourly trading insights for current conditions"""
+    try:
+        if not openai_available:
+            return jsonify({'error': 'AI insights require OpenAI integration'}), 503
+        
+        # Gather current market and portfolio data
+        market_data = {}
+        portfolio_data = {}
+        
+        for exchange in exchange_manager.get_available_exchanges():
+            try:
+                # Get market data
+                btc_ticker = trading_functions.get_ticker(exchange, 'BTC/USDT')
+                eth_ticker = trading_functions.get_ticker(exchange, 'ETH/USDT')
+                market_data[exchange] = {
+                    'BTC': btc_ticker,
+                    'ETH': eth_ticker
+                }
+                
+                # Get portfolio data  
+                balance = trading_functions.get_balance(exchange)
+                portfolio_data[exchange] = balance
+            except:
+                market_data[exchange] = {'status': 'error'}
+                portfolio_data[exchange] = {'status': 'error'}
+        
+        # Get REAL AI insights from OpenAI GPT-4
+        ai_insights = trading_ai.generate_hourly_insights(market_data, portfolio_data)
+        
+        return jsonify(ai_insights)
+    except Exception as e:
+        logger.error(f"Error generating ChatGPT hourly insights: {str(e)}")
+        return jsonify({'error': 'Failed to generate AI insights'}), 500
+
+@app.route('/api/chatgpt/risk-assessment', methods=['GET'])
+def get_chatgpt_risk_assessment():
+    """Get AI-powered risk assessment of current portfolio"""
+    try:
+        if not openai_available:
+            return jsonify({'error': 'AI risk assessment requires OpenAI integration'}), 503
+        
+        # Gather portfolio and market condition data
+        portfolio_data = {}
+        market_conditions = {}
+        
+        for exchange in exchange_manager.get_available_exchanges():
+            try:
+                portfolio = trading_functions.get_portfolio(exchange)
+                balance = trading_functions.get_balance(exchange)
+                portfolio_data[exchange] = {'portfolio': portfolio, 'balance': balance}
+                
+                # Get market conditions (volatility indicators)
+                btc_ticker = trading_functions.get_ticker(exchange, 'BTC/USDT')
+                market_conditions[exchange] = btc_ticker
+            except:
+                portfolio_data[exchange] = {'status': 'error'}
+                market_conditions[exchange] = {'status': 'error'}
+        
+        # Get REAL AI risk assessment from OpenAI GPT-4
+        risk_assessment = trading_ai.assess_risk_profile(portfolio_data, market_conditions)
+        
+        return jsonify(risk_assessment)
+    except Exception as e:
+        logger.error(f"Error in ChatGPT risk assessment: {str(e)}")
+        return jsonify({'error': 'Failed to assess portfolio risk'}), 500
+
+@app.route('/api/chatgpt/opportunity-scanner', methods=['GET'])
+def get_chatgpt_opportunity_scanner():
+    """AI-powered opportunity scanner for new trades"""
+    try:
+        if not openai_available:
+            return jsonify({'error': 'AI opportunity scanning requires OpenAI integration'}), 503
+        
+        # Gather market data
+        market_data = {}
+        for exchange in exchange_manager.get_available_exchanges():
+            try:
+                # Get top crypto tickers
+                tickers = {}
+                for symbol in ['BTC/USDT', 'ETH/USDT', 'SOL/USDT', 'ADA/USDT']:
+                    try:
+                        ticker = trading_functions.get_ticker(exchange, symbol)
+                        tickers[symbol] = ticker
+                    except:
+                        continue
+                market_data[exchange] = tickers
+            except:
+                market_data[exchange] = {'status': 'error'}
+        
+        # Get recent news for context (if available)
+        news_data = {'status': 'News integration available via direct CryptoNews API'}
+        
+        # Get REAL AI opportunity analysis from OpenAI GPT-4
+        opportunities = trading_ai.scan_opportunities(market_data, news_data)
+        
+        return jsonify(opportunities)
+    except Exception as e:
+        logger.error(f"Error in ChatGPT opportunity scanning: {str(e)}")
+        return jsonify({'error': 'Failed to scan for opportunities'}), 500
+
+@app.route('/api/chatgpt/account-summary', methods=['GET'])
+def get_chatgpt_account_summary():
+    """Get comprehensive AI-powered account summary"""
+    try:
+        if not openai_available:
+            return jsonify({'error': 'AI account analysis requires OpenAI integration'}), 503
+        
+        # Gather comprehensive account data
+        account_data = {}
+        for exchange in exchange_manager.get_available_exchanges():
+            try:
+                balance = trading_functions.get_balance(exchange)
+                portfolio = trading_functions.get_portfolio(exchange)
+                account_data[exchange] = {
+                    'balance': balance,
+                    'portfolio': portfolio,
+                    'status': 'active'
+                }
+            except:
+                account_data[exchange] = {'status': 'error'}
+        
+        # Get REAL AI account analysis from OpenAI GPT-4
+        ai_summary = trading_ai.analyze_portfolio(account_data)
+        ai_summary['analysis_type'] = 'account_summary'
+        
+        return jsonify(ai_summary)
+    except Exception as e:
+        logger.error(f"Error generating ChatGPT account summary: {str(e)}")
+        return jsonify({'error': 'Failed to generate AI account summary'}), 500
 
 @app.errorhandler(Exception)
 def handle_unexpected_error(error):

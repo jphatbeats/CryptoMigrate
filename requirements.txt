@@ -13,3 +13,5 @@ aiohttp
 pandas
 pytz
 schedule
+openai
+openai

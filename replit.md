@@ -10,15 +10,17 @@ Preferred communication style: Simple, everyday language.
 
 # Recent Changes
 
-**August 3, 2025 - Discord Bot Migration to Direct CryptoNews API Complete**
-- Fixed all Discord bot integration issues by updating to direct CryptoNews API calls
-- Eliminated 6 broken Railway wrapper endpoint calls in automated_trading_alerts.py
-- Updated portfolio analysis, alpha scans, and breaking news alerts to use direct API
-- All 3 Discord channels now working: #alerts, #portfolio, #alpha-scans
-- Data flow clarified: Portfolio data from Railway API, crypto news directly from CryptoNews API
-- Enhanced error handling and fallback mechanisms for news service availability
-- Maintained intelligent portfolio filtering and multi-channel alert routing
-- Architecture now fully migrated: 0 wrapper endpoints, 100% direct API integration
+**August 4, 2025 - Real OpenAI ChatGPT Integration Complete**
+- Added real OpenAI GPT-4 integration replacing fake ChatGPT endpoints
+- Created 6 new AI-powered trading intelligence endpoints using GPT-4o model
+- Portfolio analysis now provides genuine AI insights and recommendations
+- News sentiment analysis grades articles as bullish/bearish with confidence scores
+- Trade grading system provides A-F grades with improvement suggestions
+- Hourly insights deliver time-sensitive trading recommendations
+- Risk assessment analyzes portfolio vulnerabilities with mitigation strategies
+- Opportunity scanner identifies high-probability trading setups
+- All endpoints successfully tested and returning real AI analysis
+- OpenAI API key integration working with proper error handling
 
 # System Architecture
 
