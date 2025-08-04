@@ -1,33 +1,19 @@
 #!/bin/bash
-echo "🚀 Pushing Discord Bot Integration Changes to GitHub"
-echo "=================================================="
+# Push Discord Bot Integration to GitHub
 
-# Remove git lock if it exists
-if [ -f .git/index.lock ]; then
-    echo "🔓 Removing git lock file..."
-    rm -f .git/index.lock
-fi
+echo "🚀 Pushing Discord bot integration to GitHub..."
 
-# Add the modified files
-echo "📝 Adding modified files..."
-git add automated_trading_alerts.py
-git add requirements.txt  
-git add replit.md
-git add simple_discord_test.py
-git add consolidated_alerts_test.py
-git add DISCORD_INTEGRATION_SUMMARY.md
+# Clear git locks
+rm -f .git/index.lock .git/HEAD.lock .git/config.lock
 
-# Show status
-echo "📊 Git status:"
-git status
-
-# Commit changes
-echo "💾 Committing changes..."
-git commit -m "Discord bot integration: Replace webhooks with TITAN BOT#6444, add AI-enhanced alerts"
+# Set remote URL with token (replace YOUR_TOKEN with your actual token)
+echo "Setting GitHub remote URL..."
+git remote set-url origin https://YOUR_TOKEN@github.com/jphatbeats/titan-trading-2.git
 
 # Push to GitHub
-echo "🌐 Pushing to GitHub..."
+echo "Pushing changes..."
 git push origin main
 
-echo "✅ Discord bot changes pushed to GitHub!"
-echo "🎯 Railway should now detect the changes and redeploy"
+echo "✅ Discord integration pushed to GitHub!"
+echo "🚂 Railway will now auto-deploy your Discord bot"
+echo "📝 Next: Add DISCORD_TOKEN environment variable to Railway"
