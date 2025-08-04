@@ -16,6 +16,7 @@ import threading
 import asyncio
 import aiohttp
 import requests
+import discord
 
 # Import crypto news module
 try:
@@ -39,11 +40,12 @@ except Exception as e:
     openai_available = False
     print(f"❌ OpenAI initialization error: {e}")
 
-# Discord Multi-Channel Configuration
-DISCORD_WEBHOOKS = {
-    'alerts': os.getenv('DISCORD_ALERTS_WEBHOOK'),        # Breaking news, risks (1398000506068009032)
-    'portfolio': os.getenv('DISCORD_PORTFOLIO_WEBHOOK'),  # Portfolio analysis (1399451217372905584)  
-    'alpha_scans': os.getenv('DISCORD_ALPHA_WEBHOOK')     # Trading opportunities (1399790636990857277)
+# Discord Bot Configuration (using Discord.py instead of webhooks)
+DISCORD_TOKEN = os.getenv('DISCORD_TOKEN')
+DISCORD_CHANNELS = {
+    'alerts': 1398000506068009032,        # Breaking news, risks
+    'portfolio': 1399451217372905584,     # Portfolio analysis  
+    'alpha_scans': 1399790636990857277    # Trading opportunities
 }
 
 # Legacy single webhook support (backward compatible)
@@ -446,37 +448,47 @@ async def fetch_railway_api(endpoint):
         return None
 
 async def send_discord_alert(message, channel='portfolio'):
-    """Send alert to Discord channel via webhook"""
+    """Send alert to Discord channel via bot (create temporary connection)"""
     try:
-        # Get webhook URL
-        webhook_url = DISCORD_WEBHOOKS.get(channel) or LEGACY_DISCORD_WEBHOOK
-        if not webhook_url:
-            print(f"❌ No Discord webhook configured for {channel}")
+        if not DISCORD_TOKEN:
+            print("❌ No Discord token configured")
             return False
         
-        # Channel-specific bot names
-        bot_names = {
-            'alerts': 'Market Alerts Bot',
-            'portfolio': 'Portfolio Analysis Bot',
-            'alpha_scans': 'Alpha Scanner Bot'
-        }
+        # Get channel ID
+        channel_id = DISCORD_CHANNELS.get(channel)
+        if not channel_id:
+            print(f"❌ No Discord channel configured for {channel}")
+            return False
         
-        payload = {
-            "content": message,
-            "username": bot_names.get(channel, "Trading Alerts Bot")
-        }
+        # Create temporary Discord client for this message
+        intents = discord.Intents.default()
+        intents.message_content = True
+        client = discord.Client(intents=intents)
         
-        async with aiohttp.ClientSession() as session:
-            async with session.post(webhook_url, json=payload) as response:
-                if response.status == 204:
-                    print(f"✅ Discord alert sent to #{channel}")
-                    return True
+        @client.event
+        async def on_ready():
+            try:
+                # Get the channel and send message
+                discord_channel = client.get_channel(channel_id)
+                if discord_channel:
+                    await discord_channel.send(message)
+                    print(f"✅ Discord alert sent to #{channel} ({channel_id})")
                 else:
-                    print(f"❌ Discord webhook failed: {response.status}")
-                    return False
+                    print(f"❌ Discord channel {channel_id} not found")
+                
+                # Close the connection
+                await client.close()
+                
+            except Exception as e:
+                print(f"❌ Discord send error: {e}")
+                await client.close()
+        
+        # Start the bot
+        await client.start(DISCORD_TOKEN)
+        return True
                     
     except Exception as e:
-        print(f"❌ Discord send error: {e}")
+        print(f"❌ Discord connection error: {e}")
         return False
 
 def prepare_alert_data(alerts):
