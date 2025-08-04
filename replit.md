@@ -10,6 +10,15 @@ Preferred communication style: Simple, everyday language.
 
 # Recent Changes
 
+**August 4, 2025 - Enhanced Discord Alert Intelligence Complete**
+- Upgraded basic Discord alerts to comprehensive trading analysis
+- Added severity-based loss analysis with specific stop loss suggestions
+- Enhanced RSI alerts with profit-taking and entry strategies
+- Implemented position size context and risk level assessments
+- Added detailed profit management strategies with calculated amounts
+- Replaced generic warnings with actionable trading recommendations
+- User confirmed files updated on GitHub for Railway deployment
+
 **August 4, 2025 - Discord Bot Consolidation Complete**
 - Successfully integrated Discord bot functionality into Replit using DISCORD_TOKEN
 - Replaced webhook system with discord.py library for TITAN BOT#6444 integration
