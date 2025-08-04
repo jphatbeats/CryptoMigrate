@@ -10,6 +10,16 @@ Preferred communication style: Simple, everyday language.
 
 # Recent Changes
 
+**August 4, 2025 - Degen/Memes Discord Channel Integration Complete**
+- Added dedicated #degen-memes Discord channel (ID: 1401971493096915067) for viral crypto opportunities
+- Implemented comprehensive viral content scanner with AI-powered analysis using GPT-4o
+- Created specialized degen opportunity scanner focusing on airdrops, meme coins, and high-risk plays
+- Added 3x daily degen scans (8AM, 2PM, 8PM UTC) for maximum viral content coverage
+- Enhanced Discord bot with degen channel support and viral play filtering
+- Integrated social sentiment data from LunarCrush for trending meme coin detection
+- Added proper risk disclaimers and micro-position sizing recommendations
+- System now covers 4 Discord channels: alerts, portfolio, alpha-scans, and degen-memes
+
 **August 4, 2025 - Data Quality & Intelligence Overhaul Complete**
 - ELIMINATED CSV fallbacks - system now uses LIVE DATA ONLY for maximum accuracy
 - FIXED news date filtering - all alpha scans now use current/24h news (no stale 13-year-old trades)
@@ -122,6 +132,7 @@ Preferred communication style: Simple, everyday language.
 - **#alerts**: Breaking news, risk alerts, market updates (every 15 min) + Sundown Digest (Mon-Fri 7pm ET)
 - **#portfolio**: Position analysis, trading signals, PnL monitoring (hourly)  
 - **#alpha-scans**: Trading opportunities, early entry signals (twice daily)
+- **#degen-memes**: Viral plays, airdrops, meme coins, early gems (3x daily: 8AM, 2PM, 8PM UTC)
 
 **Webhook Management**
 - Environment variable configuration for multiple webhook URLs
