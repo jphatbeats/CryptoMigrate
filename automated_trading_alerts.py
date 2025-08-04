@@ -523,12 +523,13 @@ async def fetch_dexscreener_trending():
     try:
         async with aiohttp.ClientSession() as session:
             # Get trending pairs from DexScreener
-            url = "https://api.dexscreener.com/latest/dex/tokens/trending"
-            async with session.get(url) as response:
+            url = "https://api.dexscreener.com/latest/dex/search?q=trending"
+            async with session.get(url, timeout=10) as response:
                 if response.status == 200:
                     data = await response.json()
-                    print(f"✅ DexScreener trending data fetched: {len(data.get('pairs', []))} pairs")
-                    return data
+                    pairs = data.get('pairs', []) if data else []
+                    print(f"✅ DexScreener trending data fetched: {len(pairs)} pairs")
+                    return {'pairs': pairs}
                 else:
                     print(f"❌ DexScreener API error: {response.status}")
                     return None
