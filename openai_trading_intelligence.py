@@ -421,7 +421,7 @@ class TradingIntelligence:
             {json.dumps(viral_plays, indent=2)}
 
             DEXSCREENER TRENDING (New/Small cap tokens):
-            {json.dumps(dex_trending, indent=2)}
+            {json.dumps(str(dex_trending)[:2000], indent=2)}
 
             SOCIAL TRENDING (Exclude major coins):
             {json.dumps(trending_social, indent=2)}

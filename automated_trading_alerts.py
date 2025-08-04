@@ -1163,25 +1163,63 @@ async def run_degen_memes_scan():
                     degen_message += f"\n"
                     viral_count += 1
         
-        # DexScreener trending (actual new/viral tokens)  
+        # DexScreener boosted tokens (viral momentum plays)
         dex_count = 0
-        if dex_trending and dex_trending.get('pairs'):
-            degen_message += f"🔥 **DEXSCREENER HOT:**\n"
-            for pair in dex_trending['pairs'][:8]:  # Check more pairs
-                token_name = pair.get('baseToken', {}).get('name', 'Unknown')
-                symbol = pair.get('baseToken', {}).get('symbol', '')
-                price_change = pair.get('priceChange', {}).get('h24', 0)
-                volume = pair.get('volume', {}).get('h24', 0)
+        if dex_trending:
+            if dex_trending.get('latest_boosted'):
+                degen_message += f"🔥 **DEXSCREENER BOOSTED (VIRAL MOMENTUM):**\n"
+                boosted_tokens = dex_trending['latest_boosted'][:6]  # Top 6 boosted
                 
-                # Show any meaningful movement (lowered threshold)
-                if price_change != 0 and abs(price_change) > 5:  
-                    change_emoji = "🚀" if price_change > 50 else "📈" if price_change > 0 else "📉"
-                    degen_message += f"{change_emoji} **${symbol}** ({token_name}) {price_change:+.1f}% | Vol: ${volume:,.0f}\n"
-                    dex_count += 1
-                    
-            if dex_count == 0:
-                degen_message += "⚠️ No major price movements detected in trending tokens\n"
-            degen_message += f"\n"
+                for token in boosted_tokens:
+                    try:
+                        description = token.get('description', 'New viral token')
+                        # Truncate description  
+                        if len(description) > 60:
+                            description = description[:60] + '...'
+                        
+                        boost_amount = token.get('amount', 0)
+                        chain_id = token.get('chainId', 'multi')
+                        
+                        # Extract token info from URL if available
+                        token_url = token.get('url', '')
+                        token_name = 'VIRAL'
+                        if '/tokens/' in token_url:
+                            try:
+                                token_part = token_url.split('/tokens/')[-1]
+                                if '-' in token_part:
+                                    token_name = token_part.split('-')[0][:8].upper()
+                            except:
+                                pass
+                        
+                        degen_message += f"🚀 **${token_name}** - {description}\n"
+                        degen_message += f"   💰 Boost: ${boost_amount} | Chain: {chain_id}\n"
+                        dex_count += 1
+                    except Exception as token_error:
+                        continue  # Skip problematic tokens
+                
+                if dex_count == 0:
+                    degen_message += "⚠️ No boosted tokens with clear momentum today\n"
+                degen_message += f"\n"
+                
+            elif dex_trending.get('latest_profiles'):
+                degen_message += f"🆕 **NEW TOKEN LAUNCHES:**\n"
+                profiles = dex_trending['latest_profiles'][:4]  # Top 4 new launches
+                
+                for profile in profiles:
+                    try:
+                        description = profile.get('description', 'New project launching')
+                        if len(description) > 50:
+                            description = description[:50] + '...'
+                        
+                        chain_id = profile.get('chainId', 'multi')
+                        
+                        degen_message += f"💎 **New Launch** - {description}\n"
+                        degen_message += f"   🔗 Chain: {chain_id}\n"
+                        dex_count += 1
+                    except Exception as profile_error:
+                        continue
+                
+                degen_message += f"\n"
         
         # Social trending (Small caps only)
         if trending_coins:

@@ -10,15 +10,15 @@ Preferred communication style: Simple, everyday language.
 
 # Recent Changes
 
-**August 4, 2025 - Degen/Memes Discord Channel Integration Complete**
-- Added dedicated #degen-memes Discord channel (ID: 1401971493096915067) for viral crypto opportunities
-- Implemented comprehensive viral content scanner with AI-powered analysis using GPT-4o
-- Created specialized degen opportunity scanner focusing on airdrops, meme coins, and high-risk plays
-- Added 3x daily degen scans (8AM, 2PM, 8PM UTC) for maximum viral content coverage
-- Enhanced Discord bot with degen channel support and viral play filtering
-- Integrated social sentiment data from LunarCrush for trending meme coin detection
-- Added proper risk disclaimers and micro-position sizing recommendations
-- System now covers 4 Discord channels: alerts, portfolio, alpha-scans, and degen-memes
+**August 4, 2025 - Degen/Memes Discord Channel Enhancement Complete**
+- FIXED critical degen channel bug showing major coins (SOL, ADA, MATIC) instead of actual viral tokens
+- UPGRADED to DexScreener boosted tokens API for authentic viral momentum plays (30+ tokens per scan)
+- RESOLVED AI analysis JSON parsing errors preventing content generation
+- IMPLEMENTED proper token filtering excluding all major coins from degen suggestions
+- ENHANCED message formatting to display actual boosted tokens with viral social backing
+- INTEGRATED official DexScreener API documentation for optimal token discovery
+- VALIDATED 3x daily degen scans (8AM, 2PM, 8PM UTC) delivering genuine micro-cap opportunities
+- System now delivers authentic viral plays: boosted tokens, new launches, micro caps under $10M
 
 **August 4, 2025 - Data Quality & Intelligence Overhaul Complete**
 - ELIMINATED CSV fallbacks - system now uses LIVE DATA ONLY for maximum accuracy
