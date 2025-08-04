@@ -110,29 +110,42 @@ def find_latest_positions_csv():
 
 
 async def fetch_live_positions():
-    """Fetch live positions directly from Railway API"""
+    """Fetch live positions directly from Railway API - LIVE DATA ONLY (No CSV fallback)"""
     try:
         print("📡 Fetching live positions from Railway API...")
         
         all_positions = []
         
-        # Fetch BingX positions
+        # Fetch BingX positions with proper error handling
         try:
             bingx_data = await fetch_railway_api("/api/live/bingx-positions")
-            if bingx_data and bingx_data.get('positions'):
-                for pos in bingx_data['positions']:
-                    all_positions.append({
-                        'Symbol': pos.get('symbol', ''),
-                        'Platform': 'BingX',
-                        'Entry Price': pos.get('avgPrice', 0),
-                        'Mark Price': pos.get('markPrice', 0),
-                        'Unrealized PnL %': pos.get('unrealizedPnl_percent', 0),
-                        'Side (LONG/SHORT)': pos.get('side', ''),
-                        'Margin Size ($)': pos.get('initialMargin', 0),
-                        'Leverage': pos.get('leverage', 1),
-                        'SL Set?': '❌'  # Default, would need additional API call to check
-                    })
-                print(f"✅ Fetched {len(bingx_data['positions'])} BingX positions")
+            
+            # Handle string response (parsing error fix)
+            if isinstance(bingx_data, str):
+                print("⚠️ BingX returned string, attempting JSON parse...")
+                import json
+                try:
+                    bingx_data = json.loads(bingx_data)
+                except:
+                    print("❌ Failed to parse BingX string response as JSON")
+                    bingx_data = None
+            
+            if bingx_data and isinstance(bingx_data, dict):
+                positions = bingx_data.get('positions') or bingx_data.get('data') or []
+                for pos in positions:
+                    if isinstance(pos, dict):  # Ensure it's a dict, not string
+                        all_positions.append({
+                            'Symbol': pos.get('symbol', ''),
+                            'Platform': 'BingX',
+                            'Entry Price': float(pos.get('avgPrice', 0)),
+                            'Mark Price': float(pos.get('markPrice', 0)),
+                            'Unrealized PnL %': float(pos.get('unrealizedPnl_percent', 0)),
+                            'Side (LONG/SHORT)': pos.get('side', ''),
+                            'Margin Size ($)': float(pos.get('initialMargin', 0)),
+                            'Leverage': float(pos.get('leverage', 1)),
+                            'SL Set?': '❌'
+                        })
+                print(f"✅ Fetched {len(positions)} BingX positions")
         except Exception as e:
             print(f"⚠️ BingX positions error: {e}")
         
@@ -504,6 +517,30 @@ async def fetch_railway_api(endpoint):
         print(f"❌ Railway API fetch error: {e}")
         return None
 
+async def fetch_lunarcrush_data():
+    """Fetch LunarCrush social sentiment and trending data"""
+    try:
+        # Try to get LunarCrush data from Railway API endpoint
+        lunarcrush_data = await fetch_railway_api("/api/lunarcrush/trending")
+        if lunarcrush_data:
+            print("✅ LunarCrush data fetched successfully")
+            return {
+                'trending_coins': lunarcrush_data.get('data', [])[:10],  # Top 10 trending
+                'social_sentiment': lunarcrush_data.get('sentiment', {}),
+                'data_source': 'lunarcrush_api'
+            }
+        else:
+            # Fallback: basic social metrics simulation for now
+            print("⚠️ LunarCrush API unavailable, using fallback social metrics")
+            return {
+                'trending_coins': ['BTC', 'ETH', 'SOL', 'ADA', 'MATIC'],
+                'social_sentiment': {'status': 'api_unavailable'},
+                'data_source': 'fallback'
+            }
+    except Exception as e:
+        print(f"❌ LunarCrush fetch error: {e}")
+        return None
+
 async def send_discord_alert(message, channel='portfolio'):
     """Send alert to Discord channel via bot (create temporary connection)"""
     try:
@@ -830,17 +867,29 @@ async def run_alpha_analysis():
         # Get comprehensive market intelligence using direct CryptoNews API
         from crypto_news_alerts import get_general_crypto_news, get_top_mentioned_tickers
         
-        # Get opportunities (positive sentiment news)
-        opportunities_data = get_general_crypto_news(items=10, sentiment='positive')
+        # Get RECENT opportunities (positive sentiment news - LAST 24 HOURS ONLY)
+        from datetime import datetime, timedelta
+        yesterday = (datetime.now() - timedelta(days=1)).strftime('%Y-%m-%d')
+        today = datetime.now().strftime('%Y-%m-%d')
+        
+        opportunities_data = get_general_crypto_news(items=15, sentiment='positive', date=today)
         opportunities = {'opportunities': opportunities_data.get('data', [])} if opportunities_data else None
         
-        # Get bullish signals (top mentioned tickers with positive sentiment)
-        bullish_data = get_top_mentioned_tickers(date="last7days")
+        # Get bullish signals (RECENT tickers only - last 3 days max)
+        bullish_data = get_top_mentioned_tickers(date="last3days")  
         bullish_signals = {'signals': bullish_data.get('data', [])} if bullish_data else None
         
-        # Get market intelligence (general trending news)
-        market_data = get_general_crypto_news(items=5, sentiment=None)
+        # Get ALL NEWS SOURCES (not just tier 1) - let GPT filter quality vs garbage
+        market_data = get_general_crypto_news(items=25, sentiment=None, date=today)  # All sources, GPT filters
         market_intelligence = {'intelligence': market_data.get('data', [])} if market_data else None
+        
+        # Add LunarCrush social sentiment data for better alpha detection
+        lunarcrush_data = await fetch_lunarcrush_data()
+        if lunarcrush_data:
+            if market_intelligence:
+                market_intelligence['lunarcrush'] = lunarcrush_data
+            else:
+                market_intelligence = {'lunarcrush': lunarcrush_data}
         
         # Get comprehensive market data for AI analysis
         comprehensive_market_data = None

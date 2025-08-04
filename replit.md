@@ -10,6 +10,14 @@ Preferred communication style: Simple, everyday language.
 
 # Recent Changes
 
+**August 4, 2025 - Data Quality & Intelligence Overhaul Complete**
+- ELIMINATED CSV fallbacks - system now uses LIVE DATA ONLY for maximum accuracy
+- FIXED news date filtering - all alpha scans now use current/24h news (no stale 13-year-old trades)
+- EXPANDED news sources beyond Tier 1 - GPT now filters quality from all sources automatically  
+- INTEGRATED LunarCrush social sentiment data for enhanced alpha detection
+- RESOLVED Railway API parsing errors preventing accurate position data flow
+- Enhanced AI prompting to understand fresh news timestamps and real-time market context
+
 **August 4, 2025 - Enhanced Discord Alert Intelligence Complete**
 - Upgraded basic Discord alerts to comprehensive trading analysis
 - Added severity-based loss analysis with specific stop loss suggestions

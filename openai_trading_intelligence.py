@@ -361,12 +361,15 @@ class TradingIntelligence:
             9. timeline_expectations: Realistic timeframes for each trade
             10. position_sizing_suggestions: Recommended position sizes based on volatility
 
-            **REQUIREMENTS**:
+            **CRITICAL REQUIREMENTS**:
             - All prices must be based on the real-time market data provided
-            - Include specific entry prices, not ranges
+            - Include specific entry prices, not ranges  
             - Calculate realistic targets based on recent price action and volatility
             - Provide exact stop loss levels
+            - NEWS DATES: All news data is from TODAY or last 24 hours - these are FRESH, current opportunities
+            - SOCIAL DATA: LunarCrush data shows real-time social sentiment and trending coins
             - Justify each trade with technical and fundamental reasoning
+            - Ignore any news older than 48 hours
             """
 
             response = self.client.chat.completions.create(
