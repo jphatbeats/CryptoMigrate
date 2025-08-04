@@ -314,7 +314,6 @@ def root():
             'blofin_positions': '/api/live/blofin-positions',
             'market_data': '/api/live/market-data/{symbol}'
         },
-
         'exchange_specific_endpoints': {
             'kraken_balance': '/api/kraken/balance',
             'bingx_balance': '/api/bingx/balance',
@@ -1000,8 +999,6 @@ def get_market_data(exchange):
     except Exception as e:
         logger.error(f"Error getting market data for {exchange}: {str(e)}")
         return jsonify({'error': 'Internal server error'}), 500
-
-
 
 # ============================================================================
 # PORTFOLIO MANAGEMENT ENDPOINTS
