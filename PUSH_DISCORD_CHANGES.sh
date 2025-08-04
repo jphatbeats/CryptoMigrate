@@ -8,9 +8,9 @@ echo "=============================================="
 echo "Clearing git locks..."
 rm -f .git/config.lock .git/index.lock .git/HEAD.lock
 
-# Use the direct token value (from env output earlier)
+# Use environment variable for token
 echo "Setting remote URL with authentication..."
-git remote set-url origin https://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@github.com/jphatbeats/titan-trading-2.git
+git remote set-url origin https://${GITHUB_TOKEN}@github.com/jphatbeats/titan-trading-2.git
 
 # Push with force-with-lease to handle branch conflicts
 echo "Pushing Discord integration to GitHub..."
