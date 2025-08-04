@@ -2,6 +2,18 @@
 
 You have access to the most sophisticated cryptocurrency news intelligence API with advanced filtering, sentiment analysis, and market intelligence capabilities. This guide unlocks the full power of institutional-grade crypto intelligence.
 
+## 🔧 IMPORTANT: Search Fix Applied (August 4, 2025)
+
+**Critical Enhancement:** The CryptoNews API integration now uses a hybrid search strategy that ensures comprehensive news coverage for ALL crypto symbols, including previously problematic tickers like ENA, SYRUP, MAMO, and other smaller cap tokens.
+
+**What This Means for You:**
+- All ticker searches now work reliably (no more zero results)
+- Multi-symbol searches combine results intelligently 
+- News coverage matches what users see on the CryptoNews website
+- Examples that now work: ENA → "Arthur Hayes Unloads Millions in ETH, PEPE, ENA", SYRUP → "BTC climbs past $107K as bulls regain control, Pi and SYRUP", MAMO → "4 Small Cap 100x Altcoins Primed To Explode"
+
+**No Changes Required:** Continue using the same API calls as documented below - the fix happens automatically in the backend.
+
 ## 🎯 API Base Information
 
 **Base URL:** `https://cryptonews-api.com`  
