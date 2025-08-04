@@ -10,6 +10,13 @@ Preferred communication style: Simple, everyday language.
 
 # Recent Changes
 
+**August 4, 2025 - Degen News Integration Complete**
+- Added degen/meme coin opportunities to Discord #alpha-scans channel
+- Integrated CoinGecko trending coins + CryptoNews meme coin articles into twice-daily alpha scans
+- Enhanced AI opportunity analysis to include degen opportunities alongside traditional signals
+- Multi-source degen intelligence: trending coins, meme coin news, and early-stage opportunities
+- Perfect architecture separation: Railway handles exchange data + Discord alerts, ChatGPT has DEXScreener
+
 **August 4, 2025 - Sundown Digest Integration Complete**
 - Added daily CryptoNews Sundown Digest to Discord alerts system
 - Professional market wrap-up delivered Mon-Fri at 7:00 PM ET to #alerts channel

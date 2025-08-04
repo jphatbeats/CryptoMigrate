@@ -49,6 +49,16 @@ except ImportError as e:
     degen_news_available = False
     print(f"❌ Degen News Aggregator not available: {e}")
 
+# Import degen news aggregator for alpha scans
+try:
+    sys.path.append('.')
+    from degen_news_sources import get_degen_news, get_trending_degen_coins
+    degen_news_available = True
+    print("✅ Degen News Aggregator loaded successfully")
+except ImportError as e:
+    degen_news_available = False
+    print(f"❌ Degen News Aggregator not available: {e}")
+
 # Discord Multi-Channel Configuration
 DISCORD_WEBHOOKS = {
     'alerts': os.getenv('DISCORD_ALERTS_WEBHOOK'),        # Breaking news, risks (1398000506068009032)
@@ -783,14 +793,30 @@ async def run_alpha_analysis():
         market_data = get_general_crypto_news(items=5, sentiment=None)
         market_intelligence = {'intelligence': market_data.get('data', [])} if market_data else None
         
+        # Get degen opportunities if available
+        degen_opportunities = None
+        if degen_news_available:
+            try:
+                degen_data = get_degen_news(limit=8)
+                trending_degen = get_trending_degen_coins(limit=5)
+                degen_opportunities = {
+                    'degen_news': degen_data,
+                    'trending_coins': trending_degen
+                }
+                print("✅ Degen opportunities data fetched")
+            except Exception as degen_e:
+                print(f"⚠️ Degen opportunities fetch failed: {degen_e}")
+                degen_opportunities = None
+        
         # Get AI opportunity analysis if available
         ai_opportunities = None
-        if openai_available and (opportunities or market_intelligence):
+        if openai_available and (opportunities or market_intelligence or degen_opportunities):
             try:
                 scan_data = {
                     'opportunities': opportunities,
                     'market_data': market_intelligence,
                     'bullish_signals': bullish_signals,
+                    'degen_opportunities': degen_opportunities,
                     'timestamp': datetime.now().isoformat()
                 }
                 ai_opportunities = trading_ai.scan_opportunities(scan_data, market_intelligence or {})
@@ -870,6 +896,41 @@ async def run_alpha_analysis():
                 else:
                     alpha_message += f"⚡ **{title}**\n"
                 alpha_message += f"🎯 Early entry opportunity detected\n\n"
+        
+        # Add degen opportunities if available
+        if degen_opportunities:
+            alpha_message += f"🐸 **DEGEN OPPORTUNITIES** 🐸\n"
+            
+            # Add trending degen coins
+            trending = degen_opportunities.get('trending_coins', [])
+            if trending:
+                alpha_message += f"📈 **Trending Coins:**\n"
+                for coin in trending[:3]:  # Top 3 trending
+                    symbol = coin.get('symbol', 'Unknown')
+                    source = coin.get('source_name', 'Unknown')
+                    alpha_message += f"• **{symbol}** - {source}\n"
+                alpha_message += f"\n"
+            
+            # Add degen news highlights
+            degen_news = degen_opportunities.get('degen_news', [])
+            if degen_news:
+                alpha_message += f"📰 **Degen News:**\n"
+                for article in degen_news[:2]:  # Top 2 articles
+                    title = article.get('title', 'Unknown')
+                    source = article.get('source_name', 'Unknown')
+                    tickers = article.get('tickers', [])
+                    
+                    # Truncate title if too long
+                    if len(title) > 60:
+                        title = title[:57] + "..."
+                    
+                    alpha_message += f"• **{title}**\n"
+                    alpha_message += f"  Source: {source}"
+                    
+                    if tickers:
+                        alpha_message += f" | Tickers: {', '.join(tickers[:3])}"
+                    alpha_message += f"\n"
+                alpha_message += f"\n"
         
         # Add AI timeline if available
         if ai_opportunities and 'timeline' in ai_opportunities:
