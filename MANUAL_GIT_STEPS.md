@@ -1,41 +1,49 @@
-# Manual Git Steps - Run These in Shell Tab
+# Manual Git Push to GitHub (Your Discord Integration is Ready!)
 
-## The git locks are preventing automatic execution. You need to run these manually:
+## Current Status:
+✅ Your Discord integration with TITAN BOT#6444 is working
+✅ Git user configured as jphatbeats with correct email
+✅ Local commits exist but haven't reached GitHub yet
 
-### Step 1: Clear Git Locks (Run in Shell)
+## Manual Steps to Push to GitHub:
+
+### Option 1: Use GitHub Personal Access Token (Recommended)
+1. Go to GitHub.com → Settings → Developer Settings → Personal Access Tokens → Tokens (classic)
+2. Click "Generate new token (classic)"
+3. Select scopes: `repo` (full control of private repositories)
+4. Copy the generated token
+5. Run these commands in Shell:
+
 ```bash
+# Clear any git locks
 rm -f .git/index.lock .git/HEAD.lock .git/config.lock
+
+# Set remote URL with your token
+git remote set-url origin https://YOUR_TOKEN_HERE@github.com/jphatbeats/titan-trading-2.git
+
+# Push to GitHub
+git push origin main
 ```
 
-### Step 2: Connect to GitHub (Run in Shell) 
-```bash
-git remote add origin https://github.com/jphatbeats/titan-trading-2.git
-```
+### Option 2: Use Replit's Git Panel (If Available)
+1. Look for Git icon in left sidebar
+2. Click to open Git interface
+3. Should show your commits ready to push
+4. Click "Push" - Replit handles authentication
 
-### Step 3: Add Discord Changes (Run in Shell)
-```bash
-git add automated_trading_alerts.py requirements.txt replit.md
-```
+### What Your GitHub Will Show After Push:
+- Latest commit from jphatbeats (not thecomputerguy8)
+- Updated timestamp (not "2 hours ago")
+- Discord integration code including:
+  - `import discord` 
+  - DISCORD_TOKEN configuration
+  - Channel IDs for 3 Discord channels
+  - AI-enhanced alert functions
 
-### Step 4: Commit Changes (Run in Shell)
-```bash
-git commit -m "Discord bot integration: TITAN BOT#6444 working with AI alerts"
-```
+### After GitHub Updates:
+1. Railway will automatically detect changes
+2. Add DISCORD_TOKEN environment variable to Railway
+3. Your TITAN BOT#6444 will run on Railway
+4. Remove duplicate Replit deployment
 
-### Step 5: Push to GitHub (Run in Shell)
-```bash
-git push -u origin main
-```
-
-## Alternative: Use Replit's Git UI
-1. Click the Git icon in left sidebar
-2. Stage the files: automated_trading_alerts.py, requirements.txt, replit.md
-3. Add commit message: "Discord bot integration: TITAN BOT working with AI alerts"  
-4. Commit and Push
-
-## What This Accomplishes:
-- Connects this Replit to your actual GitHub repository
-- Pushes Discord bot integration changes to GitHub
-- Triggers Railway to auto-deploy the new code
-- Updates your GitHub (no more "2 hours ago")
-- Enables Railway deployment with DISCORD_TOKEN
+Your Discord bot is complete and tested - this gets it to production!
