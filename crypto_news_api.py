@@ -49,14 +49,18 @@ class CryptoNewsAPI:
         return self._make_request('/category', params)
     
     def get_portfolio_news(self, tickers: List[str], limit: int = 15) -> Dict[str, Any]:
-        """Get news specific to user's portfolio holdings"""
+        """Get news specific to user's portfolio holdings using search workaround"""
         if not tickers:
             return {'data': [], 'message': 'No tickers provided'}
-            
+        
+        # WORKAROUND: API requires tickers parameter but search parameter actually works
+        # Use BTC as dummy ticker + search for actual symbols
+        search_terms = ','.join(tickers)
         params = {
-            'tickers': ','.join(tickers),
+            'tickers': 'BTC',  # Required by API (dummy value)
+            'search': search_terms,  # Actual search that finds results
             'items': min(limit, 50),
-            'date': 'today',  # Use valid date from docs
+            'date': 'today',
             'sortby': 'rank'
         }
         
@@ -64,19 +68,22 @@ class CryptoNewsAPI:
     
     def get_news_by_symbols(self, symbols: List[str], limit: int = 10, 
                            mode: str = "broad") -> Dict[str, Any]:
-        """Get news by specific symbols with different ticker modes"""
+        """Get news by specific symbols using tickers+search workaround"""
         if not symbols:
             return {'data': [], 'message': 'No symbols provided'}
             
-        params = {'items': min(limit, 50)}
+        params = {
+            'items': min(limit, 50),
+            'tickers': 'BTC'  # Required dummy parameter
+        }
         
-        # Three ticker modes from your strategy doc
+        # WORKAROUND: Use search parameter for actual results
         if mode == "broad":
-            params['tickers'] = ','.join(symbols)  # Broad net
+            params['search'] = ','.join(symbols)  # Search for any symbol
         elif mode == "intersection":
-            params['tickers-include'] = ','.join(symbols)  # Must mention all
+            params['search'] = ' AND '.join(symbols)  # All symbols required
         elif mode == "laser":
-            params['tickers-only'] = symbols[0] if symbols else 'BTC'  # Only one ticker
+            params['search'] = symbols[0] if symbols else 'BTC'  # Single symbol
             
         return self._make_request('', params)
     
