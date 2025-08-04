@@ -39,6 +39,16 @@ except Exception as e:
     openai_available = False
     print(f"❌ OpenAI initialization error: {e}")
 
+# Import degen news aggregator for alpha scans
+try:
+    sys.path.append('.')
+    from degen_news_sources import get_degen_news, get_trending_degen_coins
+    degen_news_available = True
+    print("✅ Degen News Aggregator loaded successfully")
+except ImportError as e:
+    degen_news_available = False
+    print(f"❌ Degen News Aggregator not available: {e}")
+
 # Discord Multi-Channel Configuration
 DISCORD_WEBHOOKS = {
     'alerts': os.getenv('DISCORD_ALERTS_WEBHOOK'),        # Breaking news, risks (1398000506068009032)

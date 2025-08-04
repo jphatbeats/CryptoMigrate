@@ -314,20 +314,7 @@ def root():
             'blofin_positions': '/api/live/blofin-positions',
             'market_data': '/api/live/market-data/{symbol}'
         },
-        'dexscreener_endpoints': {
-            'search_pairs': '/latest/dex/search?q={query}',
-            'pair_details': '/latest/dex/pairs/{chainId}/{pairId}',
-            'token_info': '/tokens/v1/{chainId}/{tokenAddresses}',
-            'token_pairs': '/token-pairs/v1/{chainId}/{tokenAddress}',
-            'latest_boosted': '/token-boosts/latest/v1',
-            'top_boosted': '/token-boosts/top/v1',
-            'latest_profiles': '/token-profiles/latest/v1',
-            'token_orders': '/orders/v1/{chainId}/{tokenAddress}'
-        },
-        'degen_news_endpoints': {
-            'degen_news': '/api/degen-news?limit={limit}',
-            'trending_degen': '/api/trending-degen?limit={limit}'
-        },
+
         'exchange_specific_endpoints': {
             'kraken_balance': '/api/kraken/balance',
             'bingx_balance': '/api/bingx/balance',
