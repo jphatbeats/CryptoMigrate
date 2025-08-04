@@ -17,3 +17,4 @@ openai
 openai
 pandas
 numpy==1.24.3
+trafilatura
