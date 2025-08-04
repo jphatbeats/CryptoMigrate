@@ -314,6 +314,20 @@ def root():
             'blofin_positions': '/api/live/blofin-positions',
             'market_data': '/api/live/market-data/{symbol}'
         },
+        'dexscreener_endpoints': {
+            'search_pairs': '/latest/dex/search?q={query}',
+            'pair_details': '/latest/dex/pairs/{chainId}/{pairId}',
+            'token_info': '/tokens/v1/{chainId}/{tokenAddresses}',
+            'token_pairs': '/token-pairs/v1/{chainId}/{tokenAddress}',
+            'latest_boosted': '/token-boosts/latest/v1',
+            'top_boosted': '/token-boosts/top/v1',
+            'latest_profiles': '/token-profiles/latest/v1',
+            'token_orders': '/orders/v1/{chainId}/{tokenAddress}'
+        },
+        'degen_news_endpoints': {
+            'degen_news': '/api/degen-news?limit={limit}',
+            'trending_degen': '/api/trending-degen?limit={limit}'
+        },
         'exchange_specific_endpoints': {
             'kraken_balance': '/api/kraken/balance',
             'bingx_balance': '/api/bingx/balance',
@@ -998,6 +1012,203 @@ def get_market_data(exchange):
         return jsonify({'error': str(e), 'exchange': exchange}), 503
     except Exception as e:
         logger.error(f"Error getting market data for {exchange}: {str(e)}")
+        return jsonify({'error': 'Internal server error'}), 500
+
+# ============================================================================
+# DEXSCREENER API ENDPOINTS
+# ============================================================================
+
+@app.route('/latest/dex/search', methods=['GET'])
+def search_dex_pairs():
+    """Search for DEX pairs"""
+    try:
+        import requests
+        
+        # Get query parameters
+        q = request.args.get('q', '')
+        if not q:
+            return jsonify({'error': 'Query parameter q is required'}), 400
+        
+        # Forward to DEXScreener API
+        url = f"https://api.dexscreener.com/latest/dex/search"
+        params = {'q': q}
+        
+        response = requests.get(url, params=params, timeout=10)
+        if response.status_code == 200:
+            return jsonify(response.json())
+        else:
+            return jsonify({'error': f'DEXScreener API error: {response.status_code}'}), response.status_code
+            
+    except Exception as e:
+        logger.error(f"Error searching DEX pairs: {str(e)}")
+        return jsonify({'error': 'Internal server error'}), 500
+
+@app.route('/latest/dex/pairs/<chain_id>/<pair_id>', methods=['GET'])
+def get_pair_details(chain_id, pair_id):
+    """Get pair details from DEXScreener"""
+    try:
+        import requests
+        
+        url = f"https://api.dexscreener.com/latest/dex/pairs/{chain_id}/{pair_id}"
+        response = requests.get(url, timeout=10)
+        
+        if response.status_code == 200:
+            return jsonify(response.json())
+        else:
+            return jsonify({'error': f'DEXScreener API error: {response.status_code}'}), response.status_code
+            
+    except Exception as e:
+        logger.error(f"Error getting pair details: {str(e)}")
+        return jsonify({'error': 'Internal server error'}), 500
+
+@app.route('/tokens/v1/<chain_id>/<token_addresses>', methods=['GET'])
+def get_token_info(chain_id, token_addresses):
+    """Get token information from DEXScreener"""
+    try:
+        import requests
+        
+        url = f"https://api.dexscreener.com/tokens/v1/{chain_id}/{token_addresses}"
+        response = requests.get(url, timeout=10)
+        
+        if response.status_code == 200:
+            return jsonify(response.json())
+        else:
+            return jsonify({'error': f'DEXScreener API error: {response.status_code}'}), response.status_code
+            
+    except Exception as e:
+        logger.error(f"Error getting token info: {str(e)}")
+        return jsonify({'error': 'Internal server error'}), 500
+
+@app.route('/token-pairs/v1/<chain_id>/<token_address>', methods=['GET'])
+def get_token_pairs(chain_id, token_address):
+    """Get token pairs from DEXScreener"""
+    try:
+        import requests
+        
+        url = f"https://api.dexscreener.com/token-pairs/v1/{chain_id}/{token_address}"
+        response = requests.get(url, timeout=10)
+        
+        if response.status_code == 200:
+            return jsonify(response.json())
+        else:
+            return jsonify({'error': f'DEXScreener API error: {response.status_code}'}), response.status_code
+            
+    except Exception as e:
+        logger.error(f"Error getting token pairs: {str(e)}")
+        return jsonify({'error': 'Internal server error'}), 500
+
+@app.route('/token-boosts/latest/v1', methods=['GET'])
+def get_latest_boosted_tokens():
+    """Get latest boosted tokens from DEXScreener"""
+    try:
+        import requests
+        
+        url = "https://api.dexscreener.com/token-boosts/latest/v1"
+        response = requests.get(url, timeout=10)
+        
+        if response.status_code == 200:
+            return jsonify(response.json())
+        else:
+            return jsonify({'error': f'DEXScreener API error: {response.status_code}'}), response.status_code
+            
+    except Exception as e:
+        logger.error(f"Error getting latest boosted tokens: {str(e)}")
+        return jsonify({'error': 'Internal server error'}), 500
+
+@app.route('/token-boosts/top/v1', methods=['GET'])
+def get_top_boosted_tokens():
+    """Get top boosted tokens from DEXScreener"""
+    try:
+        import requests
+        
+        url = "https://api.dexscreener.com/token-boosts/top/v1"
+        response = requests.get(url, timeout=10)
+        
+        if response.status_code == 200:
+            return jsonify(response.json())
+        else:
+            return jsonify({'error': f'DEXScreener API error: {response.status_code}'}), response.status_code
+            
+    except Exception as e:
+        logger.error(f"Error getting top boosted tokens: {str(e)}")
+        return jsonify({'error': 'Internal server error'}), 500
+
+@app.route('/token-profiles/latest/v1', methods=['GET'])
+def get_latest_token_profiles():
+    """Get latest token profiles from DEXScreener"""
+    try:
+        import requests
+        
+        url = "https://api.dexscreener.com/token-profiles/latest/v1"
+        response = requests.get(url, timeout=10)
+        
+        if response.status_code == 200:
+            return jsonify(response.json())
+        else:
+            return jsonify({'error': f'DEXScreener API error: {response.status_code}'}), response.status_code
+            
+    except Exception as e:
+        logger.error(f"Error getting latest token profiles: {str(e)}")
+        return jsonify({'error': 'Internal server error'}), 500
+
+@app.route('/orders/v1/<chain_id>/<token_address>', methods=['GET'])
+def get_token_orders(chain_id, token_address):
+    """Get token orders from DEXScreener"""
+    try:
+        import requests
+        
+        url = f"https://api.dexscreener.com/orders/v1/{chain_id}/{token_address}"
+        response = requests.get(url, timeout=10)
+        
+        if response.status_code == 200:
+            return jsonify(response.json())
+        else:
+            return jsonify({'error': f'DEXScreener API error: {response.status_code}'}), response.status_code
+            
+    except Exception as e:
+        logger.error(f"Error getting token orders: {str(e)}")
+        return jsonify({'error': 'Internal server error'}), 500
+
+@app.route('/api/degen-news', methods=['GET'])
+def get_degen_news():
+    """Get degen/meme coin news from multiple sources"""
+    try:
+        # Import the degen news aggregator
+        import sys
+        sys.path.append('.')
+        from degen_news_sources import get_degen_news as fetch_degen_news
+        
+        limit = request.args.get('limit', 15, type=int)
+        result = fetch_degen_news(limit=limit)
+        
+        return jsonify({
+            'status': 'success',
+            'degen_news': result,
+            'timestamp': datetime.now().isoformat()
+        })
+    except Exception as e:
+        logger.error(f"Error getting degen news: {str(e)}")
+        return jsonify({'error': 'Internal server error'}), 500
+
+@app.route('/api/trending-degen', methods=['GET'])
+def get_trending_degen():
+    """Get trending degen coins from multiple sources"""
+    try:
+        # Import the degen news aggregator  
+        import sys
+        sys.path.append('.')
+        from degen_news_sources import get_trending_degen_coins
+        
+        limit = request.args.get('limit', 10, type=int)
+        result = get_trending_degen_coins(limit=limit)
+        
+        return jsonify({
+            'status': 'success',
+            'trending_degen': result,
+            'timestamp': datetime.now().isoformat()
+        })
+    except Exception as e:
+        logger.error(f"Error getting trending degen coins: {str(e)}")
         return jsonify({'error': 'Internal server error'}), 500
 
 # ============================================================================

@@ -84,38 +84,69 @@ class DegenNewsAggregator:
             return []
     
     def _get_dexscreener_trending(self, limit=10):
-        """Get trending tokens from DEXScreener (new/hot tokens)"""
+        """Get trending tokens from your existing DEXScreener endpoints"""
         try:
-            # DEXScreener trending endpoint (if available)
-            url = "https://api.dexscreener.com/latest/dex/tokens/trending"
-            headers = {'User-Agent': 'Mozilla/5.0 (compatible; TitanBot/1.0)'}
-            response = requests.get(url, headers=headers, timeout=10)
+            # Use your existing DEXScreener server endpoints
+            base_url = "http://localhost:5000"
+            
+            # Try latest boosted tokens first (most likely to be trending/degen)
+            boosted_url = f"{base_url}/token-boosts/latest/v1"
+            response = requests.get(boosted_url, timeout=10)
             
             if response.status_code == 200:
                 data = response.json()
-                pairs = data.get('pairs', [])[:limit]
+                tokens = data if isinstance(data, list) else data.get('data', [])
                 
                 formatted = []
-                for pair in pairs:
-                    base_token = pair.get('baseToken', {})
+                for token in tokens[:limit]:
+                    symbol = token.get('symbol', token.get('baseToken', {}).get('symbol', '')).upper()
+                    name = token.get('name', token.get('baseToken', {}).get('name', 'Unknown'))
+                    
                     formatted.append({
-                        'title': f"DEX Trending: {base_token.get('name', 'Unknown')} ({base_token.get('symbol', '').upper()})",
-                        'tickers': [base_token.get('symbol', '').upper()],
-                        'source_name': 'DEXScreener',
-                        'source_type': 'dexscreener_trending',
-                        'price_usd': pair.get('priceUsd', 0),
-                        'volume_24h': pair.get('volume', {}).get('h24', 0),
-                        'price_change_24h': pair.get('priceChange', {}).get('h24', 0),
-                        'url': pair.get('url', '')
+                        'title': f"DEX Boosted: {name} ({symbol})",
+                        'tickers': [symbol] if symbol else [],
+                        'source_name': 'DEXScreener Boosted',
+                        'source_type': 'dexscreener_boosted',
+                        'price_usd': token.get('priceUsd', 0),
+                        'volume_24h': token.get('volume24h', 0),
+                        'price_change_24h': token.get('priceChange24h', 0),
+                        'boost_amount': token.get('amount', 0),
+                        'chain': token.get('chainId', 'unknown'),
+                        'url': token.get('url', f"https://dexscreener.com/{token.get('chainId', 'ethereum')}/{token.get('pairAddress', '')}")
                     })
                 
                 return formatted
             else:
-                logger.warning(f"DEXScreener failed: {response.status_code}")
+                logger.warning(f"DEXScreener boosted failed: {response.status_code}")
+                
+                # Fallback to top boosted tokens
+                top_url = f"{base_url}/token-boosts/top/v1" 
+                response = requests.get(top_url, timeout=10)
+                
+                if response.status_code == 200:
+                    data = response.json()
+                    tokens = data if isinstance(data, list) else data.get('data', [])
+                    
+                    formatted = []
+                    for token in tokens[:limit]:
+                        symbol = token.get('symbol', '').upper()
+                        name = token.get('name', 'Unknown')
+                        
+                        formatted.append({
+                            'title': f"DEX Top Boosted: {name} ({symbol})",
+                            'tickers': [symbol] if symbol else [],
+                            'source_name': 'DEXScreener Top',
+                            'source_type': 'dexscreener_top_boosted',
+                            'boost_amount': token.get('amount', 0),
+                            'url': f"https://dexscreener.com/search?q={symbol}"
+                        })
+                    
+                    return formatted
+                
                 return []
                 
         except Exception as e:
-            logger.error(f"DEXScreener error: {e}")
+            logger.error(f"DEXScreener local endpoint error: {e}")
             return []
     
     def get_degen_roundup(self, limit_per_source=5):
