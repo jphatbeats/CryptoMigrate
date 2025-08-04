@@ -842,20 +842,28 @@ async def run_alpha_analysis():
         market_data = get_general_crypto_news(items=5, sentiment=None)
         market_intelligence = {'intelligence': market_data.get('data', [])} if market_data else None
         
-        # Get AI opportunity analysis if available
-        ai_opportunities = None
-        if openai_available and (opportunities or market_intelligence):
+        # Get comprehensive market data for AI analysis
+        comprehensive_market_data = None
+        if openai_available:
             try:
+                # Fetch real-time market data from Railway API for accurate price analysis
+                import aiohttp
+                railway_market_data = await fetch_railway_api("/api/chatgpt/opportunity-scanner")
+                
                 scan_data = {
                     'opportunities': opportunities,
-                    'market_data': market_intelligence,
+                    'news_intelligence': market_intelligence,
                     'bullish_signals': bullish_signals,
-                    'timestamp': datetime.now().isoformat()
+                    'real_time_market_data': railway_market_data,  # This provides accurate OHLCV + technical data
+                    'timestamp': datetime.now().isoformat(),
+                    'data_sources': ['cryptonews_api', 'exchange_tickers', 'technical_indicators']
                 }
                 ai_opportunities = trading_ai.scan_opportunities(scan_data, market_intelligence or {})
-                print("✅ AI opportunity scan completed")
+                print("✅ AI opportunity scan with real-time market data completed")
             except Exception as ai_e:
                 print(f"⚠️ AI opportunity scan failed: {ai_e}")
+                # Fallback to basic news data only
+                ai_opportunities = None
         
         # Format comprehensive AI-enhanced alpha scan message
         alpha_message = f"🤖 **AI ALPHA SCAN REPORT** 🤖\n"
