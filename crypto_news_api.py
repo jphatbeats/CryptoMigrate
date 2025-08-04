@@ -73,13 +73,26 @@ class CryptoNewsAPI:
             return {'data': [], 'message': 'No symbols provided'}
         
         if mode == "laser" and len(symbols) == 1:
-            # Single symbol search - direct approach
+            # Single symbol search - try direct ticker first, then search fallback
+            symbol = symbols[0]
+            
+            # Try direct ticker search first (works for MAMO)
             params = {
                 'items': min(limit, 50),
-                'tickers': 'BTC',  # Required dummy parameter
-                'search': symbols[0]
+                'tickers': symbol
             }
-            return self._make_request('', params)
+            result = self._make_request('', params)
+            
+            # If direct ticker fails, try search workaround (works for ENA)
+            if not result.get('data'):
+                params = {
+                    'items': min(limit, 50),
+                    'tickers': 'BTC',  # Required dummy parameter
+                    'search': symbol
+                }
+                result = self._make_request('', params)
+            
+            return result
         
         elif mode == "broad" and len(symbols) > 1:
             # Multi-symbol search - combine individual results
@@ -87,12 +100,21 @@ class CryptoNewsAPI:
             seen_titles = set()
             
             for symbol in symbols:
+                # Try direct ticker first, then search fallback
                 params = {
-                    'items': min(limit, 20),  # Get more per symbol
-                    'tickers': 'BTC',
-                    'search': symbol
+                    'items': min(limit, 20),
+                    'tickers': symbol
                 }
                 result = self._make_request('', params)
+                
+                # If direct ticker fails, try search workaround
+                if not result.get('data'):
+                    params = {
+                        'items': min(limit, 20),
+                        'tickers': 'BTC',
+                        'search': symbol
+                    }
+                    result = self._make_request('', params)
                 
                 if 'data' in result:
                     for article in result['data']:
