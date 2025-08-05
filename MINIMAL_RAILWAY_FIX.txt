@@ -1,0 +1,32 @@
+Minimal Railway Configuration Commands:
+
+git add .
+git commit -m "Remove nixpacks.toml and use Railway auto-detection
+
+- Removed problematic nixpacks.toml causing parsing errors
+- Railway will auto-detect Python environment from requirements.txt
+- Simplified deployment using Railway's default Python buildpack
+- Includes OpenAI integration fix working locally
+- Should resolve all Railway build configuration issues"
+
+git push origin main
+
+What This Approach Does:
+1. Removes complex nixpacks configuration causing errors
+2. Uses Railway's built-in Python auto-detection
+3. Relies on requirements.txt for dependency management
+4. Uses Procfile for simple startup command
+5. Maintains OpenAI integration fix
+
+Benefits:
+- No more nixpacks parsing errors
+- Railway's proven Python auto-detection
+- Simpler configuration = fewer failure points
+- OpenAI integration confirmed working locally
+
+Expected Results:
+- Railway build will succeed using auto-detection
+- Python environment will be configured automatically
+- Dependencies will install from requirements.txt
+- OpenAI integration will work
+- ChatGPT endpoints will return real AI analysis
