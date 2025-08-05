@@ -24,4 +24,4 @@ dependencies = [
 ]
 
 [project.scripts]
-start = "main_server:app"
+start = "python main_server.py"
