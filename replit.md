@@ -10,6 +10,17 @@ Preferred communication style: Simple, everyday language.
 
 # Recent Changes
 
+**August 5, 2025 - BingX Price Accuracy Fix Complete**
+- DIAGNOSED spot vs futures pricing discrepancy causing ChatGPT confusion ($113,039 vs $112,969)
+- IMPLEMENTED enhanced market data endpoint with market_type parameter (spot, futures, both)
+- CREATED dedicated BingX pricing endpoint: /api/bingx/price/<symbol>?market_type=<type>
+- RESOLVED Flask URL routing issues with symbol formats (BTC-USDT works, BTC/USDT causes 404s)
+- VALIDATED pricing endpoints returning accurate spot market data ($113,160+ range)
+- ENHANCED error handling for unsupported symbol formats with clear error messages
+- DOCUMENTED ChatGPT integration guide with proper symbol formats and API usage
+- TESTED comprehensive pricing retrieval across different market types
+- System now provides precise, market-type-specific pricing to eliminate ChatGPT confusion
+
 **August 5, 2025 - Critical System Fixes and Railway API Integration Complete**
 - FIXED AI analysis JSON parsing errors that prevented degen channel content generation
 - ENHANCED token symbol extraction with improved pattern matching for current viral tokens
