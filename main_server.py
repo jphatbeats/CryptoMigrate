@@ -1713,12 +1713,18 @@ def get_kraken_trading_stats():
 
 # Import the real AI trading intelligence
 try:
-    from openai_trading_intelligence import trading_ai
+    from openai_trading_intelligence import TradingIntelligence
+    trading_ai = TradingIntelligence()
     openai_available = True
     logger.info("OpenAI Trading Intelligence loaded successfully")
 except ImportError as e:
     logger.warning(f"OpenAI not available: {e}")
     openai_available = False
+    trading_ai = None
+except Exception as e:
+    logger.error(f"OpenAI initialization error: {e}")
+    openai_available = False
+    trading_ai = None
 
 @app.route('/api/chatgpt/portfolio-analysis', methods=['GET'])
 def get_chatgpt_portfolio_analysis():
