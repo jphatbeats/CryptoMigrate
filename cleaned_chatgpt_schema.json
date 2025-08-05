@@ -85,6 +85,11 @@
       "get": {
         "description": "Get YOUR account balances from all exchanges",
         "operationId": "getAccountBalances",
+        "security": [
+          {
+            "ServerAuth": []
+          }
+        ],
         "responses": {
           "200": {
             "description": "Your personal account balances",
@@ -125,6 +130,11 @@
       "get": {
         "description": "Get YOUR live positions from BingX exchange - your actual trades and P&L",
         "operationId": "getBingXPositions",
+        "security": [
+          {
+            "BingXAuth": []
+          }
+        ],
         "responses": {
           "200": {
             "description": "Your BingX trading positions and orders",
@@ -200,6 +210,11 @@
       "get": {
         "description": "Get YOUR live positions from Blofin exchange - your actual trades and P&L",
         "operationId": "getBlofinPositions",
+        "security": [
+          {
+            "ServerAuth": []
+          }
+        ],
         "responses": {
           "200": {
             "description": "Your Blofin trading positions and orders",
@@ -439,6 +454,11 @@
       "get": {
         "description": "Get YOUR enhanced Kraken positions with comprehensive analytics including USD values, entry analysis, and time in trade",
         "operationId": "getKrakenPositions",
+        "security": [
+          {
+            "KrakenAuth": []
+          }
+        ],
         "responses": {
           "200": {
             "description": "Your enhanced Kraken positions with detailed analytics",
@@ -493,6 +513,11 @@
       "get": {
         "description": "Get YOUR Kraken account balance with USD valuations and portfolio breakdown",
         "operationId": "getKrakenBalance",
+        "security": [
+          {
+            "KrakenAuth": []
+          }
+        ],
         "responses": {
           "200": {
             "description": "Your Kraken account balance with detailed breakdown",
@@ -543,6 +568,11 @@
       "get": {
         "description": "Get YOUR comprehensive Kraken trade history with performance analytics",
         "operationId": "getKrakenTradeHistory",
+        "security": [
+          {
+            "KrakenAuth": []
+          }
+        ],
         "parameters": [
           {
             "name": "limit",
@@ -589,6 +619,11 @@
       "get": {
         "description": "Get YOUR comprehensive Kraken portfolio performance analytics",
         "operationId": "getKrakenPortfolioPerformance",
+        "security": [
+          {
+            "KrakenAuth": []
+          }
+        ],
         "responses": {
           "200": {
             "description": "Your detailed portfolio performance metrics",
@@ -621,6 +656,32 @@
           "timestamp": { "type": "string" }
         }
       }
+    },
+    "securitySchemes": {
+      "BingXAuth": {
+        "type": "apiKey",
+        "in": "header", 
+        "name": "X-BINGX-API-KEY",
+        "description": "BingX API authentication (automatically handled by server)"
+      },
+      "KrakenAuth": {
+        "type": "apiKey",
+        "in": "header",
+        "name": "X-KRAKEN-API-KEY", 
+        "description": "Kraken API authentication (automatically handled by server)"
+      },
+      "ServerAuth": {
+        "type": "apiKey",
+        "in": "header",
+        "name": "X-API-KEY",
+        "description": "Server authentication (automatically handled)"
+      }
     }
-  }
+  },
+  "security": [
+    {
+      "ServerAuth": []
+    },
+    {}
+  ]
 }
