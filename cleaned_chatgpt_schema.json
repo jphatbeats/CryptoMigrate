@@ -87,7 +87,7 @@
         "operationId": "getAccountBalances",
         "security": [
           {
-            "ServerAuth": []
+            "ApiKeyAuth": []
           }
         ],
         "responses": {
@@ -132,7 +132,7 @@
         "operationId": "getBingXPositions",
         "security": [
           {
-            "BingXAuth": []
+            "ApiKeyAuth": []
           }
         ],
         "responses": {
@@ -212,7 +212,7 @@
         "operationId": "getBlofinPositions",
         "security": [
           {
-            "ServerAuth": []
+            "ApiKeyAuth": []
           }
         ],
         "responses": {
@@ -456,7 +456,7 @@
         "operationId": "getKrakenPositions",
         "security": [
           {
-            "KrakenAuth": []
+            "ApiKeyAuth": []
           }
         ],
         "responses": {
@@ -515,7 +515,7 @@
         "operationId": "getKrakenBalance",
         "security": [
           {
-            "KrakenAuth": []
+            "ApiKeyAuth": []
           }
         ],
         "responses": {
@@ -570,7 +570,7 @@
         "operationId": "getKrakenTradeHistory",
         "security": [
           {
-            "KrakenAuth": []
+            "ApiKeyAuth": []
           }
         ],
         "parameters": [
@@ -621,7 +621,7 @@
         "operationId": "getKrakenPortfolioPerformance",
         "security": [
           {
-            "KrakenAuth": []
+            "ApiKeyAuth": []
           }
         ],
         "responses": {
@@ -658,30 +658,17 @@
       }
     },
     "securitySchemes": {
-      "BingXAuth": {
-        "type": "apiKey",
-        "in": "header", 
-        "name": "X-BINGX-API-KEY",
-        "description": "BingX API authentication (automatically handled by server)"
-      },
-      "KrakenAuth": {
+      "ApiKeyAuth": {
         "type": "apiKey",
         "in": "header",
-        "name": "X-KRAKEN-API-KEY", 
-        "description": "Kraken API authentication (automatically handled by server)"
-      },
-      "ServerAuth": {
-        "type": "apiKey",
-        "in": "header",
-        "name": "X-API-KEY",
-        "description": "Server authentication (automatically handled)"
+        "name": "Authorization",
+        "description": "Exchange API authentication (automatically handled by Railway server)"
       }
     }
   },
   "security": [
     {
-      "ServerAuth": []
-    },
-    {}
+      "ApiKeyAuth": []
+    }
   ]
 }
