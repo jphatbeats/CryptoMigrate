@@ -22,16 +22,17 @@ class BingXDirectAPI:
         """
         Get 24hr ticker statistics using official BingX API
         Endpoint: /openApi/swap/v2/quote/ticker
+        PUBLIC ENDPOINT - No authentication required
         """
         try:
             # Convert symbol format if needed (BTC/USDT -> BTC-USDT)
             bingx_symbol = symbol.replace('/', '-')
             
-            # Use V2 ticker endpoint (recommended by BingX)
+            # Use V2 ticker endpoint (public, no auth required)
             path = '/openApi/swap/v2/quote/ticker'
             params = {
-                'symbol': bingx_symbol,
-                'timestamp': str(int(time.time() * 1000))
+                'symbol': bingx_symbol
+                # No timestamp needed for public endpoints
             }
             
             url = f"{self.base_url}{path}"
@@ -71,6 +72,7 @@ class BingXDirectAPI:
         """
         Get simple price using BingX price endpoint
         Endpoint: /openApi/swap/v1/ticker/price
+        PUBLIC ENDPOINT - No authentication required
         """
         try:
             # Convert symbol format
@@ -78,8 +80,8 @@ class BingXDirectAPI:
             
             path = '/openApi/swap/v1/ticker/price'
             params = {
-                'symbol': bingx_symbol,
-                'timestamp': str(int(time.time() * 1000))
+                'symbol': bingx_symbol
+                # No timestamp needed for public endpoints
             }
             
             url = f"{self.base_url}{path}"
@@ -108,6 +110,7 @@ class BingXDirectAPI:
         """
         Get order book using BingX depth endpoint
         Endpoint: /openApi/swap/v2/quote/depth
+        PUBLIC ENDPOINT - No authentication required
         """
         try:
             bingx_symbol = symbol.replace('/', '-')
@@ -115,8 +118,8 @@ class BingXDirectAPI:
             path = '/openApi/swap/v2/quote/depth'
             params = {
                 'symbol': bingx_symbol,
-                'limit': str(min(limit, 100)),  # BingX max limit
-                'timestamp': str(int(time.time() * 1000))
+                'limit': str(min(limit, 100))  # BingX max limit is 100
+                # No timestamp needed for public endpoints
             }
             
             url = f"{self.base_url}{path}"
