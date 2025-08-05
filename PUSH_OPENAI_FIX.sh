@@ -4,12 +4,13 @@
 echo "🚀 Pushing OpenAI integration fix to GitHub for Railway deployment..."
 
 git add .
-git commit -m "Fix OpenAI integration import error - correct TradingIntelligence instantiation
+git commit -m "Fix OpenAI integration and Railway deployment issues
 
 - Fixed critical import bug preventing ChatGPT endpoints from working
 - Changed from 'import trading_ai' to 'import TradingIntelligence' + instantiation  
 - Added proper error handling for OpenAI initialization
-- Local testing confirms OpenAI integration now working
+- Fixed Procfile to use 'python3' instead of 'python' for Railway compatibility
+- Local testing confirms OpenAI integration working
 - Railway deployment will now have working ChatGPT endpoints"
 
 git push origin main
