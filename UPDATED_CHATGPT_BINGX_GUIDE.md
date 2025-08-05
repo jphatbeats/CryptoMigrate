@@ -139,6 +139,16 @@ GET https://titan-trading-2-production.up.railway.app/api/live/account-balances
 GET https://titan-trading-2-production.up.railway.app/api/live/all-exchanges
 ```
 
+## ChatGPT Schema Integration
+
+### OpenAPI Specification Files:
+1. **`railway_server_openapi_spec.yaml`** - Complete Railway server API specification
+2. **`updated_chatgpt_schema.json`** - ChatGPT integration schema with BingX endpoints
+
+### New Endpoints Added to ChatGPT Schema:
+- **BingX Pricing**: `/api/bingx/price/{symbol}?market_type={type}`
+- **BingX Candlesticks**: `/api/bingx/candlesticks/{symbol}?interval={timeframe}&limit={count}`
+
 ## Usage Instructions for ChatGPT:
 
 ### 1. Always Use Hyphen Format

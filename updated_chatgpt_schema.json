@@ -87,6 +87,48 @@
         "risk_reward_analysis",
         "probability_of_success"
       ]
+    },
+    "bingx_pricing": {
+      "endpoint": "/api/bingx/price/{symbol}",
+      "method": "GET",
+      "status": "ACTIVE",
+      "ai_powered": false,
+      "description": "High-accuracy BingX pricing with direct API integration",
+      "parameters": {
+        "symbol": "Trading pair (BTC-USDT, ETH-USDT) - USE HYPHENS",
+        "market_type": "Optional: spot, futures, both (default: both)"
+      },
+      "returns": [
+        "current_price",
+        "bid_ask_spread", 
+        "24h_volume",
+        "24h_change",
+        "high_low_24h",
+        "price_verification",
+        "source_accuracy"
+      ]
+    },
+    "bingx_candlesticks": {
+      "endpoint": "/api/bingx/candlesticks/{symbol}",
+      "method": "GET",
+      "status": "ACTIVE", 
+      "ai_powered": false,
+      "description": "Historical OHLCV candlestick data from BingX",
+      "parameters": {
+        "symbol": "Trading pair (BTC-USDT, ETH-USDT) - USE HYPHENS",
+        "interval": "Timeframe: 1m,3m,5m,15m,30m,1h,2h,4h,6h,8h,12h,1d,3d,1w,1M",
+        "limit": "Number of candles (default: 500, max: 1440)",
+        "startTime": "Optional start time in milliseconds",
+        "endTime": "Optional end time in milliseconds"
+      },
+      "returns": [
+        "ohlcv_array",
+        "timeframe_data",
+        "price_change_summary",
+        "volume_analysis",
+        "time_range",
+        "candle_count"
+      ]
     }
   },
   "integration_features": {
