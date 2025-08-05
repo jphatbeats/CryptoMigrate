@@ -124,7 +124,7 @@ async def fetch_live_positions():
         
         # Fetch BingX positions with proper error handling
         try:
-            bingx_data = await fetch_railway_api("/api/live/bingx-positions")
+            bingx_data = await fetch_railway_api("/api/live/all-exchanges")
             
             # Handle string response (parsing error fix)
             if isinstance(bingx_data, str):
@@ -137,16 +137,25 @@ async def fetch_live_positions():
                     bingx_data = None
             
             if bingx_data and isinstance(bingx_data, dict):
-                positions = bingx_data.get('positions') or bingx_data.get('data') or []
+                # Handle the actual all-exchanges API response structure
+                exchanges = bingx_data.get('exchanges', {})
+                bingx_data_nested = exchanges.get('bingx', {})
+                positions = bingx_data_nested.get('positions', [])
+                
                 for pos in positions:
                     if isinstance(pos, dict):  # Ensure it's a dict, not string
+                        # Calculate PnL percentage from unrealized PnL and notional
+                        unrealized_pnl = float(pos.get('unrealizedPnl', 0))
+                        notional = float(pos.get('notional', 1))
+                        pnl_percent = (unrealized_pnl / notional * 100) if notional > 0 else 0
+                        
                         all_positions.append({
-                            'Symbol': pos.get('symbol', ''),
+                            'Symbol': pos.get('symbol', '').replace('/USDT:USDT', '').replace('/', ''),
                             'Platform': 'BingX',
-                            'Entry Price': float(pos.get('avgPrice', 0)),
+                            'Entry Price': float(pos.get('entryPrice', 0)),
                             'Mark Price': float(pos.get('markPrice', 0)),
-                            'Unrealized PnL %': float(pos.get('unrealizedPnl_percent', 0)),
-                            'Side (LONG/SHORT)': pos.get('side', ''),
+                            'Unrealized PnL %': pnl_percent,
+                            'Side (LONG/SHORT)': pos.get('side', '').upper(),
                             'Margin Size ($)': float(pos.get('initialMargin', 0)),
                             'Leverage': float(pos.get('leverage', 1)),
                             'SL Set?': '❌'
