@@ -151,6 +151,72 @@ class BingXDirectAPI:
                 
         except Exception as e:
             raise Exception(f"BingX orderbook fetch failed: {str(e)}")
+    
+    def get_klines(self, symbol: str, interval: str = '1h', limit: int = 500, start_time: Optional[int] = None, end_time: Optional[int] = None) -> Dict:
+        """
+        Get candlestick/OHLCV data using BingX klines endpoint
+        Endpoint: /openApi/swap/v3/quote/klines
+        PUBLIC ENDPOINT - No authentication required
+        
+        Args:
+            symbol: Trading pair (e.g., 'BTC-USDT')
+            interval: Time interval (1m, 3m, 5m, 15m, 30m, 1h, 2h, 4h, 6h, 8h, 12h, 1d, 3d, 1w, 1M)
+            limit: Number of candles (default: 500, max: 1440)
+            start_time: Start time in milliseconds
+            end_time: End time in milliseconds
+        """
+        try:
+            bingx_symbol = symbol.replace('/', '-')
+            
+            path = '/openApi/swap/v3/quote/klines'
+            params = {
+                'symbol': bingx_symbol,
+                'interval': interval,
+                'limit': str(min(limit, 1440))  # BingX max limit is 1440
+            }
+            
+            # Add optional time filters
+            if start_time:
+                params['startTime'] = str(start_time)
+            if end_time:
+                params['endTime'] = str(end_time)
+            
+            url = f"{self.base_url}{path}"
+            response = requests.get(url, params=params, timeout=15)
+            
+            if response.status_code == 200:
+                data = response.json()
+                if data.get('code') == 0 and 'data' in data:
+                    klines_data = data['data']
+                    
+                    # Convert to CCXT-like format for compatibility
+                    ohlcv = []
+                    for kline in klines_data:
+                        # BingX kline format: {open, close, high, low, volume, time}
+                        ohlcv.append([
+                            int(kline['time']),      # timestamp
+                            float(kline['open']),    # open
+                            float(kline['high']),    # high  
+                            float(kline['low']),     # low
+                            float(kline['close']),   # close
+                            float(kline['volume'])   # volume
+                        ])
+                    
+                    return {
+                        'symbol': symbol,
+                        'timeframe': interval,
+                        'ohlcv': ohlcv,
+                        'count': len(ohlcv),
+                        'source': 'bingx_official_api',
+                        'info': klines_data
+                    }
+                else:
+                    raise Exception(f"BingX API error: {data.get('msg', 'Unknown error')}")
+            else:
+                raise Exception(f"HTTP {response.status_code}: {response.text}")
+                
+        except Exception as e:
+            raise Exception(f"BingX klines fetch failed: {str(e)}")
 
 # Create global instance
 bingx_direct = BingXDirectAPI()

@@ -81,6 +81,47 @@ GET https://titan-trading-2-production.up.railway.app/api/bingx/price/BTC-USDT
 - **Data Source**: Official BingX perpetual futures market
 - **Fallback System**: CCXT backup ensures 100% uptime
 
+## BingX Candlestick/OHLCV Data Endpoint
+
+### Historical Price Data (Candlesticks):
+```
+GET https://titan-trading-2-production.up.railway.app/api/bingx/candlesticks/BTC-USDT?interval=1h&limit=24
+```
+
+**Parameters**:
+- `symbol`: Trading pair (BTC-USDT, ETH-USDT, etc.) - USE HYPHENS, not slashes
+- `interval`: Time interval (1m, 3m, 5m, 15m, 30m, 1h, 2h, 4h, 6h, 8h, 12h, 1d, 3d, 1w, 1M)
+- `limit`: Number of candles (default: 500, max: 1440)
+- `startTime`: Optional start time in milliseconds
+- `endTime`: Optional end time in milliseconds
+
+**Example Response**:
+```json
+{
+  "api_method": "direct",
+  "bingx_klines": {
+    "symbol": "BTC-USDT",
+    "timeframe": "1h",
+    "count": 3,
+    "ohlcv": [
+      [1754413200000, 113141.3, 113486.0, 113044.4, 113394.3, 341.79],
+      [1754409600000, 112879.1, 113328.6, 112761.0, 113141.3, 502.86],
+      [1754406000000, 112980.9, 113205.2, 112637.7, 112879.1, 896.32]
+    ],
+    "summary": {
+      "latest_close": 112879.1,
+      "latest_volume": 896.32,
+      "price_change": -262.2,
+      "price_change_percent": -0.23
+    },
+    "source": "bingx_official_api",
+    "accuracy": "high"
+  }
+}
+```
+
+**OHLCV Array Format**: `[timestamp, open, high, low, close, volume]`
+
 ## Alternative Market Data Endpoints:
 
 ### Live Market Data (Multiple Exchanges):

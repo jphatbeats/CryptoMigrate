@@ -10,6 +10,18 @@ Preferred communication style: Simple, everyday language.
 
 # Recent Changes
 
+**August 5, 2025 - BingX Candlestick Data Integration Complete**
+- IMPLEMENTED BingX candlestick/OHLCV data endpoint using direct API integration
+- CREATED new endpoint: /api/bingx/candlesticks/<symbol>?interval=<timeframe>&limit=<count>
+- SUPPORTS all BingX timeframes: 1m, 3m, 5m, 15m, 30m, 1h, 2h, 4h, 6h, 8h, 12h, 1d, 3d, 1w, 1M
+- VALIDATED historical data retrieval with up to 1440 candles per request
+- ENHANCED with CCXT-compatible OHLCV format: [timestamp, open, high, low, close, volume]
+- ADDED comprehensive summary statistics: price changes, volume, time ranges
+- INTEGRATED with official BingX klines endpoint (/openApi/swap/v3/quote/klines)
+- DOCUMENTED complete candlestick functionality in ChatGPT integration guide
+- TESTED multiple symbols (BTC, ETH, SOL) across various timeframes (5m, 1h, 1d)
+- System now provides complete market data: real-time pricing + historical candlestick data
+
 **August 5, 2025 - BingX Price Accuracy Fix Complete**
 - DIAGNOSED spot vs futures pricing discrepancy causing ChatGPT confusion ($113,039 vs $112,969)
 - IMPLEMENTED enhanced market data endpoint with market_type parameter (spot, futures, both)
