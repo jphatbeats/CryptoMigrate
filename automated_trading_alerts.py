@@ -954,19 +954,74 @@ async def run_alpha_analysis():
         
         # Add AI opportunity insights first if available
         if ai_opportunities and not ai_opportunities.get('error'):
-            alpha_message += f"🧠 **AI OPPORTUNITY ANALYSIS:**\n"
+            alpha_message += f"🧠 **AI OPPORTUNITY ANALYSIS:**\n\n"
             
-            # High probability setups
+            # High probability setups with organized formatting
             if 'high_probability_setups' in ai_opportunities:
-                setups = ai_opportunities['high_probability_setups'][:2]  # Top 2
-                for i, setup in enumerate(setups, 1):
-                    alpha_message += f"⭐ {i}. {setup}\n"
+                setups = ai_opportunities['high_probability_setups']
+                if isinstance(setups, list):
+                    for i, setup in enumerate(setups[:2], 1):
+                        alpha_message += f"**⭐ Setup #{i}:**\n"
+                        if isinstance(setup, dict):
+                            # Extract structured data from setup
+                            asset = setup.get('asset', setup.get('symbol', 'N/A'))
+                            entry = setup.get('entry_price', setup.get('entry', 'N/A'))
+                            target = setup.get('target_levels', setup.get('target', 'N/A'))
+                            stop = setup.get('stop_loss', setup.get('stop', 'N/A'))
+                            confidence = setup.get('confidence', setup.get('probability', 'N/A'))
+                            
+                            alpha_message += f"🎯 **Asset:** {asset}\n"
+                            alpha_message += f"📍 **Entry:** {entry}\n"
+                            alpha_message += f"🚀 **Target:** {target}\n"
+                            alpha_message += f"🛡️ **Stop Loss:** {stop}\n"
+                            alpha_message += f"📊 **Confidence:** {confidence}\n\n"
+                        else:
+                            # If it's a string, format it nicely
+                            alpha_message += f"{setup}\n\n"
+                elif isinstance(setups, str):
+                    alpha_message += f"{setups}\n\n"
+            
+            # Entry price analysis
+            if 'entry_price_analysis' in ai_opportunities:
+                entry_analysis = ai_opportunities['entry_price_analysis']
+                alpha_message += f"**📍 ENTRY ANALYSIS:**\n{entry_analysis}\n\n"
+            
+            # Target levels
+            if 'target_levels' in ai_opportunities:
+                targets = ai_opportunities['target_levels']
+                alpha_message += f"**🚀 TARGET LEVELS:**\n{targets}\n\n"
             
             # Risk/reward analysis
-            if 'risk_reward_analysis' in ai_opportunities:
-                alpha_message += f"📊 Risk/Reward: {ai_opportunities['risk_reward_analysis']}\n"
+            if 'risk_reward_ratios' in ai_opportunities:
+                risk_reward = ai_opportunities['risk_reward_ratios']
+                alpha_message += f"**📊 RISK/REWARD:**\n{risk_reward}\n\n"
             
-            alpha_message += f"\n"
+            # Technical signals
+            if 'technical_signals' in ai_opportunities:
+                tech_signals = ai_opportunities['technical_signals']
+                alpha_message += f"**📈 TECHNICAL SIGNALS:**\n{tech_signals}\n\n"
+            
+            # News catalysts
+            if 'news_catalysts' in ai_opportunities:
+                news_catalysts = ai_opportunities['news_catalysts']
+                alpha_message += f"**📰 NEWS CATALYSTS:**\n{news_catalysts}\n\n"
+            
+            # Timeline expectations
+            if 'timeline_expectations' in ai_opportunities:
+                timeline = ai_opportunities['timeline_expectations']
+                alpha_message += f"**⏰ TIMELINE:**\n{timeline}\n\n"
+            
+            # Fallback for any unstructured insights
+            if not any(key in ai_opportunities for key in ['high_probability_setups', 'entry_price_analysis', 'target_levels', 'technical_signals']):
+                # Show the raw AI analysis but formatted better
+                alpha_message += f"**🧠 AI MARKET INSIGHTS:**\n"
+                for key, value in ai_opportunities.items():
+                    if key not in ['timestamp', 'ai_powered', 'analysis_type', 'scan_id', 'error']:
+                        if isinstance(value, (str, int, float)):
+                            alpha_message += f"• **{key.replace('_', ' ').title()}:** {value}\n"
+                        elif isinstance(value, list) and value:
+                            alpha_message += f"• **{key.replace('_', ' ').title()}:** {', '.join(map(str, value[:3]))}\n"
+                alpha_message += f"\n"
         
         # Trading opportunities
         if opportunities and opportunities.get('opportunities'):
