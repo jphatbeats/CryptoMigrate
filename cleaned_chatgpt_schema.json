@@ -434,6 +434,181 @@
           }
         }
       }
+    },
+    "/api/kraken/positions": {
+      "get": {
+        "description": "Get YOUR enhanced Kraken positions with comprehensive analytics including USD values, entry analysis, and time in trade",
+        "operationId": "getKrakenPositions",
+        "responses": {
+          "200": {
+            "description": "Your enhanced Kraken positions with detailed analytics",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "timestamp": { "type": "string" },
+                    "source": { "type": "string" },
+                    "total_positions": { "type": "integer" },
+                    "total_portfolio_value": { "type": "number" },
+                    "positions": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "symbol": { "type": "string" },
+                          "side": { "type": "string" },
+                          "contracts": { "type": "number" },
+                          "entryPrice": { "type": "number" },
+                          "markPrice": { "type": "number" },
+                          "unrealizedPnl": { "type": "number" },
+                          "percentage": { "type": "number" },
+                          "enhanced_data": {
+                            "type": "object",
+                            "properties": {
+                              "token_amount": { "type": "number" },
+                              "usd_value": { "type": "number" },
+                              "entry_price_calculated": { "type": "number" },
+                              "current_price": { "type": "number" },
+                              "unrealized_pnl_usd": { "type": "number" },
+                              "pnl_percentage": { "type": "number" },
+                              "time_in_trade": { "type": "string" },
+                              "trade_count": { "type": "integer" },
+                              "avg_trade_size": { "type": "number" },
+                              "total_fees_paid": { "type": "number" }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/kraken/balance": {
+      "get": {
+        "description": "Get YOUR Kraken account balance with USD valuations and portfolio breakdown",
+        "operationId": "getKrakenBalance",
+        "responses": {
+          "200": {
+            "description": "Your Kraken account balance with detailed breakdown",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "timestamp": { "type": "string" },
+                    "source": { "type": "string" },
+                    "total_fiat_balance": { "type": "number" },
+                    "total_crypto_value": { "type": "number" },
+                    "total_portfolio_value": { "type": "number" },
+                    "balances": {
+                      "type": "object",
+                      "additionalProperties": {
+                        "type": "object",
+                        "properties": {
+                          "free": { "type": "number" },
+                          "used": { "type": "number" },
+                          "total": { "type": "number" },
+                          "usd_value": { "type": "number" },
+                          "percentage_of_portfolio": { "type": "number" }
+                        }
+                      }
+                    },
+                    "top_holdings": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "symbol": { "type": "string" },
+                          "amount": { "type": "number" },
+                          "usd_value": { "type": "number" },
+                          "percentage": { "type": "number" }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/kraken/trade-history": {
+      "get": {
+        "description": "Get YOUR comprehensive Kraken trade history with performance analytics",
+        "operationId": "getKrakenTradeHistory",
+        "parameters": [
+          {
+            "name": "limit",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "default": 50,
+              "minimum": 10,
+              "maximum": 500
+            },
+            "description": "Number of trades to fetch (10-500)"
+          },
+          {
+            "name": "symbol",
+            "in": "query",
+            "required": false,
+            "schema": { "type": "string" },
+            "description": "Filter by specific symbol (e.g., BTC/USD)"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Your comprehensive trade history with analytics",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "timestamp": { "type": "string" },
+                    "source": { "type": "string" },
+                    "total_trades": { "type": "integer" },
+                    "trades": { "type": "array", "items": { "type": "object" } },
+                    "performance_summary": { "type": "object" }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/kraken/portfolio-performance": {
+      "get": {
+        "description": "Get YOUR comprehensive Kraken portfolio performance analytics",
+        "operationId": "getKrakenPortfolioPerformance",
+        "responses": {
+          "200": {
+            "description": "Your detailed portfolio performance metrics",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "timestamp": { "type": "string" },
+                    "source": { "type": "string" },
+                    "performance_metrics": { "type": "object" },
+                    "risk_metrics": { "type": "object" },
+                    "trading_patterns": { "type": "object" }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
     }
   },
   "components": {
