@@ -1237,10 +1237,10 @@ async def run_degen_memes_scan():
                         # Clean URL (remove trailing comma if present)
                         clean_url = token_url.rstrip(',')
                         
-                        # Format token entry with clickable link (concise for Discord limits)
-                        short_description = description[:30] + '...' if len(description) > 30 else description
+                        # Format token entry with clickable link and address verification
+                        short_description = description[:25] + '...' if len(description) > 25 else description
                         degen_message += f"🚀 **[${token_name}]({clean_url})** - {short_description}\n"
-                        degen_message += f"   💰 Boost: ${boost_amount} | Chain: {chain_id}\n"
+                        degen_message += f"   💰 ${boost_amount} | {chain_id} | `{token_address[:12] if token_address else 'N/A'}...`\n"
                         dex_count += 1
                     except Exception as token_error:
                         continue  # Skip problematic tokens
