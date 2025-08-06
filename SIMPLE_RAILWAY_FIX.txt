@@ -1,28 +1,17 @@
-Simplified Railway Fix Commands:
+SIMPLE 3-STEP RAILWAY FIX (No new project needed)
 
+STEP 1: Replace requirements.txt
+Copy contents from requirements_clean.txt to requirements.txt
+(removes duplicate entries causing build failures)
+
+STEP 2: Commit and push
 git add .
-git commit -m "Simplified Railway deployment configuration
-
-- Fixed nixpacks.toml to use providers instead of phases
-- Simplified Python 3.10 environment setup
-- Removed Nix package conflicts causing build failures
-- Updated to use standard pip install approach
-- Added pyproject.toml for modern Python packaging
-- Includes OpenAI integration fix
-- Should resolve Railway build errors"
-
+git commit -m "Fix Railway build - clean requirements"
 git push origin main
 
-What This Fixes:
-1. Removes Nix package management conflicts
-2. Uses Railway's native Python provider
-3. Standard pip install process
-4. Proper Python 3.10 environment
-5. OpenAI integration working
+STEP 3: Wait 2-3 minutes
+Railway auto-deploys from GitHub push
+Test: curl https://titan-trading-2-production.up.railway.app/health
 
-Expected Results:
-- Railway build will succeed without Nix errors
-- Dependencies will install using standard pip
-- Python environment will be properly configured
-- OpenAI integration will work
-- ChatGPT endpoints will return real AI analysis
+Your existing Railway project will work fine once the build succeeds.
+The timeout issue is just a failed build, not a broken deployment setup.
