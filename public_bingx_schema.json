@@ -128,13 +128,15 @@
                     "data": {
                       "type": "array",
                       "items": {
-                        "type": "array",
-                        "description": "OHLCV candlestick data: [timestamp, open, high, low, close, volume, close_time]",
-                        "items": {
-                          "oneOf": [
-                            {"type": "number"},
-                            {"type": "string"}
-                          ]
+                        "type": "object",
+                        "properties": {
+                          "open_time": { "type": "integer" },
+                          "open": { "type": "number" },
+                          "high": { "type": "number" },
+                          "low": { "type": "number" },
+                          "close": { "type": "number" },
+                          "volume": { "type": "number" },
+                          "close_time": { "type": "integer" }
                         }
                       }
                     }
@@ -188,27 +190,11 @@
                         "T": {"type": "number", "description": "Timestamp"},
                         "bids": {
                           "type": "array",
-                          "description": "Buy orders [price, quantity]",
-                          "items": {
-                            "type": "array",
-                            "items": {
-                              "type": "string"
-                            },
-                            "minItems": 2,
-                            "maxItems": 2
-                          }
+                          "items": { "type": "object" }
                         },
                         "asks": {
                           "type": "array",
-                          "description": "Sell orders [price, quantity]",
-                          "items": {
-                            "type": "array", 
-                            "items": {
-                              "type": "string"
-                            },
-                            "minItems": 2,
-                            "maxItems": 2
-                          }
+                          "items": { "type": "object" }
                         }
                       }
                     }
