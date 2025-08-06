@@ -1,29 +1,30 @@
 # ChatGPT Schema Selection Guide
 
-## Two Different Schemas for Different Use Cases
+## Two Separate Schemas for Different Data Sources
 
-### 1. Public Market Data Schema (`no_auth_schema.json`)
-**Use for:** Market prices, news, public crypto data
-**No API keys required**
-- BingX/Blofin/Kraken public market data
-- Crypto news intelligence 
-- Price data, charts, public market info
+### 1. Public BingX Schema (`public_bingx_schema.json`)
+**Use for:** Direct BingX market data (no authentication)
+**Calls BingX API directly:** `https://open-api.bingx.com`
+- Real-time ticker prices for any symbol
+- Candlestick/OHLCV data for technical analysis
+- Order book depth for market analysis  
+- Available trading contracts and symbols
+- All public market data without API keys
 
-### 2. Private Trading Schema (`private_trading_schema.json`) 
-**Use for:** Your actual trading positions and portfolio analysis
-**Requires API keys**
+### 2. Private Railway Schema (`private_trading_schema.json`) 
+**Use for:** Your authenticated trading data via Railway
+**Calls your Railway API:** `https://titan-trading-2-production.up.railway.app`
 - Live trading positions from your accounts
 - Portfolio analysis and risk assessment
 - Position-specific insights and recommendations
+- Requires your API keys (handled by Railway)
 
-## Current Issue
-ChatGPT was using `no_auth_schema.json` which mixed both public + private endpoints, causing it to call broken individual position endpoints.
+## Why Two Separate Schemas?
 
-## Solution  
-Use `private_trading_schema.json` for ChatGPT - it only contains the working authenticated endpoints:
+**Public Data:** ChatGPT calls BingX directly for market prices, charts, etc.
+**Private Data:** ChatGPT calls your Railway API for position data, portfolio analysis
 
-✅ `/api/live/all-exchanges` - Your complete position data
-✅ `/api/chatgpt/portfolio-analysis` - AI analysis of your portfolio  
-✅ `/health` - API status
-
-This will make ChatGPT call only working endpoints that return your actual trading data.
+This separation ensures:
+- ✅ Fast direct access to BingX public market data
+- ✅ Secure authenticated access to your trading positions via Railway
+- ✅ No mixing of public/private endpoints causing errors
