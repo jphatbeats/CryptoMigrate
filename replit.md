@@ -1,225 +1,97 @@
 # Overview
 
-This is a comprehensive cryptocurrency trading automation system that provides real-time market intelligence, automated portfolio monitoring, and multi-channel Discord alerting. The system integrates live exchange data from BingX, Kraken, and Blofin exchanges through CCXT, combines it with crypto news intelligence, and delivers actionable trading alerts through Discord webhooks.
-
-The core architecture consists of a Flask-based API server deployed on Railway that serves as the central intelligence hub, complemented by Python automation scripts that analyze trading positions, monitor market conditions, and generate intelligent alerts. The system provides both traditional technical analysis (RSI, PnL monitoring) and enhanced market intelligence through crypto news APIs.
+This project is a comprehensive cryptocurrency trading automation system designed to provide real-time market intelligence, automated portfolio monitoring, and multi-channel Discord alerting. It integrates live exchange data from various platforms (BingX, Kraken, Blofin) via CCXT, combines it with crypto news intelligence, and delivers actionable trading alerts through Discord webhooks. The system aims to provide both traditional technical analysis (RSI, PnL monitoring) and enhanced market intelligence through AI-powered insights, with a vision to offer a robust, intelligent, and automated solution for cryptocurrency traders.
 
 # User Preferences
 
 Preferred communication style: Simple, everyday language.
-
-# Recent Changes
-
-**August 5, 2025 - Railway Deployment Successful - OpenAI ChatGPT Integration Active**
-- RESOLVED Railway buildpack detection issue (was using Node.js instead of Python)
-- REMOVED package.json files causing wrong buildpack selection
-- SUCCESSFULLY DEPLOYED to Railway with Python environment
-- CONFIRMED OpenAI ChatGPT integration working on production Railway deployment
-- ACTIVATED all AI-powered trading intelligence endpoints on Railway platform
-- VERIFIED real-time position monitoring and Discord alerts operational
-- COMPLETED full deployment cycle: local development → GitHub → Railway production
-
-**August 5, 2025 - BingX Candlestick Data Integration Complete**
-- IMPLEMENTED BingX candlestick/OHLCV data endpoint using direct API integration
-- CREATED new endpoint: /api/bingx/candlesticks/<symbol>?interval=<timeframe>&limit=<count>
-- SUPPORTS all BingX timeframes: 1m, 3m, 5m, 15m, 30m, 1h, 2h, 4h, 6h, 8h, 12h, 1d, 3d, 1w, 1M
-- VALIDATED historical data retrieval with up to 1440 candles per request
-- ENHANCED with CCXT-compatible OHLCV format: [timestamp, open, high, low, close, volume]
-- ADDED comprehensive summary statistics: price changes, volume, time ranges
-- INTEGRATED with official BingX klines endpoint (/openApi/swap/v3/quote/klines)
-- DOCUMENTED complete candlestick functionality in ChatGPT integration guide
-- TESTED multiple symbols (BTC, ETH, SOL) across various timeframes (5m, 1h, 1d)
-- System now provides complete market data: real-time pricing + historical candlestick data
-
-**August 5, 2025 - BingX Price Accuracy Fix Complete**
-- DIAGNOSED spot vs futures pricing discrepancy causing ChatGPT confusion ($113,039 vs $112,969)
-- IMPLEMENTED enhanced market data endpoint with market_type parameter (spot, futures, both)
-- CREATED dedicated BingX pricing endpoint: /api/bingx/price/<symbol>?market_type=<type>
-- RESOLVED Flask URL routing issues with symbol formats (BTC-USDT works, BTC/USDT causes 404s)
-- VALIDATED pricing endpoints returning accurate spot market data ($113,160+ range)
-- ENHANCED error handling for unsupported symbol formats with clear error messages
-- DOCUMENTED ChatGPT integration guide with proper symbol formats and API usage
-- TESTED comprehensive pricing retrieval across different market types
-- System now provides precise, market-type-specific pricing to eliminate ChatGPT confusion
-
-**August 5, 2025 - Critical System Fixes and Railway API Integration Complete**
-- FIXED AI analysis JSON parsing errors that prevented degen channel content generation
-- ENHANCED token symbol extraction with improved pattern matching for current viral tokens
-- RESOLVED Discord message formatting issues (trailing commas, 2000 character limits)
-- IMPLEMENTED token address validation and shortened descriptions for user verification
-- FIXED alpha scans showing empty content by adding comprehensive fallback insights
-- CORRECTED Railway API 404 errors by updating to use actual available endpoints
-- REPLACED non-existent API calls (/api/alerts/prioritized, /api/lunarcrush/trending, /api/chatgpt/opportunity-scanner)
-- UPDATED to working endpoints (/api/live/all-exchanges, /api/live/market-data/BTC/USDT, /api/live/account-balances)
-- ENHANCED error handling with graceful degradation when external services fail
-- System now delivers consistent trading intelligence across all Discord channels
-
-**August 4, 2025 - Degen/Memes Discord Channel Enhancement Complete**
-- FIXED critical degen channel bug showing major coins (SOL, ADA, MATIC) instead of actual viral tokens
-- UPGRADED to DexScreener boosted tokens API for authentic viral momentum plays (30+ tokens per scan)
-- RESOLVED AI analysis JSON parsing errors preventing content generation
-- IMPLEMENTED proper token filtering excluding all major coins from degen suggestions
-- ENHANCED message formatting to display actual boosted tokens with viral social backing
-- INTEGRATED official DexScreener API documentation for optimal token discovery
-- VALIDATED 3x daily degen scans (8AM, 2PM, 8PM UTC) delivering genuine micro-cap opportunities
-- System now delivers authentic viral plays: boosted tokens, new launches, micro caps under $10M
-
-**August 4, 2025 - Data Quality & Intelligence Overhaul Complete**
-- ELIMINATED CSV fallbacks - system now uses LIVE DATA ONLY for maximum accuracy
-- FIXED news date filtering - all alpha scans now use current/24h news (no stale 13-year-old trades)
-- EXPANDED news sources beyond Tier 1 - GPT now filters quality from all sources automatically  
-- INTEGRATED LunarCrush social sentiment data for enhanced alpha detection
-- RESOLVED Railway API parsing errors preventing accurate position data flow
-- Enhanced AI prompting to understand fresh news timestamps and real-time market context
-
-**August 4, 2025 - Enhanced Discord Alert Intelligence Complete**
-- Upgraded basic Discord alerts to comprehensive trading analysis
-- Added severity-based loss analysis with specific stop loss suggestions
-- Enhanced RSI alerts with profit-taking and entry strategies
-- Implemented position size context and risk level assessments
-- Added detailed profit management strategies with calculated amounts
-- Replaced generic warnings with actionable trading recommendations
-- User confirmed files updated on GitHub for Railway deployment
-
-**August 4, 2025 - Discord Bot Consolidation Complete**
-- Successfully integrated Discord bot functionality into Replit using DISCORD_TOKEN
-- Replaced webhook system with discord.py library for TITAN BOT#6444 integration
-- Fixed pandas/numpy compatibility issues by maintaining numpy==1.24.3
-- Completed comprehensive testing across all 3 Discord channels
-- Deployed consolidated system with both AI features AND Discord bot functionality
-- User confirmed receiving 8 alerts immediately upon activation
-- System ready for Railway deployment removal (duplicate functionality eliminated)
-
-**August 4, 2025 - Sundown Digest Integration Complete**
-- Added daily CryptoNews Sundown Digest to Discord alerts system
-- Professional market wrap-up delivered Mon-Fri at 7:00 PM ET to #alerts channel
-- Comprehensive end-of-day analysis with clickable links and source attribution
-- Automated scheduling with weekend detection and Eastern timezone handling
-
-**August 4, 2025 - CryptoNews API Search Fix Complete**
-- Fixed critical ticker search issues preventing ChatGPT from finding crypto news
-- Implemented hybrid search strategy: direct ticker search + search parameter fallback
-- ENA, SYRUP, MAMO searches now work perfectly (previously returned zero results)
-- Multi-symbol searches combine individual results with duplicate removal
-- Enhanced symbol search covers all portfolio tokens and alpha scanning opportunities
-- Search behavior now matches CryptoNews website functionality exactly
-
-**August 4, 2025 - OpenAI Discord Bot Integration Complete**
-- Enhanced all Discord channels with AI-powered analysis using GPT-4o
-- Portfolio channel now delivers AI insights with health scores and recommendations
-- Breaking alerts enhanced with AI urgency assessment and action recommendations
-- Alpha scans include AI opportunity analysis with high-probability setups
-- Real-time AI alert analysis provides Discord-optimized insights
-- Smart fallback system ensures traditional alerts continue if AI fails
-- All three Discord channels now powered by intelligent AI analysis
-
-**August 4, 2025 - Real OpenAI ChatGPT Integration Complete**
-- Added real OpenAI GPT-4 integration replacing fake ChatGPT endpoints
-- Created 6 new AI-powered trading intelligence endpoints using GPT-4o model
-- Portfolio analysis now provides genuine AI insights and recommendations
-- News sentiment analysis grades articles as bullish/bearish with confidence scores
-- Trade grading system provides A-F grades with improvement suggestions
-- Hourly insights deliver time-sensitive trading recommendations
-- Risk assessment analyzes portfolio vulnerabilities with mitigation strategies
-- Opportunity scanner identifies high-probability trading setups
-- All endpoints successfully tested and returning real AI analysis
-- OpenAI API key integration working with proper error handling
 
 # System Architecture
 
 ## Core Components
 
 **Flask API Server (`main_server.py`)**
-- Centralized REST API providing 35+ endpoints for market data, news intelligence, and trading operations
-- Deployed on Railway with threaded execution for reliability
-- Implements comprehensive error handling with graceful degradation when exchanges fail
-- Provides unified interface abstracting complexity of multiple exchange APIs
+- Centralized REST API for market data, news intelligence, and trading operations.
+- Deployed on Railway with threaded execution and comprehensive error handling.
+- Provides a unified interface abstracting the complexity of multiple exchange APIs.
 
 **Exchange Management (`exchange_manager.py`)**
-- Non-blocking CCXT exchange initialization allowing server startup even if individual exchanges fail
-- Supports BingX, Kraken, and Blofin with credential injection from environment variables
-- Implements robust error handling with categorized exception types for network, authentication, and API errors
-- Maintains exchange status tracking and failed exchange logging
+- Manages non-blocking initialization and credential injection for BingX, Kraken, and Blofin.
+- Implements robust error handling for network, authentication, and API errors, including status tracking.
 
 **Trading Functions (`trading_functions.py`)**
-- Standardized trading operations (get_ticker, get_balance, get_ohlcv, etc.) across all exchanges
-- Error handling decorators that convert exchange-specific errors to consistent API responses
-- Supports market data retrieval, account management, and order book analysis
+- Standardizes trading operations (e.g., `get_ticker`, `get_balance`, `get_ohlcv`) across all integrated exchanges.
+- Features error handling decorators for consistent API responses.
 
 **Automated Alert System (`automated_trading_alerts.py`)**
-- Real-time portfolio monitoring analyzing CSV/JSON position files
-- Technical analysis including RSI calculations, PnL tracking, and risk management alerts
-- Multi-channel Discord webhook integration with intelligent content routing
-- Backward compatibility with single webhook configurations
+- Monitors portfolio positions, performs technical analysis (RSI, PnL), and generates risk alerts.
+- Integrates with multi-channel Discord webhooks, routing intelligent content.
 
 ## Data Flow Architecture
 
 **Position Data Processing**
-- Supports both CSV and JSON position files with automatic latest file detection
-- File cleanup system maintaining only recent position snapshots
-- Real-time analysis of trading conditions with configurable alert thresholds
+- Supports both CSV and JSON position files with automatic detection and cleanup.
+- Real-time analysis of trading conditions based on configurable alert thresholds.
 
 **News Intelligence Pipeline**
-- Integration with CryptoNews API for portfolio-specific news filtering
-- Sentiment analysis and risk detection for held positions
-- Opportunity scanning for new trading setups
-- Breaking news monitoring with impact assessment
+- Integrates with a CryptoNews API for portfolio-specific news filtering, sentiment analysis, and opportunity scanning.
+- Monitors breaking news for impact assessment.
 
 **Alert Classification System**
-- Traditional alerts: oversold/overbought signals, losing trades, missing stop losses, high profit alerts
-- Enhanced intelligence alerts: portfolio news, risk warnings, bullish signals, trading opportunities, pump/dump detection
-- Intelligent routing to appropriate Discord channels based on alert type and urgency
+- Generates traditional alerts (e.g., oversold/overbought signals) and enhanced intelligence alerts (e.g., news-based risk warnings, trading opportunities).
+- Intelligently routes alerts to appropriate Discord channels based on type and urgency.
 
 ## Multi-Channel Discord Integration
 
 **Channel Strategy**
-- **#alerts**: Breaking news, risk alerts, market updates (every 15 min) + Sundown Digest (Mon-Fri 7pm ET)
-- **#portfolio**: Position analysis, trading signals, PnL monitoring (hourly)  
-- **#alpha-scans**: Trading opportunities, early entry signals (twice daily)
-- **#degen-memes**: Viral plays, airdrops, meme coins, early gems (3x daily: 8AM, 2PM, 8PM UTC)
+- **#alerts**: Breaking news, risk alerts, market updates, and a daily Sundown Digest.
+- **#portfolio**: Position analysis, trading signals, and PnL monitoring.
+- **#alpha-scans**: Trading opportunities and early entry signals.
+- **#degen-memes**: Viral plays, airdrops, and meme coin opportunities.
 
 **Webhook Management**
-- Environment variable configuration for multiple webhook URLs
-- Fallback to legacy single webhook for backward compatibility
-- Asynchronous Discord message delivery with rate limiting
+- Configurable environment variables for multiple webhook URLs with fallback mechanisms.
+- Asynchronous Discord message delivery with rate limiting.
 
 ## Error Handling and Reliability
 
 **Exchange Error Management**
-- Categorized error types: ExchangeNotAvailableError, ExchangeAPIError
-- Non-blocking initialization prevents single exchange failures from stopping the entire system
-- Comprehensive logging with structured error categorization
+- Categorized error types (e.g., `ExchangeNotAvailableError`, `ExchangeAPIError`).
+- Non-blocking initialization ensures system stability even if individual exchanges fail.
 
 **API Resilience**
-- Graceful degradation when external services (news APIs, exchanges) are unavailable
-- Fallback mechanisms for core functionality
-- Request timeout handling and retry logic
+- Graceful degradation and fallback mechanisms when external services are unavailable.
+- Includes request timeout handling and retry logic.
+
+## UI/UX Decisions
+
+- Discord channels are designed for targeted information delivery based on alert urgency and type, ensuring a streamlined user experience.
+- Alerts provide comprehensive trading analysis with severity-based loss analysis, stop-loss suggestions, profit-taking strategies, position size context, and risk level assessments.
 
 # External Dependencies
 
 ## Cryptocurrency Exchanges
-- **BingX**: Primary exchange for futures trading with custom position formatting
-- **Kraken**: Traditional exchange integration with balance monitoring
-- **Blofin**: Alternative exchange for portfolio diversification
-- **CCXT Library**: Unified interface for cryptocurrency exchange APIs
+- **BingX**: Primary exchange for futures trading.
+- **Kraken**: Used for traditional exchange integration and balance monitoring.
+- **Blofin**: Alternative exchange for portfolio diversification.
+- **CCXT Library**: Unified interface for cryptocurrency exchange APIs.
 
 ## News and Intelligence APIs
-- **CryptoNews API**: Real-time cryptocurrency news with sentiment analysis and advanced filtering
-- **Railway API**: Internal API endpoints for market intelligence and risk assessment
+- **CryptoNews API**: Real-time cryptocurrency news with sentiment analysis.
+- **OpenAI API**: Used for AI-powered analysis, insights, and recommendations (e.g., GPT-4o for portfolio health scores, news sentiment, trade grading, risk assessment, and opportunity scanning).
+- **DexScreener API**: Integrated for identifying viral tokens and meme coins.
+- **LunarCrush**: Provides social sentiment data for enhanced alpha detection.
 
 ## Communication and Deployment
-- **Discord Webhooks**: Multi-channel alert delivery system
-- **Railway Platform**: Cloud deployment with automatic scaling and environment management
-- **Google Sheets NoCode API**: Data persistence and external integrations
+- **Discord Webhooks**: Multi-channel alert delivery system.
+- **Railway Platform**: Cloud deployment and environment management.
 
-## Python Dependencies
-- **Flask/Flask-CORS**: Web framework for API server
-- **pandas**: Data manipulation and analysis for trading positions
-- **aiohttp**: Asynchronous HTTP client for external API calls
-- **schedule/pytz**: Task scheduling and timezone management
-- **requests**: HTTP client for external service integration
+## Python Libraries
+- **Flask/Flask-CORS**: Web framework for the API server.
+- **pandas**: Data manipulation and analysis.
+- **aiohttp**: Asynchronous HTTP client.
+- **schedule/pytz**: Task scheduling and timezone management.
+- **requests**: HTTP client for general external service integration.
 
 ## Development and Monitoring
-- **OpenAI API**: Intelligence enhancement for market analysis
-- **Logging Framework**: Structured logging with file and console output
-- **Environment Variables**: Secure credential management for all external services
+- **Environment Variables**: Secure credential management.

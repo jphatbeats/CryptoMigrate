@@ -414,7 +414,7 @@ def send_to_google_sheets():
     try:
         import pandas as pd
         import requests
-        import glob
+        # glob already imported at top
         import os
 
         # Find the latest positions CSV

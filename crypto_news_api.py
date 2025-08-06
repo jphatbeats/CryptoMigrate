@@ -28,23 +28,25 @@ class CryptoNewsAPI:
             return {'error': str(e), 'data': []}
     
     def get_breaking_news(self, limit: int = 10, sentiment: str = None, 
-                         date_filter: str = "last60min") -> Dict[str, Any]:
+                         date_filter: str = None) -> Dict[str, Any]:
         """Get breaking crypto news with filtering"""
         params = {
             'section': 'general',
             'items': min(limit, 50),
             'sortby': 'rank',
-            'source': 'Coindesk,CryptoSlate,The+Block,Decrypt'  # Tier 1 sources from docs
+            'source': 'Coindesk,CryptoSlate,The+Block,Decrypt'
         }
         
-        # Only add date filter if it's one of the valid options from docs
-        valid_dates = ['last5min', 'last10min', 'last15min', 'last30min', 'last45min', 
-                      'last60min', 'today', 'yesterday', 'last7days', 'last30days']
-        if date_filter in valid_dates:
-            params['date'] = date_filter
-            
-        if sentiment:
+        # Avoid problematic parameter combinations that cause 422 errors
+        if sentiment and sentiment.lower() in ['positive', 'negative', 'neutral']:
             params['sentiment'] = sentiment.lower()
+            # Don't combine sentiment with date filters to avoid API conflicts
+        elif date_filter:
+            # Only add date filter when not using sentiment
+            valid_dates = ['last5min', 'last10min', 'last15min', 'last30min', 'last45min', 
+                          'last60min', 'today', 'yesterday', 'last7days', 'last30days']
+            if date_filter in valid_dates:
+                params['date'] = date_filter
             
         return self._make_request('/category', params)
     
@@ -150,27 +152,25 @@ class CryptoNewsAPI:
         params = {
             'section': 'general',
             'items': min(limit, 50),
-            'sentiment': 'negative',
             'search': 'hack,exploit,rug+pull,delisting,SEC,regulation,lawsuit,scam,vulnerability',
-            'date': 'today',  # Use valid date from docs
             'sortby': 'rank',
             'source': 'Coindesk,CryptoSlate,The+Block,Decrypt,Forbes'
         }
+        # Removed conflicting sentiment+date combination
         
         return self._make_request('/category', params)
     
-    def get_bullish_signals(self, limit: int = 15, timeframe: str = "today") -> Dict[str, Any]:
+    def get_bullish_signals(self, limit: int = 15, timeframe: str = None) -> Dict[str, Any]:
         """Get bullish sentiment and positive catalyst news"""
         params = {
             'section': 'general',
             'items': min(limit, 50),
-            'sentiment': 'positive',
             'search': 'partnership,listing,binance,coinbase,institutional,adoption,breakthrough',
             'sortby': 'rank',
             'source': 'Coindesk,CryptoSlate,The+Block,Decrypt'
         }
+        # Removed problematic sentiment parameter to avoid API conflicts
         
-        # Only add valid date filters
         valid_dates = ['last5min', 'last10min', 'last15min', 'last30min', 'last45min', 
                       'last60min', 'today', 'yesterday', 'last7days', 'last30days']
         if timeframe in valid_dates:
