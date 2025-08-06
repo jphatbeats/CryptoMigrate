@@ -1,5 +1,5 @@
 {
-  "timestamp": "2025-08-05 05:22 PM CST",
+  "timestamp": "2025-08-06 12:05 AM CST",
   "total_alerts": 3,
   "alert_types": {
     "no_stop_loss": 1,
@@ -13,23 +13,23 @@
       "platform": "BingX",
       "margin": 507.8538,
       "risk_level": "MEDIUM",
-      "message": "\ud83d\udee1\ufe0f **$ETH Risk Management** ($508)\n\u26a0\ufe0f **No Stop Loss** | Risk Level: **MEDIUM**\n\ud83d\udca1 **Action**: Set stop at -8% to limit downside risk\n\ud83d\udcca Current PnL: **-0.5%** | LONG @ 10x"
+      "message": "\ud83d\udee1\ufe0f **$ETH Risk Management** ($508)\n\u26a0\ufe0f **No Stop Loss** | Risk Level: **MEDIUM**\n\ud83d\udca1 **Action**: Set stop at -8% to limit downside risk\n\ud83d\udcca Current PnL: **-0.6%** | LONG @ 10x"
     },
     {
       "type": "overbought",
       "symbol": "XRP",
       "platform": "BingX",
       "rsi": 85,
-      "pnl": 44.488275500538464,
-      "message": "\ud83d\udfe5 **$XRP Overbought Alert** (RSI: 85.0)\n\ud83d\udcc8 Current PnL: **+44.5%** | Size: $135\n\ud83e\udde0 **Analysis**: \ud83d\udfe0 STRONG: Begin profit-taking. Set tight trailing stops.\n\u26a1 **Action**: Exit 50% position, move stop to break-even"
+      "pnl": 43.96657642557907,
+      "message": "\ud83d\udfe5 **$XRP Overbought Alert** (RSI: 85.0)\n\ud83d\udcc8 Current PnL: **+44.0%** | Size: $135\n\ud83e\udde0 **Analysis**: \ud83d\udfe0 STRONG: Begin profit-taking. Set tight trailing stops.\n\u26a1 **Action**: Exit 50% position, move stop to break-even"
     },
     {
       "type": "high_profit",
       "symbol": "XRP",
       "platform": "BingX",
-      "pnl": 44.488275500538464,
-      "profit_amount": 59.90564288697457,
-      "message": "\ud83d\udcb0 **$XRP Profit Alert** (+44.5%)\n\ud83c\udfaf **Unrealized Profit**: $60 | Position: $135\n\ud83e\udde0 **Strategy**: \u2705 GOOD: Protect gains with trailing stops, consider partial profits.\n\u26a1 **Action**: Move stop to break-even, consider 25% profit-taking\n\ud83d\udcca Entry: $1.634100 \u2192 Current: $2.943800"
+      "pnl": 43.96657642557907,
+      "profit_amount": 59.20314951928707,
+      "message": "\ud83d\udcb0 **$XRP Profit Alert** (+44.0%)\n\ud83c\udfaf **Unrealized Profit**: $59 | Position: $135\n\ud83e\udde0 **Strategy**: \u2705 GOOD: Protect gains with trailing stops, consider partial profits.\n\u26a1 **Action**: Move stop to break-even, consider 25% profit-taking\n\ud83d\udcca Entry: $1.634100 \u2192 Current: $2.916400"
     }
   ],
   "summary_parts": [
