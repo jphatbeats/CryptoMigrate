@@ -129,15 +129,13 @@
                       "type": "array",
                       "items": {
                         "type": "array",
-                        "items": [
-                          {"type": "number", "description": "Open time timestamp"},
-                          {"type": "string", "description": "Open price"},
-                          {"type": "string", "description": "High price"},
-                          {"type": "string", "description": "Low price"},
-                          {"type": "string", "description": "Close price"},
-                          {"type": "string", "description": "Volume"},
-                          {"type": "number", "description": "Close time timestamp"}
-                        ]
+                        "description": "OHLCV candlestick data: [timestamp, open, high, low, close, volume, close_time]",
+                        "items": {
+                          "oneOf": [
+                            {"type": "number"},
+                            {"type": "string"}
+                          ]
+                        }
                       }
                     }
                   }
@@ -190,22 +188,26 @@
                         "T": {"type": "number", "description": "Timestamp"},
                         "bids": {
                           "type": "array",
+                          "description": "Buy orders [price, quantity]",
                           "items": {
                             "type": "array",
-                            "items": [
-                              {"type": "string", "description": "Price"},
-                              {"type": "string", "description": "Quantity"}
-                            ]
+                            "items": {
+                              "type": "string"
+                            },
+                            "minItems": 2,
+                            "maxItems": 2
                           }
                         },
                         "asks": {
-                          "type": "array", 
+                          "type": "array",
+                          "description": "Sell orders [price, quantity]",
                           "items": {
-                            "type": "array",
-                            "items": [
-                              {"type": "string", "description": "Price"},
-                              {"type": "string", "description": "Quantity"}
-                            ]
+                            "type": "array", 
+                            "items": {
+                              "type": "string"
+                            },
+                            "minItems": 2,
+                            "maxItems": 2
                           }
                         }
                       }
