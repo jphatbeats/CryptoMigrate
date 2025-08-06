@@ -1,0 +1,127 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "Private Trading Portfolio API",
+    "description": "Authenticated access to live trading positions and portfolio analysis with API key authentication",
+    "version": "v1.0.0"
+  },
+  "servers": [
+    {
+      "url": "https://titan-trading-2-production.up.railway.app"
+    }
+  ],
+  "paths": {
+    "/health": {
+      "get": {
+        "description": "Health check endpoint to verify API connectivity",
+        "operationId": "healthCheck",
+        "responses": {
+          "200": {
+            "description": "API is healthy and responding",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {"type": "string"},
+                    "timestamp": {"type": "string"},
+                    "available_exchanges": {
+                      "type": "array",
+                      "items": {"type": "string"}
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/live/all-exchanges": {
+      "get": {
+        "description": "Get live positions and orders from all exchanges (BingX & Blofin) with full position details",
+        "operationId": "getAllExchangePositions",
+        "responses": {
+          "200": {
+            "description": "Complete live trading data from all connected exchanges",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "timestamp": { "type": "string" },
+                    "exchanges": {
+                      "type": "object",
+                      "properties": {
+                        "bingx": {
+                          "type": "object",
+                          "properties": {
+                            "status": { "type": "string" },
+                            "positions": { 
+                              "type": "array",
+                              "items": {
+                                "type": "object",
+                                "properties": {
+                                  "symbol": {"type": "string"},
+                                  "contracts": {"type": "number"},
+                                  "entryPrice": {"type": "number"},
+                                  "markPrice": {"type": "number"},
+                                  "unrealizedPnl": {"type": "number"},
+                                  "leverage": {"type": "number"},
+                                  "side": {"type": "string"}
+                                }
+                              }
+                            },
+                            "orders": { "type": "array", "items": {"type": "object"} }
+                          }
+                        },
+                        "blofin": {
+                          "type": "object",
+                          "properties": {
+                            "status": { "type": "string" },
+                            "positions": { "type": "array", "items": { "type": "object" } },
+                            "orders": { "type": "array", "items": { "type": "object" } }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/chatgpt/portfolio-analysis": {
+      "get": {
+        "description": "Get AI-powered portfolio analysis with risk assessment and trading recommendations",
+        "operationId": "getPortfolioAnalysis",
+        "responses": {
+          "200": {
+            "description": "AI-powered portfolio analysis with detailed insights",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "ai_powered": {"type": "boolean"},
+                    "analysis_type": {"type": "string"},
+                    "overall_assessment": {"type": "integer"},
+                    "risk_level": {"type": "string"},
+                    "diversification_score": {"type": "integer"},
+                    "position_analysis": {"type": "object"},
+                    "recommendations": {"type": "array", "items": {"type": "string"}},
+                    "next_actions": {"type": "array", "items": {"type": "string"}},
+                    "market_outlook": {"type": "object"},
+                    "timestamp": {"type": "string"}
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
