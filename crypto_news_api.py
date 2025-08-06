@@ -27,8 +27,8 @@ class CryptoNewsAPI:
             logger.error(f"CryptoNews API error: {e}")
             return {'error': str(e), 'data': []}
     
-    def get_breaking_news(self, limit: int = 10, sentiment: str = None, 
-                         date_filter: str = None) -> Dict[str, Any]:
+    def get_breaking_news(self, limit: int = 10, sentiment: Optional[str] = None, 
+                         date_filter: Optional[str] = None) -> Dict[str, Any]:
         """Get breaking crypto news with filtering"""
         params = {
             'section': 'general',
@@ -160,7 +160,7 @@ class CryptoNewsAPI:
         
         return self._make_request('/category', params)
     
-    def get_bullish_signals(self, limit: int = 15, timeframe: str = None) -> Dict[str, Any]:
+    def get_bullish_signals(self, limit: int = 15, timeframe: Optional[str] = None) -> Dict[str, Any]:
         """Get bullish sentiment and positive catalyst news"""
         params = {
             'section': 'general',
@@ -178,7 +178,7 @@ class CryptoNewsAPI:
             
         return self._make_request('/category', params)
     
-    def scan_opportunities(self, sectors: List[str] = None, limit: int = 25) -> Dict[str, Any]:
+    def scan_opportunities(self, sectors: Optional[List[str]] = None, limit: int = 25) -> Dict[str, Any]:
         """Scan for trading opportunities across sectors using predefined topics"""
         if not sectors:
             # Use actual topic parameters from API docs
