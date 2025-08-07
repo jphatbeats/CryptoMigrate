@@ -268,7 +268,40 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "object"
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "object",
+                      "properties": {
+                        "timestamp": {"type": "string"},
+                        "error_code": {"type": "integer"},
+                        "error_message": {"type": "string"},
+                        "elapsed": {"type": "integer"},
+                        "credit_count": {"type": "integer"}
+                      }
+                    },
+                    "data": {
+                      "type": "object",
+                      "additionalProperties": {
+                        "type": "object",
+                        "properties": {
+                          "id": {"type": "integer"},
+                          "name": {"type": "string"},
+                          "symbol": {"type": "string"},
+                          "category": {"type": "string"},
+                          "description": {"type": "string"},
+                          "slug": {"type": "string"},
+                          "logo": {"type": "string"},
+                          "urls": {"type": "object"},
+                          "tags": {"type": "array", "items": {"type": "string"}},
+                          "platform": {"type": "object"},
+                          "date_added": {"type": "string"},
+                          "twitter_username": {"type": "string"},
+                          "is_hidden": {"type": "integer"}
+                        }
+                      }
+                    }
+                  }
                 }
               }
             }
@@ -325,7 +358,36 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "object"
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "object",
+                      "properties": {
+                        "timestamp": {"type": "string"},
+                        "error_code": {"type": "integer"},
+                        "error_message": {"type": "string"},
+                        "elapsed": {"type": "integer"},
+                        "credit_count": {"type": "integer"}
+                      }
+                    },
+                    "data": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "id": {"type": "integer"},
+                          "name": {"type": "string"},
+                          "symbol": {"type": "string"},
+                          "cmc_rank": {"type": "integer"},
+                          "num_market_pairs": {"type": "integer"},
+                          "circulating_supply": {"type": "number"},
+                          "total_supply": {"type": "number"},
+                          "max_supply": {"type": "number"},
+                          "quote": {"type": "object"}
+                        }
+                      }
+                    }
+                  }
                 }
               }
             }
@@ -392,7 +454,52 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "object"
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "object",
+                      "properties": {
+                        "timestamp": {"type": "string"},
+                        "error_code": {"type": "integer"},
+                        "error_message": {"type": "string"},
+                        "elapsed": {"type": "integer"},
+                        "credit_count": {"type": "integer"}
+                      }
+                    },
+                    "data": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "id": {"type": "integer"},
+                          "name": {"type": "string"},
+                          "symbol": {"type": "string"},
+                          "cmc_rank": {"type": "integer"},
+                          "num_market_pairs": {"type": "integer"},
+                          "circulating_supply": {"type": "number"},
+                          "total_supply": {"type": "number"},
+                          "max_supply": {"type": "number"},
+                          "quote": {
+                            "type": "object",
+                            "properties": {
+                              "USD": {
+                                "type": "object",
+                                "properties": {
+                                  "price": {"type": "number"},
+                                  "volume_24h": {"type": "number"},
+                                  "percent_change_1h": {"type": "number"},
+                                  "percent_change_24h": {"type": "number"},
+                                  "percent_change_7d": {"type": "number"},
+                                  "market_cap": {"type": "number"},
+                                  "last_updated": {"type": "string"}
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
                 }
               }
             }
