@@ -633,6 +633,26 @@ def real_market_scan():
     except Exception as e:
         return jsonify({"error": str(e)}), 500
 
+@app.route('/api/alpha/scan-opportunities', methods=['GET'])
+def scan_alpha_opportunities():
+    """Alias for real-market-scan for Discord bot compatibility"""
+    try:
+        from real_alpha_scanner import scan_for_real_alpha
+        
+        # Run the real market scanner
+        import asyncio
+        opportunities = asyncio.run(scan_for_real_alpha())
+        
+        return jsonify({
+            "status": "success",
+            "opportunities": opportunities,
+            "scan_time": datetime.now().isoformat(),
+            "total_found": len(opportunities),
+            "scan_type": "alpha_scan"
+        })
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+
 # Exchange-specific balance endpoints (your original API schema)
 @app.route('/api/kraken/balance', methods=['GET'])
 def get_kraken_balance():
