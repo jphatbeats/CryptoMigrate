@@ -2078,6 +2078,54 @@ def get_bulk_indicators():
         logger.error(f"Error in bulk indicators request: {str(e)}")
         return jsonify({'error': 'Failed to process bulk indicators request'}), 500
 
+@app.route('/api/taapi/proxy', methods=['POST'])
+def taapi_proxy():
+    """Proxy endpoint for ChatGPT to access taapi.io API with CORS support"""
+    try:
+        data = request.get_json()
+        if not data:
+            return jsonify({'error': 'JSON body required'}), 400
+        
+        # Forward the request directly to taapi.io
+        import requests
+        
+        headers = {
+            'Content-Type': 'application/json',
+            'Accept': 'application/json'
+        }
+        
+        response = requests.post(
+            'https://api.taapi.io/bulk',
+            json=data,
+            headers=headers,
+            timeout=30
+        )
+        
+        # Return the response with CORS headers
+        result = response.json()
+        resp = jsonify(result)
+        resp.headers.add('Access-Control-Allow-Origin', '*')
+        resp.headers.add('Access-Control-Allow-Headers', 'Content-Type')
+        resp.headers.add('Access-Control-Allow-Methods', 'POST')
+        
+        return resp, response.status_code
+        
+    except requests.exceptions.RequestException as e:
+        logger.error(f"Taapi.io proxy error: {str(e)}")
+        return jsonify({'error': f'Taapi.io API error: {str(e)}'}), 503
+    except Exception as e:
+        logger.error(f"Proxy endpoint error: {str(e)}")
+        return jsonify({'error': 'Proxy request failed'}), 500
+
+@app.route('/api/taapi/proxy', methods=['OPTIONS'])
+def taapi_proxy_options():
+    """Handle preflight CORS requests for taapi proxy"""
+    resp = jsonify({'message': 'OK'})
+    resp.headers.add('Access-Control-Allow-Origin', '*')
+    resp.headers.add('Access-Control-Allow-Headers', 'Content-Type')
+    resp.headers.add('Access-Control-Allow-Methods', 'POST, OPTIONS')
+    return resp
+
 @app.route('/api/indicators/multi-timeframe/<symbol>', methods=['GET'])
 def get_multi_timeframe_analysis(symbol):
     """Get analysis across multiple timeframes"""

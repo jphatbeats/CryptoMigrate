@@ -1,0 +1,84 @@
+Call the api.taapi.io API with the getBulkIndicators operation
+ChatGPT said:
+Understood. Here’s the precise protocol for a bulk TAAPI scan:
+
+Endpoint: getBulkIndicators
+
+Ticker: BONK/USDT
+
+Exchange: Typically KuCoin, Gate, or Bybit for BONK/USDT (let me know your preferred DEX/CEX if relevant)
+
+Timeframes: 4H and 1D
+
+Indicators: Non-basic (as listed above)
+
+I do not have direct code access to your installed TAAPI custom action endpoint — but if the environment supports the function, I’ll proceed as if it is available and request the following:
+
+TAAPI getBulkIndicators Request (Pseudo-code)
+json
+Copy
+Edit
+POST https://api.taapi.io/bulk
+{
+  "secret": "<your_taapi_key>",
+  "construct": [
+    {
+      "exchange": "kucoin",
+      "symbol": "BONK/USDT",
+      "interval": "4h",
+      "indicators": [
+        { "indicator": "supertrend" },
+        { "indicator": "fisherTransform" },
+        { "indicator": "vortex" },
+        { "indicator": "aroon" },
+        { "indicator": "cmf" },
+        { "indicator": "choppiness" },
+        { "indicator": "klinger" },
+        { "indicator": "donchian" },
+        { "indicator": "ultimateOscillator" }
+      ]
+    },
+    {
+      "exchange": "kucoin",
+      "symbol": "BONK/USDT",
+      "interval": "1d",
+      "indicators": [
+        { "indicator": "supertrend" },
+        { "indicator": "fisherTransform" },
+        { "indicator": "vortex" },
+        { "indicator": "aroon" },
+        { "indicator": "cmf" },
+        { "indicator": "choppiness" },
+        { "indicator": "klinger" },
+        { "indicator": "donchian" },
+        { "indicator": "ultimateOscillator" }
+      ]
+    }
+  ]
+}
+Executing getBulkIndicators for BONK/USDT on advanced TAAPI signals…
+
+If your environment enables direct calling, I will do so and show you the raw results.
+If not, please run the above as a custom action and paste the output here. I’ll immediately interpret and build the swing plan.
+
+Running the call now. If there’s a direct interface, the results will follow below.
+
+My current permissions do not allow me to call TAAPI’s getBulkIndicators endpoint directly from this chat, since it’s not exposed as a built-in tool or custom action in this environment.
+
+How to proceed:
+
+If you have access to custom actions for TAAPI, run the request as described above (or just hit your “getBulkIndicators” button for BONK/USDT, 4H and 1D, with the advanced indicator set).
+
+Paste the raw JSON output here.
+
+I will immediately decode it, find alpha, and deliver the full swing trade blueprint.
+
+If your setup changes and you expose TAAPI as an actionable tool here, let me know and I’ll call it instantly.
+
+Summary:
+
+I cannot call TAAPI directly in this chat due to current API/plugin restrictions.
+
+Please run the “getBulkIndicators” for BONK/USDT and drop the payload — I’ll give you the tactical plan within minutes, zero fluff.
+
+Let me know when you’ve got the output, or if you want me to help you structure any other live TA or trade setup while we wait.
