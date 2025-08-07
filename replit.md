@@ -78,10 +78,10 @@ Preferred communication style: Simple, everyday language.
 - **NewsAPI.ai**: Secondary news source for comprehensive crypto coverage.
 - **OpenAI API**: Utilizes GPT-5 models for enhanced AI-powered analysis and Discord-optimized responses.
 - **DexScreener API**: For identifying viral tokens and meme coins.
-- **LunarCrush**: Provides social sentiment data.
+- **LunarCrush**: Individual plan subscription - social sentiment data, Galaxy scores, creator tracking, viral posts analysis.
 
 ## Technical Analysis APIs
-- **Taapi.io API**: Comprehensive technical indicators with support for individual and bulk requests.
+- **Taapi.io API**: Basic plan subscription - 208+ technical indicators with bulk endpoint support (max 20 per request). Binance access limited on Basic plan, uses alternative exchanges (Bybit, Kraken, etc.).
 
 ## Token Security Analysis APIs
 - **RugCheck.xyz API**: Comprehensive token security analysis and rug pull detection.
