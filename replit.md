@@ -83,7 +83,7 @@ Preferred communication style: Simple, everyday language.
 - **LunarCrush**: Provides social sentiment data for enhanced alpha detection.
 
 ## Technical Analysis APIs
-- **Taapi.io API**: Comprehensive technical indicators including RSI, MACD, Bollinger Bands, Stochastic, Williams %R, EMA, SMA, ADX, and CCI across multiple timeframes (1m to 1d). Integrated with both individual GET requests and efficient bulk POST requests (up to 20 indicators per call). Features automatic rate limiting, error handling, and fallback mechanisms. Integrated into both the automated trading alerts system and main server API endpoints for real-time technical analysis.
+- **Taapi.io API**: Comprehensive technical indicators including RSI, MACD, Bollinger Bands, Stochastic, Williams %R, EMA, SMA, ADX, and CCI across multiple timeframes (1m to 1d). Integrated with both individual GET requests and efficient bulk POST requests (up to 20 indicators per call). Features automatic rate limiting, error handling, and fallback mechanisms. Includes dedicated ChatGPT schema (`taapi_bulk_chatgpt_schema.json`) for AI-powered bulk analysis. Integrated into both the automated trading alerts system and main server API endpoints for real-time technical analysis.
 
 ## Communication and Deployment
 - **Discord Webhooks**: Multi-channel alert delivery system.
