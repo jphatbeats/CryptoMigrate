@@ -1,0 +1,733 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TITAN Trading Intelligence - Interactive Dashboard</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #0a0a0a 0%, #1a1a2e 50%, #16213e 100%);
+            color: #ffffff;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+        
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+            animation: glow 2s ease-in-out infinite alternate;
+        }
+        
+        @keyframes glow {
+            from { text-shadow: 0 0 20px #00ff88; }
+            to { text-shadow: 0 0 30px #00ff88, 0 0 40px #00ff88; }
+        }
+        
+        .dashboard-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 25px;
+            margin-bottom: 30px;
+        }
+        
+        .widget {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 20px;
+            padding: 25px;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .widget:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 40px rgba(0, 255, 136, 0.3);
+        }
+        
+        .widget::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+            transition: 0.5s;
+        }
+        
+        .widget:hover::before {
+            left: 100%;
+        }
+        
+        .widget-title {
+            font-size: 1.4em;
+            margin-bottom: 20px;
+            color: #00ff88;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .prediction-widget {
+            background: linear-gradient(135deg, rgba(0, 255, 136, 0.1) 0%, rgba(26, 26, 46, 0.8) 100%);
+        }
+        
+        .sentiment-indicator {
+            font-size: 3em;
+            text-align: center;
+            margin: 20px 0;
+            animation: bounce 2s infinite;
+        }
+        
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% { transform: translateY(0); }
+            40% { transform: translateY(-10px); }
+            60% { transform: translateY(-5px); }
+        }
+        
+        .prediction-meter {
+            width: 100%;
+            height: 20px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            overflow: hidden;
+            margin: 15px 0;
+        }
+        
+        .prediction-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #ff4757, #ffa502, #2ed573);
+            transition: width 0.5s ease;
+            border-radius: 10px;
+        }
+        
+        .crypto-selector {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+        
+        .crypto-btn {
+            background: rgba(0, 255, 136, 0.2);
+            border: 1px solid #00ff88;
+            color: #00ff88;
+            padding: 8px 16px;
+            border-radius: 20px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 0.9em;
+        }
+        
+        .crypto-btn:hover, .crypto-btn.active {
+            background: #00ff88;
+            color: #000;
+            transform: scale(1.05);
+        }
+        
+        .market-snapshot {
+            background: linear-gradient(135deg, rgba(255, 71, 87, 0.1) 0%, rgba(26, 26, 46, 0.8) 100%);
+        }
+        
+        .snapshot-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+        }
+        
+        .snapshot-item {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 15px;
+            border-radius: 10px;
+            text-align: center;
+        }
+        
+        .snapshot-value {
+            font-size: 1.5em;
+            font-weight: bold;
+            margin-top: 5px;
+        }
+        
+        .positive { color: #2ed573; }
+        .negative { color: #ff4757; }
+        .neutral { color: #ffa502; }
+        
+        .news-mood-board {
+            background: linear-gradient(135deg, rgba(255, 165, 2, 0.1) 0%, rgba(26, 26, 46, 0.8) 100%);
+        }
+        
+        .mood-indicators {
+            display: flex;
+            justify-content: space-around;
+            margin: 20px 0;
+        }
+        
+        .mood-item {
+            text-align: center;
+            padding: 15px;
+            border-radius: 15px;
+            background: rgba(255, 255, 255, 0.05);
+            transition: all 0.3s ease;
+            cursor: pointer;
+            flex: 1;
+            margin: 0 5px;
+        }
+        
+        .mood-item:hover {
+            transform: scale(1.1);
+            background: rgba(255, 255, 255, 0.1);
+        }
+        
+        .mood-emoji {
+            font-size: 2em;
+            margin-bottom: 10px;
+        }
+        
+        .news-feed {
+            max-height: 200px;
+            overflow-y: auto;
+            margin-top: 15px;
+        }
+        
+        .news-item {
+            background: rgba(255, 255, 255, 0.03);
+            padding: 10px;
+            margin: 5px 0;
+            border-radius: 8px;
+            border-left: 3px solid;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+        
+        .news-item:hover {
+            background: rgba(255, 255, 255, 0.08);
+            transform: translateX(5px);
+        }
+        
+        .learning-games {
+            background: linear-gradient(135deg, rgba(46, 213, 115, 0.1) 0%, rgba(26, 26, 46, 0.8) 100%);
+        }
+        
+        .game-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+        }
+        
+        .game-card {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 20px;
+            border-radius: 15px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .game-card:hover {
+            background: rgba(255, 255, 255, 0.1);
+            transform: scale(1.05);
+        }
+        
+        .game-icon {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+        }
+        
+        .chart-container {
+            width: 100%;
+            height: 200px;
+            background: rgba(255, 255, 255, 0.03);
+            border-radius: 10px;
+            margin: 15px 0;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .price-chart {
+            width: 100%;
+            height: 100%;
+            position: relative;
+        }
+        
+        .chart-line {
+            position: absolute;
+            top: 50%;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background: linear-gradient(90deg, #00ff88, #ffa502, #ff4757);
+            animation: chartMove 3s ease-in-out infinite;
+        }
+        
+        @keyframes chartMove {
+            0%, 100% { transform: translateY(0) scaleY(1); }
+            50% { transform: translateY(-30px) scaleY(2); }
+        }
+        
+        .loading {
+            text-align: center;
+            color: #00ff88;
+            font-size: 1.1em;
+        }
+        
+        .update-btn {
+            background: linear-gradient(45deg, #00ff88, #00d4aa);
+            border: none;
+            color: #000;
+            padding: 12px 24px;
+            border-radius: 25px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: all 0.3s ease;
+            margin: 10px;
+        }
+        
+        .update-btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 10px 20px rgba(0, 255, 136, 0.4);
+        }
+        
+        .status-indicator {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: #2ed573;
+            animation: pulse 2s infinite;
+        }
+        
+        @keyframes pulse {
+            0% { box-shadow: 0 0 0 0 rgba(46, 213, 115, 0.7); }
+            70% { box-shadow: 0 0 0 10px rgba(46, 213, 115, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(46, 213, 115, 0); }
+        }
+        
+        .timeframe-selector {
+            display: flex;
+            gap: 10px;
+            margin: 15px 0;
+            justify-content: center;
+        }
+        
+        .timeframe-btn {
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            color: #fff;
+            padding: 5px 12px;
+            border-radius: 15px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 0.8em;
+        }
+        
+        .timeframe-btn:hover, .timeframe-btn.active {
+            background: #00ff88;
+            color: #000;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🚀 TITAN Trading Intelligence Dashboard</h1>
+            <p>Real-time market insights with interactive analysis</p>
+        </div>
+        
+        <div class="dashboard-grid">
+            <!-- Animated Market Trend Prediction Widget -->
+            <div class="widget prediction-widget">
+                <div class="status-indicator"></div>
+                <h2 class="widget-title">📈 Market Trend Prediction</h2>
+                
+                <div class="crypto-selector">
+                    <button class="crypto-btn active" data-crypto="BTC">₿ BTC</button>
+                    <button class="crypto-btn" data-crypto="ETH">Ξ ETH</button>
+                    <button class="crypto-btn" data-crypto="XRP">◈ XRP</button>
+                    <button class="crypto-btn" data-crypto="ADA">₳ ADA</button>
+                    <button class="crypto-btn" data-crypto="SOL">◎ SOL</button>
+                </div>
+                
+                <div class="sentiment-indicator" id="sentimentEmoji">🚀</div>
+                
+                <div class="prediction-meter">
+                    <div class="prediction-fill" id="predictionFill" style="width: 65%"></div>
+                </div>
+                
+                <div style="text-align: center; margin: 15px 0;">
+                    <div>Confidence: <span id="confidenceScore">65%</span></div>
+                    <div>Next 24h: <span id="prediction" class="positive">+12.3%</span></div>
+                </div>
+                
+                <div class="timeframe-selector">
+                    <button class="timeframe-btn active" data-timeframe="1h">1H</button>
+                    <button class="timeframe-btn" data-timeframe="4h">4H</button>
+                    <button class="timeframe-btn" data-timeframe="1d">1D</button>
+                    <button class="timeframe-btn" data-timeframe="7d">7D</button>
+                </div>
+                
+                <div class="chart-container">
+                    <div class="price-chart">
+                        <div class="chart-line"></div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- One-Click Market Snapshot Dashboard -->
+            <div class="widget market-snapshot">
+                <h2 class="widget-title">⚡ Market Snapshot</h2>
+                <button class="update-btn" onclick="updateSnapshot()">🔄 Update Now</button>
+                
+                <div class="snapshot-grid">
+                    <div class="snapshot-item">
+                        <div>Market Cap</div>
+                        <div class="snapshot-value positive" id="marketCap">$2.1T</div>
+                    </div>
+                    <div class="snapshot-item">
+                        <div>24h Volume</div>
+                        <div class="snapshot-value neutral" id="volume24h">$89.2B</div>
+                    </div>
+                    <div class="snapshot-item">
+                        <div>BTC Dominance</div>
+                        <div class="snapshot-value" id="btcDominance">42.3%</div>
+                    </div>
+                    <div class="snapshot-item">
+                        <div>Fear & Greed</div>
+                        <div class="snapshot-value negative" id="fearGreed">28 (Fear)</div>
+                    </div>
+                </div>
+                
+                <div style="margin-top: 20px;">
+                    <div>🔥 Top Gainers: <span class="positive">SHIB +23%, FIL +18%, DOT +15%</span></div>
+                    <div>❄️ Top Losers: <span class="negative">LUNA -12%, ATOM -8%, NEAR -6%</span></div>
+                </div>
+            </div>
+            
+            <!-- Interactive Crypto News Mood Board -->
+            <div class="widget news-mood-board">
+                <h2 class="widget-title">📰 News Mood Board</h2>
+                
+                <div class="mood-indicators">
+                    <div class="mood-item" data-sentiment="bullish">
+                        <div class="mood-emoji">🐂</div>
+                        <div>Bullish</div>
+                        <div id="bullishCount">23</div>
+                    </div>
+                    <div class="mood-item" data-sentiment="bearish">
+                        <div class="mood-emoji">🐻</div>
+                        <div>Bearish</div>
+                        <div id="bearishCount">8</div>
+                    </div>
+                    <div class="mood-item" data-sentiment="neutral">
+                        <div class="mood-emoji">😐</div>
+                        <div>Neutral</div>
+                        <div id="neutralCount">15</div>
+                    </div>
+                </div>
+                
+                <div class="news-feed" id="newsFeed">
+                    <div class="news-item" style="border-left-color: #2ed573;">
+                        📈 Bitcoin ETF sees record inflows of $1.2B
+                    </div>
+                    <div class="news-item" style="border-left-color: #ffa502;">
+                        ⚖️ SEC delays decision on Ethereum ETF approval
+                    </div>
+                    <div class="news-item" style="border-left-color: #2ed573;">
+                        🚀 Major bank announces crypto custody services
+                    </div>
+                    <div class="news-item" style="border-left-color: #ff4757;">
+                        ⚠️ Exchange reports security breach concerns
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Playful Crypto Learning Mini-Games -->
+            <div class="widget learning-games">
+                <h2 class="widget-title">🎮 Crypto Learning Games</h2>
+                
+                <div class="game-grid">
+                    <div class="game-card" onclick="startGame('prediction')">
+                        <div class="game-icon">🔮</div>
+                        <div>Price Prediction Challenge</div>
+                        <div style="font-size: 0.8em; color: #ccc;">Guess next price move</div>
+                    </div>
+                    <div class="game-card" onclick="startGame('rsi')">
+                        <div class="game-icon">📊</div>
+                        <div>RSI Master</div>
+                        <div style="font-size: 0.8em; color: #ccc;">Learn technical indicators</div>
+                    </div>
+                    <div class="game-card" onclick="startGame('portfolio')">
+                        <div class="game-icon">💼</div>
+                        <div>Portfolio Builder</div>
+                        <div style="font-size: 0.8em; color: #ccc;">Optimize your holdings</div>
+                    </div>
+                    <div class="game-card" onclick="startGame('news')">
+                        <div class="game-icon">📰</div>
+                        <div>News Impact Quiz</div>
+                        <div style="font-size: 0.8em; color: #ccc;">Predict market reactions</div>
+                    </div>
+                </div>
+                
+                <div id="gameArea" style="margin-top: 20px; text-align: center; display: none;">
+                    <div id="gameContent"></div>
+                    <button class="update-btn" onclick="closeGame()">Close Game</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        // Market data and state management
+        let currentCrypto = 'BTC';
+        let currentTimeframe = '1h';
+        let gameActive = false;
+        
+        // Crypto data with real-time-like updates
+        const cryptoData = {
+            'BTC': { price: 67234, change: 2.3, sentiment: '🚀', confidence: 72 },
+            'ETH': { price: 3421, change: 1.8, sentiment: '📈', confidence: 68 },
+            'XRP': { price: 0.634, change: -1.2, sentiment: '📉', confidence: 45 },
+            'ADA': { price: 0.456, change: 0.8, sentiment: '🔄', confidence: 58 },
+            'SOL': { price: 156.78, change: 4.2, sentiment: '🚀', confidence: 75 }
+        };
+        
+        // Initialize dashboard
+        function initDashboard() {
+            updatePredictionWidget();
+            updateSnapshot();
+            updateNewsFeed();
+            startAutoUpdate();
+        }
+        
+        // Crypto selector functionality
+        document.querySelectorAll('.crypto-btn').forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                document.querySelectorAll('.crypto-btn').forEach(b => b.classList.remove('active'));
+                e.target.classList.add('active');
+                currentCrypto = e.target.dataset.crypto;
+                updatePredictionWidget();
+            });
+        });
+        
+        // Timeframe selector functionality
+        document.querySelectorAll('.timeframe-btn').forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                document.querySelectorAll('.timeframe-btn').forEach(b => b.classList.remove('active'));
+                e.target.classList.add('active');
+                currentTimeframe = e.target.dataset.timeframe;
+                updatePredictionWidget();
+            });
+        });
+        
+        // Update prediction widget
+        function updatePredictionWidget() {
+            const data = cryptoData[currentCrypto];
+            const emoji = document.getElementById('sentimentEmoji');
+            const fill = document.getElementById('predictionFill');
+            const confidence = document.getElementById('confidenceScore');
+            const prediction = document.getElementById('prediction');
+            
+            emoji.textContent = data.sentiment;
+            fill.style.width = data.confidence + '%';
+            confidence.textContent = data.confidence + '%';
+            
+            if (data.change > 0) {
+                prediction.textContent = '+' + data.change + '%';
+                prediction.className = 'positive';
+            } else {
+                prediction.textContent = data.change + '%';
+                prediction.className = 'negative';
+            }
+            
+            // Add animation effect
+            emoji.style.transform = 'scale(1.2)';
+            setTimeout(() => {
+                emoji.style.transform = 'scale(1)';
+            }, 300);
+        }
+        
+        // Update market snapshot
+        function updateSnapshot() {
+            // Simulate real market data updates
+            const variations = [-3, -2, -1, 0, 1, 2, 3];
+            const randomVariation = () => variations[Math.floor(Math.random() * variations.length)];
+            
+            document.getElementById('marketCap').textContent = '$' + (2.1 + randomVariation() * 0.1).toFixed(1) + 'T';
+            document.getElementById('volume24h').textContent = '$' + (89.2 + randomVariation() * 2).toFixed(1) + 'B';
+            document.getElementById('btcDominance').textContent = (42.3 + randomVariation() * 0.5).toFixed(1) + '%';
+            
+            // Add visual feedback
+            document.querySelector('.market-snapshot').style.transform = 'scale(1.02)';
+            setTimeout(() => {
+                document.querySelector('.market-snapshot').style.transform = 'scale(1)';
+            }, 200);
+        }
+        
+        // Update news feed
+        function updateNewsFeed() {
+            const newsFeed = document.getElementById('newsFeed');
+            const newsItems = [
+                { text: '📈 Bitcoin ETF sees record inflows of $1.2B', sentiment: 'positive' },
+                { text: '⚖️ SEC delays decision on Ethereum ETF approval', sentiment: 'neutral' },
+                { text: '🚀 Major bank announces crypto custody services', sentiment: 'positive' },
+                { text: '⚠️ Exchange reports security breach concerns', sentiment: 'negative' },
+                { text: '💰 Institutional adoption reaches new highs', sentiment: 'positive' },
+                { text: '🏛️ New regulatory framework proposed', sentiment: 'neutral' }
+            ];
+            
+            // Shuffle and display random news items
+            const shuffled = newsItems.sort(() => 0.5 - Math.random());
+            newsFeed.innerHTML = shuffled.slice(0, 4).map(item => {
+                const color = item.sentiment === 'positive' ? '#2ed573' : 
+                            item.sentiment === 'negative' ? '#ff4757' : '#ffa502';
+                return `<div class="news-item" style="border-left-color: ${color};">${item.text}</div>`;
+            }).join('');
+        }
+        
+        // Game functionality
+        function startGame(gameType) {
+            if (gameActive) return;
+            
+            gameActive = true;
+            const gameArea = document.getElementById('gameArea');
+            const gameContent = document.getElementById('gameContent');
+            
+            gameArea.style.display = 'block';
+            
+            switch(gameType) {
+                case 'prediction':
+                    gameContent.innerHTML = `
+                        <h3>🔮 Price Prediction Challenge</h3>
+                        <p>Will ${currentCrypto} go UP or DOWN in the next hour?</p>
+                        <button class="update-btn" onclick="makeGuess('up')">📈 UP</button>
+                        <button class="update-btn" onclick="makeGuess('down')">📉 DOWN</button>
+                    `;
+                    break;
+                case 'rsi':
+                    gameContent.innerHTML = `
+                        <h3>📊 RSI Master</h3>
+                        <p>Current RSI: 73. What should you do?</p>
+                        <button class="update-btn" onclick="checkAnswer('sell')">SELL (Overbought)</button>
+                        <button class="update-btn" onclick="checkAnswer('buy')">BUY (Oversold)</button>
+                    `;
+                    break;
+                case 'portfolio':
+                    gameContent.innerHTML = `
+                        <h3>💼 Portfolio Builder</h3>
+                        <p>You have $10,000. How would you allocate?</p>
+                        <p>BTC: <input type="range" min="0" max="100" value="50" onchange="updateAllocation()">%</p>
+                        <button class="update-btn" onclick="submitPortfolio()">Submit Portfolio</button>
+                    `;
+                    break;
+                case 'news':
+                    gameContent.innerHTML = `
+                        <h3>📰 News Impact Quiz</h3>
+                        <p>"Bitcoin ETF approved by major regulator"</p>
+                        <p>Market impact prediction:</p>
+                        <button class="update-btn" onclick="checkNews('bullish')">🚀 Very Bullish</button>
+                        <button class="update-btn" onclick="checkNews('neutral')">😐 Neutral</button>
+                    `;
+                    break;
+            }
+        }
+        
+        function makeGuess(direction) {
+            const correct = Math.random() > 0.5;
+            document.getElementById('gameContent').innerHTML = 
+                correct ? `<h3>🎉 Correct! You're a trading genius!</h3>` : 
+                         `<h3>📚 Not this time! Keep learning!</h3>`;
+        }
+        
+        function checkAnswer(answer) {
+            const isCorrect = answer === 'sell';
+            document.getElementById('gameContent').innerHTML = 
+                isCorrect ? `<h3>✅ Excellent! RSI > 70 suggests overbought conditions</h3>` : 
+                           `<h3>📖 Remember: RSI > 70 = Overbought, RSI < 30 = Oversold</h3>`;
+        }
+        
+        function submitPortfolio() {
+            document.getElementById('gameContent').innerHTML = `<h3>💼 Portfolio submitted! Risk score: Medium</h3>`;
+        }
+        
+        function checkNews(impact) {
+            const isCorrect = impact === 'bullish';
+            document.getElementById('gameContent').innerHTML = 
+                isCorrect ? `<h3>🎯 Perfect! ETF approvals typically drive strong rallies</h3>` : 
+                           `<h3>📈 ETF approvals are major bullish catalysts for crypto!</h3>`;
+        }
+        
+        function closeGame() {
+            gameActive = false;
+            document.getElementById('gameArea').style.display = 'none';
+        }
+        
+        // Auto-update functionality
+        function startAutoUpdate() {
+            setInterval(() => {
+                if (!gameActive) {
+                    // Update crypto data with small random changes
+                    Object.keys(cryptoData).forEach(crypto => {
+                        const change = (Math.random() - 0.5) * 2; // Random change between -1% and +1%
+                        cryptoData[crypto].change += change;
+                        cryptoData[crypto].confidence = Math.max(20, Math.min(90, cryptoData[crypto].confidence + (Math.random() - 0.5) * 10));
+                        
+                        // Update sentiment based on change
+                        if (cryptoData[crypto].change > 2) cryptoData[crypto].sentiment = '🚀';
+                        else if (cryptoData[crypto].change > 0) cryptoData[crypto].sentiment = '📈';
+                        else if (cryptoData[crypto].change > -2) cryptoData[crypto].sentiment = '📉';
+                        else cryptoData[crypto].sentiment = '💥';
+                    });
+                    
+                    updatePredictionWidget();
+                    
+                    // Occasionally update news and snapshot
+                    if (Math.random() > 0.8) {
+                        updateNewsFeed();
+                    }
+                    if (Math.random() > 0.9) {
+                        updateSnapshot();
+                    }
+                }
+            }, 5000); // Update every 5 seconds
+        }
+        
+        // Mood board interactivity
+        document.querySelectorAll('.mood-item').forEach(item => {
+            item.addEventListener('click', (e) => {
+                const sentiment = e.currentTarget.dataset.sentiment;
+                document.querySelectorAll('.news-item').forEach(newsItem => {
+                    newsItem.style.display = 'block';
+                });
+                
+                // Filter news by sentiment (mock implementation)
+                if (sentiment !== 'neutral') {
+                    // Hide some items to simulate filtering
+                    const items = document.querySelectorAll('.news-item');
+                    items.forEach((item, index) => {
+                        if (Math.random() > 0.6) item.style.display = 'none';
+                    });
+                }
+            });
+        });
+        
+        // Initialize on page load
+        document.addEventListener('DOMContentLoaded', initDashboard);
+    </script>
+</body>
+</html>
