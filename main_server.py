@@ -1721,10 +1721,17 @@ except ImportError as e:
     logger.warning(f"OpenAI not available: {e}")
     openai_available = False
     trading_ai = None
+
+# Import technical indicators
+try:
+    from taapi_indicators import TaapiIndicators
+    taapi_indicators = TaapiIndicators()
+    taapi_available = True
+    logger.info("Taapi.io technical indicators loaded successfully")
 except Exception as e:
-    logger.error(f"OpenAI initialization error: {e}")
-    openai_available = False
-    trading_ai = None
+    taapi_indicators = None
+    taapi_available = False
+    logger.warning(f"Taapi.io indicators not available: {e}")
 
 @app.route('/api/chatgpt/portfolio-analysis', methods=['GET'])
 def get_chatgpt_portfolio_analysis():
@@ -1951,6 +1958,107 @@ def get_chatgpt_account_summary():
     except Exception as e:
         logger.error(f"Error generating ChatGPT account summary: {str(e)}")
         return jsonify({'error': 'Failed to generate AI account summary'}), 500
+
+# ============================================================================
+# TAAPI.IO TECHNICAL INDICATORS ENDPOINTS
+# ============================================================================
+
+@app.route('/api/indicators/rsi/<symbol>', methods=['GET'])
+def get_rsi_indicator(symbol):
+    """Get RSI indicator for a specific symbol"""
+    try:
+        if not taapi_available:
+            return jsonify({'error': 'Technical indicators not available'}), 503
+        
+        interval = request.args.get('interval', '1h')
+        period = int(request.args.get('period', 14))
+        
+        result = taapi_indicators.get_rsi(symbol, interval, period)
+        return jsonify(result)
+    except Exception as e:
+        logger.error(f"Error getting RSI for {symbol}: {str(e)}")
+        return jsonify({'error': f'Failed to get RSI for {symbol}'}), 500
+
+@app.route('/api/indicators/macd/<symbol>', methods=['GET'])
+def get_macd_indicator(symbol):
+    """Get MACD indicator for a specific symbol"""
+    try:
+        if not taapi_available:
+            return jsonify({'error': 'Technical indicators not available'}), 503
+        
+        interval = request.args.get('interval', '1h')
+        fast_period = int(request.args.get('fast_period', 12))
+        slow_period = int(request.args.get('slow_period', 26))
+        signal_period = int(request.args.get('signal_period', 9))
+        
+        result = taapi_indicators.get_macd(symbol, interval, fast_period, slow_period, signal_period)
+        return jsonify(result)
+    except Exception as e:
+        logger.error(f"Error getting MACD for {symbol}: {str(e)}")
+        return jsonify({'error': f'Failed to get MACD for {symbol}'}), 500
+
+@app.route('/api/indicators/bbands/<symbol>', methods=['GET'])
+def get_bollinger_bands(symbol):
+    """Get Bollinger Bands for a specific symbol"""
+    try:
+        if not taapi_available:
+            return jsonify({'error': 'Technical indicators not available'}), 503
+        
+        interval = request.args.get('interval', '1h')
+        period = int(request.args.get('period', 20))
+        std_dev = float(request.args.get('stddev', 2.0))
+        
+        result = taapi_indicators.get_bollinger_bands(symbol, interval, period, std_dev)
+        return jsonify(result)
+    except Exception as e:
+        logger.error(f"Error getting Bollinger Bands for {symbol}: {str(e)}")
+        return jsonify({'error': f'Failed to get Bollinger Bands for {symbol}'}), 500
+
+@app.route('/api/indicators/comprehensive/<symbol>', methods=['GET'])
+def get_comprehensive_indicators(symbol):
+    """Get comprehensive technical analysis for a symbol"""
+    try:
+        if not taapi_available:
+            return jsonify({'error': 'Technical indicators not available'}), 503
+        
+        interval = request.args.get('interval', '1h')
+        
+        result = taapi_indicators.get_comprehensive_analysis(symbol, interval)
+        return jsonify(result)
+    except Exception as e:
+        logger.error(f"Error getting comprehensive analysis for {symbol}: {str(e)}")
+        return jsonify({'error': f'Failed to get comprehensive analysis for {symbol}'}), 500
+
+@app.route('/api/indicators/multi-timeframe/<symbol>', methods=['GET'])
+def get_multi_timeframe_analysis(symbol):
+    """Get analysis across multiple timeframes"""
+    try:
+        if not taapi_available:
+            return jsonify({'error': 'Technical indicators not available'}), 503
+        
+        timeframes_param = request.args.get('timeframes', '15m,1h,4h,1d')
+        timeframes = [tf.strip() for tf in timeframes_param.split(',')]
+        
+        result = taapi_indicators.get_multiple_timeframes(symbol, timeframes)
+        return jsonify(result)
+    except Exception as e:
+        logger.error(f"Error getting multi-timeframe analysis for {symbol}: {str(e)}")
+        return jsonify({'error': f'Failed to get multi-timeframe analysis for {symbol}'}), 500
+
+@app.route('/api/indicators/status', methods=['GET'])
+def get_indicators_status():
+    """Get status of technical indicators integration"""
+    status = {
+        'taapi_available': taapi_available,
+        'api_key_configured': bool(os.getenv('TAAPI_API_KEY')),
+        'supported_indicators': [
+            'RSI', 'MACD', 'Bollinger Bands', 'Stochastic', 
+            'Williams %R', 'EMA', 'SMA', 'ADX', 'CCI'
+        ],
+        'supported_timeframes': ['1m', '5m', '15m', '30m', '1h', '2h', '4h', '6h', '8h', '12h', '1d'],
+        'default_exchange': 'binance'
+    }
+    return jsonify(status)
 
 @app.errorhandler(Exception)
 def handle_unexpected_error(error):

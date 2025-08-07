@@ -82,6 +82,9 @@ Preferred communication style: Simple, everyday language.
 - **DexScreener API**: Integrated for identifying viral tokens and meme coins.
 - **LunarCrush**: Provides social sentiment data for enhanced alpha detection.
 
+## Technical Analysis APIs
+- **Taapi.io API**: Comprehensive technical indicators including RSI, MACD, Bollinger Bands, Stochastic, Williams %R, EMA, SMA, ADX, and CCI across multiple timeframes (1m to 1d). Integrated into both the automated trading alerts system and main server API endpoints for real-time technical analysis.
+
 ## Communication and Deployment
 - **Discord Webhooks**: Multi-channel alert delivery system.
 - **Railway Platform**: Cloud deployment and environment management.

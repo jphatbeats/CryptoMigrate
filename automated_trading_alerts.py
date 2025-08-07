@@ -28,6 +28,21 @@ except ImportError as e:
     crypto_news_available = False
     print(f"❌ Crypto news API not available: {e}")
 
+# Import technical indicators module
+try:
+    from taapi_indicators import TaapiIndicators
+    taapi_indicators = TaapiIndicators()
+    taapi_available = True
+    print("✅ Taapi.io technical indicators loaded successfully")
+except ImportError as e:
+    taapi_available = False
+    taapi_indicators = None
+    print(f"❌ Taapi.io indicators not available: {e}")
+except Exception as e:
+    taapi_available = False
+    taapi_indicators = None
+    print(f"❌ Taapi.io initialization error: {e}")
+
 # Import OpenAI trading intelligence
 trading_ai = None
 ai_opportunities = None
@@ -255,8 +270,29 @@ def analyze_trading_conditions(positions):
             if not symbol:
                 continue
 
-            # Calculate simulated RSI
-            rsi = calculate_simulated_rsi(pnl_pct)
+            # Get real technical indicators if available
+            real_indicators = None
+            if taapi_available and taapi_indicators:
+                try:
+                    # Convert symbol format for taapi (e.g., ETH/USDT -> ETHUSDT)
+                    taapi_symbol = symbol.replace('/', '')
+                    # Try to get real RSI first
+                    rsi_result = taapi_indicators.get_rsi(taapi_symbol, "1h", 14)
+                    if rsi_result and 'value' in rsi_result and 'error' not in rsi_result:
+                        rsi = rsi_result['value']
+                        print(f"📊 {symbol}: Got real RSI {rsi:.1f} from taapi.io")
+                    elif 'rate_limited' in rsi_result or 'forbidden' in rsi_result:
+                        rsi = calculate_simulated_rsi(pnl_pct)
+                        print(f"📊 {symbol}: API limit reached, using simulated RSI {rsi:.1f}")
+                    else:
+                        rsi = calculate_simulated_rsi(pnl_pct)
+                        print(f"📊 {symbol}: Using simulated RSI {rsi:.1f}")
+                except Exception as e:
+                    print(f"⚠️ Taapi.io error for {symbol}: {e}")
+                    rsi = calculate_simulated_rsi(pnl_pct)
+            else:
+                # Calculate simulated RSI
+                rsi = calculate_simulated_rsi(pnl_pct)
 
             print(f"📊 {symbol}: PnL {pnl_pct:.1f}%, RSI {rsi:.1f}")
 
