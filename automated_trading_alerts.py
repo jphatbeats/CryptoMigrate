@@ -72,6 +72,19 @@ except ImportError as e:
     print(f"❌ Alpha Opportunities Generator not available: {e}")
 except Exception as e:
     alpha_opportunities = False
+
+# Import Live Trade Scanner
+live_trade_scanner = None
+try:
+    from live_trade_scanner import start_live_trade_scanner, stop_live_trade_scanner
+    live_trade_scanner = True
+    print("✅ Live Trade Scanner loaded successfully")
+except ImportError as e:
+    live_trade_scanner = False
+    print(f"❌ Live Trade Scanner not available: {e}")
+except Exception as e:
+    live_trade_scanner = False
+    print(f"❌ Live Trade Scanner error: {e}")
     trading_ai = None
     print(f"❌ OpenAI initialization error: {e}")
 

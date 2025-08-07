@@ -24,6 +24,10 @@ args = "crypto_trading_server"
 task = "workflow.run"
 args = "Discord AI Alerts"
 
+[[workflows.workflow.tasks]]
+task = "workflow.run"
+args = "Live Trade Scanner"
+
 [[workflows.workflow]]
 name = "Crypto Trading Server"
 author = "agent"
@@ -48,6 +52,17 @@ author = "agent"
 [[workflows.workflow.tasks]]
 task = "shell.exec"
 args = "python automated_trading_alerts.py"
+
+[[workflows.workflow]]
+name = "Live Trade Scanner"
+author = "agent"
+
+[[workflows.workflow.tasks]]
+task = "shell.exec"
+args = "python start_live_scanner.py"
+
+[workflows.workflow.metadata]
+outputType = "console"
 
 [[ports]]
 localPort = 5000

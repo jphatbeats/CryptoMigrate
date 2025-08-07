@@ -27,6 +27,7 @@ Preferred communication style: Simple, everyday language.
 - Monitors portfolio positions, performs technical analysis (RSI, PnL), and generates risk alerts.
 - **Alpha Opportunities System (`alpha_opportunities_generator.py`)**: Generates real trading opportunities from news analysis, social sentiment, technical indicators, and emerging tokens instead of repetitive simulated data.
 - **Top Performers Scanner (`top_performers_scanner.py`)**: Comprehensive analysis of top 200 performing coins with news catalyst matching, trading strategy generation (swing/day/portfolio trades), and risk assessment for high-quality alpha opportunities.
+- **Live Trade Scanner (`live_trade_scanner.py`)**: Continuous background scanning system that analyzes 20 tokens every 5 minutes, completing the top 200 tokens per cycle. Only sends Discord callouts when real trades meet strict criteria (score >65, proper risk/reward, catalyst analysis). Includes complete trade plans with entry/exit/stop-loss levels.
 - Integrates with multi-channel Discord webhooks, routing intelligent content to appropriate channels.
 
 ## Data Flow Architecture
