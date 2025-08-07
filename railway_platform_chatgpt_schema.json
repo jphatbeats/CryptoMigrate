@@ -18,6 +18,7 @@
   "paths": {
     "/api/taapi/bulk": {
       "post": {
+        "operationId": "getBulkTechnicalIndicators",
         "tags": ["Technical Analysis"],
         "summary": "Get multiple technical indicators via taapi.io bulk endpoint",
         "description": "Fetch up to 20 technical indicators in a single API call using taapi.io's bulk endpoint. Supports 208+ indicators including RSI, MACD, Bollinger Bands, EMA, SMA, Stochastic, Williams %R, ADX, CCI across multiple timeframes. Uses embedded API key with bybit exchange as default.",
@@ -86,6 +87,7 @@
     },
     "/api/taapi/{indicator}": {
       "get": {
+        "operationId": "getSingleTechnicalIndicator",
         "tags": ["Technical Analysis"],
         "summary": "Get single technical indicator via taapi.io",
         "description": "Fetch individual technical indicators from taapi.io. Supports 208+ indicators with customizable parameters and timeframes. Uses embedded API key with bybit exchange as default.",
@@ -162,6 +164,7 @@
     },
     "/api/chatgpt/portfolio-analysis": {
       "get": {
+        "operationId": "getAiPortfolioAnalysis",
         "tags": ["AI Analysis"],
         "summary": "Get AI-powered portfolio analysis using OpenAI GPT-4",
         "description": "Comprehensive AI analysis of your trading portfolio using real OpenAI GPT-4. Analyzes positions across all connected exchanges, provides risk assessment, profit/loss analysis, and actionable trading recommendations.",
@@ -191,6 +194,7 @@
     },
     "/api/chatgpt/news-sentiment": {
       "post": {
+        "operationId": "getAiNewsSentiment",
         "tags": ["AI Analysis"],
         "summary": "AI news sentiment analysis using OpenAI GPT-4",
         "description": "Advanced sentiment analysis of cryptocurrency news articles using OpenAI GPT-4. Provides bullish/bearish scoring, market impact assessment, and trading signal generation.",
@@ -252,6 +256,7 @@
     },
     "/api/proxy/taapi/{indicator}": {
       "get": {
+        "operationId": "getTechnicalIndicatorProxy",
         "tags": ["Technical Analysis Proxy"],
         "summary": "CORS-enabled proxy for taapi.io indicators",
         "description": "Cross-Origin Resource Sharing (CORS) enabled proxy endpoint for accessing taapi.io technical indicators directly from web applications. Identical functionality to direct taapi.io API but with proper CORS headers for browser compatibility.",
