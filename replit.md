@@ -47,26 +47,28 @@ Preferred communication style: Simple, everyday language.
 - **Enhanced with Article Images**: All Discord news alerts now include actual article images from CryptoNews API, providing visual context alongside sentiment analysis and market intelligence.
 - Intelligently routes alerts to appropriate Discord channels based on type and urgency.
 
-## Advanced Multi-Channel Discord Intelligence
+## Enhanced Discord Intelligence (TITAN BOT#6444)
 
-**Enhanced Channel Strategy (10 Specialized Channels)**
-- **#market-movers**: Real-time price movements >10%, volume spikes, breakout alerts (20/hour max)
-- **#whale-alerts**: $1M+ transactions, institutional movements, exchange flows (15/hour max)
-- **#liquidations**: Major liquidations, cascade risks, reversal opportunities (25/hour max)
-- **#funding-rates**: Funding rate analysis, sentiment signals, extreme readings (8/hour max)
-- **#social-sentiment**: Multi-source sentiment fusion, viral content, influencer activity (12/hour max)
-- **#alpha-scans**: High-conviction setups with confluence signals (6/hour max)
-- **#degen-memes**: Viral plays, meme coins, airdrops, early gems (10/hour max)
-- **#technical-analysis**: Chart patterns, indicator signals, support/resistance (10/hour max)
-- **#news-intelligence**: Breaking news, regulatory updates, partnerships (15/hour max)
-- **#performance-analytics**: Daily reports, success rates, ROI tracking (3/hour max)
+**Enhanced 4-Channel Strategy with Advanced Features**
+- **#alerts**: Breaking news, risks, market alerts with urgency indicators and smart reactions (20/hour max)
+- **#portfolio**: Portfolio analysis, PnL monitoring, risk management with health scoring (15/hour max)
+- **#alpha-scans**: Real trading opportunities with confluence signals, confidence scoring, and trade setups (12/hour max)
+- **#degen-memes**: Viral plays, airdrops, meme coins, early gems with viral scoring (10/hour max)
 
-**Advanced Webhook Management**
-- 10 specialized webhook URLs with intelligent content routing based on alert type and priority
-- Smart rate limiting per channel (3-25 alerts/hour based on channel importance)
-- Interactive features: reaction tracking, custom watchlists, performance analytics
-- Professional formatting styles: compact, detailed, urgent, analytical, social, casual
-- Real-time engagement metrics and channel performance optimization
+**Enhanced Bot Features**
+- **Intelligent Routing**: Alerts automatically routed to appropriate channels based on type and urgency
+- **Interactive Reactions**: Smart reaction buttons (👀 watching, ✅ entered, 📈 profitable, etc.)
+- **Advanced Formatting**: Channel-specific message styling with confidence scoring and risk indicators
+- **Performance Tracking**: SQLite database tracking alert performance and user interactions
+- **Rate Limiting**: Smart per-channel limits to maintain signal quality
+
+**Enhanced Discord Bot Management**
+- Discord.py library integration with TITAN BOT#6444 using DISCORD_TOKEN
+- Intelligent content routing based on alert type and priority across 4 specialized channels
+- Smart rate limiting per channel (10-20 alerts/hour based on channel importance)
+- Interactive reaction system: 👀 watching, ✅ entered, ❌ passed, 📈 profitable, 📉 loss
+- Professional formatting styles: alpha opportunities, portfolio intelligence, market alerts, degen plays
+- Real-time engagement tracking and performance analytics via SQLite database
 
 ## Error Handling and Reliability
 

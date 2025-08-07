@@ -660,8 +660,8 @@ async def fetch_lunarcrush_data():
         print(f"❌ LunarCrush fetch error: {e}")
         return None
 
-async def send_discord_alert(message, channel='portfolio'):
-    """Send alert to Discord channel via bot (create temporary connection)"""
+async def send_discord_alert(message, channel='portfolio', alert_data=None):
+    """Enhanced Discord alert with intelligent formatting and reactions"""
     try:
         if not DISCORD_TOKEN:
             print("❌ No Discord token configured")
@@ -673,9 +673,13 @@ async def send_discord_alert(message, channel='portfolio'):
             print(f"❌ No Discord channel configured for {channel}")
             return False
         
+        # Enhanced message formatting based on channel and alert data
+        formatted_message = await format_enhanced_message(message, channel, alert_data)
+        
         # Create temporary Discord client for this message
         intents = discord.Intents.default()
         intents.message_content = True
+        intents.reactions = True
         client = discord.Client(intents=intents)
         
         @client.event
@@ -686,8 +690,12 @@ async def send_discord_alert(message, channel='portfolio'):
                 if discord_channel:
                     # Check if it's a text channel
                     if hasattr(discord_channel, 'send'):
-                        await discord_channel.send(message)
-                        print(f"✅ Discord alert sent to #{channel} ({channel_id})")
+                        sent_message = await discord_channel.send(formatted_message)
+                        
+                        # Add intelligent reactions based on channel type
+                        await add_channel_reactions(sent_message, channel, alert_data)
+                        
+                        print(f"✅ Enhanced Discord alert sent to #{channel} ({channel_id})")
                     else:
                         print(f"❌ Channel {channel_id} is not a text channel")
                 else:
@@ -707,6 +715,158 @@ async def send_discord_alert(message, channel='portfolio'):
     except Exception as e:
         print(f"❌ Discord connection error: {e}")
         return False
+
+
+async def format_enhanced_message(message, channel, alert_data=None):
+    """Format message with enhanced styling based on channel type"""
+    timestamp = datetime.now().strftime('%H:%M UTC')
+    
+    if not alert_data:
+        return f"{message}\n\n⏰ {timestamp}"
+    
+    symbol = alert_data.get('symbol', alert_data.get('Symbol', 'CRYPTO'))
+    alert_type = alert_data.get('type', 'general')
+    confidence = alert_data.get('confidence', 0)
+    
+    # Channel-specific enhanced formatting
+    if channel == 'alpha_scans':
+        return await format_alpha_opportunity(message, alert_data, timestamp)
+    elif channel == 'portfolio':
+        return await format_portfolio_intelligence(message, alert_data, timestamp)
+    elif channel == 'alerts':
+        return await format_market_alert(message, alert_data, timestamp)
+    elif channel == 'degen_memes':
+        return await format_degen_play(message, alert_data, timestamp)
+    else:
+        return f"{message}\n\n⏰ {timestamp}"
+
+
+async def format_alpha_opportunity(message, data, timestamp):
+    """Format alpha opportunity with professional trading layout"""
+    symbol = data.get('symbol', data.get('Symbol', 'CRYPTO'))
+    confidence = data.get('confidence', 0)
+    entry_price = data.get('entry_price', data.get('Entry Price', 0))
+    targets = data.get('targets', [])
+    stop_loss = data.get('stop_loss', 0)
+    catalyst = data.get('catalyst', data.get('message', ''))
+    
+    confidence_emoji = "🔥" if confidence >= 9 else "⚡" if confidence >= 7 else "📊"
+    
+    enhanced = f"{confidence_emoji} **ALPHA OPPORTUNITY: {symbol}**\n\n"
+    enhanced += f"{message}\n\n"
+    
+    # Trading details section
+    enhanced += "📊 **TRADE SETUP**\n"
+    if entry_price:
+        enhanced += f"📍 Entry: ${entry_price:,.4f}\n"
+    if targets:
+        targets_str = " → ".join([f"${t:,.4f}" for t in targets[:3]])
+        enhanced += f"🎯 Targets: {targets_str}\n"
+    if stop_loss:
+        enhanced += f"🛡️ Stop: ${stop_loss:,.4f}\n"
+    
+    enhanced += f"\n🎯 **Confidence**: {confidence}/10"
+    enhanced += f"\n⏰ **Time**: {timestamp}"
+    
+    return enhanced
+
+
+async def format_portfolio_intelligence(message, data, timestamp):
+    """Format portfolio alerts with health metrics"""
+    portfolio_score = data.get('portfolio_score', data.get('health_score', 0))
+    risk_level = data.get('risk_level', data.get('severity', 'MEDIUM'))
+    pnl = data.get('pnl', data.get('Unrealized PnL %', 0))
+    
+    score_emoji = "🟢" if portfolio_score >= 8 else "🟡" if portfolio_score >= 6 else "🔴"
+    risk_emoji = "🛡️" if risk_level == 'LOW' else "⚠️" if risk_level == 'MEDIUM' else "🚨"
+    
+    enhanced = f"{score_emoji} **PORTFOLIO INTELLIGENCE**\n\n"
+    enhanced += f"{message}\n\n"
+    enhanced += f"📊 **Health Score**: {portfolio_score}/10\n"
+    enhanced += f"{risk_emoji} **Risk Level**: {risk_level}\n"
+    
+    if pnl != 0:
+        pnl_emoji = "📈" if pnl > 0 else "📉"
+        enhanced += f"{pnl_emoji} **PnL**: {pnl:+.1f}%\n"
+    
+    enhanced += f"⏰ **Analysis**: {timestamp}"
+    
+    return enhanced
+
+
+async def format_market_alert(message, data, timestamp):
+    """Format market alerts with urgency indicators"""
+    urgency = data.get('urgency', data.get('severity', 'MEDIUM'))
+    alert_type = data.get('type', 'market_update')
+    symbol = data.get('symbol', data.get('Symbol', ''))
+    
+    urgency_emoji = "🚨" if urgency == 'HIGH' or urgency == 'CRITICAL' else "⚠️" if urgency == 'MEDIUM' else "📊"
+    
+    enhanced = f"{urgency_emoji} **MARKET ALERT**"
+    if symbol:
+        enhanced += f": {symbol}"
+    enhanced += "\n\n"
+    
+    enhanced += f"{message}\n\n"
+    enhanced += f"🚨 **Priority**: {urgency}\n"
+    enhanced += f"⏰ **Time**: {timestamp}"
+    
+    return enhanced
+
+
+async def format_degen_play(message, data, timestamp):
+    """Format degen plays with viral potential indicators"""
+    viral_score = data.get('viral_score', data.get('confidence', 0))
+    play_type = data.get('play_type', 'opportunity')
+    symbol = data.get('symbol', data.get('Symbol', ''))
+    
+    viral_emoji = "🚀" if viral_score >= 8 else "💎" if viral_score >= 6 else "🎲"
+    
+    enhanced = f"{viral_emoji} **DEGEN PLAY DETECTED**"
+    if symbol:
+        enhanced += f": {symbol}"
+    enhanced += "\n\n"
+    
+    enhanced += f"{message}\n\n"
+    enhanced += f"🎲 **Type**: {play_type.title()}\n"
+    enhanced += f"🔥 **Viral Score**: {viral_score}/10\n"
+    enhanced += f"⏰ **Spotted**: {timestamp}"
+    
+    return enhanced
+
+
+async def add_channel_reactions(message, channel, alert_data=None):
+    """Add intelligent reactions based on channel type"""
+    try:
+        reactions = []
+        
+        if channel == 'alpha_scans':
+            # Trading opportunity reactions
+            reactions = ['👀', '✅', '❌', '📈', '📉', '🎯']
+        elif channel == 'portfolio':
+            # Portfolio management reactions
+            reactions = ['📊', '✅', '⚠️', '🔄', '💰']
+        elif channel == 'alerts':
+            # General alert reactions
+            reactions = ['✅', '❌', '🚨', '📊', '👀']
+        elif channel == 'degen_memes':
+            # Degen play reactions
+            reactions = ['🚀', '💎', '🎲', '🔥', '❌', '👀']
+        
+        # Add reactions with small delays to avoid rate limits
+        for reaction in reactions:
+            try:
+                await message.add_reaction(reaction)
+                await asyncio.sleep(0.3)  # Prevent rate limiting
+            except Exception as e:
+                print(f"⚠️ Could not add reaction {reaction}: {e}")
+                break
+        
+        if reactions:
+            print(f"✅ Added {len(reactions)} reactions to #{channel}")
+        
+    except Exception as e:
+        print(f"⚠️ Reaction error: {e}")
 
 def prepare_alert_data(alerts):
     """Prepare alert data for Discord bot integration"""
