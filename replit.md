@@ -79,6 +79,7 @@ Preferred communication style: Simple, everyday language.
 - **OpenAI API**: Utilizes GPT-5 models for enhanced AI-powered analysis and Discord-optimized responses.
 - **DexScreener API**: For identifying viral tokens and meme coins.
 - **LunarCrush**: Individual plan subscription - social sentiment data, Galaxy scores, creator tracking, viral posts analysis.
+- **CoinMarketCap Pro API**: Professional-grade market data with 9,400+ cryptocurrencies, global metrics, trending analysis, and comprehensive price/volume data.
 
 ## Technical Analysis APIs
 - **Taapi.io API**: Basic plan subscription - full access to all 208+ technical indicators with bulk endpoint support (max 20 per request). Uses alternative exchanges (Bybit, Kraken, etc.) for optimal performance.
@@ -99,6 +100,7 @@ Preferred communication style: Simple, everyday language.
 - **Dual Schema Setup**: Utilizes separate schemas for direct API access (Coinalyze, NewsAPI.ai) and Railway platform endpoints.
 - **Railway Server Endpoints**: Discord bots access data through Railway server endpoints.
 - **Approval Requirements**: Some LunarCrush endpoints require user approval in ChatGPT Custom Actions for security.
+- **CoinMarketCap Integration**: Complete Railway server endpoints with 6 comprehensive API endpoints for market data, quotes, metadata, global metrics, trending analysis, and gainers/losers tracking.
 
 ## Communication and Deployment
 - **Discord Webhooks**: Multi-channel alert delivery.

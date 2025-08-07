@@ -29,6 +29,16 @@ except ImportError as e:
     bingx_direct_available = False
     print(f"❌ BingX Direct API failed to load: {e}")
 
+# CoinMarketCap Pro API integration
+import requests
+CMC_API_KEY = os.getenv('CMC_PRO_API_KEY')
+CMC_BASE_URL = 'https://pro-api.coinmarketcap.com/v1'
+cmc_available = bool(CMC_API_KEY)
+if cmc_available:
+    print("✅ CoinMarketCap Pro API loaded successfully")
+else:
+    print("❌ CoinMarketCap Pro API key not found")
+
 try:
     from error_handler import handle_exchange_error, ExchangeNotAvailableError
 except ImportError:
@@ -3042,6 +3052,256 @@ def get_market_snapshot():
         
     except Exception as e:
         return jsonify({'error': str(e)}), 500
+
+# ============================================================================
+# COINMARKETCAP PRO API ENDPOINTS
+# ============================================================================
+
+@app.route('/api/coinmarketcap/listings/latest', methods=['GET'])
+def get_cmc_listings():
+    """Get latest cryptocurrency listings from CoinMarketCap"""
+    if not cmc_available:
+        return jsonify({'error': 'CoinMarketCap API key not configured'}), 503
+    
+    try:
+        # Get query parameters
+        start = request.args.get('start', 1, type=int)
+        limit = request.args.get('limit', 100, type=int)
+        convert = request.args.get('convert', 'USD')
+        sort = request.args.get('sort', 'market_cap')
+        sort_dir = request.args.get('sort_dir', 'desc')
+        market_cap_min = request.args.get('market_cap_min', type=int)
+        market_cap_max = request.args.get('market_cap_max', type=int)
+        volume_24h_min = request.args.get('volume_24h_min', type=int)
+        
+        # Build API parameters
+        params = {
+            'start': start,
+            'limit': limit,
+            'convert': convert,
+            'sort': sort,
+            'sort_dir': sort_dir
+        }
+        
+        if market_cap_min:
+            params['market_cap_min'] = market_cap_min
+        if market_cap_max:
+            params['market_cap_max'] = market_cap_max
+        if volume_24h_min:
+            params['volume_24h_min'] = volume_24h_min
+        
+        headers = {
+            'X-CMC_PRO_API_KEY': CMC_API_KEY,
+            'Accept': 'application/json'
+        }
+        
+        response = requests.get(
+            f'{CMC_BASE_URL}/cryptocurrency/listings/latest',
+            headers=headers,
+            params=params,
+            timeout=30
+        )
+        response.raise_for_status()
+        
+        return jsonify(response.json())
+        
+    except Exception as e:
+        logger.error(f"Error fetching CMC listings: {str(e)}")
+        return jsonify({'error': 'Failed to fetch CoinMarketCap data'}), 500
+
+@app.route('/api/coinmarketcap/quotes/latest', methods=['GET'])
+def get_cmc_quotes():
+    """Get latest price quotes for specific cryptocurrencies"""
+    if not cmc_available:
+        return jsonify({'error': 'CoinMarketCap API key not configured'}), 503
+    
+    try:
+        # Get query parameters - support multiple symbols
+        symbol = request.args.get('symbol')  # e.g., "BTC,ETH,SOL"
+        id = request.args.get('id')  # CMC IDs as alternative
+        convert = request.args.get('convert', 'USD')
+        aux = request.args.get('aux', 'num_market_pairs,cmc_rank,date_added,tags,platform,max_supply,circulating_supply,total_supply,market_cap_by_total_supply,volume_24h_reported,volume_7d,volume_30d')
+        
+        if not symbol and not id:
+            return jsonify({'error': 'Either symbol or id parameter is required'}), 400
+        
+        # Build API parameters
+        params = {
+            'convert': convert,
+            'aux': aux
+        }
+        
+        if symbol:
+            params['symbol'] = symbol
+        if id:
+            params['id'] = id
+        
+        headers = {
+            'X-CMC_PRO_API_KEY': CMC_API_KEY,
+            'Accept': 'application/json'
+        }
+        
+        response = requests.get(
+            f'{CMC_BASE_URL}/cryptocurrency/quotes/latest',
+            headers=headers,
+            params=params,
+            timeout=30
+        )
+        response.raise_for_status()
+        
+        return jsonify(response.json())
+        
+    except Exception as e:
+        logger.error(f"Error fetching CMC quotes: {str(e)}")
+        return jsonify({'error': 'Failed to fetch CoinMarketCap quotes'}), 500
+
+@app.route('/api/coinmarketcap/metadata', methods=['GET'])
+def get_cmc_metadata():
+    """Get metadata for cryptocurrencies"""
+    if not cmc_available:
+        return jsonify({'error': 'CoinMarketCap API key not configured'}), 503
+    
+    try:
+        # Get query parameters
+        symbol = request.args.get('symbol')  # e.g., "BTC,ETH"
+        id = request.args.get('id')  # CMC IDs
+        aux = request.args.get('aux', 'urls,logo,description,tags,platform,date_added,notice,status')
+        
+        if not symbol and not id:
+            return jsonify({'error': 'Either symbol or id parameter is required'}), 400
+        
+        # Build API parameters
+        params = {'aux': aux}
+        
+        if symbol:
+            params['symbol'] = symbol
+        if id:
+            params['id'] = id
+        
+        headers = {
+            'X-CMC_PRO_API_KEY': CMC_API_KEY,
+            'Accept': 'application/json'
+        }
+        
+        response = requests.get(
+            f'{CMC_BASE_URL}/cryptocurrency/info',
+            headers=headers,
+            params=params,
+            timeout=30
+        )
+        response.raise_for_status()
+        
+        return jsonify(response.json())
+        
+    except Exception as e:
+        logger.error(f"Error fetching CMC metadata: {str(e)}")
+        return jsonify({'error': 'Failed to fetch CoinMarketCap metadata'}), 500
+
+@app.route('/api/coinmarketcap/global-metrics', methods=['GET'])
+def get_cmc_global_metrics():
+    """Get global cryptocurrency market metrics"""
+    if not cmc_available:
+        return jsonify({'error': 'CoinMarketCap API key not configured'}), 503
+    
+    try:
+        convert = request.args.get('convert', 'USD')
+        
+        headers = {
+            'X-CMC_PRO_API_KEY': CMC_API_KEY,
+            'Accept': 'application/json'
+        }
+        
+        response = requests.get(
+            f'{CMC_BASE_URL}/global-metrics/quotes/latest',
+            headers=headers,
+            params={'convert': convert},
+            timeout=30
+        )
+        response.raise_for_status()
+        
+        return jsonify(response.json())
+        
+    except Exception as e:
+        logger.error(f"Error fetching CMC global metrics: {str(e)}")
+        return jsonify({'error': 'Failed to fetch global metrics'}), 500
+
+@app.route('/api/coinmarketcap/trending/latest', methods=['GET'])
+def get_cmc_trending():
+    """Get trending cryptocurrencies"""
+    if not cmc_available:
+        return jsonify({'error': 'CoinMarketCap API key not configured'}), 503
+    
+    try:
+        start = request.args.get('start', 1, type=int)
+        limit = request.args.get('limit', 10, type=int)
+        time_period = request.args.get('time_period', '24h')  # 1h, 24h, 7d, 30d
+        convert = request.args.get('convert', 'USD')
+        
+        params = {
+            'start': start,
+            'limit': limit,
+            'time_period': time_period,
+            'convert': convert
+        }
+        
+        headers = {
+            'X-CMC_PRO_API_KEY': CMC_API_KEY,
+            'Accept': 'application/json'
+        }
+        
+        response = requests.get(
+            f'{CMC_BASE_URL}/cryptocurrency/trending/latest',
+            headers=headers,
+            params=params,
+            timeout=30
+        )
+        response.raise_for_status()
+        
+        return jsonify(response.json())
+        
+    except Exception as e:
+        logger.error(f"Error fetching CMC trending: {str(e)}")
+        return jsonify({'error': 'Failed to fetch trending data'}), 500
+
+@app.route('/api/coinmarketcap/gainers-losers', methods=['GET'])
+def get_cmc_gainers_losers():
+    """Get top gainers and losers"""
+    if not cmc_available:
+        return jsonify({'error': 'CoinMarketCap API key not configured'}), 503
+    
+    try:
+        start = request.args.get('start', 1, type=int)
+        limit = request.args.get('limit', 10, type=int)
+        time_period = request.args.get('time_period', '24h')
+        convert = request.args.get('convert', 'USD')
+        sort_dir = request.args.get('sort_dir', 'desc')  # desc for gainers, asc for losers
+        
+        params = {
+            'start': start,
+            'limit': limit,
+            'time_period': time_period,
+            'convert': convert,
+            'sort_dir': sort_dir
+        }
+        
+        headers = {
+            'X-CMC_PRO_API_KEY': CMC_API_KEY,
+            'Accept': 'application/json'
+        }
+        
+        response = requests.get(
+            f'{CMC_BASE_URL}/cryptocurrency/trending/gainers-losers',
+            headers=headers,
+            params=params,
+            timeout=30
+        )
+        response.raise_for_status()
+        
+        return jsonify(response.json())
+        
+    except Exception as e:
+        logger.error(f"Error fetching CMC gainers/losers: {str(e)}")
+        return jsonify({'error': 'Failed to fetch gainers/losers data'}), 500
 
 if __name__ == '__main__':
     try:

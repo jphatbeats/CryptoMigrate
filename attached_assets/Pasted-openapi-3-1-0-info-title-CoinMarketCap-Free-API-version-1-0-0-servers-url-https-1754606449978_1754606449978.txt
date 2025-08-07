@@ -1,0 +1,242 @@
+openapi: 3.1.0
+info:
+  title: CoinMarketCap Free API
+  version: "1.0.0"
+servers:
+  - url: https://pro-api.coinmarketcap.com/v1
+paths:
+  /cryptocurrency/listings/latest:
+    get:
+      operationId: getLatestListings
+      summary: List latest market active cryptocurrencies and stats.
+      parameters:
+        - name: start
+          in: query
+          schema:
+            type: integer
+          description: Starting rank (default 1)
+        - name: limit
+          in: query
+          schema:
+            type: integer
+          description: Number of coins to return (default 100, max 5000)
+        - name: convert
+          in: query
+          schema:
+            type: string
+          description: Fiat or crypto to convert values (e.g., USD, USDT)
+      responses:
+        "200":
+          description: List of coins with market data
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    $ref: '#/components/schemas/Status'
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Coin'
+  /cryptocurrency/quotes/latest:
+    get:
+      operationId: getLatestQuotes
+      summary: Get latest market quote for 1 or more cryptocurrencies.
+      parameters:
+        - name: symbol
+          in: query
+          required: false
+          schema:
+            type: string
+          description: Symbol(s), comma-separated (e.g., BTC,ETH,PEPE)
+        - name: id
+          in: query
+          required: false
+          schema:
+            type: string
+          description: CMC id(s), comma-separated
+        - name: convert
+          in: query
+          schema:
+            type: string
+          description: Fiat or crypto to convert values (e.g., USD)
+      responses:
+        "200":
+          description: Quotes for specified coins
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    $ref: '#/components/schemas/Status'
+                  data:
+                    type: object
+                    additionalProperties:
+                      $ref: '#/components/schemas/Coin'
+  /cryptocurrency/info:
+    get:
+      operationId: getCoinInfo
+      summary: Get static metadata for one or more cryptocurrencies.
+      parameters:
+        - name: symbol
+          in: query
+          required: false
+          schema:
+            type: string
+          description: Symbol(s), comma-separated (e.g., BTC,ETH,PEPE)
+        - name: id
+          in: query
+          required: false
+          schema:
+            type: string
+          description: CMC id(s), comma-separated
+      responses:
+        "200":
+          description: Static info for specified coins
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    $ref: '#/components/schemas/Status'
+                  data:
+                    type: object
+                    additionalProperties:
+                      type: object
+                      properties:
+                        id:
+                          type: integer
+                        name:
+                          type: string
+                        symbol:
+                          type: string
+                        category:
+                          type: string
+                        description:
+                          type: string
+                        logo:
+                          type: string
+                        subreddit:
+                          type: string
+                        notice:
+                          type: string
+                        tags:
+                          type: array
+                          items:
+                            type: string
+                        urls:
+                          type: object
+                          properties:
+                            website:
+                              type: array
+                              items:
+                                type: string
+                            twitter:
+                              type: array
+                              items:
+                                type: string
+                            reddit:
+                              type: array
+                              items:
+                                type: string
+                            message_board:
+                              type: array
+                              items:
+                                type: string
+                            chat:
+                              type: array
+                              items:
+                                type: string
+                            facebook:
+                              type: array
+                              items:
+                                type: string
+                            explorer:
+                              type: array
+                              items:
+                                type: string
+                            source_code:
+                              type: array
+                              items:
+                                type: string
+components:
+  schemas:
+    Status:
+      type: object
+      properties:
+        timestamp:
+          type: string
+          format: date-time
+        error_code:
+          type: integer
+        error_message:
+          type: string
+          nullable: true
+        elapsed:
+          type: integer
+        credit_count:
+          type: integer
+    Coin:
+      type: object
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+        symbol:
+          type: string
+        slug:
+          type: string
+        num_market_pairs:
+          type: integer
+        date_added:
+          type: string
+        tags:
+          type: array
+          items:
+            type: string
+        max_supply:
+          type: number
+          nullable: true
+        circulating_supply:
+          type: number
+        total_supply:
+          type: number
+        is_active:
+          type: integer
+        platform:
+          type: object
+          nullable: true
+        cmc_rank:
+          type: integer
+        last_updated:
+          type: string
+        quote:
+          type: object
+          additionalProperties:
+            type: object
+            properties:
+              price:
+                type: number
+              volume_24h:
+                type: number
+              percent_change_1h:
+                type: number
+              percent_change_24h:
+                type: number
+              percent_change_7d:
+                type: number
+              market_cap:
+                type: number
+              last_updated:
+                type: string
+  securitySchemes:
+    ApiKeyAuth:
+      type: apiKey
+      in: header
+      name: X-CMC_PRO_API_KEY
+security:
+  - ApiKeyAuth: []
