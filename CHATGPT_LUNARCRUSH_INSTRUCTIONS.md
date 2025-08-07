@@ -79,11 +79,14 @@ LunarCrush provides social sentiment data, Galaxy scores, creator tracking, and 
 
 ## Critical Usage Rules
 
-### Parameter Format Requirements
+### Parameter Format Requirements (CRITICAL FOR CHATGPT)
 - **Topics**: Use lowercase full names ("bitcoin", "ethereum", not "BTC", "ETH")
 - **Categories**: Get exact names from getCategoriesList first
 - **Creators**: Use platform-specific usernames
 - **Timestamps**: Unix format for time ranges
+- **URL Encoding**: Ensure special characters are properly encoded
+- **String Types**: All parameters must be strings, not integers
+- **Required vs Optional**: Always specify required parameters explicitly
 
 ### Troubleshooting Empty Results
 1. Always start with getCoinsList to verify working connection
@@ -91,13 +94,20 @@ LunarCrush provides social sentiment data, Galaxy scores, creator tracking, and 
 3. Use exact parameter formats from list endpoints
 4. Try alternative topic names if needed: "bitcoin" vs "$btc" vs "BTC"
 
-### High-Probability Working Calls
+### High-Probability Working Calls (Use These for Testing)
 ```
-getCoinsList → Almost always returns data
-getTopic with topic="bitcoin" → Very reliable
-getTopicPosts with topic="ethereum" → Active community
-getCreatorsList → Shows trending influencers
+getCoinsList() → Almost always returns data (no parameters needed)
+getTopic(topic="bitcoin") → Very reliable
+getTopicPosts(topic="ethereum") → Active community
+getCreatorsList() → Shows trending influencers (no parameters needed)
+getCategoriesList() → Always works (no parameters needed)
 ```
+
+### ChatGPT-Specific Call Examples
+**Always Working**: `getCoinsList()` with no parameters
+**Reliable**: `getTopic(topic="bitcoin")` - exact lowercase match
+**Safe**: `getCategoriesList()` then use exact category names
+**Test First**: `searchPosts(term="bitcoin")` - simple search terms
 
 ## Confluence Integration Strategy
 
