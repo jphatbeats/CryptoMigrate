@@ -59,7 +59,7 @@ class TradingIntelligence:
                 ],
                 response_format={"type": "json_object"},
                 temperature=0.7,
-                max_tokens=2000  # Increased for GPT-5's enhanced capabilities
+                max_completion_tokens=2000  # Updated parameter for GPT-5
             )
 
             analysis = json.loads(response.choices[0].message.content or "{}")
@@ -110,7 +110,7 @@ class TradingIntelligence:
                 ],
                 response_format={"type": "json_object"},
                 temperature=0.5,
-                max_tokens=1000  # Increased for GPT-5
+                max_completion_tokens=1000  # Updated parameter for GPT-5
             )
 
             analysis = json.loads(response.choices[0].message.content or "{}")
@@ -166,7 +166,7 @@ class TradingIntelligence:
                 ],
                 response_format={"type": "json_object"},
                 temperature=0.6,
-                max_tokens=2500  # Increased for GPT-5
+                max_completion_tokens=2500  # Increased for GPT-5
             )
 
             sentiment_analysis = json.loads(response.choices[0].message.content or "{}")
@@ -214,7 +214,7 @@ class TradingIntelligence:
                 ],
                 response_format={"type": "json_object"},
                 temperature=0.7,
-                max_tokens=1200
+                max_completion_tokens=1200
             )
 
             trade_grade = json.loads(response.choices[0].message.content or "{}")
@@ -265,7 +265,7 @@ class TradingIntelligence:
                 ],
                 response_format={"type": "json_object"},
                 temperature=0.8,
-                max_tokens=1800  # Increased for GPT-5
+                max_completion_tokens=1800  # Increased for GPT-5
             )
 
             insights = json.loads(response.choices[0].message.content or "{}")
@@ -318,7 +318,7 @@ class TradingIntelligence:
                 ],
                 response_format={"type": "json_object"},
                 temperature=0.5,
-                max_tokens=2200  # Increased for GPT-5's enhanced analysis
+                max_completion_tokens=2200  # Increased for GPT-5's enhanced analysis
             )
 
             risk_assessment = json.loads(response.choices[0].message.content or "{}")
@@ -387,7 +387,7 @@ class TradingIntelligence:
                 ],
                 response_format={"type": "json_object"},
                 temperature=0.7,
-                max_tokens=2500  # Increased for GPT-5's comprehensive analysis
+                max_completion_tokens=2500  # Increased for GPT-5's comprehensive analysis
             )
 
             opportunities = json.loads(response.choices[0].message.content or "{}")
@@ -468,7 +468,7 @@ class TradingIntelligence:
                 model=self.models['standard'],  # GPT-5-mini for degen opportunities - cost-effective with enhanced capabilities
                 messages=[{"role": "user", "content": prompt}],
                 response_format={"type": "json_object"},
-                max_tokens=1000,
+                max_completion_tokens=1000,
                 temperature=0.7  # Slightly higher temperature for creative degen insights
             )
             

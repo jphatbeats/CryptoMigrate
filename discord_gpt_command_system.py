@@ -275,33 +275,49 @@ async def full_market_scan(interaction: discord.Interaction):
     await interaction.response.defer()
     
     try:
-        # Trigger multiple scans simultaneously
-        endpoints = [
-            "/api/chatgpt/hourly-insights",
-            "/api/alerts/trading", 
-            "/api/crypto-news/premium?items=5",
-            "/api/live/all-exchanges",
-            "/api/alpha/scan-opportunities"
+        # Use working endpoints that have real data
+        working_endpoints = [
+            "/api/alpha/real-market-scan",
+            "/api/crypto-news/premium?items=5", 
+            "/api/dashboard/crypto-data/BTC",
+            "/api/dashboard/crypto-data/ETH",
+            "/api/technical-analysis/BTC"
         ]
         
         # Call all endpoints
-        tasks = [call_railway_api(endpoint) for endpoint in endpoints]
+        tasks = [call_railway_api(endpoint) for endpoint in working_endpoints]
         results = await asyncio.gather(*tasks, return_exceptions=True)
+        
+        # Parse actual data from working endpoints
+        alpha_data = results[0] if not isinstance(results[0], Exception) else {}
+        news_data = results[1] if not isinstance(results[1], Exception) else {}
+        btc_data = results[2] if not isinstance(results[2], Exception) else {}
+        eth_data = results[3] if not isinstance(results[3], Exception) else {}
+        ta_data = results[4] if not isinstance(results[4], Exception) else {}
+        
+        # Count real opportunities and data
+        opportunities_count = len(alpha_data.get('opportunities', [])) if alpha_data else 0
+        news_count = len(news_data.get('articles', [])) if news_data else 0
+        btc_price = btc_data.get('ticker', {}).get('price', 'N/A') if btc_data else 'N/A'
+        eth_price = eth_data.get('ticker', {}).get('price', 'N/A') if eth_data else 'N/A'
+        btc_rsi = ta_data.get('rsi', 'N/A') if ta_data else 'N/A'
         
         response = f"""🚀 **COMPLETE MARKET SCAN**
 
-🎯 **Market Pulse**: {results[0].get('market_pulse', 'N/A')[:200] if len(results) > 0 else 'N/A'}
+💹 **Market Data**:
+• BTC: ${btc_price} | RSI: {btc_rsi}
+• ETH: ${eth_price}
 
-📊 **Trading Alerts**: {len(results[1].get('alerts', [])) if len(results) > 1 else 0} found
+🎯 **Alpha Opportunities**: {opportunities_count} live signals found
 
-📰 **Latest News**: {len(results[2].get('articles', [])) if len(results) > 2 else 0} articles
+📰 **Latest News**: {news_count} articles analyzed
 
-💼 **Live Positions**: {len(results[3].get('positions', [])) if len(results) > 3 else 0} active
+🔍 **Technical Analysis**: {"Active" if ta_data else "Processing..."}
 
-🎯 **Alpha Opportunities**: {len(results[4].get('opportunities', [])) if len(results) > 4 else 0} found
+📊 **Market Sentiment**: {btc_data.get('sentiment', '📊') if btc_data else '📊'}
 
 ⏰ **Scan Time**: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}
-🤖 **Full System**: Railway + GPT-5"""
+🤖 **Real Data**: Live from exchanges + GPT-5"""
         
         await interaction.followup.send(response[:2000])
         
