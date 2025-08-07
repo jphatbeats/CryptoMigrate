@@ -97,7 +97,7 @@ Preferred communication style: Simple, everyday language.
 ## News and Intelligence APIs
 - **CryptoNews API**: Real-time cryptocurrency news with sentiment analysis and **article images**. All news articles now include actual article images (not just website logos) via `image_url` field from CryptoNews API. Enhanced Discord alerts display article images with sentiment emojis for richer user experience.
 - **NewsAPI.ai**: Secondary news source with API key `45733984-4543-4869-bc33-590f6ef99bdb` providing enhanced crypto coverage through Event Registry platform. Integrated through `EnhancedCryptoNewsAggregator` for multi-source news aggregation with deduplication and provider indicators (🔥 CryptoNews, 🌐 NewsAPI.ai). Features comprehensive article processing, sentiment analysis, and enhanced Discord formatting for richer news intelligence.
-- **OpenAI API**: Used for AI-powered analysis, insights, and recommendations (e.g., GPT-4o for portfolio health scores, news sentiment, trade grading, risk assessment, and opportunity scanning).
+- **OpenAI API**: Upgraded to GPT-5 models (August 7, 2025) for enhanced AI-powered analysis. Smart model selection: GPT-5 for complex analysis (portfolio health, risk assessment, opportunity scanning), GPT-5-mini for cost-effective routine analysis (news sentiment, trade grading), GPT-5-nano for real-time insights, and GPT-5-chat-latest for Discord-optimized responses. 45% less hallucination and superior reasoning capabilities compared to previous GPT-4o implementation.
 - **DexScreener API**: Integrated for identifying viral tokens and meme coins.
 - **LunarCrush**: Provides social sentiment data for enhanced alpha detection.
 
