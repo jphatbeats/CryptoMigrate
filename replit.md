@@ -89,6 +89,12 @@ Preferred communication style: Simple, everyday language.
 ## Futures Market Data APIs
 - **Coinalyze API**: Comprehensive futures market data including funding rates, open interest, and liquidations.
 
+## Free On-Chain Intelligence APIs
+- **Whale Alert API**: Free tier whale movement detection and large transaction alerts.
+- **Etherscan API**: Free Ethereum blockchain analysis and wallet tracking.
+- **DeBank API**: Free tier multi-chain portfolio analysis and DeFi whale tracking.
+- **Tokenview API**: Free tier multi-chain blockchain data across 100+ networks.
+
 ## ChatGPT Integration Architecture
 - **Dual Schema Setup**: Utilizes separate schemas for direct API access (Coinalyze, NewsAPI.ai) and Railway platform endpoints.
 - **Railway Server Endpoints**: Discord bots access data through Railway server endpoints.

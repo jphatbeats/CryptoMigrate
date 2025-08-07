@@ -1,4 +1,4 @@
-# Arkham Intelligence On-Chain Analysis API - ChatGPT Instructions
+# DEPRECATED - Arkham Intelligence API Not Working
 
 ## Overview
 Arkham Intelligence provides on-chain analytics, whale tracking, smart money flows, and address clustering. Essential for understanding institutional movements and following smart money before major price moves.
