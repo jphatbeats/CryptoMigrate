@@ -1,182 +1,59 @@
 {
   "openapi": "3.1.0",
   "info": {
-    "title": "Complete Trading Intelligence API + Taapi.io Integration",
-    "description": "Unified API for comprehensive crypto trading intelligence including multi-exchange data, AI-powered insights, Discord alerts, news analysis, and 208+ technical indicators via taapi.io proxy. All endpoints accessible through a single ChatGPT schema.",
-    "version": "2.0.0"
+    "title": "Unified Crypto Trading Intelligence API", 
+    "description": "Complete crypto trading platform with multi-exchange integration, technical analysis via taapi.io (208+ indicators), futures market data via Coinalyze, AI-powered analysis, and real-time market intelligence. Deployed on Railway with comprehensive error handling.",
+    "version": "2.1.0",
+    "contact": {
+      "name": "Crypto Trading Intelligence Platform",
+      "url": "https://titan-trading-2-production.up.railway.app"
+    }
   },
   "servers": [
     {
       "url": "https://titan-trading-2-production.up.railway.app",
-      "description": "Railway Production Server"
+      "description": "Railway Production Server - Complete Trading Intelligence Platform"
     }
   ],
   "paths": {
-    "/api/taapi/proxy": {
-      "post": {
-        "summary": "Taapi.io Technical Indicators (208+ available via Railway proxy)",
-        "description": "Access 208+ taapi.io technical indicators through Railway server proxy with CORS support. Includes advanced indicators like Supertrend, Ichimoku, Fisher Transform, Vortex, Aroon, CMF, Choppiness, Klinger, Donchian, Ultimate Oscillator.",
-        "operationId": "getTaapiIndicatorsProxy",
-        "requestBody": {
-          "required": true,
-          "content": {
-            "application/json": {
-              "schema": {
-                "type": "object",
-                "required": ["secret", "construct"],
-                "properties": {
-                  "secret": {
-                    "type": "string",
-                    "description": "Your taapi.io API key",
-                    "default": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJjbHVlIjoiNjg5NDFjMGE4MDZmZjE2NTFlMmM1ZTM0IiwiaWF0IjoxNzU0NTM3NDUxLCJleHAiOjMzMjU5MDAxNDUxfQ.QRqOzRFsTcYKSYUuezVQMFdJcL2A6lHIwWC5L0JOLTU"
-                  },
-                  "construct": {
-                    "type": "object",
-                    "required": ["exchange", "symbol", "interval", "indicators"],
-                    "properties": {
-                      "exchange": {
-                        "type": "string",
-                        "description": "Exchange (Note: Binance limited on basic plan, use others)",
-                        "enum": ["binance", "binancefutures", "bitstamp", "whitebit", "bybit", "gateio", "coinbase", "binanceus", "kraken"],
-                        "default": "bybit"
-                      },
-                      "symbol": {
-                        "type": "string",
-                        "description": "Trading pair (e.g., BTC/USDT, BONK/USDT)",
-                        "example": "BTC/USDT"
-                      },
-                      "interval": {
-                        "type": "string",
-                        "description": "Time interval",
-                        "enum": ["1m", "5m", "15m", "30m", "1h", "2h", "4h", "12h", "1d", "1w"],
-                        "default": "1h"
-                      },
-                      "type": {
-                        "type": "string",
-                        "description": "Asset type",
-                        "enum": ["crypto", "stocks"],
-                        "default": "crypto"
-                      },
-                      "indicators": {
-                        "type": "array",
-                        "description": "Indicators array (max 20). Available: rsi, macd, bbands, ema, sma, stoch, supertrend, ichimoku, sar, atr, adx, cci, willr, mfi, obv, fisher_transform, vortex, aroon, cmf, choppiness, klinger, donchian, ultimate_oscillator, etc.",
-                        "maxItems": 20,
-                        "minItems": 1,
-                        "items": {
-                          "type": "object",
-                          "required": ["indicator"],
-                          "properties": {
-                            "id": {
-                              "type": "string",
-                              "description": "Custom ID for tracking"
-                            },
-                            "indicator": {
-                              "type": "string",
-                              "description": "Indicator name"
-                            },
-                            "period": {
-                              "type": "integer",
-                              "description": "Period",
-                              "default": 14
-                            },
-                            "fast_period": {
-                              "type": "integer",
-                              "description": "Fast period (MACD)",
-                              "default": 12
-                            },
-                            "slow_period": {
-                              "type": "integer",
-                              "description": "Slow period (MACD)",
-                              "default": 26
-                            },
-                            "signal_period": {
-                              "type": "integer",
-                              "description": "Signal period (MACD)",
-                              "default": 9
-                            },
-                            "stddev": {
-                              "type": "number",
-                              "description": "Std deviation (BB)",
-                              "default": 2
-                            },
-                            "multiplier": {
-                              "type": "number",
-                              "description": "Multiplier (Supertrend)",
-                              "default": 3
-                            },
-                            "k_period": {
-                              "type": "integer",
-                              "description": "K period (Stoch)",
-                              "default": 14
-                            },
-                            "d_period": {
-                              "type": "integer",
-                              "description": "D period (Stoch)",
-                              "default": 3
-                            },
-                            "backtrack": {
-                              "type": "integer",
-                              "description": "Backtrack candles",
-                              "default": 0
-                            },
-                            "results": {
-                              "type": "integer",
-                              "description": "Number of results",
-                              "default": 1
-                            }
-                          }
-                        }
-                      }
-                    }
-                  }
-                }
-              },
-              "examples": {
-                "bonk_advanced": {
-                  "summary": "BONK/USDT Advanced Analysis",
-                  "value": {
-                    "secret": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJjbHVlIjoiNjg5NDFjMGE4MDZmZjE2NTFlMmM1ZTM0IiwiaWF0IjoxNzU0NTM3NDUxLCJleHAiOjMzMjU5MDAxNDUxfQ.QRqOzRFsTcYKSYUuezVQMFdJcL2A6lHIwWC5L0JOLTU",
-                    "construct": {
-                      "exchange": "bybit",
-                      "symbol": "BONK/USDT",
-                      "interval": "4h",
-                      "indicators": [
-                        {"id": "supertrend", "indicator": "supertrend"},
-                        {"id": "fisher_transform", "indicator": "fisher_transform"},
-                        {"id": "vortex", "indicator": "vortex"},
-                        {"id": "aroon", "indicator": "aroon"},
-                        {"id": "cmf", "indicator": "cmf"},
-                        {"id": "choppiness", "indicator": "choppiness"},
-                        {"id": "klinger", "indicator": "klinger"},
-                        {"id": "donchian", "indicator": "donchian"},
-                        {"id": "ultimate_oscillator", "indicator": "ultimate_oscillator"}
-                      ]
-                    }
-                  }
-                }
-              }
+    "/api/futures/funding-rates/{symbol}": {
+      "get": {
+        "tags": ["Coinalyze Futures Data"],
+        "summary": "Get current funding rates for a cryptocurrency",
+        "description": "Get real-time funding rates across multiple exchanges using Coinalyze API. Supports BTC, ETH, XRP, and 300+ other cryptocurrencies. Funding rates indicate market sentiment - negative rates suggest bullish sentiment (shorts pay longs), positive rates suggest bearish sentiment (longs pay shorts).",
+        "parameters": [
+          {
+            "name": "symbol",
+            "in": "path",
+            "required": true,
+            "description": "Cryptocurrency symbol (e.g., BTC, ETH, XRP, SOL, DOGE, etc.)",
+            "schema": {
+              "type": "string",
+              "example": "BTC"
             }
           }
-        },
+        ],
         "responses": {
           "200": {
-            "description": "Technical indicators data",
+            "description": "Current funding rates data",
             "content": {
               "application/json": {
                 "schema": {
                   "type": "object",
                   "properties": {
-                    "data": {
+                    "symbol": {"type": "string", "example": "BTC"},
+                    "funding_rates": {
                       "type": "array",
                       "items": {
                         "type": "object",
                         "properties": {
-                          "id": {"type": "string"},
-                          "result": {"type": "object"},
-                          "errors": {"type": "array"}
+                          "symbol": {"type": "string", "example": "BTCUSD_PERP.A"},
+                          "value": {"type": "number", "example": 0.0001, "description": "Funding rate value"},
+                          "update": {"type": "integer", "example": 1704067200000, "description": "Last update timestamp"}
                         }
                       }
-                    }
+                    },
+                    "timestamp": {"type": "string", "format": "date-time"}
                   }
                 }
               }
@@ -185,177 +62,44 @@
         }
       }
     },
-    "/bulk": {
-      "post": {
-        "summary": "Taapi.io Direct Access (208+ indicators) - Basic Plan Optimized",
-        "description": "Direct access to taapi.io API with your basic plan settings. Uses bybit exchange (Binance limited on basic plan). Get up to 20 indicators per request from 208+ available.",
-        "operationId": "getTaapiIndicatorsDirect",
-        "servers": [
+    "/api/futures/open-interest/{symbol}": {
+      "get": {
+        "tags": ["Coinalyze Futures Data"],
+        "summary": "Get current open interest for a cryptocurrency",
+        "description": "Get real-time open interest data across multiple exchanges. Open interest shows the total dollar amount of outstanding derivative contracts. Growing open interest with price movement indicates strong trend continuation.",
+        "parameters": [
           {
-            "url": "https://api.taapi.io",
-            "description": "Direct Taapi.io API"
-          }
-        ],
-        "requestBody": {
-          "required": true,
-          "content": {
-            "application/json": {
-              "schema": {
-                "type": "object",
-                "required": ["secret", "construct"],
-                "properties": {
-                  "secret": {
-                    "type": "string",
-                    "description": "Your taapi.io API key",
-                    "default": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJjbHVlIjoiNjg5NDFjMGE4MDZmZjE2NTFlMmM1ZTM0IiwiaWF0IjoxNzU0NTM3NDUxLCJleHAiOjMzMjU5MDAxNDUxfQ.QRqOzRFsTcYKSYUuezVQMFdJcL2A6lHIwWC5L0JOLTU"
-                  },
-                  "construct": {
-                    "type": "object",
-                    "required": ["exchange", "symbol", "interval", "indicators"],
-                    "properties": {
-                      "exchange": {
-                        "type": "string",
-                        "description": "Exchange (Note: Binance limited on basic plan)",
-                        "enum": ["binance", "binancefutures", "bitstamp", "whitebit", "bybit", "gateio", "coinbase", "binanceus", "kraken"],
-                        "default": "bybit"
-                      },
-                      "symbol": {
-                        "type": "string",
-                        "description": "Trading pair (e.g., BTC/USDT, BONK/USDT)",
-                        "example": "BTC/USDT"
-                      },
-                      "interval": {
-                        "type": "string",
-                        "description": "Time interval",
-                        "enum": ["1m", "5m", "15m", "30m", "1h", "2h", "4h", "12h", "1d", "1w"],
-                        "default": "1h"
-                      },
-                      "type": {
-                        "type": "string",
-                        "description": "Asset type",
-                        "enum": ["crypto", "stocks"],
-                        "default": "crypto"
-                      },
-                      "indicators": {
-                        "type": "array",
-                        "description": "Max 20 indicators. Available: rsi, macd, bbands, ema, sma, stoch, supertrend, ichimoku, sar, atr, adx, cci, willr, mfi, obv, fisher_transform, vortex, aroon, cmf, choppiness, klinger, donchian, ultimate_oscillator, etc.",
-                        "maxItems": 20,
-                        "minItems": 1,
-                        "items": {
-                          "type": "object",
-                          "required": ["indicator"],
-                          "properties": {
-                            "id": {
-                              "type": "string",
-                              "description": "Custom ID for tracking"
-                            },
-                            "indicator": {
-                              "type": "string",
-                              "description": "Indicator name"
-                            },
-                            "period": {
-                              "type": "integer",
-                              "description": "Period",
-                              "default": 14
-                            },
-                            "fast_period": {
-                              "type": "integer",
-                              "description": "Fast period (MACD)",
-                              "default": 12
-                            },
-                            "slow_period": {
-                              "type": "integer",
-                              "description": "Slow period (MACD)",
-                              "default": 26
-                            },
-                            "signal_period": {
-                              "type": "integer",
-                              "description": "Signal period (MACD)",
-                              "default": 9
-                            },
-                            "stddev": {
-                              "type": "number",
-                              "description": "Std deviation (BB)",
-                              "default": 2
-                            },
-                            "multiplier": {
-                              "type": "number",
-                              "description": "Multiplier (Supertrend)",
-                              "default": 3
-                            },
-                            "k_period": {
-                              "type": "integer",
-                              "description": "K period (Stoch)",
-                              "default": 14
-                            },
-                            "d_period": {
-                              "type": "integer",
-                              "description": "D period (Stoch)",
-                              "default": 3
-                            },
-                            "backtrack": {
-                              "type": "integer",
-                              "description": "Backtrack candles",
-                              "default": 0
-                            },
-                            "results": {
-                              "type": "integer",
-                              "description": "Number of results",
-                              "default": 1
-                            }
-                          }
-                        }
-                      }
-                    }
-                  }
-                }
-              },
-              "examples": {
-                "bonk_analysis_bybit": {
-                  "summary": "BONK/USDT on Bybit (Basic Plan Friendly)",
-                  "value": {
-                    "secret": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJjbHVlIjoiNjg5NDFjMGE4MDZmZjE2NTFlMmM1ZTM0IiwiaWF0IjoxNzU0NTM3NDUxLCJleHAiOjMzMjU5MDAxNDUxfQ.QRqOzRFsTcYKSYUuezVQMFdJcL2A6lHIwWC5L0JOLTU",
-                    "construct": {
-                      "exchange": "bybit",
-                      "symbol": "BONK/USDT",
-                      "interval": "4h",
-                      "indicators": [
-                        {"id": "supertrend", "indicator": "supertrend"},
-                        {"id": "fisher_transform", "indicator": "fisher_transform"},
-                        {"id": "vortex", "indicator": "vortex"},
-                        {"id": "aroon", "indicator": "aroon"},
-                        {"id": "cmf", "indicator": "cmf"},
-                        {"id": "choppiness", "indicator": "choppiness"},
-                        {"id": "klinger", "indicator": "klinger"},
-                        {"id": "donchian", "indicator": "donchian"},
-                        {"id": "ultimate_oscillator", "indicator": "ultimate_oscillator"}
-                      ]
-                    }
-                  }
-                }
-              }
+            "name": "symbol",
+            "in": "path",
+            "required": true,
+            "description": "Cryptocurrency symbol (e.g., BTC, ETH, XRP)",
+            "schema": {
+              "type": "string",
+              "example": "BTC"
             }
           }
-        },
+        ],
         "responses": {
           "200": {
-            "description": "Technical indicators data",
+            "description": "Current open interest data",
             "content": {
               "application/json": {
                 "schema": {
                   "type": "object",
                   "properties": {
-                    "data": {
+                    "symbol": {"type": "string", "example": "BTC"},
+                    "open_interest": {
                       "type": "array",
                       "items": {
                         "type": "object",
                         "properties": {
-                          "id": {"type": "string"},
-                          "result": {"type": "object"},
-                          "errors": {"type": "array"}
+                          "symbol": {"type": "string", "example": "BTCUSD_PERP.A"},
+                          "value": {"type": "number", "example": 15000000000, "description": "Open interest value in USD"},
+                          "update": {"type": "integer", "example": 1704067200000}
                         }
                       }
-                    }
+                    },
+                    "timestamp": {"type": "string", "format": "date-time"}
                   }
                 }
               }
@@ -364,166 +108,67 @@
         }
       }
     },
-    "/api/exchanges/status": {
+    "/api/futures/funding-sentiment/{symbol}": {
       "get": {
-        "summary": "Exchange Status",
-        "description": "Get status of all integrated exchanges",
-        "operationId": "getExchangeStatus",
-        "responses": {
-          "200": {
-            "description": "Exchange status information"
-          }
-        }
-      }
-    },
-    "/api/trading/{exchange}/ticker/{symbol}": {
-      "get": {
-        "summary": "Get Ticker Price",
-        "description": "Get current ticker price from exchange",
-        "operationId": "getTicker",
+        "tags": ["Coinalyze Futures Data"],
+        "summary": "Get AI-powered funding rate sentiment analysis",
+        "description": "Advanced sentiment analysis of funding rates to generate trading signals. Analyzes funding rate patterns across exchanges to determine overall market sentiment. Negative funding = bullish (shorts paying longs), positive funding = bearish (longs paying shorts).",
         "parameters": [
-          {
-            "name": "exchange",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string",
-              "enum": ["bingx", "kraken", "blofin"]
-            }
-          },
           {
             "name": "symbol",
             "in": "path",
             "required": true,
-            "schema": {"type": "string"}
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Ticker data"
-          }
-        }
-      }
-    },
-    "/api/trading/{exchange}/ohlcv/{symbol}": {
-      "get": {
-        "summary": "Get OHLCV Data",
-        "description": "Get candlestick/OHLCV data",
-        "operationId": "getOhlcv",
-        "parameters": [
-          {
-            "name": "exchange",
-            "in": "path", 
-            "required": true,
+            "description": "Cryptocurrency symbol for sentiment analysis",
             "schema": {
               "type": "string",
-              "enum": ["bingx", "kraken", "blofin"]
+              "example": "BTC"
             }
-          },
-          {
-            "name": "symbol",
-            "in": "path",
-            "required": true,
-            "schema": {"type": "string"}
-          },
-          {
-            "name": "timeframe",
-            "in": "query",
-            "schema": {"type": "string", "default": "1h"}
-          },
-          {
-            "name": "limit",
-            "in": "query",
-            "schema": {"type": "integer", "default": 100}
           }
         ],
         "responses": {
           "200": {
-            "description": "OHLCV candlestick data"
-          }
-        }
-      }
-    },
-    "/api/alerts/status": {
-      "get": {
-        "summary": "Trading Alerts Status",
-        "description": "Get current status of trading alerts system",
-        "operationId": "getAlertsStatus",
-        "responses": {
-          "200": {
-            "description": "Alerts system status"
-          }
-        }
-      }
-    },
-    "/api/alerts/positions": {
-      "get": {
-        "summary": "Current Positions",
-        "description": "Get current trading positions from alerts system",
-        "operationId": "getCurrentPositions",
-        "responses": {
-          "200": {
-            "description": "Current trading positions"
-          }
-        }
-      }
-    },
-    "/api/alerts/latest": {
-      "get": {
-        "summary": "Latest Alerts",
-        "description": "Get most recent trading alerts",
-        "operationId": "getLatestAlerts",
-        "parameters": [
-          {
-            "name": "limit",
-            "in": "query",
-            "schema": {"type": "integer", "default": 10}
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Recent trading alerts"
-          }
-        }
-      }
-    },
-    "/api/intelligence/portfolio-analysis": {
-      "post": {
-        "summary": "AI Portfolio Analysis",
-        "description": "Get AI-powered portfolio analysis and insights",
-        "operationId": "getPortfolioAnalysis",
-        "requestBody": {
-          "required": true,
-          "content": {
-            "application/json": {
-              "schema": {
-                "type": "object",
-                "properties": {
-                  "positions": {
-                    "type": "array",
-                    "description": "Portfolio positions to analyze"
-                  },
-                  "market_context": {
-                    "type": "string",
-                    "description": "Additional market context"
+            "description": "Funding sentiment analysis with trading signals",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "symbol": {"type": "string", "example": "BTC"},
+                    "overall_sentiment": {
+                      "type": "string",
+                      "enum": ["very_bullish", "bullish", "neutral", "bearish", "very_bearish"],
+                      "example": "bullish"
+                    },
+                    "exchanges_analyzed": {"type": "integer", "example": 5},
+                    "average_funding_rate": {"type": "number", "example": -0.0001},
+                    "average_funding_apr": {"type": "number", "example": -10.95, "description": "Annualized funding rate percentage"},
+                    "funding_signals": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "exchange": {"type": "string", "example": "Binance"},
+                          "funding_rate": {"type": "number", "example": -0.0001},
+                          "funding_rate_apr": {"type": "number", "example": -10.95},
+                          "sentiment": {"type": "string", "example": "bullish"},
+                          "signal": {"type": "string", "example": "Bullish signal - shorts paying longs"}
+                        }
+                      }
+                    },
+                    "timestamp": {"type": "string", "format": "date-time"}
                   }
                 }
               }
             }
           }
-        },
-        "responses": {
-          "200": {
-            "description": "AI portfolio analysis results"
-          }
         }
       }
     },
-    "/api/intelligence/news-sentiment": {
+    "/api/futures/market-intelligence": {
       "post": {
-        "summary": "AI News Sentiment Analysis", 
-        "description": "Analyze news sentiment impact on trading",
-        "operationId": "getNewsSentiment",
+        "tags": ["Coinalyze Futures Data"],
+        "summary": "Get comprehensive futures market intelligence for multiple symbols",
+        "description": "Advanced market intelligence combining funding rates, open interest, liquidation data, and sentiment analysis for multiple cryptocurrencies. Perfect for portfolio-wide analysis and risk assessment.",
         "requestBody": {
           "required": true,
           "content": {
@@ -531,31 +176,61 @@
               "schema": {
                 "type": "object",
                 "properties": {
-                  "news_items": {
-                    "type": "array",
-                    "description": "News articles to analyze"
-                  },
                   "symbols": {
                     "type": "array",
-                    "description": "Trading symbols to focus on"
+                    "items": {"type": "string"},
+                    "example": ["BTC", "ETH", "XRP", "SOL"],
+                    "description": "Array of cryptocurrency symbols to analyze"
                   }
-                }
+                },
+                "required": ["symbols"]
               }
             }
           }
         },
         "responses": {
           "200": {
-            "description": "News sentiment analysis results"
+            "description": "Comprehensive market intelligence data",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "timestamp": {"type": "string", "format": "date-time"},
+                    "symbols_analyzed": {"type": "integer", "example": 4},
+                    "market_data": {
+                      "type": "object",
+                      "additionalProperties": {
+                        "type": "object",
+                        "properties": {
+                          "funding_analysis": {
+                            "type": "object",
+                            "description": "Complete funding sentiment analysis"
+                          },
+                          "open_interest": {
+                            "type": "array",
+                            "description": "Open interest data from multiple exchanges"
+                          },
+                          "liquidations": {
+                            "type": "object",
+                            "description": "Recent liquidation data"
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
           }
         }
       }
     },
-    "/api/intelligence/opportunities": {
+    "/api/taapi/bulk": {
       "post": {
-        "summary": "AI Opportunity Scanner",
-        "description": "Scan for trading opportunities using AI analysis",
-        "operationId": "scanOpportunities",
+        "tags": ["Technical Analysis"],
+        "summary": "Get multiple technical indicators via taapi.io bulk endpoint",
+        "description": "Fetch up to 20 technical indicators in a single API call using taapi.io's bulk endpoint. Supports 208+ indicators including RSI, MACD, Bollinger Bands, EMA, SMA, Stochastic, Williams %R, ADX, CCI across multiple timeframes. Uses embedded API key with bybit exchange as default.",
         "requestBody": {
           "required": true,
           "content": {
@@ -563,60 +238,291 @@
               "schema": {
                 "type": "object",
                 "properties": {
-                  "market_data": {
+                  "construct": {
                     "type": "object",
-                    "description": "Current market data for analysis"
-                  },
-                  "risk_tolerance": {
-                    "type": "string",
-                    "enum": ["low", "medium", "high"],
-                    "default": "medium"
+                    "properties": {
+                      "exchange": {"type": "string", "default": "bybit", "example": "bybit"},
+                      "symbol": {"type": "string", "example": "BTC/USDT"},
+                      "interval": {"type": "string", "example": "1h", "enum": ["1m", "5m", "15m", "30m", "1h", "2h", "4h", "6h", "8h", "12h", "1d"]},
+                      "indicators": {
+                        "type": "array",
+                        "items": {
+                          "type": "object",
+                          "properties": {
+                            "indicator": {"type": "string", "example": "rsi"},
+                            "period": {"type": "integer", "example": 14}
+                          }
+                        },
+                        "example": [
+                          {"indicator": "rsi", "period": 14},
+                          {"indicator": "macd", "fastperiod": 12, "slowperiod": 26, "signalperiod": 9},
+                          {"indicator": "bbands", "period": 20, "stddev": 2}
+                        ]
+                      }
+                    },
+                    "required": ["symbol", "interval", "indicators"]
                   }
-                }
+                },
+                "required": ["construct"]
               }
             }
           }
         },
         "responses": {
           "200": {
-            "description": "Trading opportunities identified"
+            "description": "Bulk technical indicators data",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "indicator": {"type": "string", "example": "rsi"},
+                          "result": {"type": "object", "description": "Indicator calculation result"}
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
           }
         }
       }
     },
-    "/api/news/crypto": {
+    "/api/taapi/{indicator}": {
       "get": {
-        "summary": "Crypto News",
-        "description": "Get latest cryptocurrency news",
-        "operationId": "getCryptoNews",
+        "tags": ["Technical Analysis"],
+        "summary": "Get single technical indicator via taapi.io",
+        "description": "Fetch individual technical indicators from taapi.io. Supports 208+ indicators with customizable parameters and timeframes. Uses embedded API key with bybit exchange as default.",
         "parameters": [
+          {
+            "name": "indicator",
+            "in": "path",
+            "required": true,
+            "description": "Technical indicator name (rsi, macd, bbands, ema, sma, stoch, willr, adx, cci, etc.)",
+            "schema": {
+              "type": "string",
+              "example": "rsi"
+            }
+          },
           {
             "name": "symbol",
             "in": "query",
-            "schema": {"type": "string"},
-            "description": "Filter by specific symbol (e.g., BTC, ETH, BONK)"
+            "required": true,
+            "description": "Trading pair symbol",
+            "schema": {
+              "type": "string",
+              "example": "BTC/USDT"
+            }
           },
           {
-            "name": "limit",
+            "name": "interval",
+            "in": "query", 
+            "required": true,
+            "description": "Timeframe for analysis",
+            "schema": {
+              "type": "string",
+              "example": "1h",
+              "enum": ["1m", "5m", "15m", "30m", "1h", "2h", "4h", "6h", "8h", "12h", "1d"]
+            }
+          },
+          {
+            "name": "exchange",
             "in": "query",
-            "schema": {"type": "integer", "default": 20}
+            "description": "Exchange name (defaults to bybit)",
+            "schema": {
+              "type": "string",
+              "default": "bybit",
+              "example": "bybit"
+            }
+          },
+          {
+            "name": "period",
+            "in": "query",
+            "description": "Indicator period (for indicators that support it)",
+            "schema": {
+              "type": "integer",
+              "example": 14
+            }
           }
         ],
         "responses": {
           "200": {
-            "description": "Latest crypto news articles"
+            "description": "Single technical indicator result",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "indicator": {"type": "string", "example": "rsi"},
+                    "result": {"type": "object", "description": "Indicator result data"},
+                    "timestamp": {"type": "string", "format": "date-time"}
+                  }
+                }
+              }
+            }
           }
         }
       }
     },
-    "/api/indicators/status": {
+    "/api/chatgpt/portfolio-analysis": {
       "get": {
-        "summary": "Technical Indicators Status",
-        "description": "Get status of technical indicators integration",
-        "operationId": "getIndicatorsStatus",
+        "tags": ["AI Analysis"],
+        "summary": "Get AI-powered portfolio analysis using OpenAI GPT-4",
+        "description": "Comprehensive AI analysis of your trading portfolio using real OpenAI GPT-4. Analyzes positions across all connected exchanges, provides risk assessment, profit/loss analysis, and actionable trading recommendations.",
         "responses": {
           "200": {
-            "description": "Technical indicators system status"
+            "description": "AI-generated portfolio analysis",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "analysis": {"type": "string", "description": "Detailed AI analysis"},
+                    "portfolio_health_score": {"type": "integer", "minimum": 0, "maximum": 100},
+                    "risk_assessment": {"type": "string"},
+                    "recommendations": {
+                      "type": "array", 
+                      "items": {"type": "string"}
+                    },
+                    "timestamp": {"type": "string", "format": "date-time"}
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/chatgpt/news-sentiment": {
+      "post": {
+        "tags": ["AI Analysis"],
+        "summary": "AI news sentiment analysis using OpenAI GPT-4",
+        "description": "Advanced sentiment analysis of cryptocurrency news articles using OpenAI GPT-4. Provides bullish/bearish scoring, market impact assessment, and trading signal generation.",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "articles": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "title": {"type": "string"},
+                        "content": {"type": "string"},
+                        "source": {"type": "string"}
+                      }
+                    }
+                  }
+                },
+                "required": ["articles"]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "AI sentiment analysis results",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "overall_sentiment": {"type": "string", "enum": ["very_bullish", "bullish", "neutral", "bearish", "very_bearish"]},
+                    "confidence_score": {"type": "number", "minimum": 0, "maximum": 1},
+                    "article_analysis": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "title": {"type": "string"},
+                          "sentiment": {"type": "string"},
+                          "impact_score": {"type": "number"},
+                          "key_points": {"type": "array", "items": {"type": "string"}}
+                        }
+                      }
+                    },
+                    "trading_signals": {"type": "array", "items": {"type": "string"}},
+                    "timestamp": {"type": "string", "format": "date-time"}
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/proxy/taapi/{indicator}": {
+      "get": {
+        "tags": ["Technical Analysis Proxy"],
+        "summary": "CORS-enabled proxy for taapi.io indicators",
+        "description": "Cross-Origin Resource Sharing (CORS) enabled proxy endpoint for accessing taapi.io technical indicators directly from web applications. Identical functionality to direct taapi.io API but with proper CORS headers for browser compatibility.",
+        "parameters": [
+          {
+            "name": "indicator",
+            "in": "path",
+            "required": true,
+            "description": "Technical indicator name",
+            "schema": {
+              "type": "string",
+              "example": "rsi"
+            }
+          },
+          {
+            "name": "symbol",
+            "in": "query",
+            "required": true,
+            "description": "Trading pair symbol",
+            "schema": {
+              "type": "string",
+              "example": "BTC/USDT"
+            }
+          },
+          {
+            "name": "interval",
+            "in": "query",
+            "required": true,
+            "description": "Timeframe",
+            "schema": {
+              "type": "string",
+              "example": "1h"
+            }
+          },
+          {
+            "name": "exchange",
+            "in": "query",
+            "description": "Exchange (defaults to bybit)",
+            "schema": {
+              "type": "string",
+              "default": "bybit"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Technical indicator data with CORS headers",
+            "headers": {
+              "Access-Control-Allow-Origin": {
+                "schema": {"type": "string"},
+                "description": "CORS header allowing cross-origin requests"
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "description": "Direct taapi.io API response with CORS headers"
+                }
+              }
+            }
           }
         }
       }
@@ -624,35 +530,55 @@
   },
   "components": {
     "schemas": {
-      "TaapiRequest": {
+      "TechnicalIndicator": {
         "type": "object",
-        "required": ["secret", "construct"],
         "properties": {
-          "secret": {"type": "string"},
-          "construct": {
-            "type": "object",
-            "required": ["exchange", "symbol", "interval", "indicators"],
-            "properties": {
-              "exchange": {"type": "string"},
-              "symbol": {"type": "string"},
-              "interval": {"type": "string"},
-              "indicators": {
-                "type": "array",
-                "items": {
-                  "type": "object",
-                  "required": ["indicator"],
-                  "properties": {
-                    "id": {"type": "string"},
-                    "indicator": {"type": "string"},
-                    "period": {"type": "integer"},
-                    "multiplier": {"type": "number"}
-                  }
-                }
-              }
-            }
-          }
+          "indicator": {"type": "string", "example": "rsi"},
+          "value": {"type": "number", "example": 65.5},
+          "timestamp": {"type": "string", "format": "date-time"}
+        }
+      },
+      "FundingRate": {
+        "type": "object", 
+        "properties": {
+          "symbol": {"type": "string", "example": "BTCUSD_PERP.A"},
+          "value": {"type": "number", "example": 0.0001, "description": "Funding rate (positive = longs pay shorts, negative = shorts pay longs)"},
+          "update": {"type": "integer", "example": 1704067200000, "description": "Unix timestamp of last update"}
+        }
+      },
+      "OpenInterest": {
+        "type": "object",
+        "properties": {
+          "symbol": {"type": "string", "example": "BTCUSD_PERP.A"},
+          "value": {"type": "number", "example": 15000000000, "description": "Open interest value in USD"},
+          "update": {"type": "integer", "example": 1704067200000}
+        }
+      },
+      "ErrorResponse": {
+        "type": "object",
+        "properties": {
+          "error": {"type": "string", "description": "Error message"},
+          "timestamp": {"type": "string", "format": "date-time"}
         }
       }
     }
-  }
+  },
+  "tags": [
+    {
+      "name": "Coinalyze Futures Data",
+      "description": "Real-time futures market data including funding rates, open interest, and sentiment analysis via Coinalyze API. Covers 300+ cryptocurrencies across 25+ exchanges with completely free access."
+    },
+    {
+      "name": "Technical Analysis", 
+      "description": "Comprehensive technical analysis powered by taapi.io with 208+ indicators. Supports all major indicators (RSI, MACD, Bollinger Bands, etc.) across multiple timeframes and exchanges."
+    },
+    {
+      "name": "AI Analysis",
+      "description": "Advanced AI-powered analysis using OpenAI GPT-4 for portfolio assessment, news sentiment analysis, and trading signal generation."
+    },
+    {
+      "name": "Technical Analysis Proxy",
+      "description": "CORS-enabled proxy endpoints for direct browser access to technical analysis data."
+    }
+  ]
 }

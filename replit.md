@@ -85,6 +85,9 @@ Preferred communication style: Simple, everyday language.
 ## Technical Analysis APIs
 - **Taapi.io API**: Comprehensive technical indicators including RSI, MACD, Bollinger Bands, Stochastic, Williams %R, EMA, SMA, ADX, and CCI across multiple timeframes (1m to 1d). Integrated with both individual GET requests and efficient bulk POST requests (up to 20 indicators per call). Features automatic rate limiting, error handling, and fallback mechanisms. Includes multiple ChatGPT integration schemas: `taapi_bulk_chatgpt_schema.json` for Railway server integration, `taapi_direct_chatgpt_schema.json` for direct taapi.io API access, `taapi_chatgpt_proxy_schema.json` for CORS-enabled proxy access, and `unified_chatgpt_schema.json` for complete platform integration with all 208+ indicators. Integrated into both the automated trading alerts system and main server API endpoints for real-time technical analysis.
 
+## Futures Market Data APIs
+- **Coinalyze API**: Free comprehensive futures market data including funding rates, open interest, liquidations, and sentiment analysis across 300+ cryptocurrencies from 25+ exchanges. API key: `b7eaee5a-b508-4974-8e3b-6e22d31b9c3f`. Features include real-time funding rate sentiment analysis (negative rates = bullish, positive rates = bearish), open interest tracking for trend confirmation, and automated symbol mapping from simple assets (BTC, ETH, XRP) to Coinalyze format (BTCUSD_PERP.A, ETHUSD_PERP.A, XRPUSD_PERP.A). Integrated with main server endpoints `/api/futures/funding-rates/{symbol}`, `/api/futures/open-interest/{symbol}`, `/api/futures/funding-sentiment/{symbol}`, and `/api/futures/market-intelligence` for comprehensive futures market analysis.
+
 ## Communication and Deployment
 - **Discord Webhooks**: Multi-channel alert delivery system.
 - **Railway Platform**: Cloud deployment and environment management.

@@ -1733,6 +1733,104 @@ except Exception as e:
     taapi_available = False
     logger.warning(f"Taapi.io indicators not available: {e}")
 
+# Import futures market data
+try:
+    from coinalyze_api import CoinalyzeAPI
+    coinalyze_api = CoinalyzeAPI()
+    coinalyze_available = True
+    logger.info("Coinalyze futures market data loaded successfully")
+except Exception as e:
+    coinalyze_api = None
+    coinalyze_available = False
+    logger.warning(f"Coinalyze API not available: {e}")
+
+# ============================================================================
+# COINALYZE FUTURES MARKET DATA ENDPOINTS
+# ============================================================================
+
+@app.route('/api/futures/funding-rates/<symbol>', methods=['GET'])
+def get_funding_rates(symbol):
+    """Get current funding rates for a symbol"""
+    try:
+        if not coinalyze_available:
+            return jsonify({'error': 'Coinalyze API not available'}), 503
+            
+        # Use proper symbol format - get symbol mapping first
+        proper_symbol = coinalyze_api.get_symbol_for_asset(symbol.upper())
+        if not proper_symbol:
+            return jsonify({'error': f'No Coinalyze symbol found for {symbol.upper()}'}), 404
+            
+        funding_data = coinalyze_api.get_current_funding_rates(proper_symbol)
+        
+        return jsonify({
+            'symbol': symbol.upper(),
+            'funding_rates': funding_data,
+            'timestamp': datetime.now().isoformat()
+        })
+        
+    except Exception as e:
+        logger.error(f"Error getting funding rates for {symbol}: {str(e)}")
+        return jsonify({'error': 'Failed to get funding rates'}), 500
+
+@app.route('/api/futures/open-interest/<symbol>', methods=['GET'])
+def get_open_interest(symbol):
+    """Get current open interest for a symbol"""
+    try:
+        if not coinalyze_available:
+            return jsonify({'error': 'Coinalyze API not available'}), 503
+            
+        # Use proper symbol format - get symbol mapping first  
+        proper_symbol = coinalyze_api.get_symbol_for_asset(symbol.upper())
+        if not proper_symbol:
+            return jsonify({'error': f'No Coinalyze symbol found for {symbol.upper()}'}), 404
+            
+        oi_data = coinalyze_api.get_current_open_interest(proper_symbol)
+        
+        return jsonify({
+            'symbol': symbol.upper(),
+            'open_interest': oi_data,
+            'timestamp': datetime.now().isoformat()
+        })
+        
+    except Exception as e:
+        logger.error(f"Error getting open interest for {symbol}: {str(e)}")
+        return jsonify({'error': 'Failed to get open interest'}), 500
+
+@app.route('/api/futures/funding-sentiment/<symbol>', methods=['GET'])
+def get_funding_sentiment(symbol):
+    """Get funding rate sentiment analysis for trading signals"""
+    try:
+        if not coinalyze_available:
+            return jsonify({'error': 'Coinalyze API not available'}), 503
+            
+        sentiment = coinalyze_api.analyze_funding_sentiment(symbol.upper())
+        
+        return jsonify(sentiment)
+        
+    except Exception as e:
+        logger.error(f"Error analyzing funding sentiment for {symbol}: {str(e)}")
+        return jsonify({'error': 'Failed to analyze funding sentiment'}), 500
+
+@app.route('/api/futures/market-intelligence', methods=['POST'])
+def get_market_intelligence():
+    """Get comprehensive futures market intelligence for multiple symbols"""
+    try:
+        if not coinalyze_available:
+            return jsonify({'error': 'Coinalyze API not available'}), 503
+            
+        data = request.get_json()
+        if not data or 'symbols' not in data:
+            return jsonify({'error': 'Must provide symbols array in request body'}), 400
+            
+        symbols = data['symbols']
+        intelligence = coinalyze_api.get_market_intelligence(symbols)
+        
+        return jsonify(intelligence)
+        
+    except Exception as e:
+        logger.error(f"Error getting market intelligence: {str(e)}")
+        return jsonify({'error': 'Failed to get market intelligence'}), 500
+
 @app.route('/api/chatgpt/portfolio-analysis', methods=['GET'])
 def get_chatgpt_portfolio_analysis():
     """Get REAL AI-powered portfolio analysis using OpenAI GPT-4"""
