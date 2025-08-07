@@ -14,9 +14,9 @@
   "paths": {
     "/api/taapi/proxy": {
       "post": {
-        "summary": "Taapi.io Technical Indicators (208+ available)",
-        "description": "Access all 208+ taapi.io technical indicators including advanced ones like Supertrend, Ichimoku, Fisher Transform, Vortex, Aroon, CMF, Choppiness, Klinger, Donchian, Ultimate Oscillator, and many more. Perfect for BONK/USDT and other crypto analysis.",
-        "operationId": "getTaapiIndicators",
+        "summary": "Taapi.io Technical Indicators (208+ available via Railway proxy)",
+        "description": "Access 208+ taapi.io technical indicators through Railway server proxy with CORS support. Includes advanced indicators like Supertrend, Ichimoku, Fisher Transform, Vortex, Aroon, CMF, Choppiness, Klinger, Donchian, Ultimate Oscillator.",
+        "operationId": "getTaapiIndicatorsProxy",
         "requestBody": {
           "required": true,
           "content": {
@@ -27,7 +27,8 @@
                 "properties": {
                   "secret": {
                     "type": "string",
-                    "description": "Your taapi.io API key"
+                    "description": "Your taapi.io API key",
+                    "default": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJjbHVlIjoiNjg5NDFjMGE4MDZmZjE2NTFlMmM1ZTM0IiwiaWF0IjoxNzU0NTM3NDUxLCJleHAiOjMzMjU5MDAxNDUxfQ.QRqOzRFsTcYKSYUuezVQMFdJcL2A6lHIwWC5L0JOLTU"
                   },
                   "construct": {
                     "type": "object",
@@ -35,35 +36,94 @@
                     "properties": {
                       "exchange": {
                         "type": "string",
-                        "enum": ["binance", "binancefutures", "bybit", "okx", "kucoin", "gate", "huobi", "bitget"],
-                        "default": "binance"
+                        "description": "Exchange (Note: Binance limited on basic plan, use others)",
+                        "enum": ["binance", "binancefutures", "bitstamp", "whitebit", "bybit", "gateio", "coinbase", "binanceus", "kraken"],
+                        "default": "bybit"
                       },
                       "symbol": {
                         "type": "string",
-                        "description": "Trading pair (e.g., BTC/USDT, BONK/USDT)"
+                        "description": "Trading pair (e.g., BTC/USDT, BONK/USDT)",
+                        "example": "BTC/USDT"
                       },
                       "interval": {
                         "type": "string",
-                        "enum": ["1m", "5m", "15m", "30m", "1h", "2h", "4h", "12h", "1d", "1w"]
+                        "description": "Time interval",
+                        "enum": ["1m", "5m", "15m", "30m", "1h", "2h", "4h", "12h", "1d", "1w"],
+                        "default": "1h"
+                      },
+                      "type": {
+                        "type": "string",
+                        "description": "Asset type",
+                        "enum": ["crypto", "stocks"],
+                        "default": "crypto"
                       },
                       "indicators": {
                         "type": "array",
+                        "description": "Indicators array (max 20). Available: rsi, macd, bbands, ema, sma, stoch, supertrend, ichimoku, sar, atr, adx, cci, willr, mfi, obv, fisher_transform, vortex, aroon, cmf, choppiness, klinger, donchian, ultimate_oscillator, etc.",
                         "maxItems": 20,
+                        "minItems": 1,
                         "items": {
                           "type": "object",
                           "required": ["indicator"],
                           "properties": {
-                            "id": {"type": "string"},
-                            "indicator": {
-                              "type": "string", 
-                              "description": "Any indicator name: rsi, macd, supertrend, ichimoku, fisher_transform, vortex, aroon, cmf, choppiness, klinger, donchian, ultimate_oscillator, etc."
+                            "id": {
+                              "type": "string",
+                              "description": "Custom ID for tracking"
                             },
-                            "period": {"type": "integer"},
-                            "multiplier": {"type": "number"},
-                            "fast_period": {"type": "integer"},
-                            "slow_period": {"type": "integer"},
-                            "signal_period": {"type": "integer"},
-                            "stddev": {"type": "number"}
+                            "indicator": {
+                              "type": "string",
+                              "description": "Indicator name"
+                            },
+                            "period": {
+                              "type": "integer",
+                              "description": "Period",
+                              "default": 14
+                            },
+                            "fast_period": {
+                              "type": "integer",
+                              "description": "Fast period (MACD)",
+                              "default": 12
+                            },
+                            "slow_period": {
+                              "type": "integer",
+                              "description": "Slow period (MACD)",
+                              "default": 26
+                            },
+                            "signal_period": {
+                              "type": "integer",
+                              "description": "Signal period (MACD)",
+                              "default": 9
+                            },
+                            "stddev": {
+                              "type": "number",
+                              "description": "Std deviation (BB)",
+                              "default": 2
+                            },
+                            "multiplier": {
+                              "type": "number",
+                              "description": "Multiplier (Supertrend)",
+                              "default": 3
+                            },
+                            "k_period": {
+                              "type": "integer",
+                              "description": "K period (Stoch)",
+                              "default": 14
+                            },
+                            "d_period": {
+                              "type": "integer",
+                              "description": "D period (Stoch)",
+                              "default": 3
+                            },
+                            "backtrack": {
+                              "type": "integer",
+                              "description": "Backtrack candles",
+                              "default": 0
+                            },
+                            "results": {
+                              "type": "integer",
+                              "description": "Number of results",
+                              "default": 1
+                            }
                           }
                         }
                       }
@@ -75,9 +135,188 @@
                 "bonk_advanced": {
                   "summary": "BONK/USDT Advanced Analysis",
                   "value": {
-                    "secret": "YOUR_TAAPI_SECRET",
+                    "secret": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJjbHVlIjoiNjg5NDFjMGE4MDZmZjE2NTFlMmM1ZTM0IiwiaWF0IjoxNzU0NTM3NDUxLCJleHAiOjMzMjU5MDAxNDUxfQ.QRqOzRFsTcYKSYUuezVQMFdJcL2A6lHIwWC5L0JOLTU",
                     "construct": {
-                      "exchange": "kucoin",
+                      "exchange": "bybit",
+                      "symbol": "BONK/USDT",
+                      "interval": "4h",
+                      "indicators": [
+                        {"id": "supertrend", "indicator": "supertrend"},
+                        {"id": "fisher_transform", "indicator": "fisher_transform"},
+                        {"id": "vortex", "indicator": "vortex"},
+                        {"id": "aroon", "indicator": "aroon"},
+                        {"id": "cmf", "indicator": "cmf"},
+                        {"id": "choppiness", "indicator": "choppiness"},
+                        {"id": "klinger", "indicator": "klinger"},
+                        {"id": "donchian", "indicator": "donchian"},
+                        {"id": "ultimate_oscillator", "indicator": "ultimate_oscillator"}
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Technical indicators data",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "id": {"type": "string"},
+                          "result": {"type": "object"},
+                          "errors": {"type": "array"}
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/bulk": {
+      "post": {
+        "summary": "Taapi.io Direct Access (208+ indicators) - Basic Plan Optimized",
+        "description": "Direct access to taapi.io API with your basic plan settings. Uses bybit exchange (Binance limited on basic plan). Get up to 20 indicators per request from 208+ available.",
+        "operationId": "getTaapiIndicatorsDirect",
+        "servers": [
+          {
+            "url": "https://api.taapi.io",
+            "description": "Direct Taapi.io API"
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": ["secret", "construct"],
+                "properties": {
+                  "secret": {
+                    "type": "string",
+                    "description": "Your taapi.io API key",
+                    "default": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJjbHVlIjoiNjg5NDFjMGE4MDZmZjE2NTFlMmM1ZTM0IiwiaWF0IjoxNzU0NTM3NDUxLCJleHAiOjMzMjU5MDAxNDUxfQ.QRqOzRFsTcYKSYUuezVQMFdJcL2A6lHIwWC5L0JOLTU"
+                  },
+                  "construct": {
+                    "type": "object",
+                    "required": ["exchange", "symbol", "interval", "indicators"],
+                    "properties": {
+                      "exchange": {
+                        "type": "string",
+                        "description": "Exchange (Note: Binance limited on basic plan)",
+                        "enum": ["binance", "binancefutures", "bitstamp", "whitebit", "bybit", "gateio", "coinbase", "binanceus", "kraken"],
+                        "default": "bybit"
+                      },
+                      "symbol": {
+                        "type": "string",
+                        "description": "Trading pair (e.g., BTC/USDT, BONK/USDT)",
+                        "example": "BTC/USDT"
+                      },
+                      "interval": {
+                        "type": "string",
+                        "description": "Time interval",
+                        "enum": ["1m", "5m", "15m", "30m", "1h", "2h", "4h", "12h", "1d", "1w"],
+                        "default": "1h"
+                      },
+                      "type": {
+                        "type": "string",
+                        "description": "Asset type",
+                        "enum": ["crypto", "stocks"],
+                        "default": "crypto"
+                      },
+                      "indicators": {
+                        "type": "array",
+                        "description": "Max 20 indicators. Available: rsi, macd, bbands, ema, sma, stoch, supertrend, ichimoku, sar, atr, adx, cci, willr, mfi, obv, fisher_transform, vortex, aroon, cmf, choppiness, klinger, donchian, ultimate_oscillator, etc.",
+                        "maxItems": 20,
+                        "minItems": 1,
+                        "items": {
+                          "type": "object",
+                          "required": ["indicator"],
+                          "properties": {
+                            "id": {
+                              "type": "string",
+                              "description": "Custom ID for tracking"
+                            },
+                            "indicator": {
+                              "type": "string",
+                              "description": "Indicator name"
+                            },
+                            "period": {
+                              "type": "integer",
+                              "description": "Period",
+                              "default": 14
+                            },
+                            "fast_period": {
+                              "type": "integer",
+                              "description": "Fast period (MACD)",
+                              "default": 12
+                            },
+                            "slow_period": {
+                              "type": "integer",
+                              "description": "Slow period (MACD)",
+                              "default": 26
+                            },
+                            "signal_period": {
+                              "type": "integer",
+                              "description": "Signal period (MACD)",
+                              "default": 9
+                            },
+                            "stddev": {
+                              "type": "number",
+                              "description": "Std deviation (BB)",
+                              "default": 2
+                            },
+                            "multiplier": {
+                              "type": "number",
+                              "description": "Multiplier (Supertrend)",
+                              "default": 3
+                            },
+                            "k_period": {
+                              "type": "integer",
+                              "description": "K period (Stoch)",
+                              "default": 14
+                            },
+                            "d_period": {
+                              "type": "integer",
+                              "description": "D period (Stoch)",
+                              "default": 3
+                            },
+                            "backtrack": {
+                              "type": "integer",
+                              "description": "Backtrack candles",
+                              "default": 0
+                            },
+                            "results": {
+                              "type": "integer",
+                              "description": "Number of results",
+                              "default": 1
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              },
+              "examples": {
+                "bonk_analysis_bybit": {
+                  "summary": "BONK/USDT on Bybit (Basic Plan Friendly)",
+                  "value": {
+                    "secret": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJjbHVlIjoiNjg5NDFjMGE4MDZmZjE2NTFlMmM1ZTM0IiwiaWF0IjoxNzU0NTM3NDUxLCJleHAiOjMzMjU5MDAxNDUxfQ.QRqOzRFsTcYKSYUuezVQMFdJcL2A6lHIwWC5L0JOLTU",
+                    "construct": {
+                      "exchange": "bybit",
                       "symbol": "BONK/USDT",
                       "interval": "4h",
                       "indicators": [
