@@ -170,16 +170,20 @@ async def analyze_crypto(interaction: discord.Interaction, symbol: str):
         # Get futures data if available
         futures_data = await call_railway_api(f"/api/futures/funding-rates/{symbol.upper()}")
         
+        ta_formatted = format_response(ta_data, 'Technical Indicators')[:400]
+        news_formatted = format_response(news_data, 'News Analysis')[:400]  
+        futures_formatted = format_response(futures_data, 'Funding Rates')[:300]
+
         response = f"""🔍 **COMPLETE {symbol.upper()} ANALYSIS**
 
 📈 **Technical Analysis**:
-{await format_response(ta_data, 'Technical Indicators')[:400]}
+{ta_formatted}
 
 📰 **Recent News**:
-{await format_response(news_data, 'News Analysis')[:400]}
+{news_formatted}
 
 📊 **Futures Data**:
-{await format_response(futures_data, 'Funding Rates')[:300]}
+{futures_formatted}
 
 ⏰ **Analysis Time**: {datetime.now().strftime('%H:%M:%S')}
 🤖 **Powered by**: GPT-5 Intelligence"""
@@ -201,11 +205,12 @@ async def trading_scan(interaction: discord.Interaction,
     
     try:
         scan_endpoints = {
-            "opportunities": "/api/alerts/trading",
+            "opportunities": "/api/alpha/real-market-scan",
             "risk": "/api/alerts/risk", 
             "portfolio": "/api/alerts/portfolio",
-            "alpha": "/api/alpha/scan-opportunities",
-            "degen": "/api/alpha/degen-opportunities"
+            "alpha": "/api/alpha/real-market-scan",
+            "degen": "/api/alpha/degen-opportunities",
+            "market": "/api/alpha/real-market-scan"
         }
         
         endpoint = scan_endpoints.get(scan_type, "/api/alerts/trading")
