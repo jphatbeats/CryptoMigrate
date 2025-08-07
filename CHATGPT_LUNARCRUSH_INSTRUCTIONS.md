@@ -3,61 +3,70 @@
 ## Overview
 LunarCrush provides social sentiment data, Galaxy scores, creator tracking, and viral posts analysis. Your Individual plan subscription gives you full access to social intelligence features with proper rate limiting.
 
-## Available Endpoints
+## CORRECT LunarCrush API v4 Endpoints
 
-### 1. getCoinsList
-**Purpose**: Get list of all tracked coins with social metrics
-**Parameters**:
-- `sort`: "alt_rank" (trending coins), "interactions" (social activity), "social_score" (engagement)
-- `filter`: Category filter like "meme", "defi", "ai", "gaming"
-- `limit`: Number of results (recommend 50)
+### 1. getTopicsList
+**Purpose**: Get list of all trending social topics (ACTUAL WORKING ENDPOINT)
+**API Path**: `/api4/public/topics/list/v1`
+**Parameters**: None required
+**Returns**: Trending topics with topic_rank, interactions_24h, contributors
 
-**Strategy**: Use this as your starting point to find trending coins with high social activity. Look for coins with rising Galaxy scores and alt_rank movement.
+**Strategy**: Your primary discovery tool. Shows all trending topics ranked by social activity. Look for topics climbing the rankings.
 
 ### 2. getTopic
 **Purpose**: Get detailed social metrics for specific topic/coin
+**API Path**: `/api4/public/topic/:topic/v1`
 **Parameters**:
 - `topic`: Exact topic name (use lowercase: "bitcoin", "ethereum", "solana")
 
-**Strategy**: After finding interesting coins from getCoinsList, use this to get 24h social metrics, sentiment, and interaction data. Perfect for confluence analysis with technical indicators.
+**Strategy**: Deep dive into specific assets. Gets 24h social data, sentiment breakdown by platform, trend direction.
 
-### 3. getTopicPosts
+### 3. getTopicTimeSeries
+**Purpose**: Historical social data for topics
+**API Path**: `/api4/public/topic/:topic/time-series/v2`
+**Parameters**:
+- `topic`: Topic name (lowercase)
+- `bucket`: "hour" or "day" for aggregation
+
+**Strategy**: Track social momentum changes over time. Identify social trend shifts before price follows.
+
+### 4. getTopicPosts
 **Purpose**: Get viral posts about specific topics
+**API Path**: `/api4/public/topic/:topic/posts/v1`
 **Parameters**:
 - `topic`: Topic name (exact match required)
-- `start`: Unix timestamp for time range
 
-**Strategy**: Find the most engaging social posts about a coin. Use to gauge community sentiment and viral momentum. Look for high-engagement posts that align with price movements.
+**Strategy**: Find viral content driving social momentum. Monitor post quality and engagement levels.
 
-### 4. getCategoriesList
+### 5. getCategoriesList
 **Purpose**: Get all available category names
-**Strategy**: Always call this first to get exact category names. Don't guess - use exact strings returned.
+**API Path**: `/api4/public/categories/list/v1`
+**Parameters**: None required
 
-### 5. getCategoryTopics
+**Strategy**: Always call this first to get exact category names. Use returned strings exactly.
+
+### 6. getCategoryTopics
 **Purpose**: Get trending topics within a category
+**API Path**: `/api4/public/category/:category/topics/v1`
 **Parameters**:
 - `category`: Exact category name from getCategoriesList
 
-**Strategy**: Identify sector rotation opportunities. When a category shows momentum, individual coins within that category often follow.
+**Strategy**: Sector rotation analysis. When category shows momentum, find individual topics within it.
 
-### 6. getCreatorsList
+### 7. getCreatorsList
 **Purpose**: Get trending crypto creators and influencers
-**Strategy**: Track influential voices in crypto. When major creators discuss a coin, it often precedes price movement.
+**API Path**: `/api4/public/creators/list/v1`
+**Parameters**: None required
 
-### 7. getCreator
+**Strategy**: Track influential voices. When major creators discuss topics, it often precedes price movement.
+
+### 8. getCreator
 **Purpose**: Get specific creator metrics
+**API Path**: `/api4/public/creator/:creator_id/v1`
 **Parameters**:
-- `network`: "x", "twitter", "youtube", "tiktok"
-- `id`: Creator username
+- `creator_id`: Numeric creator ID from getCreatorsList
 
-**Strategy**: Monitor specific influential figures. Track their sentiment shifts and coin mentions.
-
-### 8. searchPosts
-**Purpose**: Search social posts by keywords
-**Parameters**:
-- `term`: Search keywords like "bitcoin pump", "altseason", "breaking"
-
-**Strategy**: Find emerging narratives and trending discussions before they hit mainstream.
+**Strategy**: Monitor specific influential figures for sentiment shifts and topic mentions.
 
 ## Trading Strategy Framework
 
@@ -96,18 +105,24 @@ LunarCrush provides social sentiment data, Galaxy scores, creator tracking, and 
 
 ### High-Probability Working Calls (Use These for Testing)
 ```
-getCoinsList() → Almost always returns data (no parameters needed)
-getTopic(topic="bitcoin") → Very reliable
-getTopicPosts(topic="ethereum") → Active community
-getCreatorsList() → Shows trending influencers (no parameters needed)
-getCategoriesList() → Always works (no parameters needed)
+getTopicsList() → Always works, no parameters needed
+getTopic(topic="bitcoin") → Very reliable for popular assets
+getCategoriesList() → Always works, no parameters needed  
+getCreatorsList() → Shows trending influencers, no parameters needed
+getTopicTimeSeries(topic="bitcoin", bucket="day") → Historical data
 ```
 
 ### ChatGPT-Specific Call Examples
-**Always Working**: `getCoinsList()` with no parameters
-**Reliable**: `getTopic(topic="bitcoin")` - exact lowercase match
-**Safe**: `getCategoriesList()` then use exact category names
-**Test First**: `searchPosts(term="bitcoin")` - simple search terms
+**Always Working**: `getTopicsList()` - Start here to see what's trending
+**Most Reliable**: `getTopic(topic="bitcoin")` - Use popular topics first
+**Safe**: `getCategoriesList()` then use exact returned category names
+**For History**: `getTopicTimeSeries(topic="ethereum", bucket="hour")` 
+
+### CRITICAL: Do NOT Call These (Non-Existent Endpoints)
+❌ `getTrendingTopics()` - Does not exist
+❌ `searchPosts()` - Not in v4 API  
+❌ `getCoinsList()` - Different endpoint structure
+❌ Any endpoint not listed above
 
 ## Confluence Integration Strategy
 
