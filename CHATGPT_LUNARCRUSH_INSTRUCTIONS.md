@@ -5,13 +5,16 @@ LunarCrush provides social sentiment data, Galaxy scores, creator tracking, and 
 
 ## CORRECT LunarCrush API v4 Endpoints
 
-### 1. getTopicsList
-**Purpose**: Get list of all trending social topics (ACTUAL WORKING ENDPOINT)
-**API Path**: `/api4/public/topics/list/v1`
+### 1. getTrendingTopics (FIXED MAPPING)
+**Purpose**: Get list of all trending social topics 
+**CORRECT API Path**: `/api4/public/topics/list/v1` (NOT /trending/topics)
 **Parameters**: None required
 **Returns**: Trending topics with topic_rank, interactions_24h, contributors
 
-**Strategy**: Your primary discovery tool. Shows all trending topics ranked by social activity. Look for topics climbing the rankings.
+**CRITICAL FIX**: Your ChatGPT Custom Actions schema maps `getTrendingTopics` to wrong endpoint `/trending/topics`. 
+**Should map to**: `/api4/public/topics/list/v1`
+
+**Strategy**: Your primary discovery tool. Shows all trending topics ranked by social activity.
 
 ### 2. getTopic
 **Purpose**: Get detailed social metrics for specific topic/coin
