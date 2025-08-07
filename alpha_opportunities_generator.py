@@ -27,7 +27,31 @@ class AlphaOpportunitiesGenerator:
         
         opportunities = []
         
-        # Get opportunities from various sources
+        # First priority: Top performers analysis
+        try:
+            from top_performers_scanner import scan_top_performers_for_opportunities
+            top_performers = await scan_top_performers_for_opportunities()
+            
+            # Convert top performers to alpha opportunities format
+            for performer in top_performers[:3]:  # Top 3 from scanner
+                opportunities.append({
+                    'type': 'top_performer',
+                    'symbol': performer['symbol'],
+                    'title': f"{performer['symbol']} top performer opportunity",
+                    'confidence': 'High' if performer['opportunity_score'] > 60 else 'Medium',
+                    'timeframe': performer['timeframe'],
+                    'source': 'Top Performers Scan',
+                    'reason': f"{performer['catalyst_description']} - {performer['change_24h']:.1f}% gain",
+                    'risk_level': performer['risk_level'],
+                    'entry_strategy': performer['entry_strategy']
+                })
+            
+            print(f"✅ Added {len(top_performers[:3])} top performer opportunities")
+            
+        except Exception as e:
+            print(f"⚠️ Top performers scan error: {e}")
+        
+        # Get opportunities from other sources
         news_opportunities = await self._get_news_based_opportunities()
         social_opportunities = await self._get_social_sentiment_opportunities()
         technical_opportunities = await self._get_technical_analysis_opportunities()
@@ -43,7 +67,7 @@ class AlphaOpportunitiesGenerator:
         filtered_opportunities = self._filter_and_rank_opportunities(opportunities)
         
         print(f"✅ Generated {len(filtered_opportunities)} real alpha opportunities")
-        return filtered_opportunities[:5]  # Top 5 opportunities
+        return filtered_opportunities[:8]  # Top 8 opportunities (increased from 5)
     
     async def _get_news_based_opportunities(self):
         """Get opportunities from breaking crypto news"""

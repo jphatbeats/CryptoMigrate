@@ -1054,9 +1054,25 @@ async def run_alpha_analysis():
     try:
         print("\n🔍 ALPHA OPPORTUNITIES - Generating real trading opportunities...")
         
-        # Use the new alpha opportunities generator instead of simulated RSI data
+        # Use the new alpha opportunities generator with top performers scanner
         if alpha_opportunities:
             try:
+                # Try top performers analysis first (most comprehensive)
+                try:
+                    from top_performers_scanner import scan_top_performers_for_opportunities, format_top_performers_for_discord
+                    top_opportunities = await scan_top_performers_for_opportunities()
+                    
+                    if top_opportunities:
+                        # Send top performers analysis
+                        performers_message = format_top_performers_for_discord(top_opportunities)
+                        await send_discord_alert(performers_message, 'alpha_scans')
+                        print("✅ Top performers analysis sent to Discord #alpha-scans")
+                        return
+                        
+                except Exception as e:
+                    print(f"⚠️ Top performers scanner error: {e}")
+                
+                # Fallback to general alpha opportunities
                 real_opportunities = await generate_alpha_opportunities()
                 
                 if real_opportunities:
@@ -1070,6 +1086,7 @@ async def run_alpha_analysis():
                         "🔍 **ALPHA OPPORTUNITIES** 🔍\n\n"
                         "⏳ No high-confidence alpha setups detected at this time.\n"
                         "🔎 Continuing to monitor:\n"
+                        "• Top 200 performers analysis\n"
                         "• Breaking news catalysts\n"
                         "• Social sentiment spikes\n"
                         "• Technical oversold bounces\n"

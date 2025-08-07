@@ -26,6 +26,7 @@ Preferred communication style: Simple, everyday language.
 **Automated Alert System (`automated_trading_alerts.py`)**
 - Monitors portfolio positions, performs technical analysis (RSI, PnL), and generates risk alerts.
 - **Alpha Opportunities System (`alpha_opportunities_generator.py`)**: Generates real trading opportunities from news analysis, social sentiment, technical indicators, and emerging tokens instead of repetitive simulated data.
+- **Top Performers Scanner (`top_performers_scanner.py`)**: Comprehensive analysis of top 200 performing coins with news catalyst matching, trading strategy generation (swing/day/portfolio trades), and risk assessment for high-quality alpha opportunities.
 - Integrates with multi-channel Discord webhooks, routing intelligent content to appropriate channels.
 
 ## Data Flow Architecture
