@@ -1,0 +1,63 @@
+/api/v1/stat:
+  get:
+    summary: Get sentiment analysis
+    operationId: getSentimentAnalysis
+    description: Get sentiment analysis for crypto news with proper date formatting
+    parameters:
+      - name: tickers
+        in: query
+        required: false
+        schema:
+          type: string
+          example: BTC,ETH
+        description: One or more ticker symbols (comma-separated)
+      - name: section
+        in: query
+        required: false
+        schema:
+          type: string
+          enum: [general, alltickers]
+          example: general
+        description: News section (general, alltickers, etc.)
+      - name: date
+        in: query
+        required: false
+        schema:
+          type: string
+          example: today
+        description: Date filter using supported formats (today, yesterday, last7days, last30days) or YYYY-MM-DD format
+      - name: page
+        in: query
+        required: false
+        schema:
+          type: integer
+          minimum: 1
+          default: 1
+          example: 1
+        description: Page number for pagination
+      - name: token
+        in: query
+        required: true
+        schema:
+          type: string
+          example: ayimav7nlptgzetysg9dwhqteampvoirtfx5orqk
+        description: API authentication token
+    responses:
+      '200':
+        description: Sentiment analysis data
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                data:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      ticker:
+                        type: string
+                      sentiment:
+                        type: string
+                      score:
+                        type: number

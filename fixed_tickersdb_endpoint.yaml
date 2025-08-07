@@ -1,0 +1,42 @@
+/api/v1/account/tickersdbv2:
+  get:
+    summary: Get complete tickers database
+    operationId: getTickersDatabase
+    description: View all available tickers/symbols in the database. Limited to once per day for non-trial accounts. Note - This endpoint returns large datasets.
+    parameters:
+      - name: token
+        in: query
+        required: true
+        schema:
+          type: string
+          example: ayimav7nlptgzetysg9dwhqteampvoirtfx5orqk
+        description: API authentication token
+      - name: limit
+        in: query
+        required: false
+        schema:
+          type: integer
+          minimum: 1
+          maximum: 1000
+          default: 100
+          example: 100
+        description: Limit number of tickers returned to prevent large responses
+    responses:
+      '200':
+        description: Complete database of supported ticker symbols and cryptocurrencies
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                data:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      ticker:
+                        type: string
+                      name:
+                        type: string
+                total_count:
+                  type: integer
