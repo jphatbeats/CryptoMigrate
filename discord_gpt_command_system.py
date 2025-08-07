@@ -122,6 +122,82 @@ async def format_response(data: Dict, title: str) -> str:
 # PORTFOLIO & TRADING COMMANDS
 # =============================================================================
 
+@bot.tree.command(name="analyze", description="Complete crypto analysis with GPT-5")
+async def analyze_crypto(interaction: discord.Interaction, symbol: str):
+    """Analyze a cryptocurrency with comprehensive data"""
+    await interaction.response.defer()
+    
+    try:
+        # Get comprehensive analysis from Railway API
+        endpoints = [
+            f"/api/technical-analysis/{symbol.upper()}",
+            f"/api/dashboard/crypto-data/{symbol.upper()}",
+            f"/api/alpha/real-market-scan"
+        ]
+        
+        results = {}
+        for endpoint in endpoints:
+            data = await call_railway_api(endpoint)
+            results[endpoint] = data
+        
+        # Format comprehensive response
+        response = f"🔍 **{symbol.upper()} Analysis** (GPT-5)\n\n"
+        
+        # Technical Analysis
+        if "/technical-analysis/" in str(results):
+            ta_data = results.get(f"/api/technical-analysis/{symbol.upper()}", {})
+            if not ta_data.get('error'):
+                response += "📊 **Technical Analysis:**\n"
+                if 'rsi' in ta_data:
+                    rsi = ta_data['rsi']
+                    if rsi > 70:
+                        response += f"• RSI: {rsi} (Overbought 📈)\n"
+                    elif rsi < 30:
+                        response += f"• RSI: {rsi} (Oversold 📉)\n"
+                    else:
+                        response += f"• RSI: {rsi} (Neutral ⚖️)\n"
+        
+        # Market Data
+        crypto_data = results.get(f"/api/dashboard/crypto-data/{symbol.upper()}", {})
+        if not crypto_data.get('error'):
+            ticker = crypto_data.get('ticker', {})
+            sentiment = crypto_data.get('sentiment', '📊')
+            confidence = crypto_data.get('confidence', 0)
+            
+            response += f"\n💹 **Price Data:**\n"
+            response += f"• Price: ${ticker.get('price', 'N/A')}\n"
+            response += f"• 24h Change: {ticker.get('change_24h', 0):.2f}%\n"
+            response += f"• Sentiment: {sentiment}\n"
+            response += f"• Confidence: {confidence}%\n"
+        
+        # Alpha Opportunities
+        alpha_data = results.get("/api/alpha/real-market-scan", {})
+        if not alpha_data.get('error') and alpha_data.get('opportunities'):
+            symbol_opps = [opp for opp in alpha_data['opportunities'] if opp.get('symbol', '').upper() == symbol.upper()]
+            if symbol_opps:
+                response += f"\n🚀 **Alpha Opportunities:**\n"
+                for opp in symbol_opps[:2]:
+                    response += f"• {opp.get('signal', 'N/A')}\n"
+                    response += f"• Target: {opp.get('target_upside', 'N/A')}\n"
+        
+        # GPT-5 Analysis
+        if bot.trading_ai:
+            try:
+                gpt_analysis = await asyncio.get_event_loop().run_in_executor(
+                    None, 
+                    bot.trading_ai.analyze_crypto_comprehensive,
+                    symbol.upper(),
+                    results
+                )
+                response += f"\n🤖 **GPT-5 Insight:**\n{gpt_analysis[:200]}..."
+            except:
+                response += f"\n🤖 **GPT-5 Analysis:** Processing market conditions for {symbol.upper()}"
+        
+        await interaction.followup.send(response[:2000])
+        
+    except Exception as e:
+        await interaction.followup.send(f"❌ Error analyzing {symbol}: {str(e)}")
+
 @bot.tree.command(name="portfolio", description="Get GPT-5 portfolio analysis")
 async def portfolio_analysis(interaction: discord.Interaction):
     """Get comprehensive portfolio analysis"""
@@ -155,43 +231,7 @@ async def portfolio_analysis(interaction: discord.Interaction):
     except Exception as e:
         await interaction.followup.send(f"❌ Command failed: {str(e)}")
 
-@bot.tree.command(name="analyze", description="Analyze a specific cryptocurrency")
-async def analyze_crypto(interaction: discord.Interaction, symbol: str):
-    """Analyze specific cryptocurrency with full technical analysis"""
-    await interaction.response.defer()
-    
-    try:
-        # Get technical analysis
-        ta_data = await call_railway_api(f"/api/technical-analysis/{symbol.upper()}")
-        
-        # Get news for the symbol
-        news_data = await call_railway_api(f"/api/crypto-news/premium?tickers={symbol.upper()}&items=3")
-        
-        # Get futures data if available
-        futures_data = await call_railway_api(f"/api/futures/funding-rates/{symbol.upper()}")
-        
-        ta_formatted = format_response(ta_data, 'Technical Indicators')[:400]
-        news_formatted = format_response(news_data, 'News Analysis')[:400]  
-        futures_formatted = format_response(futures_data, 'Funding Rates')[:300]
-
-        response = f"""🔍 **COMPLETE {symbol.upper()} ANALYSIS**
-
-📈 **Technical Analysis**:
-{ta_formatted}
-
-📰 **Recent News**:
-{news_formatted}
-
-📊 **Futures Data**:
-{futures_formatted}
-
-⏰ **Analysis Time**: {datetime.now().strftime('%H:%M:%S')}
-🤖 **Powered by**: GPT-5 Intelligence"""
-        
-        await interaction.followup.send(response[:2000])
-        
-    except Exception as e:
-        await interaction.followup.send(f"❌ Analysis failed: {str(e)}")
+# Removed duplicate analyze command
 
 # =============================================================================
 # SCANNING & DISCOVERY COMMANDS  
