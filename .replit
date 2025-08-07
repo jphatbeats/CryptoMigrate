@@ -26,7 +26,7 @@ args = "Discord AI Alerts"
 
 [[workflows.workflow.tasks]]
 task = "workflow.run"
-args = "Live Trade Scanner"
+args = "Hourly Trade Scanner"
 
 [[workflows.workflow]]
 name = "Crypto Trading Server"
@@ -54,7 +54,7 @@ task = "shell.exec"
 args = "python automated_trading_alerts.py"
 
 [[workflows.workflow]]
-name = "Live Trade Scanner"
+name = "Hourly Trade Scanner"
 author = "agent"
 
 [[workflows.workflow.tasks]]

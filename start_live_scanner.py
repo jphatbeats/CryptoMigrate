@@ -10,10 +10,10 @@ from datetime import datetime
 
 def signal_handler(sig, frame):
     """Handle shutdown signals gracefully"""
-    print("\n🛑 Shutting down Live Trade Scanner...")
+    print("\n🛑 Shutting down Hourly Trade Scanner...")
     try:
-        from live_trade_scanner import stop_live_trade_scanner
-        stop_live_trade_scanner()
+        from hourly_trade_scanner import stop_hourly_trade_scanner
+        stop_hourly_trade_scanner()
     except:
         pass
     sys.exit(0)
@@ -25,18 +25,20 @@ async def main():
     signal.signal(signal.SIGINT, signal_handler)
     signal.signal(signal.SIGTERM, signal_handler)
     
-    print("🚀 LIVE TRADE SCANNER SERVICE")
-    print("=" * 50)
+    print("🚀 HOURLY TRADE SCANNER SERVICE")
+    print("=" * 60)
     print(f"⏰ Started at: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}")
-    print("🔍 Scanning 20 tokens every 5 minutes")
-    print("📊 Complete cycle every ~50 minutes (200 tokens)")
-    print("📢 Callouts only for score >65 opportunities")
+    print("🔍 Scanning 20 tokens every 6 minutes (10 batches per hour)")
+    print("📊 Complete TOP 200 analysis every hour")
+    print("📈 Full TA + News + Sentiment for each coin")
+    print("⚡ INSTANT alerts for quality trades (score >70)")
+    print("🎯 Get alerts the moment opportunities appear")
     print("⚠️ Press Ctrl+C to stop")
-    print("=" * 50)
+    print("=" * 60)
     
     try:
-        from live_trade_scanner import start_live_trade_scanner
-        await start_live_trade_scanner()
+        from hourly_trade_scanner import start_hourly_trade_scanner
+        await start_hourly_trade_scanner()
     except KeyboardInterrupt:
         print("\n🛑 Scanner stopped by user")
     except Exception as e:
