@@ -1,0 +1,419 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "Complete Trading Intelligence API + Taapi.io Integration",
+    "description": "Unified API for comprehensive crypto trading intelligence including multi-exchange data, AI-powered insights, Discord alerts, news analysis, and 208+ technical indicators via taapi.io proxy. All endpoints accessible through a single ChatGPT schema.",
+    "version": "2.0.0"
+  },
+  "servers": [
+    {
+      "url": "https://titan-trading-2-production.up.railway.app",
+      "description": "Railway Production Server"
+    }
+  ],
+  "paths": {
+    "/api/taapi/proxy": {
+      "post": {
+        "summary": "Taapi.io Technical Indicators (208+ available)",
+        "description": "Access all 208+ taapi.io technical indicators including advanced ones like Supertrend, Ichimoku, Fisher Transform, Vortex, Aroon, CMF, Choppiness, Klinger, Donchian, Ultimate Oscillator, and many more. Perfect for BONK/USDT and other crypto analysis.",
+        "operationId": "getTaapiIndicators",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": ["secret", "construct"],
+                "properties": {
+                  "secret": {
+                    "type": "string",
+                    "description": "Your taapi.io API key"
+                  },
+                  "construct": {
+                    "type": "object",
+                    "required": ["exchange", "symbol", "interval", "indicators"],
+                    "properties": {
+                      "exchange": {
+                        "type": "string",
+                        "enum": ["binance", "binancefutures", "bybit", "okx", "kucoin", "gate", "huobi", "bitget"],
+                        "default": "binance"
+                      },
+                      "symbol": {
+                        "type": "string",
+                        "description": "Trading pair (e.g., BTC/USDT, BONK/USDT)"
+                      },
+                      "interval": {
+                        "type": "string",
+                        "enum": ["1m", "5m", "15m", "30m", "1h", "2h", "4h", "12h", "1d", "1w"]
+                      },
+                      "indicators": {
+                        "type": "array",
+                        "maxItems": 20,
+                        "items": {
+                          "type": "object",
+                          "required": ["indicator"],
+                          "properties": {
+                            "id": {"type": "string"},
+                            "indicator": {
+                              "type": "string", 
+                              "description": "Any indicator name: rsi, macd, supertrend, ichimoku, fisher_transform, vortex, aroon, cmf, choppiness, klinger, donchian, ultimate_oscillator, etc."
+                            },
+                            "period": {"type": "integer"},
+                            "multiplier": {"type": "number"},
+                            "fast_period": {"type": "integer"},
+                            "slow_period": {"type": "integer"},
+                            "signal_period": {"type": "integer"},
+                            "stddev": {"type": "number"}
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              },
+              "examples": {
+                "bonk_advanced": {
+                  "summary": "BONK/USDT Advanced Analysis",
+                  "value": {
+                    "secret": "YOUR_TAAPI_SECRET",
+                    "construct": {
+                      "exchange": "kucoin",
+                      "symbol": "BONK/USDT",
+                      "interval": "4h",
+                      "indicators": [
+                        {"id": "supertrend", "indicator": "supertrend"},
+                        {"id": "fisher_transform", "indicator": "fisher_transform"},
+                        {"id": "vortex", "indicator": "vortex"},
+                        {"id": "aroon", "indicator": "aroon"},
+                        {"id": "cmf", "indicator": "cmf"},
+                        {"id": "choppiness", "indicator": "choppiness"},
+                        {"id": "klinger", "indicator": "klinger"},
+                        {"id": "donchian", "indicator": "donchian"},
+                        {"id": "ultimate_oscillator", "indicator": "ultimate_oscillator"}
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Technical indicators data",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "id": {"type": "string"},
+                          "result": {"type": "object"},
+                          "errors": {"type": "array"}
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/exchanges/status": {
+      "get": {
+        "summary": "Exchange Status",
+        "description": "Get status of all integrated exchanges",
+        "operationId": "getExchangeStatus",
+        "responses": {
+          "200": {
+            "description": "Exchange status information"
+          }
+        }
+      }
+    },
+    "/api/trading/{exchange}/ticker/{symbol}": {
+      "get": {
+        "summary": "Get Ticker Price",
+        "description": "Get current ticker price from exchange",
+        "operationId": "getTicker",
+        "parameters": [
+          {
+            "name": "exchange",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "enum": ["bingx", "kraken", "blofin"]
+            }
+          },
+          {
+            "name": "symbol",
+            "in": "path",
+            "required": true,
+            "schema": {"type": "string"}
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Ticker data"
+          }
+        }
+      }
+    },
+    "/api/trading/{exchange}/ohlcv/{symbol}": {
+      "get": {
+        "summary": "Get OHLCV Data",
+        "description": "Get candlestick/OHLCV data",
+        "operationId": "getOhlcv",
+        "parameters": [
+          {
+            "name": "exchange",
+            "in": "path", 
+            "required": true,
+            "schema": {
+              "type": "string",
+              "enum": ["bingx", "kraken", "blofin"]
+            }
+          },
+          {
+            "name": "symbol",
+            "in": "path",
+            "required": true,
+            "schema": {"type": "string"}
+          },
+          {
+            "name": "timeframe",
+            "in": "query",
+            "schema": {"type": "string", "default": "1h"}
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "schema": {"type": "integer", "default": 100}
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OHLCV candlestick data"
+          }
+        }
+      }
+    },
+    "/api/alerts/status": {
+      "get": {
+        "summary": "Trading Alerts Status",
+        "description": "Get current status of trading alerts system",
+        "operationId": "getAlertsStatus",
+        "responses": {
+          "200": {
+            "description": "Alerts system status"
+          }
+        }
+      }
+    },
+    "/api/alerts/positions": {
+      "get": {
+        "summary": "Current Positions",
+        "description": "Get current trading positions from alerts system",
+        "operationId": "getCurrentPositions",
+        "responses": {
+          "200": {
+            "description": "Current trading positions"
+          }
+        }
+      }
+    },
+    "/api/alerts/latest": {
+      "get": {
+        "summary": "Latest Alerts",
+        "description": "Get most recent trading alerts",
+        "operationId": "getLatestAlerts",
+        "parameters": [
+          {
+            "name": "limit",
+            "in": "query",
+            "schema": {"type": "integer", "default": 10}
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Recent trading alerts"
+          }
+        }
+      }
+    },
+    "/api/intelligence/portfolio-analysis": {
+      "post": {
+        "summary": "AI Portfolio Analysis",
+        "description": "Get AI-powered portfolio analysis and insights",
+        "operationId": "getPortfolioAnalysis",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "positions": {
+                    "type": "array",
+                    "description": "Portfolio positions to analyze"
+                  },
+                  "market_context": {
+                    "type": "string",
+                    "description": "Additional market context"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "AI portfolio analysis results"
+          }
+        }
+      }
+    },
+    "/api/intelligence/news-sentiment": {
+      "post": {
+        "summary": "AI News Sentiment Analysis", 
+        "description": "Analyze news sentiment impact on trading",
+        "operationId": "getNewsSentiment",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "news_items": {
+                    "type": "array",
+                    "description": "News articles to analyze"
+                  },
+                  "symbols": {
+                    "type": "array",
+                    "description": "Trading symbols to focus on"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "News sentiment analysis results"
+          }
+        }
+      }
+    },
+    "/api/intelligence/opportunities": {
+      "post": {
+        "summary": "AI Opportunity Scanner",
+        "description": "Scan for trading opportunities using AI analysis",
+        "operationId": "scanOpportunities",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "market_data": {
+                    "type": "object",
+                    "description": "Current market data for analysis"
+                  },
+                  "risk_tolerance": {
+                    "type": "string",
+                    "enum": ["low", "medium", "high"],
+                    "default": "medium"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Trading opportunities identified"
+          }
+        }
+      }
+    },
+    "/api/news/crypto": {
+      "get": {
+        "summary": "Crypto News",
+        "description": "Get latest cryptocurrency news",
+        "operationId": "getCryptoNews",
+        "parameters": [
+          {
+            "name": "symbol",
+            "in": "query",
+            "schema": {"type": "string"},
+            "description": "Filter by specific symbol (e.g., BTC, ETH, BONK)"
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "schema": {"type": "integer", "default": 20}
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Latest crypto news articles"
+          }
+        }
+      }
+    },
+    "/api/indicators/status": {
+      "get": {
+        "summary": "Technical Indicators Status",
+        "description": "Get status of technical indicators integration",
+        "operationId": "getIndicatorsStatus",
+        "responses": {
+          "200": {
+            "description": "Technical indicators system status"
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "TaapiRequest": {
+        "type": "object",
+        "required": ["secret", "construct"],
+        "properties": {
+          "secret": {"type": "string"},
+          "construct": {
+            "type": "object",
+            "required": ["exchange", "symbol", "interval", "indicators"],
+            "properties": {
+              "exchange": {"type": "string"},
+              "symbol": {"type": "string"},
+              "interval": {"type": "string"},
+              "indicators": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "required": ["indicator"],
+                  "properties": {
+                    "id": {"type": "string"},
+                    "indicator": {"type": "string"},
+                    "period": {"type": "integer"},
+                    "multiplier": {"type": "number"}
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
