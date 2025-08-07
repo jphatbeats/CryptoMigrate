@@ -58,6 +58,20 @@ except ImportError as e:
     print(f"❌ OpenAI Trading Intelligence not available: {e}")
 except Exception as e:
     openai_available = False
+
+# Import Alpha Opportunities Generator
+alpha_opportunities = False
+generate_alpha_opportunities = None
+format_alpha_opportunities_for_discord = None
+try:
+    from alpha_opportunities_generator import generate_alpha_opportunities, format_alpha_opportunities_for_discord
+    alpha_opportunities = True
+    print("✅ Alpha Opportunities Generator loaded successfully")
+except ImportError as e:
+    alpha_opportunities = False
+    print(f"❌ Alpha Opportunities Generator not available: {e}")
+except Exception as e:
+    alpha_opportunities = False
     trading_ai = None
     print(f"❌ OpenAI initialization error: {e}")
 
@@ -656,11 +670,15 @@ async def send_discord_alert(message, channel='portfolio'):
             try:
                 # Get the channel and send message
                 discord_channel = client.get_channel(channel_id)
-                if discord_channel and hasattr(discord_channel, 'send'):
-                    await discord_channel.send(message)
-                    print(f"✅ Discord alert sent to #{channel} ({channel_id})")
+                if discord_channel:
+                    # Check if it's a text channel
+                    if hasattr(discord_channel, 'send'):
+                        await discord_channel.send(message)
+                        print(f"✅ Discord alert sent to #{channel} ({channel_id})")
+                    else:
+                        print(f"❌ Channel {channel_id} is not a text channel")
                 else:
-                    print(f"❌ Discord channel {channel_id} not found or not a text channel")
+                    print(f"❌ Discord channel {channel_id} not found")
                 
                 # Close the connection
                 await client.close()
@@ -1032,19 +1050,46 @@ async def run_portfolio_analysis():
         print(f"❌ Portfolio analysis error: {e}")
 
 async def run_alpha_analysis():
-    """Twice daily comprehensive AI-powered alpha analysis for #alpha-scans channel"""
+    """Generate real alpha opportunities for #alpha-scans channel"""
     try:
-        print("\n🎯 ALPHA ANALYSIS - Running AI-powered comprehensive scan...")
+        print("\n🔍 ALPHA OPPORTUNITIES - Generating real trading opportunities...")
         
-        # Always attempt alpha scan - crypto news module is available
-        # If individual API calls fail, we'll handle them gracefully
+        # Use the new alpha opportunities generator instead of simulated RSI data
+        if alpha_opportunities:
+            try:
+                real_opportunities = await generate_alpha_opportunities()
+                
+                if real_opportunities:
+                    # Format opportunities for Discord
+                    alpha_message = format_alpha_opportunities_for_discord(real_opportunities)
+                    await send_discord_alert(alpha_message, 'alpha_scans')
+                    print("✅ Real alpha opportunities sent to Discord #alpha-scans")
+                else:
+                    # Send a proper "no opportunities" message instead of fake data
+                    no_opportunities_message = (
+                        "🔍 **ALPHA OPPORTUNITIES** 🔍\n\n"
+                        "⏳ No high-confidence alpha setups detected at this time.\n"
+                        "🔎 Continuing to monitor:\n"
+                        "• Breaking news catalysts\n"
+                        "• Social sentiment spikes\n"
+                        "• Technical oversold bounces\n"
+                        "• Emerging token launches\n\n"
+                        "📊 Next scan in 12 hours or when market conditions change."
+                    )
+                    await send_discord_alert(no_opportunities_message, 'alpha_scans')
+                    print("✅ No-opportunities status sent to #alpha-scans")
+                
+                return
+                
+            except Exception as e:
+                print(f"❌ Alpha opportunities generator error: {e}")
+                # Fall back to basic analysis
         
-        # Get comprehensive market intelligence using direct CryptoNews API
+        # Fallback: Get comprehensive market intelligence using direct CryptoNews API
         from crypto_news_alerts import get_general_crypto_news, get_top_mentioned_tickers
         
         # Get RECENT opportunities (positive sentiment news - LAST 24 HOURS ONLY)
         from datetime import datetime, timedelta
-        yesterday = (datetime.now() - timedelta(days=1)).strftime('%Y-%m-%d')
         today = datetime.now().strftime('%Y-%m-%d')
         
         opportunities_data = get_general_crypto_news(items=15, sentiment='positive', date=today)

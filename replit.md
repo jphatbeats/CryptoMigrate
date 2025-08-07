@@ -1,6 +1,6 @@
 # Overview
 
-This project is a comprehensive cryptocurrency trading automation system designed to provide real-time market intelligence, automated portfolio monitoring, and multi-channel Discord alerting with enhanced visual content. It integrates live exchange data from various platforms (BingX, Kraken, Blofin) via CCXT, combines it with crypto news intelligence featuring **actual article images**, and delivers actionable trading alerts through Discord webhooks. The system now includes professional-grade technical analysis through taapi.io API integration, supporting both individual indicator requests and efficient bulk queries. The platform features an animated market trend prediction widget that provides AI-powered price predictions with visual animations, confidence scoring, and real-time technical analysis. **News Enhancement**: All crypto news alerts now include actual article images from the CryptoNews API (not just website logos), providing rich visual context in Discord channels alongside sentiment analysis and market intelligence. The system provides traditional technical analysis (RSI, MACD, Bollinger Bands) and enhanced market intelligence through AI-powered insights, offering a robust, intelligent, and visually enhanced solution for cryptocurrency traders.
+This project is a comprehensive cryptocurrency trading automation system designed to provide real-time market intelligence, automated portfolio monitoring, and multi-channel Discord alerting with enhanced visual content. It integrates live exchange data from various platforms (BingX, Kraken, Blofin) via CCXT, combines it with crypto news intelligence featuring **actual article images**, and delivers actionable trading alerts through Discord webhooks. The system now includes professional-grade technical analysis through taapi.io API integration, supporting both individual indicator requests and efficient bulk queries. The platform features an animated market trend prediction widget that provides AI-powered price predictions with visual animations, confidence scoring, and real-time technical analysis. **News Enhancement**: All crypto news alerts now include actual article images from the CryptoNews API (not just website logos), providing rich visual context in Discord channels alongside sentiment analysis and market intelligence. **Alpha Opportunities Fix (2025-08-07)**: Replaced repetitive simulated RSI data with real trading opportunities system that analyzes news catalysts, social sentiment, technical setups, and emerging tokens for genuine alpha intelligence. The system provides traditional technical analysis (RSI, MACD, Bollinger Bands) and enhanced market intelligence through AI-powered insights, offering a robust, intelligent, and visually enhanced solution for cryptocurrency traders.
 
 # User Preferences
 
@@ -25,7 +25,8 @@ Preferred communication style: Simple, everyday language.
 
 **Automated Alert System (`automated_trading_alerts.py`)**
 - Monitors portfolio positions, performs technical analysis (RSI, PnL), and generates risk alerts.
-- Integrates with multi-channel Discord webhooks, routing intelligent content.
+- **Alpha Opportunities System (`alpha_opportunities_generator.py`)**: Generates real trading opportunities from news analysis, social sentiment, technical indicators, and emerging tokens instead of repetitive simulated data.
+- Integrates with multi-channel Discord webhooks, routing intelligent content to appropriate channels.
 
 ## Data Flow Architecture
 
@@ -48,7 +49,7 @@ Preferred communication style: Simple, everyday language.
 **Channel Strategy**
 - **#alerts**: Breaking news, risk alerts, market updates, and a daily Sundown Digest.
 - **#portfolio**: Position analysis, trading signals, and PnL monitoring.
-- **#alpha-scans**: Trading opportunities and early entry signals.
+- **#alpha-scans**: **Real trading opportunities** including news-based catalysts, technical analysis setups, social sentiment trends, and emerging token opportunities (no more simulated RSI data).
 - **#degen-memes**: Viral plays, airdrops, and meme coin opportunities.
 
 **Webhook Management**
