@@ -47,17 +47,26 @@ Preferred communication style: Simple, everyday language.
 - **Enhanced with Article Images**: All Discord news alerts now include actual article images from CryptoNews API, providing visual context alongside sentiment analysis and market intelligence.
 - Intelligently routes alerts to appropriate Discord channels based on type and urgency.
 
-## Multi-Channel Discord Integration
+## Advanced Multi-Channel Discord Intelligence
 
-**Channel Strategy**
-- **#alerts**: Breaking news, risk alerts, market updates, and a daily Sundown Digest.
-- **#portfolio**: Position analysis, trading signals, and PnL monitoring.
-- **#alpha-scans**: **Real trading opportunities** including news-based catalysts, technical analysis setups, social sentiment trends, and emerging token opportunities (no more simulated RSI data).
-- **#degen-memes**: Viral plays, airdrops, and meme coin opportunities.
+**Enhanced Channel Strategy (10 Specialized Channels)**
+- **#market-movers**: Real-time price movements >10%, volume spikes, breakout alerts (20/hour max)
+- **#whale-alerts**: $1M+ transactions, institutional movements, exchange flows (15/hour max)
+- **#liquidations**: Major liquidations, cascade risks, reversal opportunities (25/hour max)
+- **#funding-rates**: Funding rate analysis, sentiment signals, extreme readings (8/hour max)
+- **#social-sentiment**: Multi-source sentiment fusion, viral content, influencer activity (12/hour max)
+- **#alpha-scans**: High-conviction setups with confluence signals (6/hour max)
+- **#degen-memes**: Viral plays, meme coins, airdrops, early gems (10/hour max)
+- **#technical-analysis**: Chart patterns, indicator signals, support/resistance (10/hour max)
+- **#news-intelligence**: Breaking news, regulatory updates, partnerships (15/hour max)
+- **#performance-analytics**: Daily reports, success rates, ROI tracking (3/hour max)
 
-**Webhook Management**
-- Configurable environment variables for multiple webhook URLs with fallback mechanisms.
-- Asynchronous Discord message delivery with rate limiting.
+**Advanced Webhook Management**
+- 10 specialized webhook URLs with intelligent content routing based on alert type and priority
+- Smart rate limiting per channel (3-25 alerts/hour based on channel importance)
+- Interactive features: reaction tracking, custom watchlists, performance analytics
+- Professional formatting styles: compact, detailed, urgent, analytical, social, casual
+- Real-time engagement metrics and channel performance optimization
 
 ## Error Handling and Reliability
 
