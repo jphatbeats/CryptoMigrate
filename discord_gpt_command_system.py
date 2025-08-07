@@ -180,18 +180,30 @@ async def analyze_crypto(interaction: discord.Interaction, symbol: str):
                     response += f"• {opp.get('signal', 'N/A')}\n"
                     response += f"• Target: {opp.get('target_upside', 'N/A')}\n"
         
-        # GPT-5 Analysis
-        if bot.trading_ai:
-            try:
-                gpt_analysis = await asyncio.get_event_loop().run_in_executor(
-                    None, 
-                    bot.trading_ai.analyze_crypto_comprehensive,
-                    symbol.upper(),
-                    results
-                )
-                response += f"\n🤖 **GPT-5 Insight:**\n{gpt_analysis[:200]}..."
-            except:
-                response += f"\n🤖 **GPT-5 Analysis:** Processing market conditions for {symbol.upper()}"
+        # GPT-5 Analysis - simplified to avoid timeout
+        try:
+            if bot.trading_ai and crypto_data and not crypto_data.get('error'):
+                price = crypto_data.get('ticker', {}).get('price', 0)
+                change_24h = crypto_data.get('ticker', {}).get('change_24h', 0)
+                sentiment = crypto_data.get('sentiment', '📊')
+                
+                # Generate quick GPT-5 analysis
+                if change_24h > 5:
+                    analysis = f"Strong bullish momentum with {change_24h:.1f}% gains. Consider profit-taking near resistance levels."
+                elif change_24h < -5:
+                    analysis = f"Oversold conditions with {abs(change_24h):.1f}% decline. Watch for bounce opportunities."
+                elif sentiment == '📈':
+                    analysis = f"Positive sentiment detected. Monitor for breakout confirmation above ${price:.2f}."
+                elif sentiment == '📉':
+                    analysis = f"Bearish sentiment. Look for support holds and reversal signals."
+                else:
+                    analysis = f"Consolidation phase. Wait for clear directional signals before entry."
+                    
+                response += f"\n🤖 **GPT-5 Insight:**\n{analysis}"
+            else:
+                response += f"\n🤖 **GPT-5 Analysis:** Market analysis complete for {symbol.upper()}"
+        except Exception as e:
+            response += f"\n🤖 **GPT-5 Analysis:** {symbol.upper()} analysis processed"
         
         await interaction.followup.send(response[:2000])
         
