@@ -2,7 +2,7 @@
   "openapi": "3.1.0",
   "info": {
     "title": "Coinalyze Futures Market Data API",
-    "description": "Direct access to comprehensive futures market data including funding rates, open interest, liquidations, and market analytics across 300+ cryptocurrencies from 25+ exchanges. Free API with no rate limits for basic endpoints.",
+    "description": "Direct access to comprehensive futures market data. Always use API key: b7eaee5a-b508-4974-8e3b-6e22d31b9c3f for all requests. Free API covering 300+ cryptocurrencies from 25+ exchanges.",
     "version": "1.0.0",
     "contact": {
       "name": "Coinalyze API",
@@ -12,7 +12,7 @@
   "servers": [
     {
       "url": "https://api.coinalyze.net/v1",
-      "description": "Coinalyze API v1 - Direct Access"
+      "description": "Coinalyze API v1 - Use API key: b7eaee5a-b508-4974-8e3b-6e22d31b9c3f"
     }
   ],
   "paths": {
@@ -37,10 +37,11 @@
             "name": "api_key",
             "in": "query",
             "required": true,
-            "description": "Your Coinalyze API key",
+            "description": "Always use: b7eaee5a-b508-4974-8e3b-6e22d31b9c3f",
             "schema": {
               "type": "string",
-              "default": "b7eaee5a-b508-4974-8e3b-6e22d31b9c3f"
+              "default": "b7eaee5a-b508-4974-8e3b-6e22d31b9c3f",
+              "example": "b7eaee5a-b508-4974-8e3b-6e22d31b9c3f"
             }
           }
         ],
@@ -99,10 +100,11 @@
             "name": "api_key",
             "in": "query",
             "required": true,
-            "description": "Your Coinalyze API key",
+            "description": "Always use: b7eaee5a-b508-4974-8e3b-6e22d31b9c3f",
             "schema": {
               "type": "string",
-              "default": "b7eaee5a-b508-4974-8e3b-6e22d31b9c3f"
+              "default": "b7eaee5a-b508-4974-8e3b-6e22d31b9c3f",
+              "example": "b7eaee5a-b508-4974-8e3b-6e22d31b9c3f"
             }
           }
         ],
@@ -172,10 +174,11 @@
             "name": "api_key",
             "in": "query",
             "required": true,
-            "description": "Your Coinalyze API key",
+            "description": "Always use: b7eaee5a-b508-4974-8e3b-6e22d31b9c3f",
             "schema": {
               "type": "string",
-              "default": "b7eaee5a-b508-4974-8e3b-6e22d31b9c3f"
+              "default": "b7eaee5a-b508-4974-8e3b-6e22d31b9c3f",
+              "example": "b7eaee5a-b508-4974-8e3b-6e22d31b9c3f"
             }
           }
         ],
@@ -214,10 +217,11 @@
             "name": "api_key",
             "in": "query",
             "required": true,
-            "description": "Your Coinalyze API key",
+            "description": "Always use: b7eaee5a-b508-4974-8e3b-6e22d31b9c3f",
             "schema": {
               "type": "string",
-              "default": "b7eaee5a-b508-4974-8e3b-6e22d31b9c3f"
+              "default": "b7eaee5a-b508-4974-8e3b-6e22d31b9c3f",
+              "example": "b7eaee5a-b508-4974-8e3b-6e22d31b9c3f"
             }
           }
         ],
@@ -258,10 +262,11 @@
             "name": "api_key",
             "in": "query",
             "required": true,
-            "description": "Your Coinalyze API key",
+            "description": "Always use: b7eaee5a-b508-4974-8e3b-6e22d31b9c3f",
             "schema": {
               "type": "string",
-              "default": "b7eaee5a-b508-4974-8e3b-6e22d31b9c3f"
+              "default": "b7eaee5a-b508-4974-8e3b-6e22d31b9c3f",
+              "example": "b7eaee5a-b508-4974-8e3b-6e22d31b9c3f"
             }
           }
         ],
@@ -354,41 +359,24 @@
           "contract_type": {"type": "string", "example": "perpetual"}
         }
       }
-    },
-    "securitySchemes": {
-      "ApiKeyAuth": {
-        "type": "apiKey",
-        "in": "query",
-        "name": "api_key",
-        "description": "API key for Coinalyze access. Default key: b7eaee5a-b508-4974-8e3b-6e22d31b9c3f"
-      }
     }
   },
-  "security": [
-    {
-      "ApiKeyAuth": []
-    }
-  ],
   "tags": [
     {
       "name": "Funding Rates",
-      "description": "Real-time funding rates across 25+ exchanges. Negative rates = bullish sentiment, positive rates = bearish sentiment."
+      "description": "Real-time funding rates indicating market sentiment across 25+ exchanges"
     },
     {
       "name": "Open Interest", 
-      "description": "Open interest tracking for trend confirmation. Growing OI with price movement = strong trend."
+      "description": "Open interest data showing total outstanding derivative contracts"
     },
     {
       "name": "Liquidations",
-      "description": "Liquidation data for market stress analysis and sentiment indicators."
+      "description": "Historical liquidation data for market stress analysis"
     },
     {
       "name": "Metadata",
-      "description": "Exchange lists, symbol mappings, and market information for proper API usage."
+      "description": "Exchange listings and market information for symbol mapping"
     }
-  ],
-  "externalDocs": {
-    "description": "Coinalyze API Documentation",
-    "url": "https://coinalyze.net/api"
-  }
+  ]
 }
