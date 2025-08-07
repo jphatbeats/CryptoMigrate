@@ -17,12 +17,27 @@ from datetime import datetime
 import traceback
 from typing import Dict, List, Optional
 
-# Import your existing modules
-from openai_trading_intelligence import TradingIntelligence
-from exchange_manager import ExchangeManager
-from taapi_indicators import TaapiIndicators
-from coinalyze_api import CoinalyzeAPI
-from rugcheck_integration import RugCheckAPI
+# Import your existing modules (with error handling)
+try:
+    from openai_trading_intelligence import TradingIntelligence
+except ImportError:
+    TradingIntelligence = None
+try:
+    from exchange_manager import ExchangeManager  
+except ImportError:
+    ExchangeManager = None
+try:
+    from taapi_indicators import TaapiIndicators
+except ImportError:
+    TaapiIndicators = None
+try:
+    from coinalyze_api import CoinalyzeAPI
+except ImportError:
+    CoinalyzeAPI = None
+try:
+    from rugcheck_integration import RugCheckAPI
+except ImportError:
+    RugCheckAPI = None
 
 # Configure logging
 logging.basicConfig(level=logging.INFO)
@@ -48,12 +63,12 @@ class GPTCommandBot(commands.Bot):
         intents.guilds = True
         super().__init__(command_prefix='/', intents=intents)
         
-        # Initialize APIs
-        self.trading_ai = TradingIntelligence()
-        self.exchange_manager = ExchangeManager()
-        self.taapi = TaapiIndicators()
-        self.coinalyze = CoinalyzeAPI()
-        self.rugcheck = RugCheckAPI()
+        # Initialize APIs (with error handling)
+        self.trading_ai = TradingIntelligence() if TradingIntelligence else None
+        self.exchange_manager = ExchangeManager() if ExchangeManager else None
+        self.taapi = TaapiIndicators() if TaapiIndicators else None
+        self.coinalyze = CoinalyzeAPI() if CoinalyzeAPI else None
+        self.rugcheck = RugCheckAPI() if RugCheckAPI else None
         
     async def setup_hook(self):
         """Setup slash commands"""
@@ -348,7 +363,10 @@ async def ask_gpt(interaction: discord.Interaction, question: str):
         }
         
         # Get GPT-5 response
-        ai_response = bot.trading_ai.analyze_portfolio(context)
+        if bot.trading_ai:
+            ai_response = bot.trading_ai.analyze_portfolio(context)
+        else:
+            ai_response = {"analysis": "AI analysis temporarily unavailable", "recommendations": "Check system status"}
         
         response = f"""🤖 **GPT-5 TRADING ASSISTANT**
 
@@ -390,7 +408,10 @@ async def get_opinion(interaction: discord.Interaction, topic: str):
             "portfolio": market_data[2] if len(market_data) > 2 else {}
         }
         
-        opinion = bot.trading_ai.generate_hourly_insights(context)
+        if bot.trading_ai:
+            opinion = bot.trading_ai.generate_hourly_insights(context)
+        else:
+            opinion = {"market_analysis": "AI analysis temporarily unavailable", "action_items": "Check system status", "next_hour_outlook": "System maintenance"}
         
         response = f"""🎯 **GPT-5 MARKET OPINION**
 

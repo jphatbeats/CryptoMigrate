@@ -32,6 +32,10 @@ args = "Hourly Trade Scanner"
 task = "workflow.run"
 args = "Enhanced Discord Intelligence"
 
+[[workflows.workflow.tasks]]
+task = "workflow.run"
+args = "Discord GPT Commands"
+
 [[workflows.workflow]]
 name = "Crypto Trading Server"
 author = "agent"
@@ -75,6 +79,17 @@ author = "agent"
 [[workflows.workflow.tasks]]
 task = "shell.exec"
 args = "python enhanced_discord_trading_intelligence.py"
+
+[workflows.workflow.metadata]
+outputType = "console"
+
+[[workflows.workflow]]
+name = "Discord GPT Commands"
+author = "agent"
+
+[[workflows.workflow.tasks]]
+task = "shell.exec"
+args = "python start_discord_gpt_bot.py"
 
 [workflows.workflow.metadata]
 outputType = "console"
