@@ -461,11 +461,23 @@ async def system_status(interaction: discord.Interaction):
             except:
                 results[service] = "❌ Offline"
         
+        # Add channel-specific command suggestions
+        channel_commands = {
+            1399451217372905584: "Try: `/portfolio`, `/scan portfolio`",  # portfolio
+            1399790636990857277: "Try: `/analyze [symbol]`, `/fullscan`, `/token [contract]`",  # alpha-scans  
+            1398000506068009032: "Try: `/news [symbol]`, `/status`",  # alerts
+            1401971493096915067: "Try: `/scan degen`, `/token [meme]`"  # degen-memes
+        }
+        
+        channel_suggestion = channel_commands.get(interaction.channel_id, "Try any command - they work in all channels!")
+        
         response = f"""⚡ **SYSTEM STATUS CHECK**
 
 {chr(10).join([f"{status} **{service}**" for service, status in results.items()])}
 
 📊 **Overall Health**: {sum(1 for s in results.values() if '✅' in s)}/{len(results)} systems online
+
+💡 **Channel Suggestions**: {channel_suggestion}
 
 ⏰ **Check Time**: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}
 🔧 **All Systems**: Railway + APIs + GPT-5"""

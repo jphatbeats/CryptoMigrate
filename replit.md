@@ -6,6 +6,12 @@ This project is a comprehensive cryptocurrency trading automation system designe
 
 Preferred communication style: Simple, everyday language.
 
+## Discord Channel Organization
+- **#portfolio**: `/portfolio`, `/scan portfolio` - Portfolio analysis and health monitoring
+- **#alpha-scans**: `/analyze`, `/fullscan`, `/token` - Technical analysis and token research  
+- **#alerts**: `/news`, `/status` - Breaking news and system status
+- **#degen-memes**: `/scan degen`, meme token research - Viral plays and early gems
+
 # System Architecture
 
 ## Core Components
