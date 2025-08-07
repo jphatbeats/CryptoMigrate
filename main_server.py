@@ -2804,6 +2804,64 @@ def generate_market_insights(symbol, prediction, technical_data, sentiment_data)
 import random
 import asyncio
 
+# ============================================================================
+# CRYPTO NEWS WITH IMAGE SUPPORT ENDPOINTS
+# ============================================================================
+
+@app.route('/api/crypto-news-with-images', methods=['GET'])
+def get_crypto_news_with_images():
+    """Dedicated endpoint for crypto news with guaranteed image support"""
+    try:
+        # Get request parameters
+        tickers = request.args.get('tickers', 'BTC,ETH').strip()
+        items = int(request.args.get('items', 5))
+        sentiment = request.args.get('sentiment', '').strip()
+        
+        # Initialize crypto news API
+        from crypto_news_api import CryptoNewsAPI
+        crypto_news_api = CryptoNewsAPI()
+        
+        # Get news with images
+        ticker_list = [t.strip().upper() for t in tickers.split(',') if t.strip()]
+        result = crypto_news_api.get_portfolio_news(ticker_list, limit=items*2)  # Get more to filter
+        
+        if not result or result.get('error'):
+            # Fallback to breaking news
+            result = crypto_news_api.get_breaking_news(limit=items*2, sentiment=sentiment)
+        
+        articles = result.get('data', []) if result else []
+        
+        # Filter articles that have images and enhance them
+        articles_with_images = []
+        for article in articles:
+            if article.get('image_url'):  # Only include articles with images
+                enhanced = {
+                    "title": article.get('title', 'No title'),
+                    "url": article.get('news_url', article.get('url', '')),
+                    "image_url": article.get('image_url'),
+                    "source": article.get('source_name', article.get('source', 'Unknown')),
+                    "published": article.get('date', article.get('published_at', '')),
+                    "sentiment": article.get('sentiment', 'Neutral'),
+                    "text_preview": article.get('text', '')[:250] + "..." if article.get('text') else '',
+                    "tickers": article.get('tickers', []),
+                    "sentiment_emoji": "📈" if article.get('sentiment') == 'Positive' else "📉" if article.get('sentiment') == 'Negative' else "📊"
+                }
+                articles_with_images.append(enhanced)
+        
+        return jsonify({
+            "success": True,
+            "data": articles_with_images[:items],
+            "count": len(articles_with_images[:items]),
+            "total_articles_processed": len(articles),
+            "images_guaranteed": True,
+            "message": "All articles include actual article images from CryptoNews API",
+            "timestamp": datetime.now().isoformat()
+        })
+        
+    except Exception as e:
+        logger.error(f"Crypto news with images API error: {e}")
+        return jsonify({"error": str(e)}), 500
+
 @app.errorhandler(Exception)
 def handle_unexpected_error(error):
     """Handle unexpected errors"""

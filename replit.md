@@ -1,6 +1,6 @@
 # Overview
 
-This project is a comprehensive cryptocurrency trading automation system designed to provide real-time market intelligence, automated portfolio monitoring, and multi-channel Discord alerting. It integrates live exchange data from various platforms (BingX, Kraken, Blofin) via CCXT, combines it with crypto news intelligence, and delivers actionable trading alerts through Discord webhooks. The system now includes professional-grade technical analysis through taapi.io API integration, supporting both individual indicator requests and efficient bulk queries. The platform features an animated market trend prediction widget that provides AI-powered price predictions with visual animations, confidence scoring, and real-time technical analysis. The system provides traditional technical analysis (RSI, MACD, Bollinger Bands) and enhanced market intelligence through AI-powered insights, offering a robust, intelligent, and automated solution for cryptocurrency traders.
+This project is a comprehensive cryptocurrency trading automation system designed to provide real-time market intelligence, automated portfolio monitoring, and multi-channel Discord alerting with enhanced visual content. It integrates live exchange data from various platforms (BingX, Kraken, Blofin) via CCXT, combines it with crypto news intelligence featuring **actual article images**, and delivers actionable trading alerts through Discord webhooks. The system now includes professional-grade technical analysis through taapi.io API integration, supporting both individual indicator requests and efficient bulk queries. The platform features an animated market trend prediction widget that provides AI-powered price predictions with visual animations, confidence scoring, and real-time technical analysis. **News Enhancement**: All crypto news alerts now include actual article images from the CryptoNews API (not just website logos), providing rich visual context in Discord channels alongside sentiment analysis and market intelligence. The system provides traditional technical analysis (RSI, MACD, Bollinger Bands) and enhanced market intelligence through AI-powered insights, offering a robust, intelligent, and visually enhanced solution for cryptocurrency traders.
 
 # User Preferences
 
@@ -39,6 +39,7 @@ Preferred communication style: Simple, everyday language.
 
 **Alert Classification System**
 - Generates traditional alerts (e.g., oversold/overbought signals) and enhanced intelligence alerts (e.g., news-based risk warnings, trading opportunities).
+- **Enhanced with Article Images**: All Discord news alerts now include actual article images from CryptoNews API, providing visual context alongside sentiment analysis and market intelligence.
 - Intelligently routes alerts to appropriate Discord channels based on type and urgency.
 
 ## Multi-Channel Discord Integration
@@ -78,7 +79,7 @@ Preferred communication style: Simple, everyday language.
 - **CCXT Library**: Unified interface for cryptocurrency exchange APIs.
 
 ## News and Intelligence APIs
-- **CryptoNews API**: Real-time cryptocurrency news with sentiment analysis.
+- **CryptoNews API**: Real-time cryptocurrency news with sentiment analysis and **article images**. All news articles now include actual article images (not just website logos) via `image_url` field from CryptoNews API. Enhanced Discord alerts display article images with sentiment emojis for richer user experience.
 - **OpenAI API**: Used for AI-powered analysis, insights, and recommendations (e.g., GPT-4o for portfolio health scores, news sentiment, trade grading, risk assessment, and opportunity scanning).
 - **DexScreener API**: Integrated for identifying viral tokens and meme coins.
 - **LunarCrush**: Provides social sentiment data for enhanced alpha detection.

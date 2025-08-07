@@ -810,6 +810,82 @@ async def generate_enhanced_alerts(positions_df):
         print(f"❌ Error in enhanced alerts: {e}")
         return []
 
+def create_enhanced_breaking_news_alert_with_images(articles):
+    """Create enhanced breaking news alert with article images for Discord"""
+    if not articles:
+        return ""
+    
+    message = "🚨 **BREAKING CRYPTO NEWS** 🚨\n\n"
+    
+    for i, article in enumerate(articles[:3], 1):  # Top 3 articles
+        title = article.get('title', 'Breaking News')
+        url = article.get('news_url', article.get('url', ''))
+        source = article.get('source_name', article.get('source', 'Unknown'))
+        image_url = article.get('image_url', '')
+        sentiment = article.get('sentiment', 'Neutral')
+        tickers = article.get('tickers', [])
+        
+        # Sentiment emoji
+        sentiment_emoji = "📈" if sentiment == "Positive" else "📉" if sentiment == "Negative" else "📊"
+        
+        if url:
+            message += f"{sentiment_emoji} **[{title}]({url})**\n"
+        else:
+            message += f"{sentiment_emoji} **{title}**\n"
+        
+        # Add image if available
+        if image_url:
+            message += f"{image_url}\n"
+        
+        # Add details
+        message += f"📰 {source}"
+        if tickers:
+            ticker_list = ', '.join(tickers[:3])  # Show first 3 tickers
+            message += f" | 🏷️ {ticker_list}"
+        message += f" | {sentiment_emoji} {sentiment}\n\n"
+    
+    message += f"📊 Market analysis updated in real-time"
+    return message
+
+def create_opportunity_alert_with_images(articles):
+    """Create opportunity alert with article images for Discord"""
+    if not articles:
+        return ""
+    
+    message = "🔍 **ALPHA OPPORTUNITIES** 🔍\n\n"
+    
+    for i, article in enumerate(articles[:2], 1):  # Top 2 opportunities
+        title = article.get('title', 'Market Opportunity')
+        url = article.get('news_url', article.get('url', ''))
+        source = article.get('source_name', article.get('source', 'Unknown'))
+        image_url = article.get('image_url', '')
+        tickers = article.get('tickers', [])
+        text_preview = article.get('text', '')
+        
+        if url:
+            message += f"💎 **[{title}]({url})**\n"
+        else:
+            message += f"💎 **{title}**\n"
+        
+        # Add image if available
+        if image_url:
+            message += f"{image_url}\n"
+        
+        # Add preview text
+        if text_preview:
+            preview = text_preview[:200] + "..." if len(text_preview) > 200 else text_preview
+            message += f"📝 {preview}\n"
+        
+        # Add source and tickers
+        message += f"📰 {source}"
+        if tickers:
+            ticker_list = ', '.join(tickers[:3])
+            message += f" | 🏷️ {ticker_list}"
+        message += f"\n\n"
+    
+    message += f"🚀 Research these opportunities for potential alpha"
+    return message
+
 def save_alerts_for_bot(alerts):
     """Save alerts to a file that the Discord bot can read"""
     if not alerts:
@@ -910,19 +986,35 @@ async def run_portfolio_analysis():
                     portfolio_message += f"• {alert.get('message', alert.get('type', 'Signal'))}\n"
                 portfolio_message += f"\n"
             
-            # Add relevant news
+            # Add relevant news with images
             if portfolio_news and portfolio_news.get('data'):
                 portfolio_message += f"📰 **PORTFOLIO NEWS:**\n"
                 for article in portfolio_news['data'][:2]:
                     title = article.get('title', 'Market Update')
                     url = article.get('news_url', article.get('url', ''))
                     source = article.get('source_name', article.get('source', ''))
+                    image_url = article.get('image_url', '')
                     tickers = article.get('tickers', [])
+                    sentiment = article.get('sentiment', 'Neutral')
+                    
+                    # Sentiment emoji
+                    sentiment_emoji = "📈" if sentiment == "Positive" else "📉" if sentiment == "Negative" else "📊"
                     
                     if url:
-                        portfolio_message += f"**[{title}]({url})**\n"
+                        portfolio_message += f"{sentiment_emoji} **[{title}]({url})**\n"
                     else:
-                        portfolio_message += f"**{title}**\n"
+                        portfolio_message += f"{sentiment_emoji} **{title}**\n"
+                    
+                    # Add image if available
+                    if image_url:
+                        portfolio_message += f"{image_url}\n"
+                    
+                    # Add source and tickers
+                    portfolio_message += f"📰 {source}"
+                    if tickers:
+                        ticker_list = ', '.join(tickers[:3])
+                        portfolio_message += f" | 🏷️ {ticker_list}"
+                    portfolio_message += f"\n"
                     
                     if source:
                         portfolio_message += f"📰 {source}"
@@ -1444,6 +1536,7 @@ async def send_sundown_digest():
             title = digest_article.get('title', 'Daily Market Digest')
             text = digest_article.get('text', digest_article.get('summary', ''))
             url = digest_article.get('news_url', digest_article.get('url', ''))
+            image_url = digest_article.get('image_url', '')
             source = digest_article.get('source_name', digest_article.get('source', 'CryptoNews'))
             
             # Create comprehensive digest message
@@ -1454,6 +1547,10 @@ async def send_sundown_digest():
                 digest_message += f"📰 **[{title}]({url})**\n\n"
             else:
                 digest_message += f"📰 **{title}**\n\n"
+            
+            # Add image if available
+            if image_url:
+                digest_message += f"{image_url}\n\n"
             
             # Add summary if available (truncate to keep under Discord limit)
             if text:
