@@ -21,7 +21,7 @@
         "operationId": "getCurrentFundingRates",
         "tags": ["Funding Rates"],
         "summary": "Get current funding rates",
-        "description": "Real-time funding rates across multiple exchanges. Funding rates indicate market sentiment - negative rates suggest bullish sentiment (shorts pay longs), positive rates suggest bearish sentiment (longs pay shorts). Covers 300+ cryptocurrencies from 25+ exchanges including Binance, ByBit, OKX, Bitget, and more.",
+        "description": "Real-time funding rates across multiple exchanges. Negative rates = bullish (shorts pay longs), positive rates = bearish (longs pay shorts). Covers 300+ cryptocurrencies from 25+ exchanges.",
         "parameters": [
           {
             "name": "symbols",
@@ -83,7 +83,7 @@
         "operationId": "getCurrentOpenInterest",
         "tags": ["Open Interest"],
         "summary": "Get current open interest data",
-        "description": "Real-time open interest data across multiple exchanges. Open interest shows the total dollar amount of outstanding derivative contracts. Growing open interest with price movement indicates strong trend continuation, while declining open interest suggests weakening momentum.",
+        "description": "Real-time open interest data across exchanges. Shows total USD value of outstanding derivative contracts. Growing OI with price movement = strong trend continuation.",
         "parameters": [
           {
             "name": "symbols",
@@ -144,7 +144,7 @@
         "operationId": "getLiquidationHistory",
         "tags": ["Liquidations"],
         "summary": "Get liquidation history",
-        "description": "Historical liquidation data showing forced position closures. High liquidation volumes often coincide with significant price movements and can indicate market stress or capitulation events.",
+        "description": "Historical liquidation data showing forced position closures. High liquidation volumes often coincide with significant price movements and market stress.",
         "parameters": [
           {
             "name": "symbols",
@@ -208,7 +208,7 @@
         "operationId": "getSupportedExchanges",
         "tags": ["Metadata"],
         "summary": "Get supported exchanges",
-        "description": "List of all supported cryptocurrency exchanges in the Coinalyze database. Includes major exchanges like Binance, ByBit, OKX, Bitget, Kraken, and 20+ more.",
+        "description": "List of all supported cryptocurrency exchanges in the Coinalyze database. Includes 25+ major exchanges like Binance, ByBit, OKX, Bitget, Kraken.",
         "parameters": [
           {
             "name": "api_key",
@@ -252,7 +252,7 @@
         "operationId": "getAllFutureMarkets",
         "tags": ["Metadata"],
         "summary": "Get all available future markets",
-        "description": "Complete list of available cryptocurrency futures markets with their symbols, base assets, and exchange information. Essential for symbol mapping (e.g., BTC maps to BTCUSD_PERP.A).",
+        "description": "Complete list of available cryptocurrency futures markets with symbols, base assets, and exchange info. Essential for symbol mapping (BTC → BTCUSD_PERP.A).",
         "parameters": [
           {
             "name": "api_key",
