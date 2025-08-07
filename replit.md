@@ -34,8 +34,9 @@ Preferred communication style: Simple, everyday language.
 - Real-time analysis of trading conditions based on configurable alert thresholds.
 
 **News Intelligence Pipeline**
-- Integrates with a CryptoNews API for portfolio-specific news filtering, sentiment analysis, and opportunity scanning.
-- Monitors breaking news for impact assessment.
+- **Multi-Source Integration**: Combines CryptoNews API and NewsAPI.ai through `EnhancedCryptoNewsAggregator` for comprehensive coverage with automatic deduplication and provider tracking.
+- **Enhanced Processing**: Features article image extraction, sentiment analysis, and multi-format Discord message formatting with provider emojis (🔥 CryptoNews, 🌐 NewsAPI.ai).
+- Monitors breaking news for impact assessment and portfolio-specific filtering.
 
 **Alert Classification System**
 - Generates traditional alerts (e.g., oversold/overbought signals) and enhanced intelligence alerts (e.g., news-based risk warnings, trading opportunities).
@@ -80,6 +81,7 @@ Preferred communication style: Simple, everyday language.
 
 ## News and Intelligence APIs
 - **CryptoNews API**: Real-time cryptocurrency news with sentiment analysis and **article images**. All news articles now include actual article images (not just website logos) via `image_url` field from CryptoNews API. Enhanced Discord alerts display article images with sentiment emojis for richer user experience.
+- **NewsAPI.ai**: Secondary news source with API key `45733984-4543-4869-bc33-590f6ef99bdb` providing enhanced crypto coverage through Event Registry platform. Integrated through `EnhancedCryptoNewsAggregator` for multi-source news aggregation with deduplication and provider indicators (🔥 CryptoNews, 🌐 NewsAPI.ai). Features comprehensive article processing, sentiment analysis, and enhanced Discord formatting for richer news intelligence.
 - **OpenAI API**: Used for AI-powered analysis, insights, and recommendations (e.g., GPT-4o for portfolio health scores, news sentiment, trade grading, risk assessment, and opportunity scanning).
 - **DexScreener API**: Integrated for identifying viral tokens and meme coins.
 - **LunarCrush**: Provides social sentiment data for enhanced alpha detection.

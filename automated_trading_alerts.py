@@ -22,6 +22,7 @@ import discord
 # Import crypto news module
 try:
     from crypto_news_api import CryptoNewsAPI
+    from enhanced_crypto_news_aggregator import EnhancedCryptoNewsAggregator, format_aggregated_news_for_discord
     crypto_news_available = True
     print("✅ Crypto news API module loaded successfully")
 except ImportError as e:

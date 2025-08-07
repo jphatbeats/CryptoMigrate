@@ -2862,6 +2862,61 @@ def get_crypto_news_with_images():
         logger.error(f"Crypto news with images API error: {e}")
         return jsonify({"error": str(e)}), 500
 
+@app.route('/api/enhanced-crypto-news', methods=['GET'])
+def get_enhanced_crypto_news():
+    """Get crypto news from multiple sources with enhanced coverage"""
+    try:
+        # Get parameters
+        tickers_param = request.args.get('tickers', '')
+        items = int(request.args.get('items', 10))
+        include_images = request.args.get('include_images', 'true').lower() == 'true'
+        
+        # Initialize enhanced news aggregator
+        try:
+            from enhanced_crypto_news_aggregator import EnhancedCryptoNewsAggregator
+            enhanced_aggregator = EnhancedCryptoNewsAggregator()
+        except ImportError as e:
+            logger.error(f"Enhanced aggregator not available: {e}")
+            # Fallback to regular crypto news
+            from crypto_news_api import CryptoNewsAPI
+            crypto_news_api = CryptoNewsAPI()
+            if tickers_param:
+                tickers = [ticker.strip().upper() for ticker in tickers_param.split(',') if ticker.strip()]
+                result = crypto_news_api.get_portfolio_news(tickers, limit=items)
+            else:
+                result = crypto_news_api.get_breaking_news(limit=items)
+            return jsonify(result)
+        
+        # Get enhanced news
+        if tickers_param:
+            tickers = [ticker.strip().upper() for ticker in tickers_param.split(',') if ticker.strip()]
+            result = enhanced_aggregator.get_portfolio_news_enhanced(tickers, limit=items)
+        else:
+            result = enhanced_aggregator.get_breaking_news_enhanced(limit=items)
+        
+        # Add emoji indicators for different sources
+        if result.get('success') and result.get('data'):
+            for article in result['data']:
+                provider = article.get('provider', 'Unknown')
+                if provider == 'CryptoNews':
+                    article['provider_emoji'] = '🔥'
+                elif provider == 'NewsAPI.ai':
+                    article['provider_emoji'] = '🌐'
+                else:
+                    article['provider_emoji'] = '📡'
+        
+        return jsonify(result)
+            
+    except Exception as e:
+        logger.error(f"Enhanced crypto news error: {e}")
+        return jsonify({
+            'error': 'An unexpected error occurred',
+            'details': str(e),
+            'success': False,
+            'data': [],
+            'timestamp': datetime.now().isoformat()
+        }), 500
+
 @app.errorhandler(Exception)
 def handle_unexpected_error(error):
     """Handle unexpected errors"""
