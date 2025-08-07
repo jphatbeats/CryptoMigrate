@@ -103,26 +103,39 @@ LunarCrush provides social sentiment data, Galaxy scores, creator tracking, and 
 3. Use exact parameter formats from list endpoints
 4. Try alternative topic names if needed: "bitcoin" vs "$btc" vs "BTC"
 
-### High-Probability Working Calls (Use These for Testing)
+### ChatGPT Approval Status by Endpoint
+
+#### ✅ NO APPROVAL NEEDED (Use These First)
 ```
-getTopicsList() → Always works, no parameters needed
-getTopic(topic="bitcoin") → Very reliable for popular assets
-getCategoriesList() → Always works, no parameters needed  
-getCreatorsList() → Shows trending influencers, no parameters needed
-getTopicTimeSeries(topic="bitcoin", bucket="day") → Historical data
+getTopic(topic="bitcoin") → Immediate execution
+getCategoriesList() → Immediate execution  
+getCreatorsList() → Immediate execution
+getTopicTimeSeries(topic="bitcoin") → Immediate execution
 ```
 
-### ChatGPT-Specific Call Examples
-**Always Working**: `getTopicsList()` - Start here to see what's trending
-**Most Reliable**: `getTopic(topic="bitcoin")` - Use popular topics first
-**Safe**: `getCategoriesList()` then use exact returned category names
-**For History**: `getTopicTimeSeries(topic="ethereum", bucket="hour")` 
+#### ⚠️ REQUIRES USER APPROVAL
+```
+getTrendingTopics() → ChatGPT asks permission first
+getTopicsList() → May require approval
+```
 
-### CRITICAL: Do NOT Call These (Non-Existent Endpoints)
-❌ `getTrendingTopics()` - Does not exist
-❌ `searchPosts()` - Not in v4 API  
-❌ `getCoinsList()` - Different endpoint structure
-❌ Any endpoint not listed above
+### Recommended ChatGPT Flow
+1. **Start with**: `getTopic(topic="bitcoin")` - Shows current Bitcoin social data
+2. **Get categories**: `getCategoriesList()` - Lists all available sectors  
+3. **Check creators**: `getCreatorsList()` - Shows trending influencers
+4. **For trending topics**: Ask user "Should I check trending topics?" before calling getTrendingTopics()
+5. **Historical data**: `getTopicTimeSeries(topic="ethereum", bucket="day")` works immediately 
+
+### IMPORTANT: ChatGPT Approval Requirements
+⚠️ **`getTrendingTopics()` requires user approval** - ChatGPT will ask permission before calling
+✅ **Alternative**: Use `getTopicsList()` which works without approval
+✅ **Safe endpoints**: `getTopic()`, `getCategoriesList()`, `getCreatorsList()` 
+
+### Approval Workaround Strategy
+1. **Start with safe endpoints** that don't require approval
+2. **Use getTrendingTopics() only when user explicitly requests trending data**  
+3. **Always explain** when you need user approval for specific calls
+4. **Fallback to manual alternatives** when approval isn't granted
 
 ## Confluence Integration Strategy
 

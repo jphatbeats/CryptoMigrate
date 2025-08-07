@@ -98,6 +98,7 @@ Preferred communication style: Simple, everyday language.
 ## ChatGPT Integration Architecture
 - **Dual Schema Setup**: Utilizes separate schemas for direct API access (Coinalyze, NewsAPI.ai) and Railway platform endpoints.
 - **Railway Server Endpoints**: Discord bots access data through Railway server endpoints.
+- **Approval Requirements**: Some LunarCrush endpoints require user approval in ChatGPT Custom Actions for security.
 
 ## Communication and Deployment
 - **Discord Webhooks**: Multi-channel alert delivery.
