@@ -2014,20 +2014,69 @@ def get_bollinger_bands(symbol):
         logger.error(f"Error getting Bollinger Bands for {symbol}: {str(e)}")
         return jsonify({'error': f'Failed to get Bollinger Bands for {symbol}'}), 500
 
-@app.route('/api/indicators/comprehensive/<symbol>', methods=['GET'])
+@app.route('/api/indicators/comprehensive/<symbol>', methods=['GET', 'POST'])
 def get_comprehensive_indicators(symbol):
-    """Get comprehensive technical analysis for a symbol"""
+    """Get comprehensive technical analysis for a symbol (supports both GET and POST)"""
     try:
         if not taapi_available:
             return jsonify({'error': 'Technical indicators not available'}), 503
         
-        interval = request.args.get('interval', '1h')
+        if request.method == 'POST':
+            # Handle POST request with JSON body for advanced options
+            data = request.get_json() or {}
+            interval = data.get('interval', '1h')
+            custom_indicators = data.get('indicators', None)
+            
+            if custom_indicators:
+                # Use custom indicators list if provided
+                result = taapi_indicators.get_custom_bulk_analysis(symbol, interval, custom_indicators)
+            else:
+                result = taapi_indicators.get_comprehensive_analysis(symbol, interval)
+        else:
+            # Handle GET request with query parameters
+            interval = request.args.get('interval', '1h')
+            result = taapi_indicators.get_comprehensive_analysis(symbol, interval)
         
-        result = taapi_indicators.get_comprehensive_analysis(symbol, interval)
         return jsonify(result)
     except Exception as e:
         logger.error(f"Error getting comprehensive analysis for {symbol}: {str(e)}")
         return jsonify({'error': f'Failed to get comprehensive analysis for {symbol}'}), 500
+
+@app.route('/api/indicators/bulk', methods=['POST'])
+def get_bulk_indicators():
+    """Get multiple indicators in a single bulk request"""
+    try:
+        if not taapi_available:
+            return jsonify({'error': 'Technical indicators not available'}), 503
+        
+        data = request.get_json()
+        if not data:
+            return jsonify({'error': 'JSON body required for bulk requests'}), 400
+        
+        # Validate required fields
+        if 'symbol' not in data or 'indicators' not in data:
+            return jsonify({'error': 'symbol and indicators are required fields'}), 400
+        
+        symbol = data['symbol']
+        indicators = data['indicators']
+        interval = data.get('interval', '1h')
+        exchange = data.get('exchange', 'binance')
+        
+        # Build bulk payload
+        bulk_payload = {
+            'construct': {
+                'exchange': exchange,
+                'symbol': symbol,
+                'interval': interval,
+                'indicators': indicators
+            }
+        }
+        
+        result = taapi_indicators._make_bulk_request(bulk_payload)
+        return jsonify(result)
+    except Exception as e:
+        logger.error(f"Error in bulk indicators request: {str(e)}")
+        return jsonify({'error': 'Failed to process bulk indicators request'}), 500
 
 @app.route('/api/indicators/multi-timeframe/<symbol>', methods=['GET'])
 def get_multi_timeframe_analysis(symbol):

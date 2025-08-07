@@ -1,6 +1,6 @@
 # Overview
 
-This project is a comprehensive cryptocurrency trading automation system designed to provide real-time market intelligence, automated portfolio monitoring, and multi-channel Discord alerting. It integrates live exchange data from various platforms (BingX, Kraken, Blofin) via CCXT, combines it with crypto news intelligence, and delivers actionable trading alerts through Discord webhooks. The system aims to provide both traditional technical analysis (RSI, PnL monitoring) and enhanced market intelligence through AI-powered insights, with a vision to offer a robust, intelligent, and automated solution for cryptocurrency traders.
+This project is a comprehensive cryptocurrency trading automation system designed to provide real-time market intelligence, automated portfolio monitoring, and multi-channel Discord alerting. It integrates live exchange data from various platforms (BingX, Kraken, Blofin) via CCXT, combines it with crypto news intelligence, and delivers actionable trading alerts through Discord webhooks. The system now includes professional-grade technical analysis through taapi.io API integration, supporting both individual indicator requests and efficient bulk queries. The platform provides traditional technical analysis (RSI, MACD, Bollinger Bands) and enhanced market intelligence through AI-powered insights, offering a robust, intelligent, and automated solution for cryptocurrency traders.
 
 # User Preferences
 
@@ -83,7 +83,7 @@ Preferred communication style: Simple, everyday language.
 - **LunarCrush**: Provides social sentiment data for enhanced alpha detection.
 
 ## Technical Analysis APIs
-- **Taapi.io API**: Comprehensive technical indicators including RSI, MACD, Bollinger Bands, Stochastic, Williams %R, EMA, SMA, ADX, and CCI across multiple timeframes (1m to 1d). Integrated into both the automated trading alerts system and main server API endpoints for real-time technical analysis.
+- **Taapi.io API**: Comprehensive technical indicators including RSI, MACD, Bollinger Bands, Stochastic, Williams %R, EMA, SMA, ADX, and CCI across multiple timeframes (1m to 1d). Integrated with both individual GET requests and efficient bulk POST requests (up to 20 indicators per call). Features automatic rate limiting, error handling, and fallback mechanisms. Integrated into both the automated trading alerts system and main server API endpoints for real-time technical analysis.
 
 ## Communication and Deployment
 - **Discord Webhooks**: Multi-channel alert delivery system.

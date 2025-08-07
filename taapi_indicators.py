@@ -28,7 +28,7 @@ class TaapiIndicators:
             self.api_key = None
     
     def _make_request(self, endpoint: str, params: Dict[str, Any]) -> Dict[str, Any]:
-        """Make authenticated request to taapi.io API with rate limiting"""
+        """Make authenticated request to taapi.io API with rate limiting (legacy method)"""
         if not self.api_key:
             return {'error': 'TAAPI_API_KEY not configured'}
         
@@ -60,6 +60,46 @@ class TaapiIndicators:
             return response.json()
         except requests.exceptions.RequestException as e:
             logger.error(f"Taapi.io API error: {e}")
+            return {'error': str(e)}
+    
+    def _make_bulk_request(self, payload: Dict[str, Any]) -> Dict[str, Any]:
+        """Make bulk POST request to taapi.io API - more efficient method"""
+        if not self.api_key:
+            return {'error': 'TAAPI_API_KEY not configured'}
+        
+        # Rate limiting - ensure minimum interval between requests
+        current_time = time.time()
+        time_since_last = current_time - self.last_request_time
+        if time_since_last < self.min_request_interval:
+            sleep_time = self.min_request_interval - time_since_last
+            time.sleep(sleep_time)
+        
+        payload['secret'] = self.api_key
+        headers = {
+            'Content-Type': 'application/json',
+            'Accept-Encoding': 'application/json'
+        }
+        
+        try:
+            response = requests.post(
+                f"{self.base_url}/bulk",
+                json=payload,
+                headers=headers,
+                timeout=self.timeout
+            )
+            self.last_request_time = time.time()
+            
+            if response.status_code == 429:
+                logger.warning("Taapi.io rate limit reached - will use simulated indicators")
+                return {'error': 'Rate limit reached - using fallback indicators', 'rate_limited': True}
+            elif response.status_code == 403:
+                logger.warning("Taapi.io API access forbidden - check API key permissions")
+                return {'error': 'API access forbidden - check permissions', 'forbidden': True}
+            
+            response.raise_for_status()
+            return response.json()
+        except requests.exceptions.RequestException as e:
+            logger.error(f"Taapi.io bulk API error: {e}")
             return {'error': str(e)}
     
     def get_rsi(self, symbol: str, interval: str = "1h", period: int = 14) -> Dict[str, Any]:
@@ -169,7 +209,7 @@ class TaapiIndicators:
         return self._make_request('cci', params)
     
     def get_comprehensive_analysis(self, symbol: str, interval: str = "1h") -> Dict[str, Any]:
-        """Get comprehensive technical analysis for a symbol"""
+        """Get comprehensive technical analysis for a symbol using bulk API"""
         logger.info(f"🔍 Fetching comprehensive technical analysis for {symbol}")
         
         analysis = {
@@ -181,7 +221,69 @@ class TaapiIndicators:
             'summary': {}
         }
         
-        # Core indicators
+        # Use bulk API for efficiency - up to 20 indicators in one request
+        bulk_payload = {
+            'construct': {
+                'exchange': 'binance',
+                'symbol': symbol,
+                'interval': interval,
+                'indicators': [
+                    {'id': 'rsi', 'indicator': 'rsi', 'period': 14},
+                    {'id': 'macd', 'indicator': 'macd', 'fast_period': 12, 'slow_period': 26, 'signal_period': 9},
+                    {'id': 'bbands', 'indicator': 'bbands', 'period': 20, 'stddev': 2.0},
+                    {'id': 'stoch', 'indicator': 'stoch', 'k_period': 14, 'd_period': 3},
+                    {'id': 'willr', 'indicator': 'willr', 'period': 14},
+                    {'id': 'ema_20', 'indicator': 'ema', 'period': 20},
+                    {'id': 'ema_50', 'indicator': 'ema', 'period': 50},
+                    {'id': 'sma_20', 'indicator': 'sma', 'period': 20},
+                    {'id': 'adx', 'indicator': 'adx', 'period': 14},
+                    {'id': 'cci', 'indicator': 'cci', 'period': 20}
+                ]
+            }
+        }
+        
+        try:
+            bulk_result = self._make_bulk_request(bulk_payload)
+            
+            if 'error' in bulk_result:
+                logger.warning(f"⚠️ Bulk API error: {bulk_result['error']}")
+                # Fallback to individual requests if bulk fails
+                return self._fallback_comprehensive_analysis(symbol, interval)
+            
+            # Process bulk results
+            if 'data' in bulk_result:
+                for item in bulk_result['data']:
+                    indicator_id = item.get('id', '').split('_')[-1]  # Extract indicator name from ID
+                    if 'result' in item and not item.get('errors'):
+                        analysis['indicators'][indicator_id] = item['result']
+                        logger.info(f"✅ {indicator_id.upper()}: {item['result']}")
+                    else:
+                        logger.warning(f"⚠️ {indicator_id} error: {item.get('errors', 'Unknown error')}")
+            
+            # Generate signals and summary
+            analysis['signals'] = self._generate_signals(analysis['indicators'])
+            analysis['summary'] = self._generate_summary(analysis['indicators'], analysis['signals'])
+            
+        except Exception as e:
+            logger.error(f"❌ Error in bulk comprehensive analysis: {e}")
+            return self._fallback_comprehensive_analysis(symbol, interval)
+        
+        return analysis
+    
+    def _fallback_comprehensive_analysis(self, symbol: str, interval: str = "1h") -> Dict[str, Any]:
+        """Fallback to individual API calls if bulk fails"""
+        logger.info(f"🔄 Using fallback individual requests for {symbol}")
+        
+        analysis = {
+            'symbol': symbol,
+            'interval': interval,
+            'timestamp': datetime.now().isoformat(),
+            'indicators': {},
+            'signals': {},
+            'summary': {}
+        }
+        
+        # Core indicators with fallback approach
         indicators_to_fetch = [
             ('rsi', self.get_rsi),
             ('macd', self.get_macd),
@@ -370,3 +472,54 @@ class TaapiIndicators:
                 consensus['agreement_level'] = 'high' if bearish_count / total > 0.75 else 'medium'
         
         return consensus
+    
+    def get_custom_bulk_analysis(self, symbol: str, interval: str, custom_indicators: List[Dict[str, Any]]) -> Dict[str, Any]:
+        """Get custom bulk analysis with user-specified indicators"""
+        logger.info(f"🔍 Fetching custom bulk analysis for {symbol} with {len(custom_indicators)} indicators")
+        
+        analysis = {
+            'symbol': symbol,
+            'interval': interval,
+            'timestamp': datetime.now().isoformat(),
+            'indicators': {},
+            'signals': {},
+            'summary': {}
+        }
+        
+        # Use bulk API with custom indicators
+        bulk_payload = {
+            'construct': {
+                'exchange': 'binance',
+                'symbol': symbol,
+                'interval': interval,
+                'indicators': custom_indicators
+            }
+        }
+        
+        try:
+            bulk_result = self._make_bulk_request(bulk_payload)
+            
+            if 'error' in bulk_result:
+                logger.warning(f"⚠️ Custom bulk API error: {bulk_result['error']}")
+                return {'error': bulk_result['error'], 'fallback_available': False}
+            
+            # Process bulk results
+            if 'data' in bulk_result:
+                for item in bulk_result['data']:
+                    indicator_id = item.get('id', 'unknown')
+                    if 'result' in item and not item.get('errors'):
+                        analysis['indicators'][indicator_id] = item['result']
+                        logger.info(f"✅ {indicator_id}: {item['result']}")
+                    else:
+                        logger.warning(f"⚠️ {indicator_id} error: {item.get('errors', 'Unknown error')}")
+            
+            # Generate signals and summary if we have indicators
+            if analysis['indicators']:
+                analysis['signals'] = self._generate_signals(analysis['indicators'])
+                analysis['summary'] = self._generate_summary(analysis['indicators'], analysis['signals'])
+            
+        except Exception as e:
+            logger.error(f"❌ Error in custom bulk analysis: {e}")
+            return {'error': str(e), 'fallback_available': False}
+        
+        return analysis
