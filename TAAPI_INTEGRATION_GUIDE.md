@@ -5,7 +5,9 @@ Comprehensive technical analysis integration using taapi.io API for real-time tr
 
 ## Features Added
 
-### Technical Indicators Available
+### Technical Indicators Available (208+ Total)
+
+**Core Indicators Currently Integrated:**
 - **RSI (Relative Strength Index)**: Momentum oscillator (14-period default)
 - **MACD (Moving Average Convergence Divergence)**: Trend-following momentum indicator
 - **Bollinger Bands**: Volatility bands with standard deviation (20-period, 2.0 stddev default)
@@ -15,6 +17,15 @@ Comprehensive technical analysis integration using taapi.io API for real-time tr
 - **SMA (Simple Moving Average)**: Arithmetic moving average (20-period default)
 - **ADX (Average Directional Index)**: Trend strength indicator
 - **CCI (Commodity Channel Index)**: Momentum oscillator
+
+**Full Access via Bulk API:**
+The bulk POST endpoint supports ALL 208+ indicators available from taapi.io, including:
+- Advanced trend indicators (Supertrend, Ichimoku, Parabolic SAR)
+- Volume indicators (OBV, A/D Line, Chaikin Money Flow)
+- Volatility indicators (ATR, Keltner Channels, Donchian Channels)
+- Specialized oscillators (Awesome Oscillator, Ultimate Oscillator)
+- Moving average variants (TEMA, DEMA, KAMA, MAMA)
+- And 190+ more professional indicators
 
 ### Timeframes Supported
 - 1m, 5m, 15m, 30m, 1h, 2h, 4h, 6h, 8h, 12h, 1d

@@ -62,8 +62,7 @@
                         },
                         "indicator": {
                           "type": "string",
-                          "description": "The indicator name",
-                          "enum": ["rsi", "macd", "bbands", "stoch", "willr", "ema", "sma", "adx", "cci"],
+                          "description": "Any of the 208+ indicators supported by taapi.io (e.g., rsi, macd, bbands, stoch, willr, ema, sma, adx, cci, supertrend, ichimoku, parabolic_sar, obv, atr, keltner, donchian, awesome_oscillator, etc.)",
                           "example": "rsi"
                         },
                         "period": {

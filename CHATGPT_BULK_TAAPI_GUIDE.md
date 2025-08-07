@@ -19,7 +19,9 @@ This schema enables ChatGPT to efficiently interact with the taapi.io bulk API i
 - Better rate limit management
 - More efficient than individual GET requests
 
-### Supported Indicators
+### Supported Indicators (208+ Available)
+
+**Popular Indicators:**
 - **RSI**: Relative Strength Index
 - **MACD**: Moving Average Convergence Divergence  
 - **Bollinger Bands**: Volatility bands
@@ -29,6 +31,27 @@ This schema enables ChatGPT to efficiently interact with the taapi.io bulk API i
 - **SMA**: Simple Moving Average
 - **ADX**: Average Directional Index
 - **CCI**: Commodity Channel Index
+
+**Advanced Indicators:**
+- **Supertrend**: Trend following indicator
+- **Ichimoku**: Complete trend analysis system
+- **Parabolic SAR**: Stop and reverse trend indicator
+- **Awesome Oscillator**: Bill Williams momentum indicator
+- **Keltner Channels**: Volatility-based bands
+- **Donchian Channels**: Price channel breakouts
+
+**Volume Indicators:**
+- **OBV**: On Balance Volume
+- **AD Line**: Accumulation/Distribution Line
+- **CMF**: Chaikin Money Flow
+- **Volume Rate of Change**: Volume momentum
+
+**Volatility Indicators:**
+- **ATR**: Average True Range
+- **Standard Deviation**: Price volatility measure
+- **True Range**: Intraday volatility
+
+*Note: Any of the 208+ indicators from taapi.io can be requested by name*
 
 ### ChatGPT Usage Examples
 
@@ -61,16 +84,33 @@ This schema enables ChatGPT to efficiently interact with the taapi.io bulk API i
 }
 ```
 
-#### 3. Trend Analysis Request
+#### 3. Advanced Indicators Request
 ```json
 {
   "symbol": "XRPUSDT",
   "interval": "1d", 
   "indicators": [
-    {"id": "ema_12", "indicator": "ema", "period": 12},
-    {"id": "ema_26", "indicator": "ema", "period": 26},
-    {"id": "sma_20", "indicator": "sma", "period": 20},
-    {"id": "adx_14", "indicator": "adx", "period": 14}
+    {"id": "supertrend", "indicator": "supertrend", "period": 10, "multiplier": 3},
+    {"id": "ichimoku", "indicator": "ichimoku"},
+    {"id": "parabolic_sar", "indicator": "sar"},
+    {"id": "awesome_osc", "indicator": "ao"},
+    {"id": "obv", "indicator": "obv"},
+    {"id": "atr", "indicator": "atr", "period": 14}
+  ]
+}
+```
+
+#### 4. Any of 208+ Indicators
+```json
+{
+  "symbol": "BTCUSDT",
+  "interval": "4h",
+  "indicators": [
+    {"id": "custom1", "indicator": "keltner"},
+    {"id": "custom2", "indicator": "donchian"},
+    {"id": "custom3", "indicator": "mama"},
+    {"id": "custom4", "indicator": "tema"},
+    {"id": "custom5", "indicator": "dema"}
   ]
 }
 ```
@@ -129,10 +169,20 @@ This schema enables ChatGPT to efficiently interact with the taapi.io bulk API i
 ## Implementation Notes
 
 ### For ChatGPT Users
-1. Use the bulk endpoint for multiple indicators
-2. Specify custom IDs to track results
-3. Choose appropriate timeframes for analysis type
-4. Monitor the status endpoint for integration health
+1. Use the bulk endpoint for multiple indicators (up to 20 per request)
+2. Request ANY of the 208+ indicators by name (no enum restrictions)
+3. Specify custom IDs to track results  
+4. Choose appropriate timeframes for analysis type
+5. Combine different indicator categories for comprehensive analysis
+6. Monitor the status endpoint for integration health
+
+### Available Indicator Categories
+- **Trend**: ema, sma, tema, dema, mama, kama, etc.
+- **Momentum**: rsi, stoch, willr, roc, mfi, etc.
+- **Volatility**: bbands, atr, keltner, donchian, etc.
+- **Volume**: obv, ad, cmf, ease_of_movement, etc.
+- **Advanced**: ichimoku, supertrend, parabolic_sar, etc.
+- **Oscillators**: macd, ao, cci, ultimate_oscillator, etc.
 
 ### Best Practices
 - Group related indicators in single requests
