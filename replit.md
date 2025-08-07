@@ -69,6 +69,7 @@ Preferred communication style: Simple, everyday language.
 - Interactive reaction system: 👀 watching, ✅ entered, ❌ passed, 📈 profitable, 📉 loss
 - Professional formatting styles: alpha opportunities, portfolio intelligence, market alerts, degen plays
 - Real-time engagement tracking and performance analytics via SQLite database
+- **Discord GPT-5 Command System**: Complete slash command integration allowing direct interaction with GPT-5 through Discord. Commands include `/portfolio`, `/analyze [symbol]`, `/scan [type]`, `/fullscan`, `/news`, `/token [id]`, `/ask [question]`, `/opinion [topic]`, and `/status`. Full Railway system access through Discord interface with real-time AI analysis and multi-API integration.
 
 ## Error Handling and Reliability
 
