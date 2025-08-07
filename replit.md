@@ -81,7 +81,7 @@ Preferred communication style: Simple, everyday language.
 - **LunarCrush**: Individual plan subscription - social sentiment data, Galaxy scores, creator tracking, viral posts analysis.
 
 ## Technical Analysis APIs
-- **Taapi.io API**: Basic plan subscription - 208+ technical indicators with bulk endpoint support (max 20 per request). Binance access limited on Basic plan, uses alternative exchanges (Bybit, Kraken, etc.).
+- **Taapi.io API**: Basic plan subscription - full access to all 208+ technical indicators with bulk endpoint support (max 20 per request). Uses alternative exchanges (Bybit, Kraken, etc.) for optimal performance.
 
 ## Token Security Analysis APIs
 - **RugCheck.xyz API**: Comprehensive token security analysis and rug pull detection.
