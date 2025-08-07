@@ -1,18 +1,18 @@
 {
   "openapi": "3.1.0",
   "info": {
-    "title": "CoinMarketCap Pro API - Railway Integration",
-    "description": "Complete CoinMarketCap Pro API integration via Railway server with real-time market data for 9,400+ cryptocurrencies",
+    "title": "CoinMarketCap Pro API",
+    "description": "Direct access to CoinMarketCap Pro API with real-time market data for 9,400+ cryptocurrencies",
     "version": "1.0.0"
   },
   "servers": [
     {
-      "url": "https://titan-trading-2-production.up.railway.app",
-      "description": "Railway Production Server"
+      "url": "https://pro-api.coinmarketcap.com/v1",
+      "description": "CoinMarketCap Pro API"
     }
   ],
   "paths": {
-    "/api/coinmarketcap/global-metrics": {
+    "/global-metrics/quotes/latest": {
       "get": {
         "operationId": "getCoinMarketCapGlobalMetrics",
         "summary": "Get global cryptocurrency market metrics including total market cap, Bitcoin dominance, and DeFi data",
@@ -55,7 +55,7 @@
         }
       }
     },
-    "/api/coinmarketcap/listings/latest": {
+    "/cryptocurrency/listings/latest": {
       "get": {
         "operationId": "getCoinMarketCapListings",
         "summary": "Get latest cryptocurrency listings ranked by market cap with advanced filtering options",
@@ -162,7 +162,7 @@
         }
       }
     },
-    "/api/coinmarketcap/quotes/latest": {
+    "/cryptocurrency/quotes/latest": {
       "get": {
         "operationId": "getCoinMarketCapQuotes",
         "summary": "Get latest price quotes and market data for specific cryptocurrencies",
@@ -231,7 +231,7 @@
         }
       }
     },
-    "/api/coinmarketcap/metadata": {
+    "/cryptocurrency/info": {
       "get": {
         "operationId": "getCoinMarketCapMetadata",
         "summary": "Get comprehensive metadata for cryptocurrencies including logos, descriptions, and official links",
@@ -276,7 +276,7 @@
         }
       }
     },
-    "/api/coinmarketcap/trending/latest": {
+    "/cryptocurrency/trending/latest": {
       "get": {
         "operationId": "getCoinMarketCapTrending",
         "summary": "Get trending cryptocurrencies by various metrics and time periods",
@@ -333,7 +333,7 @@
         }
       }
     },
-    "/api/coinmarketcap/gainers-losers": {
+    "/cryptocurrency/trending/gainers-losers": {
       "get": {
         "operationId": "getCoinMarketCapGainersLosers",
         "summary": "Get top performing and worst performing cryptocurrencies by percentage change",
