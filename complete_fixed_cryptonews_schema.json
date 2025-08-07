@@ -162,7 +162,7 @@
       "get": {
         "summary": "Get complete tickers database",
         "operationId": "getTickersDatabase",
-        "description": "View all available tickers/symbols in the database",
+        "description": "View all available tickers/symbols in the database. Limited to once per day for non-trial accounts. Note - This endpoint returns large datasets.",
         "parameters": [
           {
             "name": "token",
@@ -172,12 +172,25 @@
               "type": "string",
               "example": "ayimav7nlptgzetysg9dwhqteampvoirtfx5orqk"
             },
-            "description": "API token"
+            "description": "API authentication token"
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 1000,
+              "default": 100,
+              "example": 100
+            },
+            "description": "Limit number of tickers returned to prevent large responses"
           }
         ],
         "responses": {
           "200": {
-            "description": "Complete database of supported ticker symbols",
+            "description": "Complete database of supported ticker symbols and cryptocurrencies",
             "content": {
               "application/json": {
                 "schema": {
@@ -186,8 +199,19 @@
                     "data": {
                       "type": "array",
                       "items": {
-                        "type": "object"
+                        "type": "object",
+                        "properties": {
+                          "ticker": {
+                            "type": "string"
+                          },
+                          "name": {
+                            "type": "string"
+                          }
+                        }
                       }
+                    },
+                    "total_count": {
+                      "type": "integer"
                     }
                   }
                 }
