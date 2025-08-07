@@ -1,0 +1,355 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Market Prediction Widget Test</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        /* Inline Market Prediction Widget Styles */
+        body {
+            margin: 0;
+            padding: 20px;
+            background: linear-gradient(135deg, #0f0f23 0%, #1a1a2e 100%);
+            min-height: 100vh;
+            font-family: 'Inter', sans-serif;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        .market-trend-widget {
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            border-radius: 20px;
+            padding: 24px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            position: relative;
+            overflow: hidden;
+            min-height: 400px;
+        }
+        
+        .widget-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        
+        .widget-title {
+            color: #ffffff;
+            font-size: 18px;
+            font-weight: 600;
+            margin: 0;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .pulse-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: #00ff88;
+            animation: pulse 2s infinite;
+        }
+        
+        @keyframes pulse {
+            0%, 100% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.5; transform: scale(1.2); }
+        }
+        
+        .symbol-selector {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 12px;
+            padding: 16px;
+            margin-bottom: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .selector-buttons, .timeframe-selector {
+            display: flex;
+            gap: 8px;
+        }
+        
+        .symbol-btn, .timeframe-btn {
+            background: transparent;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            color: #8892b0;
+            padding: 8px 16px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+        
+        .symbol-btn:hover, .timeframe-btn:hover {
+            border-color: #64ffda;
+            color: #64ffda;
+        }
+        
+        .symbol-btn.active, .timeframe-btn.active {
+            background: #64ffda;
+            color: #0f0f23;
+            border-color: #64ffda;
+        }
+        
+        .prediction-container {
+            display: grid;
+            grid-template-columns: 1fr 2fr;
+            gap: 20px;
+            height: 320px;
+        }
+        
+        .prediction-metrics {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+        
+        .metric-card {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 12px;
+            padding: 16px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: all 0.3s ease;
+        }
+        
+        .metric-card:hover {
+            background: rgba(255, 255, 255, 0.08);
+            transform: translateY(-2px);
+        }
+        
+        .metric-label {
+            color: #8892b0;
+            font-size: 12px;
+            font-weight: 500;
+            margin-bottom: 8px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        
+        .metric-value {
+            color: #ffffff;
+            font-size: 24px;
+            font-weight: 700;
+            margin-bottom: 4px;
+        }
+        
+        .metric-trend {
+            font-size: 12px;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+        
+        .trend-up { color: #00ff88; }
+        .trend-down { color: #ff6b6b; }
+        .trend-neutral { color: #ffd93d; }
+        
+        .chart-container {
+            background: rgba(255, 255, 255, 0.02);
+            border-radius: 12px;
+            padding: 16px;
+            position: relative;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #8892b0;
+            font-size: 14px;
+        }
+        
+        .loading {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 3px solid rgba(100, 255, 218, 0.3);
+            border-top: 3px solid #64ffda;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin-right: 8px;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        .api-status {
+            margin-top: 20px;
+            padding: 16px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 12px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .status-header {
+            color: #64ffda;
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+        
+        .status-content {
+            color: #e6f1ff;
+            font-size: 14px;
+            font-family: monospace;
+            white-space: pre-wrap;
+        }
+        
+        .error {
+            color: #ff6b6b;
+        }
+        
+        .success {
+            color: #00ff88;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="market-trend-widget">
+            <div class="widget-header">
+                <h3 class="widget-title">
+                    <span class="pulse-dot"></span>
+                    AI Market Predictions
+                </h3>
+            </div>
+            
+            <div class="symbol-selector">
+                <div class="selector-buttons">
+                    <button class="symbol-btn active" onclick="testSymbol('BTC')">BTC</button>
+                    <button class="symbol-btn" onclick="testSymbol('ETH')">ETH</button>
+                    <button class="symbol-btn" onclick="testSymbol('XRP')">XRP</button>
+                </div>
+                <div class="timeframe-selector">
+                    <button class="timeframe-btn" onclick="testTimeframe('1h')">1h</button>
+                    <button class="timeframe-btn active" onclick="testTimeframe('1d')">1d</button>
+                    <button class="timeframe-btn" onclick="testTimeframe('7d')">7d</button>
+                </div>
+            </div>
+            
+            <div class="prediction-container">
+                <div class="prediction-metrics">
+                    <div class="metric-card">
+                        <div class="metric-label">Price Target</div>
+                        <div class="metric-value" id="price-target">Loading...</div>
+                        <div class="metric-trend" id="price-trend">
+                            <span>Calculating...</span>
+                        </div>
+                    </div>
+                    
+                    <div class="metric-card">
+                        <div class="metric-label">Probability</div>
+                        <div class="metric-value" id="prediction-probability">--%</div>
+                        <div class="metric-trend">
+                            <span>AI Analysis</span>
+                        </div>
+                    </div>
+                    
+                    <div class="metric-card">
+                        <div class="metric-label">Time Target</div>
+                        <div class="metric-value" id="time-target">--</div>
+                        <div class="metric-trend">
+                            <span>Estimation</span>
+                        </div>
+                    </div>
+                    
+                    <div class="metric-card">
+                        <div class="metric-label">Risk Level</div>
+                        <div class="metric-value" id="risk-level">--</div>
+                        <div class="metric-trend">
+                            <span>Assessment</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="chart-container" id="chart-area">
+                    <div class="loading"></div>
+                    Loading market prediction chart...
+                </div>
+            </div>
+            
+            <div class="api-status">
+                <div class="status-header">API Response Status</div>
+                <div class="status-content" id="api-response">Testing API connection...</div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let currentSymbol = 'BTC';
+        let currentTimeframe = '1d';
+        
+        async function testAPI() {
+            const statusEl = document.getElementById('api-response');
+            const chartEl = document.getElementById('chart-area');
+            
+            try {
+                statusEl.innerHTML = `<span class="loading"></span>Testing /api/ai/market-predictions?symbol=${currentSymbol}&timeframe=${currentTimeframe}`;
+                
+                const response = await fetch(`/api/ai/market-predictions?symbol=${currentSymbol}&timeframe=${currentTimeframe}`);
+                const data = await response.json();
+                
+                if (response.ok) {
+                    statusEl.innerHTML = `<span class="success">✓ API Success</span>\n${JSON.stringify(data, null, 2)}`;
+                    updateUI(data);
+                    chartEl.innerHTML = `<span class="success">✓ Chart Ready</span><br>Prediction data loaded successfully`;
+                } else {
+                    statusEl.innerHTML = `<span class="error">✗ API Error (${response.status})</span>\n${JSON.stringify(data, null, 2)}`;
+                    chartEl.innerHTML = `<span class="error">✗ Chart Error</span><br>Failed to load prediction data`;
+                }
+            } catch (error) {
+                statusEl.innerHTML = `<span class="error">✗ Network Error</span>\n${error.message}`;
+                chartEl.innerHTML = `<span class="error">✗ Connection Failed</span><br>Unable to connect to API`;
+            }
+        }
+        
+        function updateUI(data) {
+            if (data.prediction) {
+                document.getElementById('price-target').textContent = 
+                    data.prediction.target_price ? `$${data.prediction.target_price.toLocaleString()}` : '--';
+                document.getElementById('prediction-probability').textContent = 
+                    `${data.prediction.probability || 0}%`;
+                document.getElementById('time-target').textContent = 
+                    data.prediction.time_target || '--';
+                document.getElementById('risk-level').textContent = 
+                    data.prediction.risk_level || '--';
+                
+                const trendEl = document.getElementById('price-trend');
+                const direction = data.prediction.direction || 'neutral';
+                trendEl.className = `metric-trend trend-${direction}`;
+                trendEl.innerHTML = `<span>${direction === 'up' ? '↗' : direction === 'down' ? '↘' : '→'} ${data.prediction.change_percent || 0}%</span>`;
+            }
+        }
+        
+        function testSymbol(symbol) {
+            currentSymbol = symbol;
+            document.querySelectorAll('.symbol-btn').forEach(btn => {
+                btn.classList.toggle('active', btn.textContent === symbol);
+            });
+            testAPI();
+        }
+        
+        function testTimeframe(timeframe) {
+            currentTimeframe = timeframe;
+            document.querySelectorAll('.timeframe-btn').forEach(btn => {
+                btn.classList.toggle('active', btn.textContent === timeframe);
+            });
+            testAPI();
+        }
+        
+        // Auto-refresh every 30 seconds
+        setInterval(testAPI, 30000);
+        
+        // Initial test
+        document.addEventListener('DOMContentLoaded', testAPI);
+    </script>
+</body>
+</html>

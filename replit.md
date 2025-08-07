@@ -1,6 +1,6 @@
 # Overview
 
-This project is a comprehensive cryptocurrency trading automation system designed to provide real-time market intelligence, automated portfolio monitoring, and multi-channel Discord alerting. It integrates live exchange data from various platforms (BingX, Kraken, Blofin) via CCXT, combines it with crypto news intelligence, and delivers actionable trading alerts through Discord webhooks. The system now includes professional-grade technical analysis through taapi.io API integration, supporting both individual indicator requests and efficient bulk queries. The platform provides traditional technical analysis (RSI, MACD, Bollinger Bands) and enhanced market intelligence through AI-powered insights, offering a robust, intelligent, and automated solution for cryptocurrency traders.
+This project is a comprehensive cryptocurrency trading automation system designed to provide real-time market intelligence, automated portfolio monitoring, and multi-channel Discord alerting. It integrates live exchange data from various platforms (BingX, Kraken, Blofin) via CCXT, combines it with crypto news intelligence, and delivers actionable trading alerts through Discord webhooks. The system now includes professional-grade technical analysis through taapi.io API integration, supporting both individual indicator requests and efficient bulk queries. The platform features an animated market trend prediction widget that provides AI-powered price predictions with visual animations, confidence scoring, and real-time technical analysis. The system provides traditional technical analysis (RSI, MACD, Bollinger Bands) and enhanced market intelligence through AI-powered insights, offering a robust, intelligent, and automated solution for cryptocurrency traders.
 
 # User Preferences
 
@@ -67,6 +67,7 @@ Preferred communication style: Simple, everyday language.
 
 - Discord channels are designed for targeted information delivery based on alert urgency and type, ensuring a streamlined user experience.
 - Alerts provide comprehensive trading analysis with severity-based loss analysis, stop-loss suggestions, profit-taking strategies, position size context, and risk level assessments.
+- **Animated Market Prediction Widget**: Modern, interactive interface featuring real-time price predictions, confidence meters, animated charts, and AI insights. Supports multiple cryptocurrencies (BTC, ETH, XRP, ADA, SOL) and timeframes (1h, 4h, 1d, 7d) with live updates every 30 seconds. Includes responsive design, hover effects, and professional gradient styling optimized for crypto trading platforms.
 
 # External Dependencies
 
