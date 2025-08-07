@@ -1736,13 +1736,20 @@ except Exception as e:
 # Import futures market data
 try:
     from coinalyze_api import CoinalyzeAPI
+    from rugcheck_integration import RugCheckAnalyzer, create_rugcheck_analyzer
     coinalyze_api = CoinalyzeAPI()
     coinalyze_available = True
     logger.info("Coinalyze futures market data loaded successfully")
+    
+    # Initialize RugCheck integration
+    rugcheck_api_key = os.getenv('RUGCHECK_API_KEY')
+    rugcheck_analyzer = create_rugcheck_analyzer(rugcheck_api_key)
+    logger.info("RugCheck token security analysis loaded successfully")
 except Exception as e:
     coinalyze_api = None
     coinalyze_available = False
-    logger.warning(f"Coinalyze API not available: {e}")
+    rugcheck_analyzer = None
+    logger.warning(f"Coinalyze and RugCheck APIs not available: {e}")
 
 # ============================================================================
 # COINALYZE FUTURES MARKET DATA ENDPOINTS
@@ -2254,6 +2261,121 @@ def get_indicators_status():
         'default_exchange': 'binance'
     }
     return jsonify(status)
+
+# ============================================================================
+# RUGCHECK TOKEN SECURITY ENDPOINTS
+# ============================================================================
+
+@app.route('/api/rugcheck/analyze/<token_address>', methods=['GET'])
+def analyze_token_security(token_address):
+    """Analyze token security using RugCheck"""
+    try:
+        if not rugcheck_analyzer:
+            return jsonify({"error": "RugCheck not available"}), 503
+            
+        chain = request.args.get('chain', 'solana')
+        
+        result = rugcheck_analyzer.rugcheck_api.check_token(token_address, chain)
+        
+        return jsonify({
+            "token_address": token_address,
+            "chain": chain,
+            "analysis": result,
+            "timestamp": datetime.utcnow().isoformat()
+        })
+        
+    except Exception as e:
+        logger.error(f"Error analyzing token security: {e}")
+        return jsonify({"error": str(e)}), 500
+
+@app.route('/api/rugcheck/portfolio-security', methods=['POST'])
+def analyze_portfolio_security():
+    """Analyze security of multiple tokens in portfolio"""
+    try:
+        if not rugcheck_analyzer:
+            return jsonify({"error": "RugCheck not available"}), 503
+            
+        data = request.json
+        token_addresses = data.get('tokens', [])
+        chain = data.get('chain', 'solana')
+        
+        if not token_addresses:
+            return jsonify({"error": "No token addresses provided"}), 400
+        
+        # Perform portfolio security analysis
+        portfolio_analysis = asyncio.run(
+            rugcheck_analyzer.analyze_portfolio_security(token_addresses)
+        )
+        
+        return jsonify({
+            "portfolio_analysis": portfolio_analysis,
+            "chain": chain,
+            "timestamp": datetime.utcnow().isoformat()
+        })
+        
+    except Exception as e:
+        logger.error(f"Error analyzing portfolio security: {e}")
+        return jsonify({"error": str(e)}), 500
+
+@app.route('/api/rugcheck/trending', methods=['GET'])
+def get_trending_secure_tokens():
+    """Get trending tokens with security analysis"""
+    try:
+        if not rugcheck_analyzer:
+            return jsonify({"error": "RugCheck not available"}), 503
+            
+        chain = request.args.get('chain', 'solana')
+        limit = int(request.args.get('limit', 50))
+        
+        trending_data = rugcheck_analyzer.rugcheck_api.get_trending_tokens(chain, limit)
+        
+        return jsonify({
+            "trending_tokens": trending_data,
+            "chain": chain,
+            "limit": limit,
+            "timestamp": datetime.utcnow().isoformat()
+        })
+        
+    except Exception as e:
+        logger.error(f"Error fetching trending secure tokens: {e}")
+        return jsonify({"error": str(e)}), 500
+
+@app.route('/api/rugcheck/bulk-check', methods=['POST'])
+def bulk_check_tokens():
+    """Check multiple tokens for security issues"""
+    try:
+        if not rugcheck_analyzer:
+            return jsonify({"error": "RugCheck not available"}), 503
+            
+        data = request.json
+        token_addresses = data.get('tokens', [])
+        chain = data.get('chain', 'solana')
+        
+        if not token_addresses:
+            return jsonify({"error": "No token addresses provided"}), 400
+        
+        results = rugcheck_analyzer.rugcheck_api.bulk_check_tokens(token_addresses, chain)
+        
+        # Calculate summary statistics
+        total_tokens = len(results)
+        safe_count = sum(1 for r in results.values() if r.get('risk_level') == 'SAFE')
+        critical_count = sum(1 for r in results.values() if r.get('risk_level') == 'CRITICAL')
+        
+        return jsonify({
+            "results": results,
+            "summary": {
+                "total_analyzed": total_tokens,
+                "safe_tokens": safe_count,
+                "critical_risk_tokens": critical_count,
+                "safety_percentage": (safe_count / total_tokens * 100) if total_tokens > 0 else 0
+            },
+            "chain": chain,
+            "timestamp": datetime.utcnow().isoformat()
+        })
+        
+    except Exception as e:
+        logger.error(f"Error in bulk token check: {e}")
+        return jsonify({"error": str(e)}), 500
 
 @app.errorhandler(Exception)
 def handle_unexpected_error(error):
