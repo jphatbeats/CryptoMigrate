@@ -25,7 +25,8 @@ Preferred communication style: Simple, everyday language.
 
 **Automated Alert System (`automated_trading_alerts.py`)**
 - Monitors portfolio positions, performs technical analysis (RSI, PnL), and generates risk alerts.
-- **Alpha Opportunities System (`alpha_opportunities_generator.py`)**: Generates real trading opportunities from news analysis, social sentiment, technical indicators, and emerging tokens instead of repetitive simulated data.
+- **Early Alpha Detector (`early_alpha_detector.py`)**: Detects opportunities BEFORE they pump - pre-listing signals, accumulation patterns, whale activity, and development spikes. Focuses on getting in early rather than chasing momentum.
+- **Established Coin News Monitor (`established_coin_news.py`)**: Monitors established coins for topping signals, distribution patterns, and correction opportunities. Helps identify when to take profits or prepare shorts instead of buying tops.
 - **Top Performers Scanner (`top_performers_scanner.py`)**: Comprehensive analysis of top 200 performing coins with news catalyst matching, trading strategy generation (swing/day/portfolio trades), and risk assessment for high-quality alpha opportunities.
 - **Live Trade Scanner (`live_trade_scanner.py`)**: Continuous background scanning system that analyzes 20 tokens every 5 minutes, completing the top 200 tokens per cycle. Only sends Discord callouts when real trades meet strict criteria (score >65, proper risk/reward, catalyst analysis). Includes complete trade plans with entry/exit/stop-loss levels.
 - Integrates with multi-channel Discord webhooks, routing intelligent content to appropriate channels.

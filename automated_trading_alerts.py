@@ -1067,44 +1067,44 @@ async def run_alpha_analysis():
     try:
         print("\n🔍 ALPHA OPPORTUNITIES - Generating real trading opportunities...")
         
-        # Use the new alpha opportunities generator with top performers scanner
+        # Use the new two-part alpha system: Early Alpha + Established Coin News
         if alpha_opportunities:
             try:
-                # Try top performers analysis first (most comprehensive)
+                # Part 1: Early Alpha Detection (opportunities BEFORE they pump)
                 try:
-                    from top_performers_scanner import scan_top_performers_for_opportunities, format_top_performers_for_discord
-                    top_opportunities = await scan_top_performers_for_opportunities()
+                    from early_alpha_detector import detect_early_alpha_opportunities, format_early_alpha_for_discord
+                    early_opportunities = await detect_early_alpha_opportunities()
                     
-                    if top_opportunities:
-                        # Send top performers analysis
-                        performers_message = format_top_performers_for_discord(top_opportunities)
-                        await send_discord_alert(performers_message, 'alpha_scans')
-                        print("✅ Top performers analysis sent to Discord #alpha-scans")
-                        return
-                        
+                    if early_opportunities:
+                        early_message = format_early_alpha_for_discord(early_opportunities)
+                        await send_discord_alert(early_message, 'alpha_scans')
+                        print("✅ Early alpha opportunities sent to Discord #alpha-scans")
+                    
                 except Exception as e:
-                    print(f"⚠️ Top performers scanner error: {e}")
+                    print(f"⚠️ Early alpha detector error: {e}")
                 
-                # Fallback to general alpha opportunities
-                real_opportunities = await generate_alpha_opportunities()
+                # Part 2: Established Coin News (topping signals, short opportunities)
+                try:
+                    from established_coin_news import monitor_established_coin_news, format_established_news_for_discord
+                    established_news = await monitor_established_coin_news()
+                    
+                    if established_news:
+                        news_message = format_established_news_for_discord(established_news)
+                        await send_discord_alert(news_message, 'alpha_scans')
+                        print("✅ Established coin news sent to Discord #alpha-scans")
+                    
+                except Exception as e:
+                    print(f"⚠️ Established news monitor error: {e}")
                 
-                if real_opportunities:
-                    # Format opportunities for Discord
-                    alpha_message = format_alpha_opportunities_for_discord(real_opportunities)
-                    await send_discord_alert(alpha_message, 'alpha_scans')
-                    print("✅ Real alpha opportunities sent to Discord #alpha-scans")
-                else:
-                    # Send a proper "no opportunities" message instead of fake data
+                # If both systems found nothing, send status update
+                if not early_opportunities and not established_news:
                     no_opportunities_message = (
-                        "🔍 **ALPHA OPPORTUNITIES** 🔍\n\n"
-                        "⏳ No high-confidence alpha setups detected at this time.\n"
-                        "🔎 Continuing to monitor:\n"
-                        "• Top 200 performers analysis\n"
-                        "• Breaking news catalysts\n"
-                        "• Social sentiment spikes\n"
-                        "• Technical oversold bounces\n"
-                        "• Emerging token launches\n\n"
-                        "📊 Next scan in 12 hours or when market conditions change."
+                        "🔍 **ALPHA ANALYSIS** 🔍\n\n"
+                        "⏳ No early alpha signals or topping patterns detected.\n"
+                        "🔎 Monitoring:\n"
+                        "• **Early Alpha**: Pre-listing signals, accumulation patterns\n"
+                        "• **Established Coins**: Topping signals, distribution patterns\n\n"
+                        "🎯 **Strategy**: Wait for clear setups - don't chase pumps!"
                     )
                     await send_discord_alert(no_opportunities_message, 'alpha_scans')
                     print("✅ No-opportunities status sent to #alpha-scans")
