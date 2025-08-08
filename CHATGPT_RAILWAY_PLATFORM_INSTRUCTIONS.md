@@ -1,208 +1,257 @@
-# Titan Trading Platform API - ChatGPT Instructions
+# Railway Trading Platform API - ChatGPT Usage Instructions
 
-## Overview
-Your custom Titan Trading Platform deployed on Railway provides centralized trading intelligence, portfolio analysis, alpha detection, and automated market scanning. This is your core intelligence hub integrating all other data sources.
+## Strategic Purpose
+Railway Trading Platform serves as the central hub for live exchange data, combining BingX and Blofin positions, orders, and market data. This is your primary source for real-time portfolio monitoring, position analysis, and live trading intelligence.
 
-## Available Endpoints
+## Core Capabilities
+- **Multi-exchange integration** (BingX & Blofin live data)
+- **Real-time position tracking** with P&L calculations
+- **Live order monitoring** including stop-loss and take-profit levels
+- **Account balance aggregation** across exchanges
+- **Candlestick data** for technical analysis
+- **Comprehensive market data** with timestamps
 
-### 1. /api/portfolio/analysis
-**Purpose**: Comprehensive portfolio health analysis
-**Parameters**:
-- `positions`: Portfolio positions data
-- `timeframe`: Analysis period
-- `risk_level`: Risk assessment depth
+## Base URL & Health Check
+- **Platform**: `https://titan-trading-2-production.up.railway.app`
+- **Health Check**: Always start with `/health` to verify API status
+- **Documentation**: Use `/` endpoint for available endpoints overview
 
-**Strategy**: Use for complete portfolio health checks, risk assessment, PnL analysis, and optimization recommendations. Essential for position management and rebalancing decisions.
+## Core Endpoints Strategy
 
-### 2. /api/alpha/scan-opportunities
-**Purpose**: Real-time alpha opportunity detection
-**Parameters**:
-- `market_cap_range`: Filter by market cap
-- `volume_threshold`: Minimum volume requirements
-- `sentiment_filter`: Positive/negative/neutral
-
-**Strategy**: Your primary alpha hunting tool. Scans top performing coins with volume spikes, news catalysts, and technical breakouts. Use hourly for best opportunities before they become mainstream.
-
-### 3. /api/alerts/generate
-**Purpose**: Generate intelligent trading alerts
-**Parameters**:
-- `alert_type`: "risk", "opportunity", "technical", "news"
-- `severity`: Alert importance level
-- `channels`: Discord channel routing
-
-**Strategy**: Creates actionable trading alerts combining technical analysis, news sentiment, and risk metrics. Auto-routes to appropriate Discord channels for organization.
-
-### 4. /api/market/technical-analysis
-**Purpose**: Advanced technical analysis engine
-**Parameters**:
-- `symbol`: Trading pair
-- `timeframes`: Multiple timeframe analysis
-- `indicators`: Specific technical indicators
-
-**Strategy**: Your advanced TA engine combining 208+ Taapi indicators with custom algorithms. Use for confluence analysis across multiple timeframes and indicator confirmation.
-
-### 5. /api/news/intelligence
-**Purpose**: AI-enhanced news analysis and sentiment
-**Parameters**:
-- `symbols`: Tokens to analyze
-- `sentiment_filter`: Sentiment requirements
-- `source_tier`: News source quality filter
-
-**Strategy**: Processes premium CryptoNews feeds with AI sentiment analysis, catalyst identification, and impact scoring. Essential for news-driven trading strategies.
-
-### 6. /api/social/sentiment-analysis
-**Purpose**: Social media sentiment aggregation
-**Parameters**:
-- `platform`: Social media platform
-- `keywords`: Search terms
-- `timeframe`: Analysis window
-
-**Strategy**: Combines LunarCrush social data with custom sentiment algorithms. Track social momentum shifts before price follows.
-
-### 7. /api/defi/yield-scanner
-**Purpose**: DeFi yield opportunity identification
-**Parameters**:
-- `min_apy`: Minimum yield requirements
-- `risk_tolerance`: Risk level acceptance
-- `protocol_filter`: Specific protocols
-
-**Strategy**: Scans for sustainable DeFi yields across protocols with risk assessment. Focus on established protocols with consistent returns.
-
-### 8. /api/security/token-analysis
-**Purpose**: Token security and rug pull detection
-**Parameters**:
-- `contract_address`: Token contract
-- `analysis_depth`: Security check level
-
-**Strategy**: Comprehensive token security analysis combining multiple sources. Essential before entering any new token positions.
-
-### 9. /api/exchange/aggregated-data
-**Purpose**: Multi-exchange data aggregation
-**Parameters**:
-- `exchanges`: Exchange list
-- `symbol`: Trading pair
-- `data_type`: OHLCV, orderbook, trades
-
-**Strategy**: Provides unified view across BingX, Kraken, and Blofin. Use for price discovery, liquidity analysis, and execution optimization.
-
-### 10. /api/futures/market-intelligence
-**Purpose**: Futures market analysis and positioning
-**Parameters**:
-- `symbol`: Futures contract
-- `metrics`: Funding, OI, liquidations
-- `timeframe`: Analysis period
-
-**Strategy**: Advanced futures analytics including funding rates, open interest, and liquidation data. Critical for derivatives trading and market timing.
-
-## Platform Strategy Framework
-
-### Alpha Discovery Workflow
-1. **Market Scan**: /api/alpha/scan-opportunities every hour
-2. **Technical Confirmation**: /api/market/technical-analysis for entry signals
-3. **News Validation**: /api/news/intelligence for catalyst confirmation
-4. **Social Confirmation**: /api/social/sentiment-analysis for momentum
-5. **Security Check**: /api/security/token-analysis for risk assessment
-6. **Position Entry**: Execute through exchange APIs
-
-### Portfolio Management Process
-1. **Daily Health Check**: /api/portfolio/analysis for performance review
-2. **Risk Assessment**: Monitor position sizes and correlations
-3. **Rebalancing**: Based on opportunity scan results
-4. **Alert Management**: /api/alerts/generate for risk monitoring
-5. **Performance Optimization**: Continuous improvement based on results
-
-### News-Driven Trading Strategy
-1. **Breaking News**: /api/news/intelligence with real-time filters
-2. **Impact Assessment**: AI sentiment scoring and catalyst analysis
-3. **Technical Confluence**: Combine news with TA signals
-4. **Social Validation**: Check social sentiment alignment
-5. **Execution**: Time-sensitive position entry/exit
-
-### Risk Management Integration
-- **Portfolio Risk**: Daily analysis and position sizing
-- **Token Risk**: Security analysis for all new positions
-- **Market Risk**: Technical analysis and futures positioning
-- **News Risk**: Sentiment monitoring and catalyst tracking
-- **Liquidity Risk**: Multi-exchange aggregation for execution
-
-## Advanced Usage Strategies
-
-### 1. Confluence Trading System
-**Setup**: Combine multiple endpoints for high-conviction signals
+### 1. System Health & Status (`/health`)
+```javascript
+healthCheck()
+// Returns: API status, version, available endpoints
 ```
-Alpha Scan → Technical Analysis → News Intelligence → Social Sentiment → Execute
+
+### 2. Multi-Exchange Overview (`/api/live/all-exchanges`)
+```javascript
+getAllExchangeData()
+// Returns: BingX + Blofin positions and orders combined
 ```
-**Rules**: Require 4/5 confirmations for position entry
 
-### 2. Momentum Trading Engine
-**Setup**: Real-time scanning with immediate execution
+### 3. Exchange-Specific Data
+```javascript
+// BingX positions and orders
+getBingXPositions()
+
+// Blofin positions and orders  
+getBlofinPositions()
+
+// Account balances from all exchanges
+getAccountBalances()
 ```
-Volume Spike Detection → Technical Breakout → News Catalyst → Social Buzz → Quick Entry
+
+### 4. Market Data (`/api/live/market-data/{symbol}`)
+```javascript
+getMarketData({
+  symbol: "BTC-USDT" // Get live market data for specific symbol
+})
 ```
-**Rules**: Fast execution within 6 minutes of signal generation
 
-### 3. Contrarian Strategy System
-**Setup**: Identify oversold opportunities with fundamental strength
+### 5. Technical Analysis (`/api/bingx/klines/{symbol}`)
+```javascript
+getBingXKlines({
+  symbol: "BTC-USDT",
+  interval: "1h", // 1m, 5m, 15m, 30m, 1h, 4h, 1d, 1w
+  limit: 100,
+  raw: "false" // Set to "true" for raw JSON compatibility
+})
 ```
-Portfolio Analysis → Technical Oversold → Positive News → Growing Social → Value Entry
+
+## Cross-Schema Integration Strategies
+
+### With CoinMarketCap Schema
+1. **Portfolio Valuation**:
+   - Railway positions + CMC market data = accurate portfolio values
+   - Cross-reference position symbols with CMC trending analysis
+
+2. **Performance Benchmarking**:
+   - Compare portfolio performance vs overall market metrics
+   - Identify outperforming/underperforming positions
+
+### With Coinalyze Schema
+1. **Position Risk Analysis**:
+   - Railway positions + Coinalyze funding rates = funding cost analysis
+   - Monitor derivatives market sentiment for position timing
+
+2. **Leverage Validation**:
+   - Cross-reference position leverage with market open interest
+   - Identify potential liquidation risks
+
+### With NewsAPI.ai & CryptoNews
+1. **Position-Specific News**:
+   - Get Railway positions → Search news for those specific tickers
+   - Alert on negative sentiment for held positions
+
+2. **Market Impact Assessment**:
+   - Breaking news + immediate position monitoring
+   - Real-time P&L impact from news events
+
+### With BingX Public Schema
+1. **Data Validation**:
+   - Cross-reference Railway BingX data with public API
+   - Validate price feeds and market conditions
+
+2. **Technical Analysis Enhancement**:
+   - Railway positions + BingX public candlestick data
+   - Comprehensive technical analysis for held positions
+
+### With DexScreener Schema
+1. **CEX/DEX Arbitrage**:
+   - Compare Railway CEX positions with DEX prices
+   - Identify arbitrage opportunities between venues
+
+## Advanced Usage Patterns
+
+### Portfolio Health Monitoring
+```javascript
+// Get complete portfolio overview
+Promise.all([
+  getAllExchangeData(),
+  getAccountBalances(),
+  // Then for each position symbol:
+  getMarketData({symbol: "BTC-USDT"}),
+  getBingXKlines({symbol: "BTC-USDT", interval: "1h"})
+])
 ```
-**Rules**: Wait for multiple timeframe confirmation
 
-### 4. Risk-Off Protection System
-**Setup**: Automated risk reduction based on multiple factors
+### Risk Assessment Workflow
+```javascript
+// Step 1: Get all positions
+const positions = await getAllExchangeData();
+
+// Step 2: Analyze each position
+for (const position of positions.exchanges.bingx.positions.data.positions) {
+  const marketData = await getMarketData({symbol: position.symbol});
+  const klines = await getBingXKlines({
+    symbol: position.symbol, 
+    interval: "4h",
+    limit: 24
+  });
+  // Combine for risk analysis
+}
 ```
-Market Intelligence → Portfolio Risk → Technical Breakdown → Negative News → Position Reduction
+
+### Real-Time Monitoring Setup
+```javascript
+// Monitor positions every minute
+setInterval(async () => {
+  const healthStatus = await healthCheck();
+  if (healthStatus.status === "healthy") {
+    const positions = await getAllExchangeData();
+    // Process position changes
+  }
+}, 60000);
 ```
-**Rules**: Systematic position scaling based on risk levels
 
-## Integration with External APIs
+## Position Data Analysis
 
-### Data Flow Architecture
-1. **Raw Data**: External APIs (CryptoNews, LunarCrush, Taapi, etc.)
-2. **Processing**: Your Railway platform intelligence engine
-3. **Analysis**: AI-enhanced signal generation and scoring
-4. **Distribution**: Discord alerts and ChatGPT integration
-5. **Execution**: Exchange API integration for trading
+### BingX Position Structure
+```javascript
+const position = {
+  symbol: "XRP-USDT",
+  positionSide: "LONG",
+  leverage: "10x", 
+  unrealizedPnl: "+50.4%",
+  avgPrice: "0.5123",
+  markPrice: "0.5234",
+  positionAmt: "1000"
+};
+```
 
-### Quality Control
-- **Data Validation**: Cross-reference multiple sources
-- **Signal Confirmation**: Require multiple endpoint agreement
-- **Historical Testing**: Backtest strategies before deployment
-- **Performance Monitoring**: Track success rates and optimization
+### Risk Metrics Calculation
+```javascript
+// Calculate position risk
+const positionRisk = {
+  pnlPercentage: parseFloat(position.unrealizedPnl.replace('%', '')),
+  leverageRatio: parseFloat(position.leverage.replace('x', '')),
+  dollarValue: position.positionAmt * position.markPrice,
+  riskLevel: leverageRatio > 5 ? 'High' : leverageRatio > 2 ? 'Medium' : 'Low'
+};
+```
 
-## Performance Optimization
+## Alert Generation Strategy
 
-### Endpoint Usage Priority
-1. **High Frequency**: Alpha scanner (hourly), alerts (real-time)
-2. **Medium Frequency**: Technical analysis (4x daily), news (6x daily)
-3. **Low Frequency**: Portfolio analysis (daily), security checks (as needed)
+### Profit/Loss Alerts
+- **Major gains**: >20% unrealized profit
+- **Risk warnings**: >-10% unrealized loss
+- **Stop-loss triggers**: Position approaching liquidation
+- **Take-profit suggestions**: Based on technical analysis
 
-### Caching Strategy
-- Cache technical analysis results for 15 minutes
-- Cache news intelligence for 30 minutes
-- Real-time data for alpha scanning and alerts
-- Portfolio analysis cached for 1 hour
+### Position Status Changes
+- **New positions opened**
+- **Position size changes**
+- **Leverage modifications**
+- **Order status updates** (filled, cancelled, etc.)
 
-### Error Handling
-- Fallback to cached data during API outages
-- Graceful degradation with reduced functionality
-- Alert system for critical service failures
-- Automatic retry logic for transient failures
+## Error Handling & Status Interpretation
 
-## Success Metrics
+### API Response Validation
+```javascript
+// Always check response structure
+if (response.timestamp && response.exchanges) {
+  // Valid multi-exchange response
+  const bingxStatus = response.exchanges.bingx?.status;
+  const blofinStatus = response.exchanges.blofin?.status;
+  
+  if (bingxStatus === "error" || blofinStatus === "error") {
+    // Handle exchange-specific errors
+  }
+}
+```
 
-### Key Performance Indicators
-- **Alpha Discovery Rate**: Opportunities identified per hour
-- **Signal Accuracy**: Percentage of profitable signals
-- **Response Time**: Opportunity detection to execution time
-- **Portfolio Performance**: Risk-adjusted returns vs benchmark
-- **Alert Quality**: Actionable vs noise ratio
+### Status Message Interpretation
+- **"No positions found"**: Clean account state (not an error)
+- **"Error receiving data"**: API connectivity issue
+- **"Positions loaded successfully"**: Valid data available
+- **"Limited data available"**: Partial exchange connectivity
 
-### Optimization Targets
-- Sub-6 minute opportunity identification
-- >70% signal accuracy rate
-- <5% portfolio drawdown tolerance
-- 90%+ system uptime
-- Continuous improvement based on performance data
+## Real-Time Data Processing
 
-Remember: Your Railway platform is the central nervous system of your trading operation. Use it as the primary coordination hub while leveraging specialized external APIs for enhanced intelligence.
+### Position Updates
+```javascript
+// Track position changes over time
+const previousPositions = JSON.parse(localStorage.getItem('positions') || '{}');
+const currentPositions = await getAllExchangeData();
+
+// Identify changes
+const newPositions = findNewPositions(previous, current);
+const closedPositions = findClosedPositions(previous, current);
+const pnlChanges = calculatePnlChanges(previous, current);
+```
+
+### Market Data Integration
+```javascript
+// Combine position data with market analysis
+const position = await getBingXPositions();
+const marketData = await getMarketData({symbol: position.symbol});
+const technicalData = await getBingXKlines({
+  symbol: position.symbol,
+  interval: "1h", 
+  limit: 24
+});
+
+// Generate comprehensive analysis
+const analysis = combineDataSources(position, marketData, technicalData);
+```
+
+## Discord Integration Strategy
+- **Portfolio health dashboards** with total P&L
+- **Individual position alerts** with risk assessments
+- **Stop-loss/take-profit notifications**
+- **Account balance changes**
+- **New position notifications**
+- **Position size change alerts**
+
+## Best Practices
+1. **Always check health status** before making requests
+2. **Handle exchange-specific errors** gracefully
+3. **Monitor both exchanges** (BingX & Blofin) separately
+4. **Use candlestick data** for technical analysis context
+5. **Cross-validate** with other market data sources
+6. **Set up real-time monitoring** for position changes
+7. **Implement proper error handling** for network issues
+8. **Cache data appropriately** to reduce API calls
+
+This schema is your central command center for live trading intelligence - use it as the foundation for all position monitoring and combine with other schemas for comprehensive market analysis.

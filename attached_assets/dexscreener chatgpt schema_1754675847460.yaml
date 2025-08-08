@@ -1,0 +1,342 @@
+openapi: 3.1.0
+info:
+  title: Dexscreener API
+  version: "1.0.0"
+servers:
+  - url: https://api.dexscreener.com
+paths:
+  /latest/dex/search:
+    get:
+      operationId: searchDexPairs
+      summary: Search DEX pairs by token symbol, name, or address.
+      parameters:
+        - name: q
+          in: query
+          required: true
+          schema:
+            type: string
+          description: Token symbol, name, or address to search for.
+      responses:
+        "200":
+          description: Ok
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  schemaVersion:
+                    type: string
+                  pairs:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Pair'
+  /token-profiles/latest/v1:
+    get:
+      operationId: getLatestTokenProfiles
+      summary: Get the latest token profiles.
+      responses:
+        "200":
+          description: Ok
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  url:
+                    type: string
+                  chainId:
+                    type: string
+                  tokenAddress:
+                    type: string
+                  icon:
+                    type: string
+                  header:
+                    type: string
+                  description:
+                    type: string
+                  links:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Link'
+  /token-boosts/latest/v1:
+    get:
+      operationId: getLatestBoostedTokens
+      summary: Get the latest boosted tokens.
+      responses:
+        "200":
+          description: Ok
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  url:
+                    type: string
+                  chainId:
+                    type: string
+                  tokenAddress:
+                    type: string
+                  amount:
+                    type: number
+                  totalAmount:
+                    type: number
+                  icon:
+                    type: string
+                  header:
+                    type: string
+                  description:
+                    type: string
+                  links:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Link'
+  /token-boosts/top/v1:
+    get:
+      operationId: getTopBoostedTokens
+      summary: Get the tokens with most active boosts.
+      responses:
+        "200":
+          description: Ok
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  url:
+                    type: string
+                  chainId:
+                    type: string
+                  tokenAddress:
+                    type: string
+                  amount:
+                    type: number
+                  totalAmount:
+                    type: number
+                  icon:
+                    type: string
+                  header:
+                    type: string
+                  description:
+                    type: string
+                  links:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Link'
+  /latest/dex/pairs/{chainId}/{pairId}:
+    get:
+      operationId: getPairByChainIdAndPairId
+      summary: Get DEX pair info by chainId and pairId.
+      parameters:
+        - name: chainId
+          in: path
+          required: true
+          schema:
+            type: string
+          description: Blockchain ID (e.g., 'solana', 'ethereum', 'bsc')
+        - name: pairId
+          in: path
+          required: true
+          schema:
+            type: string
+          description: Pair address or ID
+      responses:
+        "200":
+          description: Ok
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  schemaVersion:
+                    type: string
+                  pairs:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Pair'
+  /token-pairs/v1/{chainId}/{tokenAddress}:
+    get:
+      operationId: getTokenPools
+      summary: Get the pools of a given token address.
+      parameters:
+        - name: chainId
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: tokenAddress
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Ok
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Pair'
+  /tokens/v1/{chainId}/{tokenAddresses}:
+    get:
+      operationId: getTokensByAddresses
+      summary: Get one or multiple pairs by token address.
+      parameters:
+        - name: chainId
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: tokenAddresses
+          in: path
+          required: true
+          schema:
+            type: string
+          description: One or multiple, comma-separated token addresses (up to 30 addresses)
+      responses:
+        "200":
+          description: Ok
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Pair'
+  /orders/v1/{chainId}/{tokenAddress}:
+    get:
+      operationId: getTokenOrders
+      summary: Check orders paid for of token.
+      parameters:
+        - name: chainId
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: tokenAddress
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Ok
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    type:
+                      type: string
+                    status:
+                      type: string
+                    paymentTimestamp:
+                      type: integer
+
+components:
+  schemas:
+    Link:
+      type: object
+      properties:
+        type:
+          type: string
+        label:
+          type: string
+        url:
+          type: string
+    Pair:
+      type: object
+      properties:
+        chainId:
+          type: string
+        dexId:
+          type: string
+        url:
+          type: string
+        pairAddress:
+          type: string
+        labels:
+          type: array
+          items:
+            type: string
+        baseToken:
+          type: object
+          properties:
+            address:
+              type: string
+            name:
+              type: string
+            symbol:
+              type: string
+        quoteToken:
+          type: object
+          properties:
+            address:
+              type: string
+            name:
+              type: string
+            symbol:
+              type: string
+        priceNative:
+          type: string
+        priceUsd:
+          type: string
+        txns:
+          type: object
+          additionalProperties:
+            type: object
+            properties:
+              buys:
+                type: integer
+              sells:
+                type: integer
+        volume:
+          type: object
+          additionalProperties:
+            type: number
+        priceChange:
+          type: object
+          additionalProperties:
+            type: number
+        liquidity:
+          type: object
+          properties:
+            usd:
+              type: number
+            base:
+              type: number
+            quote:
+              type: number
+        fdv:
+          type: number
+        marketCap:
+          type: number
+        pairCreatedAt:
+          type: integer
+        info:
+          type: object
+          properties:
+            imageUrl:
+              type: string
+            websites:
+              type: array
+              items:
+                type: object
+                properties:
+                  url:
+                    type: string
+            socials:
+              type: array
+              items:
+                type: object
+                properties:
+                  platform:
+                    type: string
+                  handle:
+                    type: string
+        boosts:
+          type: object
+          properties:
+            active:
+              type: number

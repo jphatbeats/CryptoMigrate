@@ -1,168 +1,291 @@
-# LunarCrush Social Intelligence API - ChatGPT Instructions
+# LunarCrush Social Intelligence API - ChatGPT Usage Instructions
 
-## Overview
-LunarCrush provides social sentiment data, Galaxy scores, creator tracking, and viral posts analysis. Your Individual plan subscription gives you full access to social intelligence features with proper rate limiting.
+## Strategic Purpose
+LunarCrush provides social intelligence and sentiment analysis for cryptocurrencies, tracking social media activity, influencer mentions, and community engagement. Use this for identifying viral trends, social sentiment shifts, and early momentum detection before price movements.
 
-## CORRECT LunarCrush API v4 Endpoints
+## Core Capabilities
+- **Social sentiment analysis** across multiple platforms
+- **Galaxy Score** - Proprietary social health metric (0-100)
+- **Creator and influencer tracking** with reach analytics
+- **Social volume monitoring** across Twitter, Reddit, YouTube, etc.
+- **Viral post detection** with engagement metrics
+- **Social trend analysis** with historical data
 
-### 1. getTrendingTopics (FIXED MAPPING)
-**Purpose**: Get list of all trending social topics 
-**CORRECT API Path**: `/api4/public/topics/list/v1` (NOT /trending/topics)
-**Parameters**: None required
-**Returns**: Trending topics with topic_rank, interactions_24h, contributors
+## API Access & Authentication
+- **Individual plan subscription** with full access
+- **API key included** in schema configuration
+- **Rate limits**: Professional tier with higher quotas
+- **Real-time data** with historical analysis capability
 
-**CRITICAL FIX**: Your ChatGPT Custom Actions schema maps `getTrendingTopics` to wrong endpoint `/trending/topics`. 
-**Should map to**: `/api4/public/topics/list/v1`
+## Core Endpoints Strategy
 
-**Strategy**: Your primary discovery tool. Shows all trending topics ranked by social activity.
-
-### 2. getTopic
-**Purpose**: Get detailed social metrics for specific topic/coin
-**API Path**: `/api4/public/topic/:topic/v1`
-**Parameters**:
-- `topic`: Exact topic name (use lowercase: "bitcoin", "ethereum", "solana")
-
-**Strategy**: Deep dive into specific assets. Gets 24h social data, sentiment breakdown by platform, trend direction.
-
-### 3. getTopicTimeSeries
-**Purpose**: Historical social data for topics
-**API Path**: `/api4/public/topic/:topic/time-series/v2`
-**Parameters**:
-- `topic`: Topic name (lowercase)
-- `bucket`: "hour" or "day" for aggregation
-
-**Strategy**: Track social momentum changes over time. Identify social trend shifts before price follows.
-
-### 4. getTopicPosts
-**Purpose**: Get viral posts about specific topics
-**API Path**: `/api4/public/topic/:topic/posts/v1`
-**Parameters**:
-- `topic`: Topic name (exact match required)
-
-**Strategy**: Find viral content driving social momentum. Monitor post quality and engagement levels.
-
-### 5. getCategoriesList
-**Purpose**: Get all available category names
-**API Path**: `/api4/public/categories/list/v1`
-**Parameters**: None required
-
-**Strategy**: Always call this first to get exact category names. Use returned strings exactly.
-
-### 6. getCategoryTopics
-**Purpose**: Get trending topics within a category
-**API Path**: `/api4/public/category/:category/topics/v1`
-**Parameters**:
-- `category`: Exact category name from getCategoriesList
-
-**Strategy**: Sector rotation analysis. When category shows momentum, find individual topics within it.
-
-### 7. getCreatorsList
-**Purpose**: Get trending crypto creators and influencers
-**API Path**: `/api4/public/creators/list/v1`
-**Parameters**: None required
-
-**Strategy**: Track influential voices. When major creators discuss topics, it often precedes price movement.
-
-### 8. getCreator
-**Purpose**: Get specific creator metrics
-**API Path**: `/api4/public/creator/:creator_id/v1`
-**Parameters**:
-- `creator_id`: Numeric creator ID from getCreatorsList
-
-**Strategy**: Monitor specific influential figures for sentiment shifts and topic mentions.
-
-## Trading Strategy Framework
-
-### Bullish Confluence Signals
-1. **Rising Galaxy Score** + **Positive sentiment trend**
-2. **High social interactions** + **Viral posts about catalysts**
-3. **Category momentum** + **Individual coin lagging** = Catch-up play
-4. **Creator buzz** + **No mainstream coverage yet** = Early opportunity
-
-### Bearish Confluence Signals
-1. **Declining social activity** + **Negative sentiment**
-2. **Viral FUD posts** + **Creator warnings**
-3. **Category declining** + **Coin still pumping** = Top signal
-
-### Discovery Opportunities
-1. **High social spike** + **No major news** = Research deeper
-2. **New category trending** + **Small coins in category**
-3. **Creator mentions** + **Low market attention**
-
-## Critical Usage Rules
-
-### Parameter Format Requirements (CRITICAL FOR CHATGPT)
-- **Topics**: Use lowercase full names ("bitcoin", "ethereum", not "BTC", "ETH")
-- **Categories**: Get exact names from getCategoriesList first
-- **Creators**: Use platform-specific usernames
-- **Timestamps**: Unix format for time ranges
-- **URL Encoding**: Ensure special characters are properly encoded
-- **String Types**: All parameters must be strings, not integers
-- **Required vs Optional**: Always specify required parameters explicitly
-
-### Troubleshooting Empty Results
-1. Always start with getCoinsList to verify working connection
-2. Test with popular topics like "bitcoin", "ethereum" first
-3. Use exact parameter formats from list endpoints
-4. Try alternative topic names if needed: "bitcoin" vs "$btc" vs "BTC"
-
-### ChatGPT Approval Status by Endpoint
-
-#### ✅ NO APPROVAL NEEDED (Use These First)
-```
-getTopic(topic="bitcoin") → Immediate execution
-getCategoriesList() → Immediate execution  
-getCreatorsList() → Immediate execution
-getTopicTimeSeries(topic="bitcoin") → Immediate execution
+### 1. Overall Social Market Data (`/public/coins`)
+```javascript
+getCoinsData({
+  sort: "galaxy_score", // or social_volume, price_score
+  limit: 100,
+  time_series_indicators: "galaxy_score,price_score,social_volume"
+})
 ```
 
-#### ⚠️ REQUIRES USER APPROVAL
+### 2. Specific Coin Social Analysis (`/public/coins/{coin}`)
+```javascript
+getCoinData({
+  coin: "btc", // Use coin ID (btc, eth, sol, etc.)
+  time_series_indicators: "galaxy_score,social_volume,price_score,volatility",
+  interval: "day", // or hour, week, month
+  time_series_limit: 30
+})
 ```
-getTrendingTopics() → ChatGPT asks permission first
-getTopicsList() → May require approval
+
+### 3. Social Posts & Content (`/public/coins/{coin}/posts`)
+```javascript
+getCoinPosts({
+  coin: "btc",
+  limit: 25,
+  sort: "interactions", // or created_time, followers
+  sources: "twitter,reddit,youtube" // Optional platform filtering
+})
 ```
 
-### Recommended ChatGPT Flow
-1. **Start with**: `getTopic(topic="bitcoin")` - Shows current Bitcoin social data
-2. **Get categories**: `getCategoriesList()` - Lists all available sectors  
-3. **Check creators**: `getCreatorsList()` - Shows trending influencers
-4. **For trending topics**: Ask user "Should I check trending topics?" before calling getTrendingTopics()
-5. **Historical data**: `getTopicTimeSeries(topic="ethereum", bucket="day")` works immediately 
+### 4. Creator & Influencer Analysis (`/public/creators`)
+```javascript
+getCreators({
+  sort: "followers", // or interactions, influence_score
+  limit: 50,
+  coin: "btc" // Optional coin-specific creators
+})
+```
 
-### IMPORTANT: ChatGPT Approval Requirements
-⚠️ **`getTrendingTopics()` requires user approval** - ChatGPT will ask permission before calling
-✅ **Alternative**: Use `getTopicsList()` which works without approval
-✅ **Safe endpoints**: `getTopic()`, `getCategoriesList()`, `getCreatorsList()` 
+### 5. Trending Analysis (`/public/coins/trending`)
+```javascript
+getTrendingCoins({
+  limit: 20,
+  interval: "24h", // or 1h, 7d, 30d
+  sort: "galaxy_score_change"
+})
+```
 
-### Approval Workaround Strategy
-1. **Start with safe endpoints** that don't require approval
-2. **Use getTrendingTopics() only when user explicitly requests trending data**  
-3. **Always explain** when you need user approval for specific calls
-4. **Fallback to manual alternatives** when approval isn't granted
+## Cross-Schema Integration Strategies
 
-## Confluence Integration Strategy
+### With CoinMarketCap Schema
+1. **Social vs Market Cap Correlation**:
+   - High social activity on small cap coins = potential major moves
+   - Social sentiment changes on large caps = broader market implications
 
-### With CryptoNews
-1. **News Catalyst Found** → Check getTopic for social confirmation
-2. **Social Spike Detected** → Search CryptoNews for underlying catalyst
-3. **Category News** → Check getCategoryTopics for sector momentum
+2. **Trending Validation**:
+   - CMC trending + LunarCrush social trending = strong momentum confirmation
+   - Distinguish between organic vs artificial trending
 
-### With Technical Analysis
-1. **Technical breakout** + **Social confirmation** = High conviction
-2. **Overbought RSI** + **Negative social sentiment** = Short signal
-3. **Support level** + **Positive social shift** = Long opportunity
+### With NewsAPI.ai & CryptoNews
+1. **Social vs News Correlation**:
+   - LunarCrush social metrics + news sentiment analysis
+   - Identify when social drives news or vice versa
 
-### Alpha Discovery Process
-1. getCoinsList with sort="interactions" → Find high social activity
-2. getTopic for top candidates → Validate sentiment direction
-3. getTopicPosts → Check viral content quality
-4. Cross-reference with news and technical analysis
-5. Monitor creator sentiment for confirmation
+2. **Viral Content Detection**:
+   - High social engagement + news coverage = viral narrative confirmation
+   - Early detection of trending topics before mainstream coverage
 
-## Risk Management
-- **High Confidence**: 4/4 signals (social + news + technical + fundamentals)
-- **Medium Confidence**: 3/4 signals
-- **Low Confidence**: 2/4 signals
-- **Avoid**: Contradictory social signals or manipulated metrics
+### With DexScreener Schema
+1. **Social + DEX Activity Correlation**:
+   - High social activity + increasing DEX liquidity = momentum confirmation
+   - Social buzz translating to actual trading activity
 
-Remember: LunarCrush excels at detecting social momentum shifts before price follows. Use it as your early warning system for both opportunities and risks.
+2. **Viral Token Discovery**:
+   - LunarCrush trending + DexScreener new pool creation
+   - Social momentum validation for DEX investments
+
+### With Railway Trading API
+1. **Position Social Monitoring**:
+   - Track social sentiment for held positions
+   - Early warning system for sentiment shifts
+
+2. **Social-Driven Entry/Exit**:
+   - Social momentum + position analysis for timing decisions
+   - Community sentiment as position sizing factor
+
+### With Coinalyze Schema
+1. **Social vs Derivatives Sentiment**:
+   - Social sentiment vs funding rates divergence analysis
+   - Early contrarian signals when social/futures sentiment conflict
+
+## Advanced Usage Patterns
+
+### Social Momentum Detection
+```javascript
+// Multi-timeframe social analysis
+Promise.all([
+  getCoinData({coin: "btc", interval: "hour", time_series_limit: 24}),
+  getCoinData({coin: "btc", interval: "day", time_series_limit: 7}),
+  getTrendingCoins({interval: "24h", limit: 20})
+])
+```
+
+### Influencer Impact Analysis
+```javascript
+// Track specific coin creators and their impact
+getCoinPosts({
+  coin: "sol",
+  limit: 50,
+  sort: "interactions"
+}).then(posts => {
+  // Analyze creator influence on sentiment
+  const influencerImpact = posts.map(post => ({
+    creator: post.creator_display_name,
+    followers: post.creator_followers,
+    interactions: post.interactions,
+    sentiment: post.sentiment
+  }));
+});
+```
+
+### Social Divergence Detection
+```javascript
+// Compare social vs price performance
+const socialPriceAnalysis = async (coins) => {
+  const analyses = await Promise.all(
+    coins.map(coin => getCoinData({
+      coin: coin,
+      time_series_indicators: "galaxy_score,price_score,social_volume",
+      interval: "day",
+      time_series_limit: 7
+    }))
+  );
+  
+  // Identify divergences
+  return analyses.filter(coin => {
+    const socialTrend = coin.timeseries.galaxy_score.slice(-3).reduce((a,b) => a+b) / 3;
+    const priceTrend = coin.timeseries.price_score.slice(-3).reduce((a,b) => a+b) / 3;
+    return Math.abs(socialTrend - priceTrend) > 20; // Significant divergence
+  });
+};
+```
+
+## Key Social Trading Signals
+
+### Bullish Social Signals
+- **Rising Galaxy Score** (65+ is strong)
+- **Increasing social volume** with positive sentiment
+- **Influencer engagement** from high-follower accounts
+- **Cross-platform viral content** (Twitter + Reddit + YouTube)
+- **Social score divergence** (social rising faster than price)
+
+### Bearish Social Signals
+- **Declining Galaxy Score** below 35
+- **Negative sentiment increase** across platforms
+- **Decreasing social volume** despite price stability
+- **Influencer silence** or negative commentary
+- **Social momentum loss** while price remains elevated
+
+### Early Momentum Signals
+- **Sudden social volume spikes** (>200% increase)
+- **New creator adoption** discussing the token
+- **Hashtag trend emergence** across platforms
+- **Community engagement increase** (comments, shares)
+- **Cross-chain social activity** (multiple coin ecosystems)
+
+## Galaxy Score Interpretation
+```javascript
+// Galaxy Score analysis
+const interpretGalaxyScore = (score) => {
+  if (score >= 75) return "Extremely Bullish - Viral Potential";
+  if (score >= 65) return "Strong Bullish - High Momentum";
+  if (score >= 50) return "Bullish - Growing Interest";
+  if (score >= 35) return "Neutral - Stable Activity";
+  if (score >= 25) return "Bearish - Declining Interest";
+  return "Very Bearish - Low Engagement";
+};
+
+// Social volume impact
+const analyzeSocialVolume = (current, average) => {
+  const ratio = current / average;
+  if (ratio > 3) return "Viral Activity";
+  if (ratio > 2) return "High Activity";
+  if (ratio > 1.5) return "Elevated Activity";
+  if (ratio < 0.5) return "Low Activity";
+  return "Normal Activity";
+};
+```
+
+## Social Content Analysis
+
+### Post Quality Assessment
+```javascript
+// Analyze post engagement quality
+const assessPostQuality = (posts) => {
+  return posts.map(post => ({
+    ...post,
+    qualityScore: (
+      (post.interactions / post.creator_followers) * 100 + // Engagement rate
+      (post.sentiment === 'positive' ? 20 : post.sentiment === 'negative' ? -20 : 0) + // Sentiment bonus
+      (post.url_shares > 10 ? 15 : 0) // Sharing bonus
+    )
+  })).sort((a, b) => b.qualityScore - a.qualityScore);
+};
+```
+
+### Influencer Tracking
+```javascript
+// Monitor key creators for coin mentions
+const trackInfluencers = async (coin, topCreators) => {
+  const posts = await getCoinPosts({
+    coin: coin,
+    limit: 100,
+    sort: "interactions"
+  });
+  
+  return posts.filter(post => 
+    topCreators.includes(post.creator_display_name)
+  ).map(post => ({
+    creator: post.creator_display_name,
+    content: post.text,
+    sentiment: post.sentiment,
+    reach: post.creator_followers,
+    engagement: post.interactions
+  }));
+};
+```
+
+## Real-Time Monitoring Setup
+
+### Social Alert System
+```javascript
+// Monitor for significant social changes
+const socialAlertSystem = async (watchlist) => {
+  const currentData = await Promise.all(
+    watchlist.map(coin => getCoinData({
+      coin: coin,
+      time_series_indicators: "galaxy_score,social_volume"
+    }))
+  );
+  
+  const alerts = currentData.filter(coin => {
+    const currentGalaxy = coin.galaxy_score;
+    const avgGalaxy = coin.timeseries.galaxy_score.slice(-7).reduce((a,b) => a+b) / 7;
+    const galaxyChange = ((currentGalaxy - avgGalaxy) / avgGalaxy) * 100;
+    
+    return Math.abs(galaxyChange) > 25; // 25% change threshold
+  });
+  
+  return alerts;
+};
+```
+
+## Discord Integration Strategy
+- **Galaxy Score alerts** for significant changes (>20 point moves)
+- **Viral content notifications** with engagement metrics
+- **Influencer mention alerts** for tracked creators
+- **Social sentiment shifts** with trend analysis
+- **Cross-platform activity summaries**
+- **Social vs price divergence warnings**
+
+## Best Practices
+1. **Monitor Galaxy Score trends** rather than absolute values
+2. **Cross-reference with price action** for validation
+3. **Track influencer activity** for early signals
+4. **Use multiple timeframes** for comprehensive analysis
+5. **Focus on engagement quality** not just volume
+6. **Watch for cross-platform momentum** for strongest signals
+7. **Set up divergence alerts** for contrarian opportunities
+
+This schema provides social intelligence that often precedes price movements - use it to identify early momentum and sentiment shifts, combining with other schemas for comprehensive market analysis.

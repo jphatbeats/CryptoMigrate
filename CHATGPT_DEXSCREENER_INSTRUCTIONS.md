@@ -1,214 +1,230 @@
-# DexScreener Alpha Hunter API - ChatGPT Instructions
+# DexScreener API - ChatGPT Usage Instructions
 
-## Overview
-DexScreener is your early DEX gem discovery engine for finding tokens before they hit major exchanges, catching volume spikes, and identifying trending opportunities across all chains. Free tier with intelligent rate limiting (300/min high priority, 60/min medium priority).
+## Strategic Purpose
+DexScreener provides comprehensive decentralized exchange (DEX) data for discovering viral tokens, meme coins, and early-stage opportunities across multiple blockchains. Use this for identifying trending tokens before they hit major centralized exchanges.
 
-## Available Endpoints
+## Core Capabilities
+- **Multi-chain DEX pair search** across Ethereum, Solana, BSC, Polygon, etc.
+- **Token discovery** by symbol, name, or contract address
+- **Liquidity analysis** with USD values and provider counts
+- **Price action tracking** with multiple timeframe performance
+- **Viral token detection** through transaction volume and social metrics
+- **Boosted token monitoring** for paid promotions
 
-### 1. searchDexPairs
-**Purpose**: Your primary alpha hunting tool - find any token across all DEXs and chains
-**Parameters**:
-- `q`: Search query (ticker symbol, pair, or contract address)
-- Examples: "PEPE", "SOL/USDC", "So11111111111111111111111111111111111111112"
+## No Authentication Required
+- Completely open API access
+- No rate limiting concerns
+- Real-time DEX data without restrictions
 
-**Strategy**: Look for volume spikes >$100K in 24h, price changes >50% in 6h, multiple DEX listings (liquidity growth), and recent creation dates for new gem potential.
+## Core Endpoints Strategy
 
-### 2. getPairDetails
-**Purpose**: Deep dive analysis of specific trading pairs
-**Parameters**:
-- `pair_address`: Specific pair contract address
-- `chain`: Blockchain network
+### 1. Token Discovery (`/latest/dex/search`)
+```javascript
+searchDexPairs({
+  q: "PEPE" // Symbol, name, or contract address
+})
+```
 
-**Strategy**: Analyze liquidity >$50K for safer plays (>$10K minimum), consistent or increasing volume, price impact <3% for $1K trades, and growing holder count. Red flags: liquidity <$5K (rug risk), single whale holder >50% supply.
+**Search Strategies:**
+- **By symbol**: Find all tokens with similar tickers
+- **By name**: Discover tokens by project name
+- **By contract**: Get specific token data with address
 
-### 3. getLatestBoostedTokens
-**Purpose**: Find tokens with paid social promotion and momentum
-**Parameters**:
-- `timeframe`: "24h", "7d"
-- `boost_type`: "trending", "featured", "promoted"
+### 2. Specific Pair Analysis (`/latest/dex/pairs/{chainId}/{pairId}`)
+```javascript
+getPairByChainIdAndPairId({
+  chainId: "solana", // ethereum, bsc, polygon, arbitrum, etc.
+  pairId: "PAIR_ADDRESS"
+})
+```
 
-**Strategy**: Look for recent boost activity in last 24h, multiple boost types, organic engagement beyond paid promotion, and strong community metrics. Cross-check with LunarCrush Galaxy Score.
+### 3. Token Pool Analysis (`/token-pairs/v1/{chainId}/{tokenAddress}`)
+```javascript
+getTokenPools({
+  chainId: "ethereum",
+  tokenAddress: "TOKEN_CONTRACT_ADDRESS"
+})
+```
 
-### 4. getTopBoostedTokens
-**Purpose**: Highest conviction momentum plays with maximum social push
-**Parameters**:
-- `limit`: Number of results
-- `timeframe`: Analysis period
+### 4. Multi-Token Batch Analysis (`/tokens/v1/{chainId}/{tokenAddresses}`)
+```javascript
+getTokensByAddresses({
+  chainId: "solana",
+  tokenAddresses: "ADDRESS1,ADDRESS2,ADDRESS3" // Up to 30 addresses
+})
+```
 
-**Strategy**: Priority ranking: 1) Multiple active boosts + news catalyst, 2) Social sentiment alignment (LunarCrush positive), 3) Technical breakout confirmation, 4) Strong liquidity and volume.
+## Cross-Schema Integration Strategies
 
-### 5. getLatestTokenProfiles
-**Purpose**: Brand new token launches and ground floor opportunities
-**Parameters**:
-- `limit`: Number of new profiles
-- `creation_timeframe`: "24h", "7d"
+### With CoinMarketCap Schema
+1. **Early Discovery Pipeline**:
+   - DexScreener trending → CMC new listings pipeline
+   - Identify tokens before major exchange listings
+   
+2. **Market Cap Validation**:
+   - Cross-reference DEX market caps with CMC data
+   - Spot discrepancies for arbitrage opportunities
 
-**Strategy**: Evaluate team transparency, clear use case and roadmap, community engagement metrics, and security audit status. Early entry signals: professional website, active socials, growing community, upcoming listings.
+### With Railway Trading API
+1. **Position Monitoring**:
+   - Track DEX positions that aren't on centralized exchanges
+   - Monitor early-stage investments through DexScreener
 
-### 6. getTokenInfo
-**Purpose**: Multi-token analysis (up to 30 tokens)
-**Parameters**:
-- `token_addresses`: Array of contract addresses
-- `include_metrics`: Price, volume, liquidity data
+2. **Arbitrage Detection**:
+   - Compare DEX prices with CEX prices from Railway API
+   - Identify CEX/DEX arbitrage opportunities
 
-**Strategy**: Compare similar tokens in same category, analyze market cap vs competitors, track price correlations, and identify undervalued opportunities.
+### With Coinalyze Schema
+1. **Derivatives vs Spot Analysis**:
+   - Compare DEX spot prices with futures funding rates
+   - Early signal detection before futures markets react
 
-### 7. getTokenPairs
-**Purpose**: Find best trading venues for specific tokens
-**Parameters**:
-- `token_address`: Token contract address
-- `chain`: Network filter
+### With NewsAPI.ai & CryptoNews
+1. **News-Driven Discovery**:
+   - News mentions → DexScreener search for related tokens
+   - Validate viral narratives with actual DEX trading activity
 
-**Strategy**: Optimize for highest liquidity pools, lowest slippage tolerance, best price execution, and DEX reputation/security.
+2. **Social Validation**:
+   - Trending news topics + DexScreener search = early opportunity detection
 
-## DexScreener Strategy Framework
+### With LunarCrush Schema
+1. **Social + DEX Correlation**:
+   - LunarCrush social metrics + DexScreener trading data
+   - Identify when social buzz translates to actual trading
 
-### Alpha Hunting Workflow
+2. **Viral Token Confirmation**:
+   - High social activity + increasing DEX liquidity = momentum confirmation
 
-**Morning Scan (Daily 9 AM)**:
-1. getLatestBoostedTokens - Find trending tokens with social momentum
-2. getTopBoostedTokens - Identify highest momentum plays  
-3. Cross-reference with CryptoNews for catalyst confirmation
-4. Use LunarCrush to validate social sentiment
+## Advanced Usage Patterns
 
-**Breakout Detection (Every 2 hours)**:
-1. searchDexPairs with trending symbols from news/social
-2. getPairDetails for volume/liquidity analysis
-3. getTokenPairs to find best trading venues
-4. Confirm entry signals before alerting
+### Viral Token Discovery
+```javascript
+// Step 1: Search for trending symbols
+searchDexPairs({q: "TRENDING_SYMBOL"})
 
-**New Launch Monitoring (Evening 6 PM)**:
-1. getLatestTokenProfiles - Newest token launches
-2. getTokenInfo for each promising profile
-3. Check creation date <7 days
-4. Build watchlist for tomorrow's monitoring
+// Step 2: Analyze multiple chains
+Promise.all([
+  searchDexPairs({q: "SYMBOL"}),
+  getPairByChainIdAndPairId({chainId: "solana", pairId: "PAIR_ID"}),
+  getPairByChainIdAndPairId({chainId: "ethereum", pairId: "PAIR_ID"})
+])
+```
 
-### Confluence Decision Matrix
+### Multi-Chain Analysis
+```javascript
+// Search same token across chains
+const chains = ["ethereum", "solana", "bsc", "polygon"];
+Promise.all(
+  chains.map(chain => 
+    getTokensByAddresses({
+      chainId: chain,
+      tokenAddresses: "TOKEN_ADDRESS"
+    })
+  )
+)
+```
 
-**GREEN LIGHT SIGNALS (Strong Buy) - Require ALL 4**:
-1. **DexScreener**: Volume spike >200%, liquidity >$50K, boosted status
-2. **CryptoNews**: Positive catalyst (partnership, listing, development)
-3. **LunarCrush**: Rising Galaxy Score, positive sentiment trend
-4. **Security Check**: Clean security scan, no recent exploits
+### Liquidity Monitoring
+```javascript
+// Track liquidity changes over time
+getTokenPools({
+  chainId: "ethereum", 
+  tokenAddress: "ADDRESS"
+})
+// Monitor liquidity.usd values for entry/exit timing
+```
 
-**YELLOW LIGHT SIGNALS (Watch List) - 2-3 confirmations**:
-- Strong DexScreener metrics but no news catalyst
-- Positive news but low social momentum
-- Good fundamentals but recent market downtrend
+## Key Trading Signals
 
-**RED LIGHT SIGNALS (Avoid) - Any single factor**:
-- Low liquidity (<$10K) on DexScreener
-- Negative security findings
-- Bearish sentiment trend on LunarCrush
-- No organic social engagement despite boosts
+### Bullish DEX Signals
+- **Rapidly increasing liquidity** (new LP providers)
+- **Growing transaction volume** across multiple pools
+- **Multi-chain presence** (token gaining traction)
+- **Recent pool creation** with significant initial liquidity
+- **Rising price across timeframes** (5m, 1h, 6h, 24h)
 
-### Specific Search Strategies
+### Bearish DEX Signals
+- **Declining liquidity** (LP withdrawals)
+- **Decreasing transaction counts**
+- **Price dropping across all timeframes**
+- **Single chain limitation** (lack of expansion)
+- **Low social engagement** despite trading activity
 
-**Volume Breakout Hunter**:
-1. searchDexPairs for trending categories (AI, Gaming, DeFi)
-2. Filter results by 24h volume >$500K
-3. getPairDetails for liquidity confirmation
-4. Cross-reference with news catalysts
-5. Validate social momentum
+### Early Opportunity Signals
+- **New token with immediate traction**
+- **Growing across multiple DEX platforms**
+- **Increasing transaction count and volume**
+- **Social media mentions starting to appear**
 
-**New Gem Detector**:
-1. getLatestTokenProfiles for newest launches
-2. getTokenInfo for each promising profile
-3. Check creation date <7 days
-4. Analyze team and community strength
-5. Verify contract security
+## Response Data Processing
+```javascript
+// Liquidity analysis
+const liquidityScore = pair.liquidity.usd > 100000 ? 'High' : 
+                      pair.liquidity.usd > 10000 ? 'Medium' : 'Low';
 
-**Momentum Confirmation System**:
-1. getTopBoostedTokens for highest momentum
-2. getPairDetails for each top candidate
-3. Compare vs similar market cap tokens
-4. Confirm with technical analysis from BingX
-5. Execute via your trading platforms
+// Volume analysis  
+const volumeRatio = pair.volume.h24 / pair.liquidity.usd;
+const activityLevel = volumeRatio > 1 ? 'Very Active' : 
+                     volumeRatio > 0.5 ? 'Active' : 'Low Activity';
 
-## Risk Management Protocols
+// Price momentum
+const momentum = {
+  m5: pair.priceChange.m5,
+  h1: pair.priceChange.h1, 
+  h6: pair.priceChange.h6,
+  h24: pair.priceChange.h24
+};
 
-### Position Sizing Based on DexScreener Data
-- **High Confidence (4/4 signals)**: 3-5% portfolio allocation
-- **Medium Confidence (3/4 signals)**: 1-2% portfolio allocation  
-- **Low Confidence (2/4 signals)**: 0.5% portfolio allocation
-- **Speculation only**: <0.5% portfolio allocation
+// Risk assessment
+const riskLevel = pair.liquidity.usd < 50000 ? 'High' : 
+                 pair.liquidity.usd < 200000 ? 'Medium' : 'Low';
+```
 
-### Exit Triggers
-- Liquidity drops below entry level
-- Volume decreases >70% from peak
-- Social boost activity stops completely
-- Negative security events detected
-- Technical breakdown confirmed on charts
+## Chain-Specific Strategies
 
-### Daily Monitoring Checklist
-- Morning boost scan completed
-- Volume breakout alerts reviewed
-- New token profiles analyzed
-- Risk assessments updated
-- Confluence confirmations verified
-- Position sizes optimized
-- Exit strategies updated
+### Solana DEX Analysis
+- **Jupiter/Raydium focus**: Primary DEX platforms
+- **Fast transaction times**: Quick entry/exit opportunities
+- **Lower fees**: Better for smaller position sizes
+- **Meme coin hub**: High viral token activity
 
-## Rate Limit Optimization
+### Ethereum DEX Analysis  
+- **Uniswap dominance**: Most liquid pairs
+- **Higher fees**: Focus on larger opportunities
+- **DeFi integration**: More sophisticated tokenomics
+- **Institutional presence**: Better for large cap analysis
 
-### High Priority Calls (300/min limit)
-- searchDexPairs - Use for urgent alpha hunting
-- getPairDetails - Deep dive analysis
-- getTokenInfo - Multi-token research
+### BSC DEX Analysis
+- **PancakeSwap focus**: Primary platform
+- **Lower fees than Ethereum**: Good for experimentation
+- **High speculation**: More meme coins and quick trends
 
-### Medium Priority Calls (60/min limit)
-- getLatestBoostedTokens - Morning scans
-- getTopBoostedTokens - Momentum confirmation
-- getLatestTokenProfiles - Evening research
+## Risk Management
 
-### Batching Strategy
-- **Morning**: Focus on boost endpoints for momentum
-- **Midday**: Use search and pair endpoints for analysis  
-- **Evening**: Profile and research endpoints for tomorrow's prep
+### Liquidity Risks
+- **Minimum liquidity thresholds**: $50K+ for safety
+- **LP concentration**: Check number of liquidity providers
+- **Withdrawal monitoring**: Track LP changes over time
 
-## Integration with Other APIs
+### Volatility Risks
+- **New token volatility**: Extreme price swings common
+- **Low liquidity impact**: Small trades can move prices significantly
+- **Rug pull detection**: Monitor LP locks and team transparency
 
-### With CryptoNews
-- DexScreener volume spike → Search CryptoNews for catalyst
-- News about specific token → Check DexScreener for trading data
-- Sector news → Search DexScreener for category tokens
+## Discord Integration Strategy
+- **Viral token alerts** with liquidity and volume data
+- **Multi-chain arbitrage notifications**
+- **New pool creation alerts** for early opportunities
+- **Liquidity change warnings** for risk management
+- **Price action summaries** across multiple timeframes
 
-### With LunarCrush
-- Boosted tokens → Verify social sentiment on LunarCrush
-- Social buzz → Check DexScreener for trading activity
-- Creator mentions → Search for mentioned tokens
+## Best Practices
+1. **Always check liquidity** before considering trades
+2. **Monitor multiple chains** for comprehensive analysis
+3. **Cross-reference with social data** for validation
+4. **Track transaction patterns** for genuine vs artificial activity
+5. **Use contract verification** when available
+6. **Set liquidity minimums** for risk management
+7. **Monitor for rug pull indicators**
 
-### With Technical Analysis (Taapi)
-- DexScreener opportunity → Get technical confirmation
-- Volume breakout → Check RSI, MACD, momentum indicators
-- Liquidity analysis → Combine with support/resistance levels
-
-### With Security Analysis
-- New token discovery → Security audit check
-- High volume tokens → Rug pull risk assessment
-- Before position entry → Contract verification
-
-## Success Metrics & KPIs
-
-### Track These DexScreener Metrics
-- Average entry timing vs peak price
-- Hit rate on boosted token predictions
-- Liquidity assessment accuracy
-- Volume breakout success rate
-- New launch identification speed
-
-### Monthly Performance Goals
-- 70%+ hit rate on GREEN LIGHT signals
-- <5% allocation to failed positions
-- Average 3x return on successful picks
-- <24h average discovery-to-entry time
-- Zero security incident exposure
-
-## Alpha Discovery Examples
-
-### Successful Pattern Recognition
-1. **Volume Spike** (>200%) + **New Listing** + **Social Boost** + **News Catalyst** = High conviction entry
-2. **Liquidity Growth** + **Multiple DEX** + **Creator Mentions** + **Technical Breakout** = Strong momentum play
-3. **New Launch** + **Professional Team** + **Growing Community** + **Clean Security** = Early gem opportunity
-
-Remember: DexScreener finds WHERE the alpha is, but always confirm WHY with your other APIs (news catalysts, social sentiment, technical analysis) before executing trades. The key is confluence - multiple confirmations create high-conviction opportunities.
+This schema provides early-stage token discovery and DEX intelligence - use it to identify opportunities before they reach mainstream exchanges and combine with other schemas for comprehensive validation.

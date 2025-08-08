@@ -97,10 +97,13 @@ Preferred communication style: Simple, everyday language.
 - **Tokenview API**: Free tier multi-chain blockchain data across 100+ networks.
 
 ## ChatGPT Integration Architecture
+- **Complete Schema Suite**: 9 fully documented ChatGPT schemas with strategic instruction files for Custom GPT deployment.
 - **Dual Schema Setup**: Utilizes separate schemas for direct API access (Coinalyze, NewsAPI.ai) and Railway platform endpoints.
+- **Strategic Instruction Files**: Comprehensive usage guides created for each schema explaining cross-endpoint integration and advanced usage patterns.
+- **Cross-Schema Integration**: Detailed strategies for combining multiple APIs to generate sophisticated trading intelligence.
 - **Railway Server Endpoints**: Discord bots access data through Railway server endpoints.
+- **Schema Integration Guide**: Master reference document (`CHATGPT_SCHEMA_INTEGRATION_GUIDE.md`) covering all 9 schemas and their coordinated usage.
 - **Approval Requirements**: Some LunarCrush endpoints require user approval in ChatGPT Custom Actions for security.
-- **CoinMarketCap Integration**: Complete Railway server endpoints with 6 comprehensive API endpoints for market data, quotes, metadata, global metrics, trending analysis, and gainers/losers tracking.
 
 ## Communication and Deployment
 - **Discord Webhooks**: Multi-channel alert delivery.
