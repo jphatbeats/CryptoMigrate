@@ -1,0 +1,426 @@
+{
+  "openapi": "3.1.0",
+  "servers": [
+    {
+      "url": "https://pro-api.coinmarketcap.com/v1"
+    }
+  ],
+  "info": {
+    "title": "CoinMarketCap Pro API (Basic Plan Compatible)",
+    "version": "1.0.0"
+  },
+  "paths": {
+    "/global-metrics/quotes/latest": {
+      "get": {
+        "summary": "Get global cryptocurrency market metrics",
+        "operationId": "getGlobalMetrics",
+        "description": "Get current global cryptocurrency market data including total market cap, Bitcoin dominance, and DeFi metrics.",
+        "parameters": [
+          {
+            "name": "convert",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "default": "USD",
+              "example": "USD"
+            },
+            "description": "Currency to convert values to"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Global market metrics",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "object",
+                      "properties": {
+                        "timestamp": {
+                          "type": "string"
+                        },
+                        "error_code": {
+                          "type": "integer"
+                        },
+                        "error_message": {
+                          "type": "string"
+                        }
+                      }
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "active_cryptocurrencies": {
+                          "type": "integer"
+                        },
+                        "total_cryptocurrencies": {
+                          "type": "integer"
+                        },
+                        "active_market_pairs": {
+                          "type": "integer"
+                        },
+                        "active_exchanges": {
+                          "type": "integer"
+                        },
+                        "total_exchanges": {
+                          "type": "integer"
+                        },
+                        "quote": {
+                          "type": "object"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/cryptocurrency/listings/latest": {
+      "get": {
+        "summary": "Get latest cryptocurrency listings",
+        "operationId": "getCryptocurrencyListings",
+        "description": "Get a paginated list of all cryptocurrencies ranked by market cap with latest market data.",
+        "parameters": [
+          {
+            "name": "start",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "minimum": 1,
+              "default": 1,
+              "example": 1
+            },
+            "description": "Starting rank for results"
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 100,
+              "default": 100,
+              "example": 10
+            },
+            "description": "Number of results to return (1-100)"
+          },
+          {
+            "name": "convert",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "default": "USD",
+              "example": "USD"
+            },
+            "description": "Currency to convert prices to"
+          },
+          {
+            "name": "sort",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "enum": ["market_cap", "volume_24h", "percent_change_1h", "percent_change_24h", "percent_change_7d"],
+              "default": "market_cap",
+              "example": "market_cap"
+            },
+            "description": "Sort order for results"
+          },
+          {
+            "name": "sort_dir",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "enum": ["asc", "desc"],
+              "default": "desc",
+              "example": "desc"
+            },
+            "description": "Sort direction"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "List of cryptocurrencies with market data",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "object"
+                    },
+                    "data": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "id": {
+                            "type": "integer"
+                          },
+                          "name": {
+                            "type": "string"
+                          },
+                          "symbol": {
+                            "type": "string"
+                          },
+                          "slug": {
+                            "type": "string"
+                          },
+                          "cmc_rank": {
+                            "type": "integer"
+                          },
+                          "circulating_supply": {
+                            "type": "number"
+                          },
+                          "total_supply": {
+                            "type": "number"
+                          },
+                          "max_supply": {
+                            "type": "number"
+                          },
+                          "quote": {
+                            "type": "object"
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/cryptocurrency/quotes/latest": {
+      "get": {
+        "summary": "Get latest price quotes for cryptocurrencies",
+        "operationId": "getCryptocurrencyQuotes",
+        "description": "Get latest market quotes for one or more cryptocurrencies by ID or symbol.",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "example": "1,1027,825"
+            },
+            "description": "Comma-separated list of CoinMarketCap IDs"
+          },
+          {
+            "name": "symbol",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "example": "BTC,ETH,USDT"
+            },
+            "description": "Comma-separated list of cryptocurrency symbols"
+          },
+          {
+            "name": "slug",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "example": "bitcoin,ethereum"
+            },
+            "description": "Comma-separated list of cryptocurrency slugs"
+          },
+          {
+            "name": "convert",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "default": "USD",
+              "example": "USD"
+            },
+            "description": "Currency to convert prices to"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Latest price quotes for requested cryptocurrencies",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "object"
+                    },
+                    "data": {
+                      "type": "object"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/cryptocurrency/info": {
+      "get": {
+        "summary": "Get cryptocurrency metadata",
+        "operationId": "getCryptocurrencyInfo",
+        "description": "Get static metadata for one or more cryptocurrencies including name, symbol, logo, and description.",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "example": "1,1027"
+            },
+            "description": "Comma-separated list of CoinMarketCap IDs"
+          },
+          {
+            "name": "symbol",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "example": "BTC,ETH"
+            },
+            "description": "Comma-separated list of cryptocurrency symbols"
+          },
+          {
+            "name": "slug",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "example": "bitcoin,ethereum"
+            },
+            "description": "Comma-separated list of cryptocurrency slugs"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Cryptocurrency metadata and information",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "object"
+                    },
+                    "data": {
+                      "type": "object"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/cryptocurrency/trending/gainers-losers": {
+      "get": {
+        "summary": "Get trending gainers and losers",
+        "operationId": "getCryptocurrencyGainersLosers",
+        "description": "Get cryptocurrencies with highest gains and losses in the last 24 hours.",
+        "parameters": [
+          {
+            "name": "start",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "minimum": 1,
+              "default": 1,
+              "example": 1
+            },
+            "description": "Starting rank for results"
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 100,
+              "default": 10,
+              "example": 10
+            },
+            "description": "Number of results to return"
+          },
+          {
+            "name": "time_period",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "enum": ["1h", "24h", "7d", "30d"],
+              "default": "24h",
+              "example": "24h"
+            },
+            "description": "Time period for gains/losses calculation"
+          },
+          {
+            "name": "convert",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "default": "USD",
+              "example": "USD"
+            },
+            "description": "Currency to convert prices to"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Top gaining and losing cryptocurrencies",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "object"
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "gainers": {
+                          "type": "array",
+                          "items": {
+                            "type": "object"
+                          }
+                        },
+                        "losers": {
+                          "type": "array",
+                          "items": {
+                            "type": "object"
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

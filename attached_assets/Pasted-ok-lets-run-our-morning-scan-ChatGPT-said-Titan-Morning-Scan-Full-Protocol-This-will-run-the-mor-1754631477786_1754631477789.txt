@@ -1,0 +1,197 @@
+ok lets run our morning scan
+ChatGPT said:
+Titan Morning Scan — Full Protocol
+
+This will run the morning scan per THE ALPHA PLAYBOOK (step 1), stacking news, social, and technicals across your primary toolset.
+
+Step 1: CryptoNews Top Mentions + Breaking Headlines
+Already pulled top mentioned tickers: BTC, ETH, USDT, BNB, SOL, XRP, DOGE, ADA, TRX, TON
+
+Will fetch latest breaking headlines for these (CryptoNews API).
+
+Step 2: LunarCrush Trending/AltRank Gainers
+Will scan for:
+
+Trending coins today
+
+AltRank gainers
+
+Galaxy Score surges
+
+Social momentum spikes
+
+Step 3: Sentiment/Volume Confluence
+Compare news & social spikes for overlap.
+
+Will tag each coin: Sniper, Runner, Avoid, Exit (per PLAYBOOK logic).
+
+Step 4: Meme/Volume Surge Detection
+Look for any meme coins or low/midcap surges not in the majors list.
+
+Live scan running — stand by for results.
+
+Fetching CryptoNews headlines...
+[debug] Calling HTTP endpoint
+{
+  "domain": "cryptonews-api.com",
+  "method": "get",
+  "path": "/api/v1",
+  "operation": "getCryptoTickerNews",
+  "operation_hash": "7fa23cdc5d670800faa8158ed6e1aa1ea2e915a2",
+  "is_consequential": false,
+  "params": {
+    "tickers": "BTC,ETH,USDT,BNB,SOL,XRP,DOGE,ADA,TRX,TON",
+    "items": 10,
+    "token": "ayimav7nlptgzetysg9dwhqteampvoirtfx5orqk"
+  }
+}
+[debug] Response received
+{
+  "function_name": "getCryptoTickerNews",
+  "domain": "cryptonews-api.com",
+  "message": "The requested action requires approval",
+  "action_id": "g-4e367de5ec9f52ce2536951ccd88d4df78c58454"
+}
+Talking to connector
+[debug] Calling HTTP endpoint
+{
+  "domain": "api.lunarcrush.com",
+  "method": "get",
+  "path": "/coins",
+  "operation": "getAllCoins",
+  "operation_hash": "db87d98dfd3dae865c0c40cb260f66044aac28b2",
+  "is_consequential": false,
+  "params": {
+    "limit": 20
+  }
+}
+[debug] Response received
+{}
+[debug] Function Call (Internal or External) Had a 403 Status Code - [No Api Key or Invalid Key / Permission? Try to verify API key or clone gpt?]
+{
+  "response_func_name": null,
+  "http_status": 403,
+  "domain": "api.lunarcrush.com",
+  "method": "get",
+  "path": "/coins",
+  "operation": "getAllCoins",
+  "operation_hash": "db87d98dfd3dae865c0c40cb260f66044aac28b2",
+  "is_consequential": false,
+  "params": {
+    "limit": 20
+  }
+}
+Error talking to connector
+[debug] Calling HTTP endpoint
+{
+  "domain": "api.lunarcrush.com",
+  "method": "get",
+  "path": "/coins/{symbol}/insights",
+  "operation": "getCoinInsights",
+  "operation_hash": "f1e6be58a74ec3768dbdc6f0f4a5da4f54ac7286",
+  "is_consequential": false,
+  "params": {
+    "symbol": "BTC"
+  }
+}
+[debug] Response received
+{}
+[debug] Function Call (Internal or External) Had a 403 Status Code - [No Api Key or Invalid Key / Permission? Try to verify API key or clone gpt?]
+{
+  "response_func_name": null,
+  "http_status": 403,
+  "domain": "api.lunarcrush.com",
+  "method": "get",
+  "path": "/coins/{symbol}/insights",
+  "operation": "getCoinInsights",
+  "operation_hash": "f1e6be58a74ec3768dbdc6f0f4a5da4f54ac7286",
+  "is_consequential": false,
+  "params": {
+    "symbol": "BTC"
+  }
+}
+Error talking to connector
+[debug] Calling HTTP endpoint
+{
+  "domain": "api.lunarcrush.com",
+  "method": "get",
+  "path": "/coins/{symbol}",
+  "operation": "getCoinDetails",
+  "operation_hash": "bb1cdc67b10de2172e35feb3dbfcbc9e0414cb0e",
+  "is_consequential": false,
+  "params": {
+    "symbol": "BTC"
+  }
+}
+[debug] Response received
+{}
+[debug] Function Call (Internal or External) Had a 403 Status Code - [No Api Key or Invalid Key / Permission? Try to verify API key or clone gpt?]
+{
+  "response_func_name": null,
+  "http_status": 403,
+  "domain": "api.lunarcrush.com",
+  "method": "get",
+  "path": "/coins/{symbol}",
+  "operation": "getCoinDetails",
+  "operation_hash": "bb1cdc67b10de2172e35feb3dbfcbc9e0414cb0e",
+  "is_consequential": false,
+  "params": {
+    "symbol": "BTC"
+  }
+}
+Error talking to connector
+[debug] Calling HTTP endpoint
+{
+  "domain": "pro-api.coinmarketcap.com",
+  "method": "get",
+  "path": "/cryptocurrency/trending/latest",
+  "operation": "getCoinMarketCapTrending",
+  "operation_hash": "eff38d3db7fb14d6e0fb506cec7e81a918cd5f9a",
+  "is_consequential": false,
+  "params": {
+    "limit": 10,
+    "convert": "USD"
+  }
+}
+[debug] Response received
+{
+  "response_data": {
+    "status": {
+      "timestamp": "2025-08-08T05:35:47.179Z",
+      "error_code": 1006,
+      "error_message": "Your API Key subscription plan doesn't support this endpoint.",
+      "elapsed": 0,
+      "credit_count": 0
+    }
+  },
+  "status_code": 403,
+  "action_id": "g-b96613766522da328789400c7cb010b2b4b6276e"
+}
+[debug] Failed Outbound Call
+{
+  "text_raw": {
+    "response_data": {
+      "status": {
+        "timestamp": "2025-08-08T05:35:47.179Z",
+        "error_code": 1006,
+        "error_message": "Your API Key subscription plan doesn't support this endpoint.",
+        "elapsed": 0,
+        "credit_count": 0
+      }
+    },
+    "status_code": 403,
+    "action_id": "g-b96613766522da328789400c7cb010b2b4b6276e"
+  },
+  "http_status": 403,
+  "domain": "pro-api.coinmarketcap.com",
+  "method": "get",
+  "path": "/cryptocurrency/trending/latest",
+  "operation": "getCoinMarketCapTrending",
+  "operation_hash": "eff38d3db7fb14d6e0fb506cec7e81a918cd5f9a",
+  "is_consequential": false,
+  "params": {
+    "limit": 10,
+    "convert": "USD"
+  }
+}
+Error talking to connector
