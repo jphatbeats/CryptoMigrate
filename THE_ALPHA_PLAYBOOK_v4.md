@@ -76,29 +76,144 @@ Use AI reasoning to identify:
 - Cross-platform momentum alignment
 - Risk flags from security APIs
 
-### 🎯 Watchlist Classification System
+### 🎯 SMART TRADE GRADE SYSTEM
 
-**✅ SNIPER ENTRIES** (3+ Confluence Factors)
-- NewsAPI sentiment >7 + headline urgency
-- LunarCrush Galaxy Score >65 + AltRank dropping
-- BingX technical breakout (volume + price action)
-- De.Fi security: No exploit flags
+## 🟢 GREEN LIGHT - "GO!!!" (Score: 85-100)
+**High Confidence Trades - Full Position Size**
 
-**🔁 RUNNER PLAYS** (2 Confluence Factors)
-- Strong social momentum but weak technical setup
-- Good news but flat Galaxy Score
-- Technical breakout without narrative support
+**Perfect Confluence (3+ Strong Factors):**
+- NewsAPI sentiment >7 + headline urgency >8
+- LunarCrush Galaxy Score >65 + AltRank dropping fast
+- BingX technical breakout (volume + price momentum)
+- De.Fi security: Clean (no exploit flags)
 
-**⚠️ MONITOR ZONE** (1 Confluence Factor)  
-- Single positive signal without confirmation
-- Conflicting data across sources
-- Incomplete API responses requiring follow-up
+**AI Enhancement Factors (Bonus Points):**
+- Multiple news sources confirming same narrative (+10)
+- Social volume spike matching price action (+8)  
+- Cross-exchange arbitrage opportunities (+6)
+- Derivatives funding rates supporting direction (+5)
 
-**⛔ AVOID/EXIT SIGNALS**
+## 🟡 YELLOW LIGHT - "VERY POSSIBLE" (Score: 60-84)
+**Good Setups with Manageable Risk - Reduced Position Size**
+
+**Strong 2-Factor Plays:**
+- Excellent technical setup + moderate social buzz
+- Breaking news + decent Galaxy Score (50-64) 
+- High social momentum + clean security profile
+- Strong derivatives signals + positive news sentiment
+
+**Quality Single-Factor Plays:**
+- NewsAPI urgency >9 with compelling narrative (even without social confirmation)
+- Galaxy Score >75 with strong AltRank velocity (even with flat technical)
+- Explosive technical breakout with volume >200% average (even without news)
+- Major DexScreener viral surge with good liquidity (even early stage)
+
+**AI Pattern Recognition:**
+- Historical correlation patterns suggesting imminent breakout
+- Cross-market momentum indicating sector rotation
+- Whale accumulation patterns from authentic on-chain data
+- Narrative building phase before mainstream coverage
+
+## 🔴 RED LIGHT - "ULTRA RISKY" (Score: 30-59)  
+**Speculative Plays - Micro Position Only**
+
+**High-Risk, High-Reward Scenarios:**
+- Single weak factor but exceptional potential (Galaxy Score 40-49 but rising fast)
+- Early meme token discovery with viral social signals but no technical setup
+- Breaking news with unclear sentiment but potential major impact
+- Technical setup forming but waiting for catalyst confirmation
+
+**Contrarian AI Opportunities:**
+- Market overreaction creating value discrepancy
+- Negative news already priced in with bottoming signals
+- Social sentiment lagging behind improving fundamentals
+- Seasonal/cyclical patterns suggesting reversal
+
+**Risk Management for RED LIGHT:**
+- Maximum 1-2% portfolio allocation
+- Tight stop-losses (5-8% maximum)
+- Quick profit-taking at 15-25% gains
+- Constant monitoring for upgrade to YELLOW/GREEN
+
+## ⛔ NO TRADE ZONE (Score: 0-29)
+**Absolute Avoidance Criteria**
 - De.Fi security alerts for exploits/rugs
-- Galaxy Score collapse >15 points
-- Negative news with high urgency scores
-- Coinalyze liquidation cascades
+- Galaxy Score collapse >15 points with negative news
+- Multiple negative news sources with urgency >8
+- Coinalyze liquidation cascades with no support
+
+---
+
+## 🎯 TRADE SCORING CALCULATION SYSTEM
+
+### Base Score Components (0-100 Scale)
+
+**News Intelligence Layer (0-35 points):**
+```
+NewsAPI.ai Sentiment Score:
+- Sentiment >8 with urgency >8: 25 points
+- Sentiment >6 with urgency >6: 18 points  
+- Sentiment >4 with urgency >4: 12 points
+- Below threshold: 5 points
+
+CryptoNews Urgency Multiplier:
+- Breaking news urgency >9: +10 points
+- Multiple positive articles same day: +8 points
+- Article images present (viral potential): +5 points
+```
+
+**Social Intelligence Layer (0-30 points):**
+```
+LunarCrush Galaxy Score:
+- Galaxy Score >75: 20 points
+- Galaxy Score 65-74: 15 points
+- Galaxy Score 50-64: 10 points
+- Galaxy Score 40-49: 5 points
+- Below 40: 0 points
+
+AltRank Velocity:
+- Dropping >20 positions rapidly: +10 points
+- Dropping 10-20 positions: +6 points
+- Stable or slow movement: +2 points
+```
+
+**Technical Analysis Layer (0-35 points):**
+```
+BingX Price Action:
+- Volume spike >300% with price breakout: 20 points
+- Volume spike >200% with momentum: 15 points
+- Clean technical setup with volume: 10 points
+- Weak technical signals: 5 points
+
+Coinalyze Derivatives Confirmation:
+- Funding rates supporting direction: +8 points
+- Open interest increase with price: +5 points
+- Liquidation levels clearing: +2 points
+```
+
+### AI Enhancement Multipliers
+```
+Pattern Recognition Bonus:
+- Cross-platform momentum alignment: +5 points
+- Historical correlation patterns active: +4 points
+- Sector rotation signals: +3 points
+
+Risk Adjustment:
+- De.Fi security clean: +0 points (baseline)
+- Minor security concerns: -10 points
+- Major security red flags: -50 points (auto NO TRADE)
+```
+
+### Example Scoring:
+```
+EXAMPLE: "LUNA Token Analysis"
+- NewsAPI sentiment 8 + urgency 7: 18 points
+- Galaxy Score 68 + AltRank dropping 15: 15+6 = 21 points  
+- BingX volume spike 250% + breakout: 15 points
+- Coinalyze funding positive: +8 points
+- Clean security: +0 points
+TOTAL: 62 points = 🟡 YELLOW LIGHT (Very Possible)
+```
 
 ---
 
