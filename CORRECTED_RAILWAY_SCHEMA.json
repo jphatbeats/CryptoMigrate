@@ -1,0 +1,312 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "Trading Intelligence API (Working Endpoints Only)",
+    "description": "Verified working endpoints for live exchange data from BingX & Blofin",
+    "version": "v2.1.0"
+  },
+  "servers": [
+    {
+      "url": "https://titan-trading-2-production.up.railway.app"
+    }
+  ],
+  "paths": {
+    "/health": {
+      "get": {
+        "description": "Health check endpoint to verify API connectivity",
+        "operationId": "healthCheck",
+        "responses": {
+          "200": {
+            "description": "API is healthy and responding",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {"type": "string"},
+                    "timestamp": {"type": "string"},
+                    "available_exchanges": {
+                      "type": "array",
+                      "items": {"type": "string"}
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/": {
+      "get": {
+        "description": "API documentation and available endpoints",
+        "operationId": "getApiDocumentation",
+        "responses": {
+          "200": {
+            "description": "API documentation with all available endpoints",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {"type": "string"},
+                    "version": {"type": "string"},
+                    "status": {"type": "string"},
+                    "available_exchanges": {"type": "array", "items": {"type": "string"}},
+                    "live_endpoints": {"type": "object"}
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/live/all-exchanges": {
+      "get": {
+        "description": "Get live positions and orders from all exchanges (BingX & Blofin)",
+        "operationId": "getAllExchangeData",
+        "responses": {
+          "200": {
+            "description": "Live exchange data",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "timestamp": {"type": "string"},
+                    "exchanges": {
+                      "type": "object",
+                      "properties": {
+                        "bingx": {"type": "object"},
+                        "blofin": {"type": "object"}
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/live/account-balances": {
+      "get": {
+        "description": "Get account balances from all exchanges",
+        "operationId": "getAccountBalances",
+        "responses": {
+          "200": {
+            "description": "Account balances",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "timestamp": {"type": "string"},
+                    "balances": {
+                      "type": "object",
+                      "properties": {
+                        "bingx": {"type": "object"},
+                        "blofin": {"type": "object"}
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/live/bingx-positions": {
+      "get": {
+        "description": "Get live positions from BingX exchange",
+        "operationId": "getBingXPositions",
+        "responses": {
+          "200": {
+            "description": "BingX positions and orders",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "timestamp": {"type": "string"},
+                    "source": {"type": "string"},
+                    "positions": {"type": "object"},
+                    "orders": {"type": "object"}
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/live/blofin-positions": {
+      "get": {
+        "description": "Get live positions from Blofin exchange",
+        "operationId": "getBlofinPositions",
+        "responses": {
+          "200": {
+            "description": "Blofin positions and orders",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "timestamp": {"type": "string"},
+                    "source": {"type": "string"},
+                    "positions": {"type": "array", "items": {"type": "object"}},
+                    "orders": {"type": "array", "items": {"type": "object"}}
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/kraken/balance": {
+      "get": {
+        "description": "Get Kraken account balance",
+        "operationId": "getKrakenBalance",
+        "responses": {
+          "200": {
+            "description": "Kraken account balance",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "timestamp": {"type": "string"},
+                    "exchange": {"type": "string"},
+                    "balance": {"type": "object"}
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/bingx/balance": {
+      "get": {
+        "description": "Get BingX account balance",
+        "operationId": "getBingXBalance",
+        "responses": {
+          "200": {
+            "description": "BingX account balance",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "timestamp": {"type": "string"},
+                    "exchange": {"type": "string"},
+                    "balance": {"type": "object"}
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/bingx/klines/{symbol}": {
+      "get": {
+        "description": "Get BingX candlestick/OHLCV data for technical analysis",
+        "operationId": "getBingXKlines",
+        "parameters": [
+          {
+            "name": "symbol",
+            "in": "path",
+            "required": true,
+            "schema": {"type": "string"},
+            "description": "Trading symbol (e.g., BTC-USDT)"
+          },
+          {
+            "name": "interval",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "enum": ["1m", "3m", "5m", "15m", "30m", "1h", "2h", "4h", "6h", "8h", "12h", "1d", "3d", "1w", "1M"],
+              "default": "1h"
+            },
+            "description": "Kline interval"
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "default": 100,
+              "minimum": 1,
+              "maximum": 1000
+            },
+            "description": "Number of candlesticks to fetch"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "BingX candlestick data",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "timestamp": {"type": "string"},
+                    "symbol": {"type": "string"},
+                    "interval": {"type": "string"},
+                    "klines": {"type": "object"}
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/ticker/{exchange}/{symbol}": {
+      "get": {
+        "description": "Get ticker data from specific exchange",
+        "operationId": "getTicker",
+        "parameters": [
+          {
+            "name": "exchange",
+            "in": "path",
+            "required": true,
+            "schema": {"type": "string"},
+            "description": "Exchange name (bingx, blofin, kraken)"
+          },
+          {
+            "name": "symbol",
+            "in": "path",
+            "required": true,
+            "schema": {"type": "string"},
+            "description": "Trading symbol"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Ticker data",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "timestamp": {"type": "string"},
+                    "exchange": {"type": "string"},
+                    "symbol": {"type": "string"},
+                    "ticker": {"type": "object"}
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
