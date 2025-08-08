@@ -1,4 +1,5 @@
 from flask import Flask, jsonify, request
+from flask_cors import CORS
 import logging
 import os
 from datetime import datetime
@@ -311,6 +312,7 @@ except ImportError:
 logger = logging.getLogger(__name__)
 
 app = Flask(__name__)
+CORS(app, origins="*")  # Allow ChatGPT Custom Actions to access the API
 
 # Initialize exchange manager and trading functions
 exchange_manager = ExchangeManager()
@@ -501,7 +503,7 @@ def get_bingx_positions():
 
 @app.route('/api/live/blofin-positions', methods=['GET'])
 def get_blofin_positions():
-    """Get live positions from Blofin exchange"""
+    """Get live positions from Blofin exchange - UPDATED FORMAT"""
     try:
         result = {
             'timestamp': datetime.now().isoformat(),
@@ -512,11 +514,22 @@ def get_blofin_positions():
             positions = trading_functions.get_positions('blofin')
             orders = trading_functions.get_orders('blofin')
             
-            result['positions'] = positions if isinstance(positions, list) else [positions]
-            result['orders'] = orders if isinstance(orders, list) else [orders]
+            # Standardize format to match BingX response structure
+            result['positions'] = {
+                'code': 0,
+                'data': {
+                    'positions': positions if isinstance(positions, list) else [positions]
+                }
+            }
+            result['orders'] = {
+                'code': 0,
+                'data': {
+                    'orders': orders if isinstance(orders, list) else [orders]
+                }
+            }
         else:
-            result['positions'] = []
-            result['orders'] = []
+            result['positions'] = {'code': -1, 'data': {'positions': []}}
+            result['orders'] = {'code': -1, 'data': {'orders': []}}
         
         return jsonify(result)
     except Exception as e:
@@ -524,8 +537,8 @@ def get_blofin_positions():
         return jsonify({
             'timestamp': datetime.now().isoformat(),
             'source': 'blofin',
-            'positions': [],
-            'orders': [],
+            'positions': {'code': -1, 'data': {'positions': []}},
+            'orders': {'code': -1, 'data': {'orders': []}},
             'error': str(e)
         }), 500
 
