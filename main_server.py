@@ -474,28 +474,46 @@ def get_bingx_positions():
             positions = trading_functions.get_positions('bingx')
             orders = trading_functions.get_orders('bingx')
             
+            positions_list = positions if isinstance(positions, list) else [positions]
+            orders_list = orders if isinstance(orders, list) else [orders]
+            
+            # Clear status messages
+            if not positions_list or positions_list == [None]:
+                result['status_message'] = 'BingX connected - No open positions found'
+                positions_list = []
+            else:
+                result['status_message'] = f'BingX connected - {len(positions_list)} positions found'
+            
             result['positions'] = {
                 'code': 0,
                 'data': {
-                    'positions': positions if isinstance(positions, list) else [positions]
+                    'positions': positions_list
                 }
             }
             result['orders'] = {
                 'code': 0,
                 'data': {
-                    'orders': orders if isinstance(orders, list) else [orders]
+                    'orders': orders_list if orders_list != [None] else []
                 }
             }
         else:
+            result['status_message'] = 'BingX exchange not available - Check API credentials'
             result['positions'] = {'code': -1, 'data': {'positions': []}}
             result['orders'] = {'code': -1, 'data': {'orders': []}}
         
         return jsonify(result)
     except Exception as e:
         logger.error(f"Error getting BingX positions: {str(e)}")
+        error_message = str(e)
+        if "apiKey" in error_message:
+            status_msg = "BingX error - API credentials required"
+        else:
+            status_msg = f"BingX error - {error_message}"
+        
         return jsonify({
             'timestamp': datetime.now().isoformat(),
             'source': 'bingx',
+            'status_message': status_msg,
             'positions': {'code': -1, 'data': {'positions': []}},
             'orders': {'code': -1, 'data': {'orders': []}},
             'error': str(e)
@@ -514,29 +532,47 @@ def get_blofin_positions():
             positions = trading_functions.get_positions('blofin')
             orders = trading_functions.get_orders('blofin')
             
+            positions_list = positions if isinstance(positions, list) else [positions]
+            orders_list = orders if isinstance(orders, list) else [orders]
+            
+            # Clear status messages
+            if not positions_list or positions_list == [None]:
+                result['status_message'] = 'Blofin connected - No open positions found'
+                positions_list = []
+            else:
+                result['status_message'] = f'Blofin connected - {len(positions_list)} positions found'
+            
             # Standardize format to match BingX response structure
             result['positions'] = {
                 'code': 0,
                 'data': {
-                    'positions': positions if isinstance(positions, list) else [positions]
+                    'positions': positions_list
                 }
             }
             result['orders'] = {
                 'code': 0,
                 'data': {
-                    'orders': orders if isinstance(orders, list) else [orders]
+                    'orders': orders_list if orders_list != [None] else []
                 }
             }
         else:
+            result['status_message'] = 'Blofin exchange not available - Check API credentials'
             result['positions'] = {'code': -1, 'data': {'positions': []}}
             result['orders'] = {'code': -1, 'data': {'orders': []}}
         
         return jsonify(result)
     except Exception as e:
         logger.error(f"Error getting Blofin positions: {str(e)}")
+        error_message = str(e)
+        if "apiKey" in error_message:
+            status_msg = "Blofin error - API credentials required"
+        else:
+            status_msg = f"Blofin error - {error_message}"
+        
         return jsonify({
             'timestamp': datetime.now().isoformat(),
             'source': 'blofin',
+            'status_message': status_msg,
             'positions': {'code': -1, 'data': {'positions': []}},
             'orders': {'code': -1, 'data': {'orders': []}},
             'error': str(e)
