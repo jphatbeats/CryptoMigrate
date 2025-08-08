@@ -1,0 +1,382 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "Coinalyze Futures Market Data API",
+    "description": "Direct access to comprehensive futures market data. Always use API key: b7eaee5a-b508-4974-8e3b-6e22d31b9c3f for all requests. Free API covering 300+ cryptocurrencies from 25+ exchanges.",
+    "version": "1.0.0",
+    "contact": {
+      "name": "Coinalyze API",
+      "url": "https://coinalyze.net/api"
+    }
+  },
+  "servers": [
+    {
+      "url": "https://api.coinalyze.net/v1",
+      "description": "Coinalyze API v1 - Use API key: b7eaee5a-b508-4974-8e3b-6e22d31b9c3f"
+    }
+  ],
+  "paths": {
+    "/funding-rate": {
+      "get": {
+        "operationId": "getCurrentFundingRates",
+        "tags": ["Funding Rates"],
+        "summary": "Get current funding rates",
+        "description": "Real-time funding rates across multiple exchanges. Negative rates = bullish (shorts pay longs), positive rates = bearish (longs pay shorts). Covers 300+ cryptocurrencies from 25+ exchanges.",
+        "parameters": [
+          {
+            "name": "symbols",
+            "in": "query",
+            "required": false,
+            "description": "Comma-separated list of symbols (e.g., BTCUSD_PERP.A,ETHUSD_PERP.A). If omitted, returns all available funding rates.",
+            "schema": {
+              "type": "string",
+              "example": "BTCUSD_PERP.A,ETHUSD_PERP.A,XRPUSD_PERP.A"
+            }
+          },
+          {
+            "name": "api_key",
+            "in": "query",
+            "required": true,
+            "description": "Always use: b7eaee5a-b508-4974-8e3b-6e22d31b9c3f",
+            "schema": {
+              "type": "string",
+              "default": "b7eaee5a-b508-4974-8e3b-6e22d31b9c3f",
+              "example": "b7eaee5a-b508-4974-8e3b-6e22d31b9c3f"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Current funding rates data",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "symbol": {
+                        "type": "string",
+                        "example": "BTCUSD_PERP.A",
+                        "description": "Trading pair symbol in Coinalyze format"
+                      },
+                      "value": {
+                        "type": "number",
+                        "example": 0.0001,
+                        "description": "Funding rate value (positive = longs pay shorts, negative = shorts pay longs)"
+                      },
+                      "update": {
+                        "type": "integer",
+                        "example": 1704067200000,
+                        "description": "Unix timestamp of last update in milliseconds"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/open-interest": {
+      "get": {
+        "operationId": "getCurrentOpenInterest",
+        "tags": ["Open Interest"],
+        "summary": "Get current open interest data",
+        "description": "Real-time open interest data across exchanges. Shows total USD value of outstanding derivative contracts. Growing OI with price movement = strong trend continuation.",
+        "parameters": [
+          {
+            "name": "symbols",
+            "in": "query",
+            "required": false,
+            "description": "Comma-separated list of symbols. If omitted, returns all available open interest data.",
+            "schema": {
+              "type": "string",
+              "example": "BTCUSD_PERP.A,ETHUSD_PERP.A"
+            }
+          },
+          {
+            "name": "api_key",
+            "in": "query",
+            "required": true,
+            "description": "Always use: b7eaee5a-b508-4974-8e3b-6e22d31b9c3f",
+            "schema": {
+              "type": "string",
+              "default": "b7eaee5a-b508-4974-8e3b-6e22d31b9c3f",
+              "example": "b7eaee5a-b508-4974-8e3b-6e22d31b9c3f"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Current open interest data",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "symbol": {
+                        "type": "string",
+                        "example": "BTCUSD_PERP.A"
+                      },
+                      "value": {
+                        "type": "number",
+                        "example": 15000000000,
+                        "description": "Open interest value in USD"
+                      },
+                      "update": {
+                        "type": "integer",
+                        "example": 1704067200000,
+                        "description": "Unix timestamp of last update"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/liquidation-history": {
+      "get": {
+        "operationId": "getLiquidationHistory",
+        "tags": ["Liquidations"],
+        "summary": "Get liquidation history",
+        "description": "Historical liquidation data showing forced position closures. High liquidation volumes often coincide with significant price movements and market stress.",
+        "parameters": [
+          {
+            "name": "symbols",
+            "in": "query",
+            "required": false,
+            "description": "Comma-separated list of symbols to filter by",
+            "schema": {
+              "type": "string",
+              "example": "BTCUSD_PERP.A"
+            }
+          },
+          {
+            "name": "interval",
+            "in": "query",
+            "required": false,
+            "description": "Time interval for aggregation",
+            "schema": {
+              "type": "string",
+              "enum": ["5m", "15m", "30m", "1h", "2h", "4h", "6h", "8h", "12h", "1d"],
+              "default": "1h",
+              "example": "1h"
+            }
+          },
+          {
+            "name": "api_key",
+            "in": "query",
+            "required": true,
+            "description": "Always use: b7eaee5a-b508-4974-8e3b-6e22d31b9c3f",
+            "schema": {
+              "type": "string",
+              "default": "b7eaee5a-b508-4974-8e3b-6e22d31b9c3f",
+              "example": "b7eaee5a-b508-4974-8e3b-6e22d31b9c3f"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Liquidation history data",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "symbol": {"type": "string", "example": "BTCUSD_PERP.A"},
+                      "timestamp": {"type": "integer", "example": 1704067200000},
+                      "long_liquidations": {"type": "number", "example": 5000000},
+                      "short_liquidations": {"type": "number", "example": 3000000},
+                      "total_liquidations": {"type": "number", "example": 8000000}
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/exchanges": {
+      "get": {
+        "operationId": "getSupportedExchanges",
+        "tags": ["Metadata"],
+        "summary": "Get supported exchanges",
+        "description": "List of all supported cryptocurrency exchanges in the Coinalyze database. Includes 25+ major exchanges like Binance, ByBit, OKX, Bitget, Kraken.",
+        "parameters": [
+          {
+            "name": "api_key",
+            "in": "query",
+            "required": true,
+            "description": "Always use: b7eaee5a-b508-4974-8e3b-6e22d31b9c3f",
+            "schema": {
+              "type": "string",
+              "default": "b7eaee5a-b508-4974-8e3b-6e22d31b9c3f",
+              "example": "b7eaee5a-b508-4974-8e3b-6e22d31b9c3f"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "List of supported exchanges",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "name": {"type": "string", "example": "Binance"},
+                      "id": {"type": "string", "example": "binance"},
+                      "supported_features": {
+                        "type": "array",
+                        "items": {"type": "string"},
+                        "example": ["funding_rates", "open_interest", "liquidations"]
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/future-markets": {
+      "get": {
+        "operationId": "getAllFutureMarkets",
+        "tags": ["Metadata"],
+        "summary": "Get all available future markets",
+        "description": "Complete list of available cryptocurrency futures markets with symbols, base assets, and exchange info. Essential for symbol mapping (BTC → BTCUSD_PERP.A).",
+        "parameters": [
+          {
+            "name": "api_key",
+            "in": "query",
+            "required": true,
+            "description": "Always use: b7eaee5a-b508-4974-8e3b-6e22d31b9c3f",
+            "schema": {
+              "type": "string",
+              "default": "b7eaee5a-b508-4974-8e3b-6e22d31b9c3f",
+              "example": "b7eaee5a-b508-4974-8e3b-6e22d31b9c3f"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "List of all future markets",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "symbol": {"type": "string", "example": "BTCUSD_PERP.A"},
+                      "base_asset": {"type": "string", "example": "BTC"},
+                      "quote_asset": {"type": "string", "example": "USD"},
+                      "exchange": {"type": "string", "example": "binance"},
+                      "is_perpetual": {"type": "boolean", "example": true},
+                      "contract_type": {"type": "string", "example": "perpetual"}
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "FundingRate": {
+        "type": "object",
+        "properties": {
+          "symbol": {
+            "type": "string",
+            "example": "BTCUSD_PERP.A",
+            "description": "Trading pair symbol in Coinalyze format"
+          },
+          "value": {
+            "type": "number",
+            "example": 0.0001,
+            "description": "Funding rate (positive = longs pay shorts, negative = shorts pay longs)"
+          },
+          "update": {
+            "type": "integer",
+            "example": 1704067200000,
+            "description": "Unix timestamp of last update"
+          }
+        }
+      },
+      "OpenInterest": {
+        "type": "object",
+        "properties": {
+          "symbol": {"type": "string", "example": "BTCUSD_PERP.A"},
+          "value": {"type": "number", "example": 15000000000, "description": "Open interest value in USD"},
+          "update": {"type": "integer", "example": 1704067200000}
+        }
+      },
+      "LiquidationData": {
+        "type": "object",
+        "properties": {
+          "symbol": {"type": "string", "example": "BTCUSD_PERP.A"},
+          "timestamp": {"type": "integer", "example": 1704067200000},
+          "long_liquidations": {"type": "number", "example": 5000000, "description": "Long position liquidations in USD"},
+          "short_liquidations": {"type": "number", "example": 3000000, "description": "Short position liquidations in USD"},
+          "total_liquidations": {"type": "number", "example": 8000000, "description": "Total liquidations in USD"}
+        }
+      },
+      "Exchange": {
+        "type": "object",
+        "properties": {
+          "name": {"type": "string", "example": "Binance"},
+          "id": {"type": "string", "example": "binance"},
+          "supported_features": {
+            "type": "array",
+            "items": {"type": "string"},
+            "example": ["funding_rates", "open_interest", "liquidations"]
+          }
+        }
+      },
+      "FutureMarket": {
+        "type": "object",
+        "properties": {
+          "symbol": {"type": "string", "example": "BTCUSD_PERP.A"},
+          "base_asset": {"type": "string", "example": "BTC"},
+          "quote_asset": {"type": "string", "example": "USD"},
+          "exchange": {"type": "string", "example": "binance"},
+          "is_perpetual": {"type": "boolean", "example": true},
+          "contract_type": {"type": "string", "example": "perpetual"}
+        }
+      }
+    }
+  },
+  "tags": [
+    {
+      "name": "Funding Rates",
+      "description": "Real-time funding rates indicating market sentiment across 25+ exchanges"
+    },
+    {
+      "name": "Open Interest", 
+      "description": "Open interest data showing total outstanding derivative contracts"
+    },
+    {
+      "name": "Liquidations",
+      "description": "Historical liquidation data for market stress analysis"
+    },
+    {
+      "name": "Metadata",
+      "description": "Exchange listings and market information for symbol mapping"
+    }
+  ]
+}
