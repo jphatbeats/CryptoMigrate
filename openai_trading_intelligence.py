@@ -58,7 +58,6 @@ class TradingIntelligence:
                     {"role": "user", "content": prompt}
                 ],
                 response_format={"type": "json_object"},
-                temperature=0.7,
                 max_completion_tokens=2000  # Updated parameter for GPT-5
             )
 
@@ -213,7 +212,6 @@ class TradingIntelligence:
                     {"role": "user", "content": prompt}
                 ],
                 response_format={"type": "json_object"},
-                temperature=0.7,
                 max_completion_tokens=1200
             )
 
@@ -386,7 +384,6 @@ class TradingIntelligence:
                     {"role": "user", "content": prompt}
                 ],
                 response_format={"type": "json_object"},
-                temperature=0.7,
                 max_completion_tokens=2500  # Increased for GPT-5's comprehensive analysis
             )
 
@@ -468,8 +465,7 @@ class TradingIntelligence:
                 model=self.models['standard'],  # GPT-5-mini for degen opportunities - cost-effective with enhanced capabilities
                 messages=[{"role": "user", "content": prompt}],
                 response_format={"type": "json_object"},
-                max_completion_tokens=1000,
-                temperature=0.7  # Slightly higher temperature for creative degen insights
+                max_completion_tokens=1000  # Creative degen insights
             )
             
             result = json.loads(response.choices[0].message.content)

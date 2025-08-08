@@ -1515,7 +1515,7 @@ async def run_degen_memes_scan():
         from crypto_news_alerts import get_general_crypto_news, get_top_mentioned_tickers
         
         # Today's news only for maximum freshness
-        today = datetime.now().strftime('%Y-%m-%d')
+        today = 'today'  # CryptoNews API expects 'today' not date format
         
         # Get DexScreener trending tokens (actual new/viral coins)
         dex_trending = await fetch_dexscreener_trending()
@@ -1891,7 +1891,7 @@ async def check_breaking_alerts():
         
         # Use CryptoNews API directly for breaking alerts
         from crypto_news_alerts import get_general_crypto_news
-        today = datetime.now().strftime('%Y-%m-%d')
+        today = 'today'  # CryptoNews API expects 'today' not date format
         breaking_news = get_general_crypto_news(items=5, sentiment='negative', date=today)
         
         if not breaking_news or not breaking_news.get('data'):
