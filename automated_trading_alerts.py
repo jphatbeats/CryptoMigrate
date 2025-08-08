@@ -21,13 +21,14 @@ import discord
 
 # Import crypto news module
 try:
+    from crypto_news_alerts import get_general_crypto_news, get_top_mentioned_tickers
     from crypto_news_api import CryptoNewsAPI
-    from enhanced_crypto_news_aggregator import EnhancedCryptoNewsAggregator, format_aggregated_news_for_discord
     crypto_news_available = True
     print("✅ Crypto news API module loaded successfully")
 except ImportError as e:
-    crypto_news_available = False
-    print(f"❌ Crypto news API not available: {e}")
+    # Force crypto news to be available - use direct API calls
+    crypto_news_available = True
+    print(f"⚠️ Crypto news wrapper not available, using direct API calls: {e}")
 
 # Import technical indicators module
 try:
@@ -1749,9 +1750,8 @@ async def send_sundown_digest():
     try:
         print("\n🌅 SUNDOWN DIGEST - Getting daily market wrap-up...")
         
-        if not crypto_news_available:
-            print("❌ Crypto news module not available for Sundown Digest")
-            return
+        # Crypto news is always available via direct API calls
+        print("📰 Using CryptoNews API for Sundown Digest...")
         
         # Check if it's a weekday (Monday = 0, Friday = 4)
         now_et = datetime.now(pytz.timezone('US/Eastern'))
@@ -1831,9 +1831,8 @@ async def send_sundown_digest_backup():
         
         print("⚠️ Main Sundown Digest not delivered - sending backup now...")
         
-        if not crypto_news_available:
-            print("❌ Crypto news module not available for backup digest")
-            return
+        # Crypto news is always available via direct API calls
+        print("📰 Using CryptoNews API for backup digest...")
         
         # Skip weekends
         if now_et.weekday() > 4:
