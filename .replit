@@ -30,15 +30,15 @@ args = "ChatGPT Alpha Discord Bot"
 
 [[workflows.workflow.tasks]]
 task = "workflow.run"
+args = "Comprehensive Market Scanner"
+
+[[workflows.workflow.tasks]]
+task = "workflow.run"
 args = "Trading Intelligence Server"
 
 [[workflows.workflow.tasks]]
 task = "workflow.run"
 args = "Analytics Dashboard"
-
-[[workflows.workflow.tasks]]
-task = "workflow.run"
-args = "Comprehensive Market Scanner"
 
 [[workflows.workflow]]
 name = "Discord AI Alerts"
@@ -82,13 +82,27 @@ args = "python start_chatgpt_alpha_discord.py"
 outputType = "console"
 
 [[workflows.workflow]]
+name = "Comprehensive Market Scanner"
+author = "agent"
+
+[[workflows.workflow.tasks]]
+task = "shell.exec"
+args = "python start_live_scanner.py"
+
+[workflows.workflow.metadata]
+outputType = "console"
+
+[[workflows.workflow]]
 name = "Trading Intelligence Server"
 author = "agent"
 
 [[workflows.workflow.tasks]]
 task = "shell.exec"
-args = "python app.py"
+args = "python main_server.py"
 waitForPort = 5000
+
+[workflows.workflow.metadata]
+outputType = "webview"
 
 [[workflows.workflow]]
 name = "Analytics Dashboard"
@@ -99,16 +113,8 @@ task = "shell.exec"
 args = "python analytics_dashboard.py"
 waitForPort = 5001
 
-[[workflows.workflow]]
-name = "Comprehensive Market Scanner"
-author = "agent"
-
-[[workflows.workflow.tasks]]
-task = "shell.exec"
-args = "python start_live_scanner.py"
-
 [workflows.workflow.metadata]
-outputType = "console"
+outputType = "webview"
 
 [[ports]]
 localPort = 4101

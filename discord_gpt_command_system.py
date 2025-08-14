@@ -26,10 +26,7 @@ try:
     from exchange_manager import ExchangeManager  
 except ImportError:
     ExchangeManager = None
-try:
-    from taapi_indicators import TaapiIndicators
-except ImportError:
-    TaapiIndicators = None
+# TAAPI removed - using MCP integrations instead
 try:
     from coinalyze_api import CoinalyzeAPI
 except ImportError:
@@ -66,8 +63,7 @@ class GPTCommandBot(commands.Bot):
         # Initialize APIs (with error handling)
         self.trading_ai = TradingIntelligence() if TradingIntelligence else None
         self.exchange_manager = ExchangeManager() if ExchangeManager else None
-        # Use Railway TAAPI indicators server instead of local class
-        self.railway_taapi_url = "https://indicators-production.up.railway.app"
+        # Using MCP integrations for technical analysis
         self.coinalyze = CoinalyzeAPI() if CoinalyzeAPI else None
         self.rugcheck = RugCheckAPI() if RugCheckAPI else None
         
