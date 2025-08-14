@@ -1,10 +1,9 @@
 {
-  "timestamp": "2025-08-14 04:48 PM CST",
-  "total_alerts": 4,
+  "timestamp": "2025-08-14 04:49 PM CST",
+  "total_alerts": 3,
   "alert_types": {
     "no_stop_loss": 2,
-    "high_profit": 1,
-    "losing_trade": 1
+    "high_profit": 1
   },
   "alerts": [
     {
@@ -13,7 +12,7 @@
       "platform": "BingX",
       "margin": 193.061,
       "risk_level": "MODERATE",
-      "message": "\ud83d\udee1\ufe0f **$SOL Risk Management** ($193)\n\u26a0\ufe0f **No Stop Loss** | Risk Level: **MODERATE**\n\ud83d\udca1 **Action**: Set stop at -8% to limit downside risk\n\ud83d\udcca Current PnL: **-2.0%** | LONG @ 10x"
+      "message": "\ud83d\udee1\ufe0f **$SOL Risk Management** ($193)\n\u26a0\ufe0f **No Stop Loss** | Risk Level: **MODERATE**\n\ud83d\udca1 **Action**: Set stop at -8% to limit downside risk\n\ud83d\udcca Current PnL: **-1.8%** | LONG @ 10x"
     },
     {
       "type": "no_stop_loss",
@@ -21,28 +20,18 @@
       "platform": "BingX",
       "margin": 356.5782,
       "risk_level": "MODERATE",
-      "message": "\ud83d\udee1\ufe0f **$ETH Risk Management** ($357)\n\u26a0\ufe0f **No Stop Loss** | Risk Level: **MODERATE**\n\ud83d\udca1 **Action**: Set trailing stop at break-even or +5% to lock profits\n\ud83d\udcca Current PnL: **+19.3%** | LONG @ 10x"
+      "message": "\ud83d\udee1\ufe0f **$ETH Risk Management** ($357)\n\u26a0\ufe0f **No Stop Loss** | Risk Level: **MODERATE**\n\ud83d\udca1 **Action**: Set trailing stop at break-even or +5% to lock profits\n\ud83d\udcca Current PnL: **+19.6%** | LONG @ 10x"
     },
     {
       "type": "high_profit",
       "symbol": "XRP",
       "platform": "BingX",
-      "pnl": 46.3825431947131,
-      "profit_amount": 62.45636715629773,
-      "message": "\ud83d\udcb0 **$XRP Profit Alert** (+46.4%)\n\ud83c\udfaf **Unrealized Profit**: $62 | Position: $135\n\ud83e\udde0 **Strategy**: \u2705 GOOD: Protect gains with trailing stops, consider partial profits.\n\u26a1 **Action**: Move stop to break-even, consider 25% profit-taking\n\ud83d\udcca Entry: $1.634100 \u2192 Current: $3.047800"
-    },
-    {
-      "type": "losing_trade",
-      "symbol": "SEI",
-      "platform": "BingX",
-      "pnl": -8.121551620677463,
-      "margin": 40.0003,
-      "severity": "MODERATE",
-      "message": "\ud83d\udea8 **$SEI Loss Analysis** ($40)\n\ud83d\udcc9 Down **-8.1%** | Severity: **MODERATE**\n\ud83d\udca1 **Strategy**: \ud83d\udcca ANALYSIS: Set stop at -12%. If strong support here, consider adding small position. Small position ($40) - could hold for reversal.\n\ud83c\udfaf **Entry**: $0.345700 | **Current**: $0.319800"
+      "pnl": 46.48811799634542,
+      "profit_amount": 62.59852879986094,
+      "message": "\ud83d\udcb0 **$XRP Profit Alert** (+46.5%)\n\ud83c\udfaf **Unrealized Profit**: $63 | Position: $135\n\ud83e\udde0 **Strategy**: \u2705 GOOD: Protect gains with trailing stops, consider partial profits.\n\u26a1 **Action**: Move stop to break-even, consider 25% profit-taking\n\ud83d\udcca Entry: $1.634100 \u2192 Current: $3.053800"
     }
   ],
   "summary_parts": [
-    "\u2757Losing: 1",
     "\ud83d\udea8 No SL: 2",
     "\ud83d\udcb0 High Profit: 1"
   ]
