@@ -5030,5 +5030,11 @@ if lumif_tradingview_available:
 
 # =================== END FREE MCP ENDPOINTS ===================
 
-# Server startup moved to app.py to prevent import conflicts
-# The Flask app object is exported for external use
+# Start Flask server when run directly
+if __name__ == '__main__':
+    logger.info("🚀 Starting Trading Intelligence Server on 0.0.0.0:5000")
+    logger.info("💡 Enhanced with 208+ indicators and $400/month in cost savings")
+    app.run(host='0.0.0.0', port=5000, debug=False, threaded=True)
+else:
+    # The Flask app object is exported for external use
+    logger.info("✅ Trading Intelligence Server module loaded successfully")
