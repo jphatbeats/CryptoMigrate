@@ -1,81 +1,13 @@
 {
-  "timestamp": "2025-08-14T19:53:33.217335",
+  "timestamp": "2025-08-14T20:32:58.865495",
   "signals": [
-    {
-      "symbol": "SUI",
-      "name": "Sui",
-      "price": 3.7573474669538833,
-      "market_cap": 13195520547.44567,
-      "volume_24h": 2599859387.1902437,
-      "change_24h": -5.55202512,
-      "technical": {
-        "success": true,
-        "confluence_score": 3,
-        "signals": {
-          "rsi_bullish": true,
-          "macd_bullish": false,
-          "ema_bullish": true,
-          "adx_strong": true
-        },
-        "values": {
-          "rsi": 43.9,
-          "macd_histogram": 0,
-          "ema": 3.86,
-          "adx": 21.0
-        }
-      },
-      "news": {
-        "success": false,
-        "error": "No news API token"
-      },
-      "overall_score": 95.0,
-      "entry_type": "market",
-      "entry_price": "$3.7573 (Market)",
-      "stop_loss_price": "$3.4943",
-      "take_profit_price": "$4.2082 (T1), $4.6967 (T2)",
-      "position_size": "1.9%"
-    },
-    {
-      "symbol": "AAVE",
-      "name": "Aave",
-      "price": 312.0143965207114,
-      "market_cap": 4746614178.983112,
-      "volume_24h": 817915262.9499106,
-      "change_24h": -4.62610124,
-      "technical": {
-        "success": true,
-        "confluence_score": 3,
-        "signals": {
-          "rsi_bullish": true,
-          "macd_bullish": false,
-          "ema_bullish": true,
-          "adx_strong": true
-        },
-        "values": {
-          "rsi": 49.0,
-          "macd_histogram": 0,
-          "ema": 312.02,
-          "adx": 39.3
-        }
-      },
-      "news": {
-        "success": false,
-        "error": "No news API token"
-      },
-      "overall_score": 95.0,
-      "entry_type": "market",
-      "entry_price": "$312.0144 (Market)",
-      "stop_loss_price": "$290.1734",
-      "take_profit_price": "$349.4561 (T1), $390.0180 (T2)",
-      "position_size": "1.9%"
-    },
     {
       "symbol": "PEPE",
       "name": "Pepe",
-      "price": 1.1107143329278378e-05,
-      "market_cap": 4672663012.631647,
-      "volume_24h": 1611563182.6858544,
-      "change_24h": -8.43180855,
+      "price": 1.1069777443182416e-05,
+      "market_cap": 4656943561.759471,
+      "volume_24h": 1607384517.231281,
+      "change_24h": -9.45803025,
       "technical": {
         "success": true,
         "confluence_score": 3,
@@ -86,10 +18,10 @@
           "adx_strong": true
         },
         "values": {
-          "rsi": 37.8,
+          "rsi": 36.5,
           "macd_histogram": 0,
           "ema": 0.0,
-          "adx": 23.9
+          "adx": 23.8
         }
       },
       "news": {
@@ -104,46 +36,12 @@
       "position_size": "1.9%"
     },
     {
-      "symbol": "ALGO",
-      "name": "Algorand",
-      "price": 0.25472998752267445,
-      "market_cap": 2218938988.2082815,
-      "volume_24h": 217916783.30050245,
-      "change_24h": -7.22277669,
-      "technical": {
-        "success": true,
-        "confluence_score": 3,
-        "signals": {
-          "rsi_bullish": true,
-          "macd_bullish": false,
-          "ema_bullish": true,
-          "adx_strong": true
-        },
-        "values": {
-          "rsi": 40.0,
-          "macd_histogram": 0,
-          "ema": 0.27,
-          "adx": 23.1
-        }
-      },
-      "news": {
-        "success": false,
-        "error": "No news API token"
-      },
-      "overall_score": 95.0,
-      "entry_type": "market",
-      "entry_price": "$0.2547 (Market)",
-      "stop_loss_price": "$0.2369",
-      "take_profit_price": "$0.2853 (T1), $0.3184 (T2)",
-      "position_size": "1.9%"
-    },
-    {
       "symbol": "RENDER",
       "name": "Render",
-      "price": 3.831301073868097,
-      "market_cap": 1985107309.2872908,
-      "volume_24h": 143037044.78520042,
-      "change_24h": -7.92875382,
+      "price": 3.817500304147152,
+      "market_cap": 1977956733.4597483,
+      "volume_24h": 143077355.39545342,
+      "change_24h": -8.92002464,
       "technical": {
         "success": true,
         "confluence_score": 3,
@@ -154,10 +52,10 @@
           "adx_strong": true
         },
         "values": {
-          "rsi": 41.4,
+          "rsi": 40.1,
           "macd_histogram": 0,
-          "ema": 3.97,
-          "adx": 23.3
+          "ema": 3.95,
+          "adx": 23.5
         }
       },
       "news": {
@@ -166,18 +64,18 @@
       },
       "overall_score": 95.0,
       "entry_type": "market",
-      "entry_price": "$3.8313 (Market)",
-      "stop_loss_price": "$3.5631",
-      "take_profit_price": "$4.2911 (T1), $4.7891 (T2)",
+      "entry_price": "$3.8175 (Market)",
+      "stop_loss_price": "$3.5503",
+      "take_profit_price": "$4.2756 (T1), $4.7719 (T2)",
       "position_size": "1.9%"
     },
     {
-      "symbol": "WLD",
-      "name": "Worldcoin",
-      "price": 1.0086350442812662,
-      "market_cap": 1897368814.8477058,
-      "volume_24h": 403709101.35507846,
-      "change_24h": -8.00618362,
+      "symbol": "IMX",
+      "name": "Immutable",
+      "price": 0.5669609400271287,
+      "market_cap": 1085968816.656829,
+      "volume_24h": 72655279.48754393,
+      "change_24h": -8.77352364,
       "technical": {
         "success": true,
         "confluence_score": 3,
@@ -188,10 +86,10 @@
           "adx_strong": true
         },
         "values": {
-          "rsi": 41.0,
+          "rsi": 41.1,
           "macd_histogram": 0,
-          "ema": 1.06,
-          "adx": 20.8
+          "ema": 0.59,
+          "adx": 30.5
         }
       },
       "news": {
@@ -200,52 +98,18 @@
       },
       "overall_score": 95.0,
       "entry_type": "market",
-      "entry_price": "$1.0086 (Market)",
-      "stop_loss_price": "$0.9380",
-      "take_profit_price": "$1.1297 (T1), $1.2608 (T2)",
-      "position_size": "1.9%"
-    },
-    {
-      "symbol": "THETA",
-      "name": "Theta Network",
-      "price": 0.8412916327551239,
-      "market_cap": 841291632.7551239,
-      "volume_24h": 53866770.02928071,
-      "change_24h": -6.83440249,
-      "technical": {
-        "success": true,
-        "confluence_score": 3,
-        "signals": {
-          "rsi_bullish": true,
-          "macd_bullish": false,
-          "ema_bullish": true,
-          "adx_strong": true
-        },
-        "values": {
-          "rsi": 41.9,
-          "macd_histogram": 0,
-          "ema": 0.87,
-          "adx": 25.1
-        }
-      },
-      "news": {
-        "success": false,
-        "error": "No news API token"
-      },
-      "overall_score": 95.0,
-      "entry_type": "market",
-      "entry_price": "$0.8413 (Market)",
-      "stop_loss_price": "$0.7824",
-      "take_profit_price": "$0.9422 (T1), $1.0516 (T2)",
+      "entry_price": "$0.5670 (Market)",
+      "stop_loss_price": "$0.5273",
+      "take_profit_price": "$0.6350 (T1), $0.7087 (T2)",
       "position_size": "1.9%"
     },
     {
       "symbol": "JASMY",
       "name": "JasmyCoin",
-      "price": 0.01669617325775005,
-      "market_cap": 825542281.3394185,
-      "volume_24h": 83057294.63845208,
-      "change_24h": -8.9763596,
+      "price": 0.01668857898525069,
+      "market_cap": 825166782.5381393,
+      "volume_24h": 83132869.31915364,
+      "change_24h": -9.8485617,
       "technical": {
         "success": true,
         "confluence_score": 3,
@@ -256,10 +120,10 @@
           "adx_strong": true
         },
         "values": {
-          "rsi": 42.9,
+          "rsi": 40.2,
           "macd_histogram": 0,
           "ema": 0.02,
-          "adx": 31.2
+          "adx": 30.0
         }
       },
       "news": {
@@ -274,420 +138,12 @@
       "position_size": "1.9%"
     },
     {
-      "symbol": "SAND",
-      "name": "The Sandbox",
-      "price": 0.28634517943117616,
-      "market_cap": 736848955.4754936,
-      "volume_24h": 98174371.54943,
-      "change_24h": -6.7798805,
-      "technical": {
-        "success": true,
-        "confluence_score": 3,
-        "signals": {
-          "rsi_bullish": true,
-          "macd_bullish": false,
-          "ema_bullish": true,
-          "adx_strong": true
-        },
-        "values": {
-          "rsi": 40.7,
-          "macd_histogram": 0,
-          "ema": 0.3,
-          "adx": 24.4
-        }
-      },
-      "news": {
-        "success": false,
-        "error": "No news API token"
-      },
-      "overall_score": 95.0,
-      "entry_type": "market",
-      "entry_price": "$0.2863 (Market)",
-      "stop_loss_price": "$0.2663",
-      "take_profit_price": "$0.3207 (T1), $0.3579 (T2)",
-      "position_size": "1.9%"
-    },
-    {
-      "symbol": "AR",
-      "name": "Arweave",
-      "price": 7.459784153893618,
-      "market_cap": 489753225.5308395,
-      "volume_24h": 85476846.15086888,
-      "change_24h": -9.59298874,
-      "technical": {
-        "success": true,
-        "confluence_score": 3,
-        "signals": {
-          "rsi_bullish": true,
-          "macd_bullish": false,
-          "ema_bullish": true,
-          "adx_strong": true
-        },
-        "values": {
-          "rsi": 42.3,
-          "macd_histogram": 0,
-          "ema": 7.8,
-          "adx": 26.1
-        }
-      },
-      "news": {
-        "success": false,
-        "error": "No news API token"
-      },
-      "overall_score": 95.0,
-      "entry_type": "market",
-      "entry_price": "$7.4598 (Market)",
-      "stop_loss_price": "$6.9376",
-      "take_profit_price": "$8.3550 (T1), $9.3247 (T2)",
-      "position_size": "1.9%"
-    },
-    {
-      "symbol": "FTT",
-      "name": "FTX Token",
-      "price": 0.9213620442394913,
-      "market_cap": 303031465.1896961,
-      "volume_24h": 12755709.52329056,
-      "change_24h": -6.10119485,
-      "technical": {
-        "success": true,
-        "confluence_score": 3,
-        "signals": {
-          "rsi_bullish": true,
-          "macd_bullish": false,
-          "ema_bullish": true,
-          "adx_strong": true
-        },
-        "values": {
-          "rsi": 40.9,
-          "macd_histogram": 0,
-          "ema": 0.95,
-          "adx": 41.6
-        }
-      },
-      "news": {
-        "success": false,
-        "error": "No news API token"
-      },
-      "overall_score": 95.0,
-      "entry_type": "market",
-      "entry_price": "$0.9214 (Market)",
-      "stop_loss_price": "$0.8569",
-      "take_profit_price": "$1.0319 (T1), $1.1517 (T2)",
-      "position_size": "1.9%"
-    },
-    {
-      "symbol": "LPT",
-      "name": "Livepeer",
-      "price": 6.509467736988879,
-      "market_cap": 282514261.4904718,
-      "volume_24h": 39594261.02251994,
-      "change_24h": -7.47899972,
-      "technical": {
-        "success": true,
-        "confluence_score": 3,
-        "signals": {
-          "rsi_bullish": true,
-          "macd_bullish": false,
-          "ema_bullish": true,
-          "adx_strong": true
-        },
-        "values": {
-          "rsi": 39.9,
-          "macd_histogram": 0,
-          "ema": 6.8,
-          "adx": 24.6
-        }
-      },
-      "news": {
-        "success": false,
-        "error": "No news API token"
-      },
-      "overall_score": 95.0,
-      "entry_type": "market",
-      "entry_price": "$6.5095 (Market)",
-      "stop_loss_price": "$6.0538",
-      "take_profit_price": "$7.2906 (T1), $8.1368 (T2)",
-      "position_size": "1.9%"
-    },
-    {
-      "symbol": "DASH",
-      "name": "Dash",
-      "price": 22.31731868532313,
-      "market_cap": 276118004.9177428,
-      "volume_24h": 40401226.96336758,
-      "change_24h": -5.45485077,
-      "technical": {
-        "success": true,
-        "confluence_score": 3,
-        "signals": {
-          "rsi_bullish": true,
-          "macd_bullish": false,
-          "ema_bullish": true,
-          "adx_strong": true
-        },
-        "values": {
-          "rsi": 40.0,
-          "macd_histogram": 0,
-          "ema": 23.09,
-          "adx": 25.0
-        }
-      },
-      "news": {
-        "success": false,
-        "error": "No news API token"
-      },
-      "overall_score": 95.0,
-      "entry_type": "market",
-      "entry_price": "$22.3173 (Market)",
-      "stop_loss_price": "$20.7551",
-      "take_profit_price": "$24.9954 (T1), $27.8966 (T2)",
-      "position_size": "1.9%"
-    },
-    {
-      "symbol": "KSM",
-      "name": "Kusama",
-      "price": 15.121070249898324,
-      "market_cap": 255621535.4695871,
-      "volume_24h": 24718406.29435463,
-      "change_24h": -6.77740767,
-      "technical": {
-        "success": true,
-        "confluence_score": 3,
-        "signals": {
-          "rsi_bullish": true,
-          "macd_bullish": false,
-          "ema_bullish": true,
-          "adx_strong": true
-        },
-        "values": {
-          "rsi": 42.0,
-          "macd_histogram": 0,
-          "ema": 15.63,
-          "adx": 29.1
-        }
-      },
-      "news": {
-        "success": false,
-        "error": "No news API token"
-      },
-      "overall_score": 95.0,
-      "entry_type": "market",
-      "entry_price": "$15.1211 (Market)",
-      "stop_loss_price": "$14.0626",
-      "take_profit_price": "$16.9356 (T1), $18.9013 (T2)",
-      "position_size": "1.9%"
-    },
-    {
-      "symbol": "GLM",
-      "name": "Golem",
-      "price": 0.2479809332540708,
-      "market_cap": 247980933.25407082,
-      "volume_24h": 19847087.23807317,
-      "change_24h": -8.1893831,
-      "technical": {
-        "success": true,
-        "confluence_score": 3,
-        "signals": {
-          "rsi_bullish": true,
-          "macd_bullish": false,
-          "ema_bullish": true,
-          "adx_strong": true
-        },
-        "values": {
-          "rsi": 35.5,
-          "macd_histogram": 0,
-          "ema": 0.26,
-          "adx": 35.0
-        }
-      },
-      "news": {
-        "success": false,
-        "error": "No news API token"
-      },
-      "overall_score": 95.0,
-      "entry_type": "market",
-      "entry_price": "$0.2480 (Market)",
-      "stop_loss_price": "$0.2306",
-      "take_profit_price": "$0.2777 (T1), $0.3100 (T2)",
-      "position_size": "1.9%"
-    },
-    {
-      "symbol": "SUSHI",
-      "name": "SushiSwap",
-      "price": 0.8433595121015225,
-      "market_cap": 232893955.99197674,
-      "volume_24h": 74047926.99468471,
-      "change_24h": -8.46381737,
-      "technical": {
-        "success": true,
-        "confluence_score": 3,
-        "signals": {
-          "rsi_bullish": true,
-          "macd_bullish": false,
-          "ema_bullish": true,
-          "adx_strong": true
-        },
-        "values": {
-          "rsi": 41.3,
-          "macd_histogram": 0,
-          "ema": 0.88,
-          "adx": 26.5
-        }
-      },
-      "news": {
-        "success": false,
-        "error": "No news API token"
-      },
-      "overall_score": 95.0,
-      "entry_type": "market",
-      "entry_price": "$0.8434 (Market)",
-      "stop_loss_price": "$0.7843",
-      "take_profit_price": "$0.9446 (T1), $1.0542 (T2)",
-      "position_size": "1.9%"
-    },
-    {
-      "symbol": "SNX",
-      "name": "Synthetix",
-      "price": 0.6563612443256013,
-      "market_cap": 225437913.57287592,
-      "volume_24h": 22746045.72153578,
-      "change_24h": -7.2695025,
-      "technical": {
-        "success": true,
-        "confluence_score": 3,
-        "signals": {
-          "rsi_bullish": true,
-          "macd_bullish": false,
-          "ema_bullish": true,
-          "adx_strong": true
-        },
-        "values": {
-          "rsi": 43.1,
-          "macd_histogram": 0,
-          "ema": 0.68,
-          "adx": 27.7
-        }
-      },
-      "news": {
-        "success": false,
-        "error": "No news API token"
-      },
-      "overall_score": 95.0,
-      "entry_type": "market",
-      "entry_price": "$0.6564 (Market)",
-      "stop_loss_price": "$0.6104",
-      "take_profit_price": "$0.7351 (T1), $0.8205 (T2)",
-      "position_size": "1.9%"
-    },
-    {
-      "symbol": "BAT",
-      "name": "Basic Attention Token",
-      "price": 0.1490624503173062,
-      "market_cap": 222947990.14941478,
-      "volume_24h": 25771669.15411234,
-      "change_24h": -7.39129,
-      "technical": {
-        "success": true,
-        "confluence_score": 3,
-        "signals": {
-          "rsi_bullish": true,
-          "macd_bullish": false,
-          "ema_bullish": true,
-          "adx_strong": true
-        },
-        "values": {
-          "rsi": 39.3,
-          "macd_histogram": 0,
-          "ema": 0.16,
-          "adx": 21.9
-        }
-      },
-      "news": {
-        "success": false,
-        "error": "No news API token"
-      },
-      "overall_score": 95.0,
-      "entry_type": "market",
-      "entry_price": "$0.1491 (Market)",
-      "stop_loss_price": "$0.1386",
-      "take_profit_price": "$0.1669 (T1), $0.1863 (T2)",
-      "position_size": "1.9%"
-    },
-    {
-      "symbol": "INJ",
-      "name": "Injective",
-      "price": 15.226932567504917,
-      "market_cap": 1522250692.1984596,
-      "volume_24h": 296608686.9019746,
-      "change_24h": -3.21658948,
-      "technical": {
-        "success": true,
-        "confluence_score": 3,
-        "signals": {
-          "rsi_bullish": true,
-          "macd_bullish": false,
-          "ema_bullish": true,
-          "adx_strong": true
-        },
-        "values": {
-          "rsi": 54.5,
-          "macd_histogram": 0,
-          "ema": 14.9,
-          "adx": 27.1
-        }
-      },
-      "news": {
-        "success": false,
-        "error": "No news API token"
-      },
-      "overall_score": 94.8,
-      "entry_type": "market",
-      "entry_price": "$15.2269 (Market)",
-      "stop_loss_price": "$14.1610",
-      "take_profit_price": "$17.0542 (T1), $19.0337 (T2)",
-      "position_size": "1.9%"
-    },
-    {
-      "symbol": "SFP",
-      "name": "SafePal",
-      "price": 0.48993431323962827,
-      "market_cap": 244967156.61981413,
-      "volume_24h": 5470192.58360885,
-      "change_24h": -5.34954444,
-      "technical": {
-        "success": true,
-        "confluence_score": 3,
-        "signals": {
-          "rsi_bullish": true,
-          "macd_bullish": false,
-          "ema_bullish": true,
-          "adx_strong": true
-        },
-        "values": {
-          "rsi": 37.8,
-          "macd_histogram": 0,
-          "ema": 0.51,
-          "adx": 21.6
-        }
-      },
-      "news": {
-        "success": false,
-        "error": "No news API token"
-      },
-      "overall_score": 94.6,
-      "entry_type": "market",
-      "entry_price": "$0.4899 (Market)",
-      "stop_loss_price": "$0.4556",
-      "take_profit_price": "$0.5487 (T1), $0.6124 (T2)",
-      "position_size": "1.9%"
-    },
-    {
-      "symbol": "ZIL",
-      "name": "Zilliqa",
-      "price": 0.011479548249678881,
-      "market_cap": 222731801.0257761,
-      "volume_24h": 24064074.15271628,
-      "change_24h": -6.86488339,
+      "symbol": "IOTA",
+      "name": "IOTA",
+      "price": 0.1999401612391783,
+      "market_cap": 791293655.1857579,
+      "volume_24h": 53735528.39990924,
+      "change_24h": -7.07979476,
       "technical": {
         "success": true,
         "confluence_score": 3,
@@ -700,28 +156,28 @@
         "values": {
           "rsi": 40.3,
           "macd_histogram": 0,
-          "ema": 0.01,
-          "adx": 25.9
+          "ema": 0.21,
+          "adx": 23.1
         }
       },
       "news": {
         "success": false,
         "error": "No news API token"
       },
-      "overall_score": 94.2,
+      "overall_score": 95.0,
       "entry_type": "market",
-      "entry_price": "$0.0115 (Market)",
-      "stop_loss_price": "$0.0107",
-      "take_profit_price": "$0.0129 (T1), $0.0143 (T2)",
+      "entry_price": "$0.1999 (Market)",
+      "stop_loss_price": "$0.1859",
+      "take_profit_price": "$0.2239 (T1), $0.2499 (T2)",
       "position_size": "1.9%"
     },
     {
-      "symbol": "MANA",
-      "name": "Decentraland",
-      "price": 0.29198537455378165,
-      "market_cap": 575132062.8619711,
-      "volume_24h": 79700962.01815137,
-      "change_24h": -7.80578107,
+      "symbol": "GALA",
+      "name": "Gala",
+      "price": 0.01679882910627741,
+      "market_cap": 766630222.0352366,
+      "volume_24h": 218051549.00485694,
+      "change_24h": -10.05087895,
       "technical": {
         "success": true,
         "confluence_score": 3,
@@ -732,30 +188,30 @@
           "adx_strong": true
         },
         "values": {
-          "rsi": 38.1,
+          "rsi": 38.4,
           "macd_histogram": 0,
-          "ema": 0.31,
-          "adx": 22.5
+          "ema": 0.02,
+          "adx": 28.3
         }
       },
       "news": {
         "success": false,
         "error": "No news API token"
       },
-      "overall_score": 93.9,
+      "overall_score": 95.0,
       "entry_type": "market",
-      "entry_price": "$0.2920 (Market)",
-      "stop_loss_price": "$0.2715",
-      "take_profit_price": "$0.3270 (T1), $0.3650 (T2)",
+      "entry_price": "$0.0168 (Market)",
+      "stop_loss_price": "$0.0156",
+      "take_profit_price": "$0.0188 (T1), $0.0210 (T2)",
       "position_size": "1.9%"
     },
     {
-      "symbol": "FET",
-      "name": "Artificial Superintelligence Alliance",
-      "price": 0.7030265256611179,
-      "market_cap": 1671819809.6075542,
-      "volume_24h": 192056306.85111523,
-      "change_24h": -4.52165977,
+      "symbol": "EGLD",
+      "name": "MultiversX",
+      "price": 15.319685475351797,
+      "market_cap": 437036701.3193373,
+      "volume_24h": 34682852.04431346,
+      "change_24h": -7.83449597,
       "technical": {
         "success": true,
         "confluence_score": 3,
@@ -766,30 +222,30 @@
           "adx_strong": true
         },
         "values": {
-          "rsi": 44.5,
+          "rsi": 38.5,
           "macd_histogram": 0,
-          "ema": 0.72,
-          "adx": 23.7
+          "ema": 15.87,
+          "adx": 28.1
         }
       },
       "news": {
         "success": false,
         "error": "No news API token"
       },
-      "overall_score": 93.7,
+      "overall_score": 95.0,
       "entry_type": "market",
-      "entry_price": "$0.7030 (Market)",
-      "stop_loss_price": "$0.6538",
-      "take_profit_price": "$0.7874 (T1), $0.8788 (T2)",
+      "entry_price": "$15.3197 (Market)",
+      "stop_loss_price": "$14.2473",
+      "take_profit_price": "$17.1580 (T1), $19.1496 (T2)",
       "position_size": "1.9%"
     },
     {
-      "symbol": "ROSE",
-      "name": "Oasis",
-      "price": 0.0278353049054202,
-      "market_cap": 206155083.57611278,
-      "volume_24h": 21754827.49028867,
-      "change_24h": -11.05932377,
+      "symbol": "AXS",
+      "name": "Axie Infinity",
+      "price": 2.386231959004043,
+      "market_cap": 396936595.8581839,
+      "volume_24h": 42435831.00440082,
+      "change_24h": -9.18392599,
       "technical": {
         "success": true,
         "confluence_score": 3,
@@ -800,43 +256,9 @@
           "adx_strong": true
         },
         "values": {
-          "rsi": 41.4,
+          "rsi": 37.4,
           "macd_histogram": 0,
-          "ema": 0.03,
-          "adx": 27.4
-        }
-      },
-      "news": {
-        "success": false,
-        "error": "No news API token"
-      },
-      "overall_score": 93.6,
-      "entry_type": "market",
-      "entry_price": "$0.0278 (Market)",
-      "stop_loss_price": "$0.0259",
-      "take_profit_price": "$0.0312 (T1), $0.0348 (T2)",
-      "position_size": "1.9%"
-    },
-    {
-      "symbol": "FLOW",
-      "name": "Flow",
-      "price": 0.38867925145212634,
-      "market_cap": 622790489.4670116,
-      "volume_24h": 38188998.24884091,
-      "change_24h": -5.20537636,
-      "technical": {
-        "success": true,
-        "confluence_score": 3,
-        "signals": {
-          "rsi_bullish": true,
-          "macd_bullish": false,
-          "ema_bullish": true,
-          "adx_strong": true
-        },
-        "values": {
-          "rsi": 46.0,
-          "macd_histogram": 0,
-          "ema": 0.39,
+          "ema": 2.49,
           "adx": 26.1
         }
       },
@@ -844,20 +266,20 @@
         "success": false,
         "error": "No news API token"
       },
-      "overall_score": 93.5,
+      "overall_score": 95.0,
       "entry_type": "market",
-      "entry_price": "$0.3887 (Market)",
-      "stop_loss_price": "$0.3615",
-      "take_profit_price": "$0.4353 (T1), $0.4858 (T2)",
+      "entry_price": "$2.3862 (Market)",
+      "stop_loss_price": "$2.2192",
+      "take_profit_price": "$2.6726 (T1), $2.9828 (T2)",
       "position_size": "1.9%"
     },
     {
-      "symbol": "IOTA",
-      "name": "IOTA",
-      "price": 0.20068210977415676,
-      "market_cap": 794230029.5717949,
-      "volume_24h": 53833694.54006388,
-      "change_24h": -6.02349714,
+      "symbol": "KSM",
+      "name": "Kusama",
+      "price": 15.10728288656162,
+      "market_cap": 255396705.4365484,
+      "volume_24h": 24494344.60895832,
+      "change_24h": -7.4232266,
       "technical": {
         "success": true,
         "confluence_score": 3,
@@ -868,30 +290,166 @@
           "adx_strong": true
         },
         "values": {
-          "rsi": 41.9,
+          "rsi": 40.4,
           "macd_histogram": 0,
-          "ema": 0.21,
-          "adx": 24.3
+          "ema": 15.59,
+          "adx": 28.2
         }
       },
       "news": {
         "success": false,
         "error": "No news API token"
       },
-      "overall_score": 93.3,
+      "overall_score": 95.0,
       "entry_type": "market",
-      "entry_price": "$0.2007 (Market)",
-      "stop_loss_price": "$0.1866",
-      "take_profit_price": "$0.2248 (T1), $0.2509 (T2)",
+      "entry_price": "$15.1073 (Market)",
+      "stop_loss_price": "$14.0498",
+      "take_profit_price": "$16.9202 (T1), $18.8841 (T2)",
+      "position_size": "1.9%"
+    },
+    {
+      "symbol": "MINA",
+      "name": "Mina",
+      "price": 0.1900609605960279,
+      "market_cap": 237018507.68887007,
+      "volume_24h": 41337905.68788937,
+      "change_24h": -8.86918237,
+      "technical": {
+        "success": true,
+        "confluence_score": 3,
+        "signals": {
+          "rsi_bullish": true,
+          "macd_bullish": false,
+          "ema_bullish": true,
+          "adx_strong": true
+        },
+        "values": {
+          "rsi": 38.9,
+          "macd_histogram": 0,
+          "ema": 0.2,
+          "adx": 23.9
+        }
+      },
+      "news": {
+        "success": false,
+        "error": "No news API token"
+      },
+      "overall_score": 95.0,
+      "entry_type": "market",
+      "entry_price": "$0.1901 (Market)",
+      "stop_loss_price": "$0.1768",
+      "take_profit_price": "$0.2129 (T1), $0.2376 (T2)",
+      "position_size": "1.9%"
+    },
+    {
+      "symbol": "QTUM",
+      "name": "Qtum",
+      "price": 2.116915309022537,
+      "market_cap": 223900139.2480739,
+      "volume_24h": 73099521.91562952,
+      "change_24h": -7.25483694,
+      "technical": {
+        "success": true,
+        "confluence_score": 3,
+        "signals": {
+          "rsi_bullish": true,
+          "macd_bullish": false,
+          "ema_bullish": true,
+          "adx_strong": true
+        },
+        "values": {
+          "rsi": 38.4,
+          "macd_histogram": 0,
+          "ema": 2.19,
+          "adx": 23.5
+        }
+      },
+      "news": {
+        "success": false,
+        "error": "No news API token"
+      },
+      "overall_score": 95.0,
+      "entry_type": "market",
+      "entry_price": "$2.1169 (Market)",
+      "stop_loss_price": "$1.9687",
+      "take_profit_price": "$2.3709 (T1), $2.6461 (T2)",
+      "position_size": "1.9%"
+    },
+    {
+      "symbol": "ZIL",
+      "name": "Zilliqa",
+      "price": 0.011446533833744124,
+      "market_cap": 222091537.30612496,
+      "volume_24h": 23941006.24731581,
+      "change_24h": -7.78568295,
+      "technical": {
+        "success": true,
+        "confluence_score": 3,
+        "signals": {
+          "rsi_bullish": true,
+          "macd_bullish": false,
+          "ema_bullish": true,
+          "adx_strong": true
+        },
+        "values": {
+          "rsi": 38.6,
+          "macd_histogram": 0,
+          "ema": 0.01,
+          "adx": 25.6
+        }
+      },
+      "news": {
+        "success": false,
+        "error": "No news API token"
+      },
+      "overall_score": 95.0,
+      "entry_type": "market",
+      "entry_price": "$0.0114 (Market)",
+      "stop_loss_price": "$0.0106",
+      "take_profit_price": "$0.0128 (T1), $0.0143 (T2)",
+      "position_size": "1.9%"
+    },
+    {
+      "symbol": "RPL",
+      "name": "Rocket Pool",
+      "price": 7.760230277000443,
+      "market_cap": 167823861.64422026,
+      "volume_24h": 16150712.16573528,
+      "change_24h": -10.71169473,
+      "technical": {
+        "success": true,
+        "confluence_score": 3,
+        "signals": {
+          "rsi_bullish": true,
+          "macd_bullish": false,
+          "ema_bullish": true,
+          "adx_strong": true
+        },
+        "values": {
+          "rsi": 35.5,
+          "macd_histogram": 0,
+          "ema": 8.33,
+          "adx": 31.5
+        }
+      },
+      "news": {
+        "success": false,
+        "error": "No news API token"
+      },
+      "overall_score": 95.0,
+      "entry_type": "market",
+      "entry_price": "$7.7602 (Market)",
+      "stop_loss_price": "$7.2170",
+      "take_profit_price": "$8.6915 (T1), $9.7003 (T2)",
       "position_size": "1.9%"
     },
     {
       "symbol": "ELF",
       "name": "aelf",
-      "price": 0.21171751548982184,
-      "market_cap": 166376724.41489145,
-      "volume_24h": 7895533.57435817,
-      "change_24h": -3.0419768,
+      "price": 0.21176349404345593,
+      "market_cap": 166412856.3387395,
+      "volume_24h": 7834434.83749268,
+      "change_24h": -3.03185615,
       "technical": {
         "success": true,
         "confluence_score": 3,
@@ -912,20 +470,20 @@
         "success": false,
         "error": "No news API token"
       },
-      "overall_score": 93.2,
+      "overall_score": 95.0,
       "entry_type": "market",
-      "entry_price": "$0.2117 (Market)",
+      "entry_price": "$0.2118 (Market)",
       "stop_loss_price": "$0.1969",
-      "take_profit_price": "$0.2371 (T1), $0.2646 (T2)",
+      "take_profit_price": "$0.2372 (T1), $0.2647 (T2)",
       "position_size": "1.9%"
     },
     {
-      "symbol": "YFI",
-      "name": "yearn.finance",
-      "price": 5631.803320261545,
-      "market_cap": 190581687.42648932,
-      "volume_24h": 32379150.38994531,
-      "change_24h": -5.46512511,
+      "symbol": "NEO",
+      "name": "Neo",
+      "price": 6.245392187638817,
+      "market_cap": 440542664.0525748,
+      "volume_24h": 47145769.72400986,
+      "change_24h": -7.69062974,
       "technical": {
         "success": true,
         "confluence_score": 3,
@@ -936,30 +494,132 @@
           "adx_strong": true
         },
         "values": {
-          "rsi": 41.7,
+          "rsi": 38.3,
           "macd_histogram": 0,
-          "ema": 5800.23,
-          "adx": 28.9
+          "ema": 6.48,
+          "adx": 22.6
         }
       },
       "news": {
         "success": false,
         "error": "No news API token"
       },
-      "overall_score": 93.0,
+      "overall_score": 94.9,
       "entry_type": "market",
-      "entry_price": "$5631.8033 (Market)",
-      "stop_loss_price": "$5237.5771",
-      "take_profit_price": "$6307.6197 (T1), $7039.7542 (T2)",
+      "entry_price": "$6.2454 (Market)",
+      "stop_loss_price": "$5.8082",
+      "take_profit_price": "$6.9948 (T1), $7.8067 (T2)",
       "position_size": "1.9%"
     },
     {
-      "symbol": "GALA",
-      "name": "Gala",
-      "price": 0.016815013204244583,
-      "market_cap": 767369236.4111444,
-      "volume_24h": 217797988.36134806,
-      "change_24h": -9.33250924,
+      "symbol": "MANA",
+      "name": "Decentraland",
+      "price": 0.29144004359310965,
+      "market_cap": 574057908.6484833,
+      "volume_24h": 79245752.75424404,
+      "change_24h": -8.59034986,
+      "technical": {
+        "success": true,
+        "confluence_score": 3,
+        "signals": {
+          "rsi_bullish": true,
+          "macd_bullish": false,
+          "ema_bullish": true,
+          "adx_strong": true
+        },
+        "values": {
+          "rsi": 36.7,
+          "macd_histogram": 0,
+          "ema": 0.31,
+          "adx": 22.7
+        }
+      },
+      "news": {
+        "success": false,
+        "error": "No news API token"
+      },
+      "overall_score": 94.4,
+      "entry_type": "market",
+      "entry_price": "$0.2914 (Market)",
+      "stop_loss_price": "$0.2710",
+      "take_profit_price": "$0.3264 (T1), $0.3643 (T2)",
+      "position_size": "1.9%"
+    },
+    {
+      "symbol": "ASTR",
+      "name": "Astar",
+      "price": 0.02483411730629373,
+      "market_cap": 202407032.93401307,
+      "volume_24h": 13716888.74541108,
+      "change_24h": -6.25036558,
+      "technical": {
+        "success": true,
+        "confluence_score": 3,
+        "signals": {
+          "rsi_bullish": true,
+          "macd_bullish": false,
+          "ema_bullish": true,
+          "adx_strong": true
+        },
+        "values": {
+          "rsi": 40.9,
+          "macd_histogram": 0,
+          "ema": 0.03,
+          "adx": 24.1
+        }
+      },
+      "news": {
+        "success": false,
+        "error": "No news API token"
+      },
+      "overall_score": 94.3,
+      "entry_type": "market",
+      "entry_price": "$0.0248 (Market)",
+      "stop_loss_price": "$0.0231",
+      "take_profit_price": "$0.0278 (T1), $0.0310 (T2)",
+      "position_size": "1.9%"
+    },
+    {
+      "symbol": "FTT",
+      "name": "FTX Token",
+      "price": 0.9226653801189983,
+      "market_cap": 303460125.97909003,
+      "volume_24h": 12690491.45660909,
+      "change_24h": -6.34414472,
+      "technical": {
+        "success": true,
+        "confluence_score": 3,
+        "signals": {
+          "rsi_bullish": true,
+          "macd_bullish": false,
+          "ema_bullish": true,
+          "adx_strong": true
+        },
+        "values": {
+          "rsi": 39.2,
+          "macd_histogram": 0,
+          "ema": 0.95,
+          "adx": 39.0
+        }
+      },
+      "news": {
+        "success": false,
+        "error": "No news API token"
+      },
+      "overall_score": 94.2,
+      "entry_type": "market",
+      "entry_price": "$0.9227 (Market)",
+      "stop_loss_price": "$0.8581",
+      "take_profit_price": "$1.0334 (T1), $1.1533 (T2)",
+      "position_size": "1.9%"
+    },
+    {
+      "symbol": "ROSE",
+      "name": "Oasis",
+      "price": 0.0276702112288646,
+      "market_cap": 204932496.57342768,
+      "volume_24h": 21685930.51327092,
+      "change_24h": -12.40787985,
       "technical": {
         "success": true,
         "confluence_score": 3,
@@ -972,130 +632,28 @@
         "values": {
           "rsi": 39.7,
           "macd_histogram": 0,
-          "ema": 0.02,
-          "adx": 28.5
-        }
-      },
-      "news": {
-        "success": false,
-        "error": "No news API token"
-      },
-      "overall_score": 92.9,
-      "entry_type": "market",
-      "entry_price": "$0.0168 (Market)",
-      "stop_loss_price": "$0.0156",
-      "take_profit_price": "$0.0188 (T1), $0.0210 (T2)",
-      "position_size": "1.9%"
-    },
-    {
-      "symbol": "MINA",
-      "name": "Mina",
-      "price": 0.1905533527415096,
-      "market_cap": 237632278.6549289,
-      "volume_24h": 43371979.21377707,
-      "change_24h": -7.76308653,
-      "technical": {
-        "success": true,
-        "confluence_score": 3,
-        "signals": {
-          "rsi_bullish": true,
-          "macd_bullish": false,
-          "ema_bullish": true,
-          "adx_strong": true
-        },
-        "values": {
-          "rsi": 40.2,
-          "macd_histogram": 0,
-          "ema": 0.2,
-          "adx": 24.3
-        }
-      },
-      "news": {
-        "success": false,
-        "error": "No news API token"
-      },
-      "overall_score": 92.8,
-      "entry_type": "market",
-      "entry_price": "$0.1906 (Market)",
-      "stop_loss_price": "$0.1772",
-      "take_profit_price": "$0.2134 (T1), $0.2382 (T2)",
-      "position_size": "1.9%"
-    },
-    {
-      "symbol": "RVN",
-      "name": "Ravencoin",
-      "price": 0.01373254480854498,
-      "market_cap": 212499294.5376011,
-      "volume_24h": 24668688.18974376,
-      "change_24h": -6.97888817,
-      "technical": {
-        "success": true,
-        "confluence_score": 3,
-        "signals": {
-          "rsi_bullish": true,
-          "macd_bullish": false,
-          "ema_bullish": true,
-          "adx_strong": true
-        },
-        "values": {
-          "rsi": 37.6,
-          "macd_histogram": 0,
-          "ema": 0.01,
-          "adx": 23.7
-        }
-      },
-      "news": {
-        "success": false,
-        "error": "No news API token"
-      },
-      "overall_score": 92.7,
-      "entry_type": "market",
-      "entry_price": "$0.0137 (Market)",
-      "stop_loss_price": "$0.0128",
-      "take_profit_price": "$0.0154 (T1), $0.0172 (T2)",
-      "position_size": "1.9%"
-    },
-    {
-      "symbol": "IOTX",
-      "name": "IoTeX",
-      "price": 0.028984426186917583,
-      "market_cap": 273652662.2752789,
-      "volume_24h": 15790432.31680218,
-      "change_24h": -5.75311616,
-      "technical": {
-        "success": true,
-        "confluence_score": 3,
-        "signals": {
-          "rsi_bullish": true,
-          "macd_bullish": false,
-          "ema_bullish": true,
-          "adx_strong": true
-        },
-        "values": {
-          "rsi": 41.7,
-          "macd_histogram": 0,
           "ema": 0.03,
-          "adx": 21.0
+          "adx": 26.9
         }
       },
       "news": {
         "success": false,
         "error": "No news API token"
       },
-      "overall_score": 92.5,
+      "overall_score": 94.0,
       "entry_type": "market",
-      "entry_price": "$0.0290 (Market)",
-      "stop_loss_price": "$0.0270",
-      "take_profit_price": "$0.0325 (T1), $0.0362 (T2)",
+      "entry_price": "$0.0277 (Market)",
+      "stop_loss_price": "$0.0257",
+      "take_profit_price": "$0.0310 (T1), $0.0346 (T2)",
       "position_size": "1.9%"
     },
     {
-      "symbol": "CHZ",
-      "name": "Chiliz",
-      "price": 0.040479778380377675,
-      "market_cap": 395782245.44001365,
-      "volume_24h": 61011609.02338143,
-      "change_24h": -7.77530769,
+      "symbol": "SAND",
+      "name": "The Sandbox",
+      "price": 0.2858422035760848,
+      "market_cap": 735554653.1436378,
+      "volume_24h": 98231246.65168732,
+      "change_24h": -7.54083186,
       "technical": {
         "success": true,
         "confluence_score": 3,
@@ -1106,30 +664,30 @@
           "adx_strong": true
         },
         "values": {
-          "rsi": 36.8,
+          "rsi": 39.2,
           "macd_histogram": 0,
-          "ema": 0.04,
-          "adx": 23.5
+          "ema": 0.3,
+          "adx": 24.2
         }
       },
       "news": {
         "success": false,
         "error": "No news API token"
       },
-      "overall_score": 91.6,
+      "overall_score": 93.8,
       "entry_type": "market",
-      "entry_price": "$0.0405 (Market)",
-      "stop_loss_price": "$0.0376",
-      "take_profit_price": "$0.0453 (T1), $0.0506 (T2)",
-      "position_size": "1.8%"
+      "entry_price": "$0.2858 (Market)",
+      "stop_loss_price": "$0.2658",
+      "take_profit_price": "$0.3201 (T1), $0.3573 (T2)",
+      "position_size": "1.9%"
     },
     {
       "symbol": "GRT",
       "name": "The Graph",
-      "price": 0.09333235266803788,
-      "market_cap": 973205483.647695,
-      "volume_24h": 104047092.08257978,
-      "change_24h": -9.20872505,
+      "price": 0.09307364710290073,
+      "market_cap": 970507880.2181836,
+      "volume_24h": 103702699.47395368,
+      "change_24h": -9.42768606,
       "technical": {
         "success": true,
         "confluence_score": 3,
@@ -1140,710 +698,30 @@
           "adx_strong": true
         },
         "values": {
-          "rsi": 37.4,
+          "rsi": 35.8,
           "macd_histogram": 0,
           "ema": 0.1,
-          "adx": 22.5
+          "adx": 22.8
         }
       },
       "news": {
         "success": false,
         "error": "No news API token"
       },
-      "overall_score": 91.4,
+      "overall_score": 93.5,
       "entry_type": "market",
-      "entry_price": "$0.0933 (Market)",
-      "stop_loss_price": "$0.0868",
-      "take_profit_price": "$0.1045 (T1), $0.1167 (T2)",
-      "position_size": "1.8%"
-    },
-    {
-      "symbol": "SUN",
-      "name": "Sun [New]",
-      "price": 0.0245961426715811,
-      "market_cap": 471133285.3423847,
-      "volume_24h": 53628912.94396609,
-      "change_24h": 2.27203246,
-      "technical": {
-        "success": true,
-        "confluence_score": 3,
-        "signals": {
-          "rsi_bullish": true,
-          "macd_bullish": false,
-          "ema_bullish": true,
-          "adx_strong": true
-        },
-        "values": {
-          "rsi": 73.7,
-          "macd_histogram": 0,
-          "ema": 0.02,
-          "adx": 49.2
-        }
-      },
-      "news": {
-        "success": false,
-        "error": "No news API token"
-      },
-      "overall_score": 91.3,
-      "entry_type": "market",
-      "entry_price": "$0.0246 (Market)",
-      "stop_loss_price": "$0.0226",
-      "take_profit_price": "$0.0275 (T1), $0.0307 (T2)",
-      "position_size": "1.8%"
-    },
-    {
-      "symbol": "JST",
-      "name": "JUST",
-      "price": 0.03384088997768187,
-      "market_cap": 335024810.7790505,
-      "volume_24h": 55153379.63765866,
-      "change_24h": -1.73349435,
-      "technical": {
-        "success": true,
-        "confluence_score": 3,
-        "signals": {
-          "rsi_bullish": true,
-          "macd_bullish": false,
-          "ema_bullish": true,
-          "adx_strong": true
-        },
-        "values": {
-          "rsi": 47.3,
-          "macd_histogram": 0,
-          "ema": 0.03,
-          "adx": 20.2
-        }
-      },
-      "news": {
-        "success": false,
-        "error": "No news API token"
-      },
-      "overall_score": 91.0,
-      "entry_type": "market",
-      "entry_price": "$0.0338 (Market)",
-      "stop_loss_price": "$0.0315",
-      "take_profit_price": "$0.0379 (T1), $0.0423 (T2)",
-      "position_size": "1.8%"
-    },
-    {
-      "symbol": "ASTR",
-      "name": "Astar",
-      "price": 0.024735942359281487,
-      "market_cap": 201606725.85926417,
-      "volume_24h": 12912861.82469229,
-      "change_24h": -5.98385259,
-      "technical": {
-        "success": true,
-        "confluence_score": 3,
-        "signals": {
-          "rsi_bullish": true,
-          "macd_bullish": false,
-          "ema_bullish": true,
-          "adx_strong": true
-        },
-        "values": {
-          "rsi": 41.1,
-          "macd_histogram": 0,
-          "ema": 0.03,
-          "adx": 24.6
-        }
-      },
-      "news": {
-        "success": false,
-        "error": "No news API token"
-      },
-      "overall_score": 90.9,
-      "entry_type": "market",
-      "entry_price": "$0.0247 (Market)",
-      "stop_loss_price": "$0.0230",
-      "take_profit_price": "$0.0277 (T1), $0.0309 (T2)",
-      "position_size": "1.8%"
-    },
-    {
-      "symbol": "ACH",
-      "name": "Alchemy Pay",
-      "price": 0.021451682842294602,
-      "market_cap": 201171523.47134322,
-      "volume_24h": 38483424.4354023,
-      "change_24h": -7.98489082,
-      "technical": {
-        "success": true,
-        "confluence_score": 3,
-        "signals": {
-          "rsi_bullish": true,
-          "macd_bullish": false,
-          "ema_bullish": true,
-          "adx_strong": true
-        },
-        "values": {
-          "rsi": 37.8,
-          "macd_histogram": 0,
-          "ema": 0.02,
-          "adx": 20.3
-        }
-      },
-      "news": {
-        "success": false,
-        "error": "No news API token"
-      },
-      "overall_score": 90.8,
-      "entry_type": "market",
-      "entry_price": "$0.0215 (Market)",
-      "stop_loss_price": "$0.0200",
-      "take_profit_price": "$0.0240 (T1), $0.0268 (T2)",
-      "position_size": "1.8%"
-    },
-    {
-      "symbol": "XTZ",
-      "name": "Tezos",
-      "price": 0.8481001783788938,
-      "market_cap": 894493049.7965101,
-      "volume_24h": 57102338.48780134,
-      "change_24h": -3.05579778,
-      "technical": {
-        "success": true,
-        "confluence_score": 3,
-        "signals": {
-          "rsi_bullish": true,
-          "macd_bullish": false,
-          "ema_bullish": true,
-          "adx_strong": true
-        },
-        "values": {
-          "rsi": 46.2,
-          "macd_histogram": 0,
-          "ema": 0.86,
-          "adx": 32.0
-        }
-      },
-      "news": {
-        "success": false,
-        "error": "No news API token"
-      },
-      "overall_score": 90.5,
-      "entry_type": "market",
-      "entry_price": "$0.8481 (Market)",
-      "stop_loss_price": "$0.7887",
-      "take_profit_price": "$0.9499 (T1), $1.0601 (T2)",
-      "position_size": "1.8%"
-    },
-    {
-      "symbol": "AXS",
-      "name": "Axie Infinity",
-      "price": 2.393224760091871,
-      "market_cap": 398099312.1805641,
-      "volume_24h": 42672476.69799737,
-      "change_24h": -8.23036614,
-      "technical": {
-        "success": true,
-        "confluence_score": 3,
-        "signals": {
-          "rsi_bullish": true,
-          "macd_bullish": false,
-          "ema_bullish": true,
-          "adx_strong": true
-        },
-        "values": {
-          "rsi": 39.1,
-          "macd_histogram": 0,
-          "ema": 2.5,
-          "adx": 26.2
-        }
-      },
-      "news": {
-        "success": false,
-        "error": "No news API token"
-      },
-      "overall_score": 89.3,
-      "entry_type": "market",
-      "entry_price": "$2.3932 (Market)",
-      "stop_loss_price": "$2.2257",
-      "take_profit_price": "$2.6804 (T1), $2.9915 (T2)",
-      "position_size": "1.8%"
-    },
-    {
-      "symbol": "RSR",
-      "name": "Reserve Rights",
-      "price": 0.009161869285511388,
-      "market_cap": 542404035.7844433,
-      "volume_24h": 58501692.54798128,
-      "change_24h": -4.00966623,
-      "technical": {
-        "success": true,
-        "confluence_score": 3,
-        "signals": {
-          "rsi_bullish": true,
-          "macd_bullish": false,
-          "ema_bullish": true,
-          "adx_strong": true
-        },
-        "values": {
-          "rsi": 46.2,
-          "macd_histogram": 0,
-          "ema": 0.01,
-          "adx": 28.1
-        }
-      },
-      "news": {
-        "success": false,
-        "error": "No news API token"
-      },
-      "overall_score": 89.0,
-      "entry_type": "market",
-      "entry_price": "$0.0092 (Market)",
-      "stop_loss_price": "$0.0085",
-      "take_profit_price": "$0.0103 (T1), $0.0115 (T2)",
-      "position_size": "1.8%"
-    },
-    {
-      "symbol": "NEO",
-      "name": "Neo",
-      "price": 6.253432894371951,
-      "market_cap": 441109846.1059439,
-      "volume_24h": 46595325.889851,
-      "change_24h": -7.03743275,
-      "technical": {
-        "success": true,
-        "confluence_score": 3,
-        "signals": {
-          "rsi_bullish": true,
-          "macd_bullish": false,
-          "ema_bullish": true,
-          "adx_strong": true
-        },
-        "values": {
-          "rsi": 40.4,
-          "macd_histogram": 0,
-          "ema": 6.5,
-          "adx": 22.5
-        }
-      },
-      "news": {
-        "success": false,
-        "error": "No news API token"
-      },
-      "overall_score": 88.9,
-      "entry_type": "market",
-      "entry_price": "$6.2534 (Market)",
-      "stop_loss_price": "$5.8157",
-      "take_profit_price": "$7.0038 (T1), $7.8168 (T2)",
-      "position_size": "1.8%"
-    },
-    {
-      "symbol": "IMX",
-      "name": "Immutable",
-      "price": 0.5680354692606799,
-      "market_cap": 1088026992.3755426,
-      "volume_24h": 71956140.84939224,
-      "change_24h": -7.67722289,
-      "technical": {
-        "success": true,
-        "confluence_score": 3,
-        "signals": {
-          "rsi_bullish": true,
-          "macd_bullish": false,
-          "ema_bullish": true,
-          "adx_strong": true
-        },
-        "values": {
-          "rsi": 42.6,
-          "macd_histogram": 0,
-          "ema": 0.59,
-          "adx": 31.9
-        }
-      },
-      "news": {
-        "success": false,
-        "error": "No news API token"
-      },
-      "overall_score": 88.8,
-      "entry_type": "market",
-      "entry_price": "$0.5680 (Market)",
-      "stop_loss_price": "$0.5283",
-      "take_profit_price": "$0.6362 (T1), $0.7100 (T2)",
-      "position_size": "1.8%"
-    },
-    {
-      "symbol": "CAKE",
-      "name": "PancakeSwap",
-      "price": 2.73428571737608,
-      "market_cap": 941861793.0879395,
-      "volume_24h": 165564466.4831187,
-      "change_24h": -5.66865294,
-      "technical": {
-        "success": true,
-        "confluence_score": 3,
-        "signals": {
-          "rsi_bullish": true,
-          "macd_bullish": false,
-          "ema_bullish": true,
-          "adx_strong": true
-        },
-        "values": {
-          "rsi": 39.6,
-          "macd_histogram": 0,
-          "ema": 2.83,
-          "adx": 22.0
-        }
-      },
-      "news": {
-        "success": false,
-        "error": "No news API token"
-      },
-      "overall_score": 88.8,
-      "entry_type": "market",
-      "entry_price": "$2.7343 (Market)",
-      "stop_loss_price": "$2.5429",
-      "take_profit_price": "$3.0624 (T1), $3.4179 (T2)",
-      "position_size": "1.8%"
-    },
-    {
-      "symbol": "TFUEL",
-      "name": "Theta Fuel",
-      "price": 0.03654360248995613,
-      "market_cap": 257176144.86667085,
-      "volume_24h": 3478072.7669776,
-      "change_24h": -5.56525502,
-      "technical": {
-        "success": true,
-        "confluence_score": 3,
-        "signals": {
-          "rsi_bullish": true,
-          "macd_bullish": false,
-          "ema_bullish": true,
-          "adx_strong": true
-        },
-        "values": {
-          "rsi": 37.4,
-          "macd_histogram": 0,
-          "ema": 0.04,
-          "adx": 35.8
-        }
-      },
-      "news": {
-        "success": false,
-        "error": "No news API token"
-      },
-      "overall_score": 88.8,
-      "entry_type": "market",
-      "entry_price": "$0.0365 (Market)",
-      "stop_loss_price": "$0.0340",
-      "take_profit_price": "$0.0409 (T1), $0.0457 (T2)",
-      "position_size": "1.8%"
-    },
-    {
-      "symbol": "APE",
-      "name": "ApeCoin",
-      "price": 0.6060490236943212,
-      "market_cap": 456143715.84780174,
-      "volume_24h": 60232525.59127752,
-      "change_24h": -6.39763421,
-      "technical": {
-        "success": true,
-        "confluence_score": 3,
-        "signals": {
-          "rsi_bullish": true,
-          "macd_bullish": false,
-          "ema_bullish": true,
-          "adx_strong": true
-        },
-        "values": {
-          "rsi": 39.1,
-          "macd_histogram": 0,
-          "ema": 0.63,
-          "adx": 21.3
-        }
-      },
-      "news": {
-        "success": false,
-        "error": "No news API token"
-      },
-      "overall_score": 88.6,
-      "entry_type": "market",
-      "entry_price": "$0.6060 (Market)",
-      "stop_loss_price": "$0.5636",
-      "take_profit_price": "$0.6788 (T1), $0.7576 (T2)",
-      "position_size": "1.8%"
-    },
-    {
-      "symbol": "EGLD",
-      "name": "MultiversX",
-      "price": 15.33300868951879,
-      "market_cap": 437416783.1153952,
-      "volume_24h": 34505240.67516135,
-      "change_24h": -7.11069173,
-      "technical": {
-        "success": true,
-        "confluence_score": 3,
-        "signals": {
-          "rsi_bullish": true,
-          "macd_bullish": false,
-          "ema_bullish": true,
-          "adx_strong": true
-        },
-        "values": {
-          "rsi": 40.6,
-          "macd_histogram": 0,
-          "ema": 15.92,
-          "adx": 29.5
-        }
-      },
-      "news": {
-        "success": false,
-        "error": "No news API token"
-      },
-      "overall_score": 88.6,
-      "entry_type": "market",
-      "entry_price": "$15.3330 (Market)",
-      "stop_loss_price": "$14.2597",
-      "take_profit_price": "$17.1730 (T1), $19.1663 (T2)",
-      "position_size": "1.8%"
-    },
-    {
-      "symbol": "GNO",
-      "name": "Gnosis",
-      "price": 142.4743743979313,
-      "market_cap": 375998377.85439336,
-      "volume_24h": 16844317.98430368,
-      "change_24h": -0.81407251,
-      "technical": {
-        "success": true,
-        "confluence_score": 3,
-        "signals": {
-          "rsi_bullish": true,
-          "macd_bullish": false,
-          "ema_bullish": true,
-          "adx_strong": true
-        },
-        "values": {
-          "rsi": 56.9,
-          "macd_histogram": 0,
-          "ema": 139.5,
-          "adx": 44.1
-        }
-      },
-      "news": {
-        "success": false,
-        "error": "No news API token"
-      },
-      "overall_score": 88.5,
-      "entry_type": "market",
-      "entry_price": "$142.4744 (Market)",
-      "stop_loss_price": "$132.5012",
-      "take_profit_price": "$159.5713 (T1), $178.0930 (T2)",
-      "position_size": "1.8%"
-    },
-    {
-      "symbol": "ZEC",
-      "name": "Zcash",
-      "price": 37.26557055811373,
-      "market_cap": 602442207.1060677,
-      "volume_24h": 93823630.19044591,
-      "change_24h": -4.49648578,
-      "technical": {
-        "success": true,
-        "confluence_score": 3,
-        "signals": {
-          "rsi_bullish": true,
-          "macd_bullish": false,
-          "ema_bullish": true,
-          "adx_strong": true
-        },
-        "values": {
-          "rsi": 41.8,
-          "macd_histogram": 0,
-          "ema": 38.73,
-          "adx": 20.5
-        }
-      },
-      "news": {
-        "success": false,
-        "error": "No news API token"
-      },
-      "overall_score": 88.4,
-      "entry_type": "market",
-      "entry_price": "$37.2656 (Market)",
-      "stop_loss_price": "$34.6570",
-      "take_profit_price": "$41.7374 (T1), $46.5820 (T2)",
-      "position_size": "1.8%"
-    },
-    {
-      "symbol": "PENDLE",
-      "name": "Pendle",
-      "price": 5.477795506220572,
-      "market_cap": 916808160.3483126,
-      "volume_24h": 265318088.12614805,
-      "change_24h": -1.66822554,
-      "technical": {
-        "success": true,
-        "confluence_score": 3,
-        "signals": {
-          "rsi_bullish": true,
-          "macd_bullish": false,
-          "ema_bullish": true,
-          "adx_strong": true
-        },
-        "values": {
-          "rsi": 51.0,
-          "macd_histogram": 0,
-          "ema": 5.42,
-          "adx": 35.8
-        }
-      },
-      "news": {
-        "success": false,
-        "error": "No news API token"
-      },
-      "overall_score": 88.0,
-      "entry_type": "market",
-      "entry_price": "$5.4778 (Market)",
-      "stop_loss_price": "$5.0943",
-      "take_profit_price": "$6.1351 (T1), $6.8472 (T2)",
-      "position_size": "1.8%"
-    },
-    {
-      "symbol": "TWT",
-      "name": "Trust Wallet Token",
-      "price": 0.7807184210161829,
-      "market_cap": 325286252.04455054,
-      "volume_24h": 15732886.94127506,
-      "change_24h": -4.10268861,
-      "technical": {
-        "success": true,
-        "confluence_score": 3,
-        "signals": {
-          "rsi_bullish": true,
-          "macd_bullish": false,
-          "ema_bullish": true,
-          "adx_strong": true
-        },
-        "values": {
-          "rsi": 43.9,
-          "macd_histogram": 0,
-          "ema": 0.79,
-          "adx": 28.4
-        }
-      },
-      "news": {
-        "success": false,
-        "error": "No news API token"
-      },
-      "overall_score": 87.8,
-      "entry_type": "market",
-      "entry_price": "$0.7807 (Market)",
-      "stop_loss_price": "$0.7261",
-      "take_profit_price": "$0.8744 (T1), $0.9759 (T2)",
-      "position_size": "1.8%"
-    },
-    {
-      "symbol": "QTUM",
-      "name": "Qtum",
-      "price": 2.1180203854608597,
-      "market_cap": 224016903.5633627,
-      "volume_24h": 72832226.33379534,
-      "change_24h": -6.77693402,
-      "technical": {
-        "success": true,
-        "confluence_score": 3,
-        "signals": {
-          "rsi_bullish": true,
-          "macd_bullish": false,
-          "ema_bullish": true,
-          "adx_strong": true
-        },
-        "values": {
-          "rsi": 40.4,
-          "macd_histogram": 0,
-          "ema": 2.2,
-          "adx": 23.8
-        }
-      },
-      "news": {
-        "success": false,
-        "error": "No news API token"
-      },
-      "overall_score": 87.7,
-      "entry_type": "market",
-      "entry_price": "$2.1180 (Market)",
-      "stop_loss_price": "$1.9698",
-      "take_profit_price": "$2.3722 (T1), $2.6475 (T2)",
-      "position_size": "1.8%"
-    },
-    {
-      "symbol": "CELO",
-      "name": "Celo",
-      "price": 0.3412256722565628,
-      "market_cap": 197474080.10123736,
-      "volume_24h": 24733214.55302184,
-      "change_24h": -7.56803903,
-      "technical": {
-        "success": true,
-        "confluence_score": 3,
-        "signals": {
-          "rsi_bullish": true,
-          "macd_bullish": false,
-          "ema_bullish": true,
-          "adx_strong": true
-        },
-        "values": {
-          "rsi": 40.0,
-          "macd_histogram": 0,
-          "ema": 0.36,
-          "adx": 23.4
-        }
-      },
-      "news": {
-        "success": false,
-        "error": "No news API token"
-      },
-      "overall_score": 87.1,
-      "entry_type": "market",
-      "entry_price": "$0.3412 (Market)",
-      "stop_loss_price": "$0.3173",
-      "take_profit_price": "$0.3822 (T1), $0.4265 (T2)",
-      "position_size": "1.7%"
-    },
-    {
-      "symbol": "ID",
-      "name": "SPACE ID",
-      "price": 0.166426032201472,
-      "market_cap": 180928319.3260462,
-      "volume_24h": 23126344.75669682,
-      "change_24h": -8.10864214,
-      "technical": {
-        "success": true,
-        "confluence_score": 3,
-        "signals": {
-          "rsi_bullish": true,
-          "macd_bullish": false,
-          "ema_bullish": true,
-          "adx_strong": true
-        },
-        "values": {
-          "rsi": 38.0,
-          "macd_histogram": 0,
-          "ema": 0.17,
-          "adx": 27.0
-        }
-      },
-      "news": {
-        "success": false,
-        "error": "No news API token"
-      },
-      "overall_score": 87.0,
-      "entry_type": "market",
-      "entry_price": "$0.1664 (Market)",
-      "stop_loss_price": "$0.1548",
-      "take_profit_price": "$0.1864 (T1), $0.2080 (T2)",
-      "position_size": "1.7%"
+      "entry_price": "$0.0931 (Market)",
+      "stop_loss_price": "$0.0866",
+      "take_profit_price": "$0.1042 (T1), $0.1163 (T2)",
+      "position_size": "1.9%"
     },
     {
       "symbol": "ZRX",
       "name": "0x Protocol",
-      "price": 0.24445875366142145,
-      "market_cap": 207397966.37651843,
-      "volume_24h": 42454842.0349148,
-      "change_24h": -9.81857328,
+      "price": 0.24456590644134762,
+      "market_cap": 207488874.4267127,
+      "volume_24h": 42475393.42809746,
+      "change_24h": -10.30713688,
       "technical": {
         "success": true,
         "confluence_score": 3,
@@ -1857,6 +735,550 @@
           "rsi": 35.9,
           "macd_histogram": 0,
           "ema": 0.26,
+          "adx": 24.7
+        }
+      },
+      "news": {
+        "success": false,
+        "error": "No news API token"
+      },
+      "overall_score": 93.4,
+      "entry_type": "market",
+      "entry_price": "$0.2446 (Market)",
+      "stop_loss_price": "$0.2274",
+      "take_profit_price": "$0.2739 (T1), $0.3057 (T2)",
+      "position_size": "1.9%"
+    },
+    {
+      "symbol": "SUSHI",
+      "name": "SushiSwap",
+      "price": 0.8411863607764071,
+      "market_cap": 232293839.66932547,
+      "volume_24h": 74252961.06123467,
+      "change_24h": -9.31046754,
+      "technical": {
+        "success": true,
+        "confluence_score": 3,
+        "signals": {
+          "rsi_bullish": true,
+          "macd_bullish": false,
+          "ema_bullish": true,
+          "adx_strong": true
+        },
+        "values": {
+          "rsi": 40.4,
+          "macd_histogram": 0,
+          "ema": 0.87,
+          "adx": 25.7
+        }
+      },
+      "news": {
+        "success": false,
+        "error": "No news API token"
+      },
+      "overall_score": 93.2,
+      "entry_type": "market",
+      "entry_price": "$0.8412 (Market)",
+      "stop_loss_price": "$0.7823",
+      "take_profit_price": "$0.9421 (T1), $1.0515 (T2)",
+      "position_size": "1.9%"
+    },
+    {
+      "symbol": "SNX",
+      "name": "Synthetix",
+      "price": 0.6561812179750368,
+      "market_cap": 225376080.60328752,
+      "volume_24h": 22715839.85783321,
+      "change_24h": -8.18466883,
+      "technical": {
+        "success": true,
+        "confluence_score": 3,
+        "signals": {
+          "rsi_bullish": true,
+          "macd_bullish": false,
+          "ema_bullish": true,
+          "adx_strong": true
+        },
+        "values": {
+          "rsi": 41.3,
+          "macd_histogram": 0,
+          "ema": 0.67,
+          "adx": 26.8
+        }
+      },
+      "news": {
+        "success": false,
+        "error": "No news API token"
+      },
+      "overall_score": 93.0,
+      "entry_type": "market",
+      "entry_price": "$0.6562 (Market)",
+      "stop_loss_price": "$0.6102",
+      "take_profit_price": "$0.7349 (T1), $0.8202 (T2)",
+      "position_size": "1.9%"
+    },
+    {
+      "symbol": "AAVE",
+      "name": "Aave",
+      "price": 310.89297627312845,
+      "market_cap": 4729554243.092184,
+      "volume_24h": 823399683.1038501,
+      "change_24h": -4.59934568,
+      "technical": {
+        "success": true,
+        "confluence_score": 3,
+        "signals": {
+          "rsi_bullish": true,
+          "macd_bullish": false,
+          "ema_bullish": true,
+          "adx_strong": true
+        },
+        "values": {
+          "rsi": 47.5,
+          "macd_histogram": 0,
+          "ema": 311.77,
+          "adx": 36.8
+        }
+      },
+      "news": {
+        "success": false,
+        "error": "No news API token"
+      },
+      "overall_score": 92.0,
+      "entry_type": "market",
+      "entry_price": "$310.8930 (Market)",
+      "stop_loss_price": "$289.1305",
+      "take_profit_price": "$348.2001 (T1), $388.6162 (T2)",
+      "position_size": "1.8%"
+    },
+    {
+      "symbol": "GNO",
+      "name": "Gnosis",
+      "price": 142.76264052917222,
+      "market_cap": 376759129.38037807,
+      "volume_24h": 16887585.43619242,
+      "change_24h": -0.76164495,
+      "technical": {
+        "success": true,
+        "confluence_score": 3,
+        "signals": {
+          "rsi_bullish": true,
+          "macd_bullish": false,
+          "ema_bullish": true,
+          "adx_strong": true
+        },
+        "values": {
+          "rsi": 54.6,
+          "macd_histogram": 0,
+          "ema": 139.63,
+          "adx": 44.7
+        }
+      },
+      "news": {
+        "success": false,
+        "error": "No news API token"
+      },
+      "overall_score": 92.0,
+      "entry_type": "market",
+      "entry_price": "$142.7626 (Market)",
+      "stop_loss_price": "$132.7693",
+      "take_profit_price": "$159.8942 (T1), $178.4533 (T2)",
+      "position_size": "1.8%"
+    },
+    {
+      "symbol": "DASH",
+      "name": "Dash",
+      "price": 22.323000654485305,
+      "market_cap": 276189014.3785149,
+      "volume_24h": 40722477.87700761,
+      "change_24h": -6.031887,
+      "technical": {
+        "success": true,
+        "confluence_score": 3,
+        "signals": {
+          "rsi_bullish": true,
+          "macd_bullish": false,
+          "ema_bullish": true,
+          "adx_strong": true
+        },
+        "values": {
+          "rsi": 38.8,
+          "macd_histogram": 0,
+          "ema": 23.03,
+          "adx": 25.0
+        }
+      },
+      "news": {
+        "success": false,
+        "error": "No news API token"
+      },
+      "overall_score": 92.0,
+      "entry_type": "market",
+      "entry_price": "$22.3230 (Market)",
+      "stop_loss_price": "$20.7604",
+      "take_profit_price": "$25.0018 (T1), $27.9038 (T2)",
+      "position_size": "1.8%"
+    },
+    {
+      "symbol": "XTZ",
+      "name": "Tezos",
+      "price": 0.8478924332473643,
+      "market_cap": 894275901.2346433,
+      "volume_24h": 57322113.8270925,
+      "change_24h": -3.65985946,
+      "technical": {
+        "success": true,
+        "confluence_score": 3,
+        "signals": {
+          "rsi_bullish": true,
+          "macd_bullish": false,
+          "ema_bullish": true,
+          "adx_strong": true
+        },
+        "values": {
+          "rsi": 44.2,
+          "macd_histogram": 0,
+          "ema": 0.86,
+          "adx": 30.3
+        }
+      },
+      "news": {
+        "success": false,
+        "error": "No news API token"
+      },
+      "overall_score": 91.8,
+      "entry_type": "market",
+      "entry_price": "$0.8479 (Market)",
+      "stop_loss_price": "$0.7885",
+      "take_profit_price": "$0.9496 (T1), $1.0599 (T2)",
+      "position_size": "1.8%"
+    },
+    {
+      "symbol": "TWT",
+      "name": "Trust Wallet Token",
+      "price": 0.7815398492499209,
+      "market_cap": 325628500.03599465,
+      "volume_24h": 15486014.24725225,
+      "change_24h": -4.29140922,
+      "technical": {
+        "success": true,
+        "confluence_score": 3,
+        "signals": {
+          "rsi_bullish": true,
+          "macd_bullish": false,
+          "ema_bullish": true,
+          "adx_strong": true
+        },
+        "values": {
+          "rsi": 42.7,
+          "macd_histogram": 0,
+          "ema": 0.79,
+          "adx": 29.5
+        }
+      },
+      "news": {
+        "success": false,
+        "error": "No news API token"
+      },
+      "overall_score": 91.6,
+      "entry_type": "market",
+      "entry_price": "$0.7815 (Market)",
+      "stop_loss_price": "$0.7268",
+      "take_profit_price": "$0.8753 (T1), $0.9769 (T2)",
+      "position_size": "1.8%"
+    },
+    {
+      "symbol": "FET",
+      "name": "Artificial Superintelligence Alliance",
+      "price": 0.704289328869475,
+      "market_cap": 1674822796.4683728,
+      "volume_24h": 190360628.33603597,
+      "change_24h": -5.04425912,
+      "technical": {
+        "success": true,
+        "confluence_score": 3,
+        "signals": {
+          "rsi_bullish": true,
+          "macd_bullish": false,
+          "ema_bullish": true,
+          "adx_strong": true
+        },
+        "values": {
+          "rsi": 43.3,
+          "macd_histogram": 0,
+          "ema": 0.72,
+          "adx": 23.0
+        }
+      },
+      "news": {
+        "success": false,
+        "error": "No news API token"
+      },
+      "overall_score": 91.5,
+      "entry_type": "market",
+      "entry_price": "$0.7043 (Market)",
+      "stop_loss_price": "$0.6550",
+      "take_profit_price": "$0.7888 (T1), $0.8804 (T2)",
+      "position_size": "1.8%"
+    },
+    {
+      "symbol": "WLD",
+      "name": "Worldcoin",
+      "price": 1.006846133265354,
+      "market_cap": 1894003649.227719,
+      "volume_24h": 405747488.9047865,
+      "change_24h": -8.87754634,
+      "technical": {
+        "success": true,
+        "confluence_score": 3,
+        "signals": {
+          "rsi_bullish": true,
+          "macd_bullish": false,
+          "ema_bullish": true,
+          "adx_strong": true
+        },
+        "values": {
+          "rsi": 39.5,
+          "macd_histogram": 0,
+          "ema": 1.05,
+          "adx": 21.0
+        }
+      },
+      "news": {
+        "success": false,
+        "error": "No news API token"
+      },
+      "overall_score": 91.0,
+      "entry_type": "market",
+      "entry_price": "$1.0068 (Market)",
+      "stop_loss_price": "$0.9364",
+      "take_profit_price": "$1.1277 (T1), $1.2586 (T2)",
+      "position_size": "1.8%"
+    },
+    {
+      "symbol": "ALGO",
+      "name": "Algorand",
+      "price": 0.2539776540391323,
+      "market_cap": 2212387798.066807,
+      "volume_24h": 217028679.36783007,
+      "change_24h": -8.28664711,
+      "technical": {
+        "success": true,
+        "confluence_score": 3,
+        "signals": {
+          "rsi_bullish": true,
+          "macd_bullish": false,
+          "ema_bullish": true,
+          "adx_strong": true
+        },
+        "values": {
+          "rsi": 38.7,
+          "macd_histogram": 0,
+          "ema": 0.27,
+          "adx": 22.4
+        }
+      },
+      "news": {
+        "success": false,
+        "error": "No news API token"
+      },
+      "overall_score": 90.8,
+      "entry_type": "market",
+      "entry_price": "$0.2540 (Market)",
+      "stop_loss_price": "$0.2362",
+      "take_profit_price": "$0.2845 (T1), $0.3175 (T2)",
+      "position_size": "1.8%"
+    },
+    {
+      "symbol": "APE",
+      "name": "ApeCoin",
+      "price": 0.6054645047732581,
+      "market_cap": 455703776.7963174,
+      "volume_24h": 60291389.04345927,
+      "change_24h": -7.07618799,
+      "technical": {
+        "success": true,
+        "confluence_score": 3,
+        "signals": {
+          "rsi_bullish": true,
+          "macd_bullish": false,
+          "ema_bullish": true,
+          "adx_strong": true
+        },
+        "values": {
+          "rsi": 37.0,
+          "macd_histogram": 0,
+          "ema": 0.63,
+          "adx": 22.0
+        }
+      },
+      "news": {
+        "success": false,
+        "error": "No news API token"
+      },
+      "overall_score": 90.8,
+      "entry_type": "market",
+      "entry_price": "$0.6055 (Market)",
+      "stop_loss_price": "$0.5631",
+      "take_profit_price": "$0.6781 (T1), $0.7568 (T2)",
+      "position_size": "1.8%"
+    },
+    {
+      "symbol": "CAKE",
+      "name": "PancakeSwap",
+      "price": 2.72384119860673,
+      "market_cap": 938264830.9386396,
+      "volume_24h": 164794962.68267354,
+      "change_24h": -6.62063407,
+      "technical": {
+        "success": true,
+        "confluence_score": 3,
+        "signals": {
+          "rsi_bullish": true,
+          "macd_bullish": false,
+          "ema_bullish": true,
+          "adx_strong": true
+        },
+        "values": {
+          "rsi": 37.8,
+          "macd_histogram": 0,
+          "ema": 2.82,
+          "adx": 21.8
+        }
+      },
+      "news": {
+        "success": false,
+        "error": "No news API token"
+      },
+      "overall_score": 90.7,
+      "entry_type": "market",
+      "entry_price": "$2.7238 (Market)",
+      "stop_loss_price": "$2.5332",
+      "take_profit_price": "$3.0507 (T1), $3.4048 (T2)",
+      "position_size": "1.8%"
+    },
+    {
+      "symbol": "RUNE",
+      "name": "THORChain",
+      "price": 1.3693588155713161,
+      "market_cap": 481166811.01822263,
+      "volume_24h": 121967596.00815096,
+      "change_24h": -8.30583471,
+      "technical": {
+        "success": true,
+        "confluence_score": 3,
+        "signals": {
+          "rsi_bullish": true,
+          "macd_bullish": false,
+          "ema_bullish": true,
+          "adx_strong": true
+        },
+        "values": {
+          "rsi": 37.8,
+          "macd_histogram": 0,
+          "ema": 1.43,
+          "adx": 25.0
+        }
+      },
+      "news": {
+        "success": false,
+        "error": "No news API token"
+      },
+      "overall_score": 90.0,
+      "entry_type": "market",
+      "entry_price": "$1.3694 (Market)",
+      "stop_loss_price": "$1.2735",
+      "take_profit_price": "$1.5337 (T1), $1.7117 (T2)",
+      "position_size": "1.8%"
+    },
+    {
+      "symbol": "PENDLE",
+      "name": "Pendle",
+      "price": 5.4564299967607806,
+      "market_cap": 913236434.4050157,
+      "volume_24h": 263843226.9801155,
+      "change_24h": -2.28750839,
+      "technical": {
+        "success": true,
+        "confluence_score": 3,
+        "signals": {
+          "rsi_bullish": true,
+          "macd_bullish": false,
+          "ema_bullish": true,
+          "adx_strong": true
+        },
+        "values": {
+          "rsi": 50.1,
+          "macd_histogram": 0,
+          "ema": 5.42,
+          "adx": 35.1
+        }
+      },
+      "news": {
+        "success": false,
+        "error": "No news API token"
+      },
+      "overall_score": 89.5,
+      "entry_type": "market",
+      "entry_price": "$5.4564 (Market)",
+      "stop_loss_price": "$5.0745",
+      "take_profit_price": "$6.1112 (T1), $6.8205 (T2)",
+      "position_size": "1.8%"
+    },
+    {
+      "symbol": "ACH",
+      "name": "Alchemy Pay",
+      "price": 0.021372147931641224,
+      "market_cap": 200425653.82265761,
+      "volume_24h": 38320552.49705546,
+      "change_24h": -8.60884216,
+      "technical": {
+        "success": true,
+        "confluence_score": 3,
+        "signals": {
+          "rsi_bullish": true,
+          "macd_bullish": false,
+          "ema_bullish": true,
+          "adx_strong": true
+        },
+        "values": {
+          "rsi": 36.5,
+          "macd_histogram": 0,
+          "ema": 0.02,
+          "adx": 21.0
+        }
+      },
+      "news": {
+        "success": false,
+        "error": "No news API token"
+      },
+      "overall_score": 89.5,
+      "entry_type": "market",
+      "entry_price": "$0.0214 (Market)",
+      "stop_loss_price": "$0.0199",
+      "take_profit_price": "$0.0239 (T1), $0.0267 (T2)",
+      "position_size": "1.8%"
+    },
+    {
+      "symbol": "CHZ",
+      "name": "Chiliz",
+      "price": 0.0404240042046086,
+      "market_cap": 395236925.54433584,
+      "volume_24h": 61238983.23422001,
+      "change_24h": -8.42074908,
+      "technical": {
+        "success": true,
+        "confluence_score": 3,
+        "signals": {
+          "rsi_bullish": true,
+          "macd_bullish": false,
+          "ema_bullish": true,
+          "adx_strong": true
+        },
+        "values": {
+          "rsi": 35.4,
+          "macd_histogram": 0,
+          "ema": 0.04,
           "adx": 23.7
         }
       },
@@ -1864,20 +1286,20 @@
         "success": false,
         "error": "No news API token"
       },
-      "overall_score": 86.7,
+      "overall_score": 89.2,
       "entry_type": "market",
-      "entry_price": "$0.2445 (Market)",
-      "stop_loss_price": "$0.2273",
-      "take_profit_price": "$0.2738 (T1), $0.3056 (T2)",
-      "position_size": "1.7%"
+      "entry_price": "$0.0404 (Market)",
+      "stop_loss_price": "$0.0376",
+      "take_profit_price": "$0.0453 (T1), $0.0505 (T2)",
+      "position_size": "1.8%"
     },
     {
-      "symbol": "RPL",
-      "name": "Rocket Pool",
-      "price": 7.760826247284455,
-      "market_cap": 167836750.18372464,
-      "volume_24h": 16159636.62572915,
-      "change_24h": -9.74607945,
+      "symbol": "AR",
+      "name": "Arweave",
+      "price": 7.442350294112601,
+      "market_cap": 488608649.64431757,
+      "volume_24h": 84726042.3749032,
+      "change_24h": -10.72531514,
       "technical": {
         "success": true,
         "confluence_score": 3,
@@ -1888,30 +1310,30 @@
           "adx_strong": true
         },
         "values": {
-          "rsi": 36.3,
+          "rsi": 39.7,
           "macd_histogram": 0,
-          "ema": 8.37,
-          "adx": 31.9
+          "ema": 7.77,
+          "adx": 25.4
         }
       },
       "news": {
         "success": false,
         "error": "No news API token"
       },
-      "overall_score": 85.8,
+      "overall_score": 89.1,
       "entry_type": "market",
-      "entry_price": "$7.7608 (Market)",
-      "stop_loss_price": "$7.2176",
-      "take_profit_price": "$8.6921 (T1), $9.7010 (T2)",
-      "position_size": "1.7%"
+      "entry_price": "$7.4424 (Market)",
+      "stop_loss_price": "$6.9214",
+      "take_profit_price": "$8.3354 (T1), $9.3029 (T2)",
+      "position_size": "1.8%"
     },
     {
-      "symbol": "RUNE",
-      "name": "THORChain",
-      "price": 1.3729671040723042,
-      "market_cap": 482434797.0112077,
-      "volume_24h": 122461965.73577476,
-      "change_24h": -7.46409678,
+      "symbol": "SFP",
+      "name": "SafePal",
+      "price": 0.48994041924602577,
+      "market_cap": 244970209.6230129,
+      "volume_24h": 5353609.4332316,
+      "change_24h": -5.93216717,
       "technical": {
         "success": true,
         "confluence_score": 3,
@@ -1922,22 +1344,430 @@
           "adx_strong": true
         },
         "values": {
-          "rsi": 39.4,
+          "rsi": 36.1,
           "macd_histogram": 0,
-          "ema": 1.43,
-          "adx": 25.1
+          "ema": 0.51,
+          "adx": 23.2
         }
       },
       "news": {
         "success": false,
         "error": "No news API token"
       },
-      "overall_score": 84.5,
+      "overall_score": 89.1,
       "entry_type": "market",
-      "entry_price": "$1.3730 (Market)",
-      "stop_loss_price": "$1.2769",
-      "take_profit_price": "$1.5377 (T1), $1.7162 (T2)",
+      "entry_price": "$0.4899 (Market)",
+      "stop_loss_price": "$0.4556",
+      "take_profit_price": "$0.5487 (T1), $0.6124 (T2)",
+      "position_size": "1.8%"
+    },
+    {
+      "symbol": "IOTX",
+      "name": "IoTeX",
+      "price": 0.028872554403787488,
+      "market_cap": 272596439.49240905,
+      "volume_24h": 15703964.748531,
+      "change_24h": -6.47014774,
+      "technical": {
+        "success": true,
+        "confluence_score": 3,
+        "signals": {
+          "rsi_bullish": true,
+          "macd_bullish": false,
+          "ema_bullish": true,
+          "adx_strong": true
+        },
+        "values": {
+          "rsi": 41.4,
+          "macd_histogram": 0,
+          "ema": 0.03,
+          "adx": 20.8
+        }
+      },
+      "news": {
+        "success": false,
+        "error": "No news API token"
+      },
+      "overall_score": 89.0,
+      "entry_type": "market",
+      "entry_price": "$0.0289 (Market)",
+      "stop_loss_price": "$0.0269",
+      "take_profit_price": "$0.0323 (T1), $0.0361 (T2)",
+      "position_size": "1.8%"
+    },
+    {
+      "symbol": "RSR",
+      "name": "Reserve Rights",
+      "price": 0.009094498255887021,
+      "market_cap": 538415513.6581782,
+      "volume_24h": 58252397.1238228,
+      "change_24h": -4.84237808,
+      "technical": {
+        "success": true,
+        "confluence_score": 3,
+        "signals": {
+          "rsi_bullish": true,
+          "macd_bullish": false,
+          "ema_bullish": true,
+          "adx_strong": true
+        },
+        "values": {
+          "rsi": 43.8,
+          "macd_histogram": 0,
+          "ema": 0.01,
+          "adx": 26.8
+        }
+      },
+      "news": {
+        "success": false,
+        "error": "No news API token"
+      },
+      "overall_score": 88.9,
+      "entry_type": "market",
+      "entry_price": "$0.0091 (Market)",
+      "stop_loss_price": "$0.0085",
+      "take_profit_price": "$0.0102 (T1), $0.0114 (T2)",
+      "position_size": "1.8%"
+    },
+    {
+      "symbol": "FLOW",
+      "name": "Flow",
+      "price": 0.3871808670426689,
+      "market_cap": 620389590.6377344,
+      "volume_24h": 37823393.26788688,
+      "change_24h": -6.29845584,
+      "technical": {
+        "success": true,
+        "confluence_score": 3,
+        "signals": {
+          "rsi_bullish": true,
+          "macd_bullish": false,
+          "ema_bullish": true,
+          "adx_strong": true
+        },
+        "values": {
+          "rsi": 44.8,
+          "macd_histogram": 0,
+          "ema": 0.39,
+          "adx": 24.5
+        }
+      },
+      "news": {
+        "success": false,
+        "error": "No news API token"
+      },
+      "overall_score": 88.4,
+      "entry_type": "market",
+      "entry_price": "$0.3872 (Market)",
+      "stop_loss_price": "$0.3601",
+      "take_profit_price": "$0.4336 (T1), $0.4840 (T2)",
+      "position_size": "1.8%"
+    },
+    {
+      "symbol": "RVN",
+      "name": "Ravencoin",
+      "price": 0.013715717164850616,
+      "market_cap": 212240889.89736927,
+      "volume_24h": 24774444.79703046,
+      "change_24h": -7.71286703,
+      "technical": {
+        "success": true,
+        "confluence_score": 3,
+        "signals": {
+          "rsi_bullish": true,
+          "macd_bullish": false,
+          "ema_bullish": true,
+          "adx_strong": true
+        },
+        "values": {
+          "rsi": 36.4,
+          "macd_histogram": 0,
+          "ema": 0.01,
+          "adx": 23.9
+        }
+      },
+      "news": {
+        "success": false,
+        "error": "No news API token"
+      },
+      "overall_score": 88.2,
+      "entry_type": "market",
+      "entry_price": "$0.0137 (Market)",
+      "stop_loss_price": "$0.0128",
+      "take_profit_price": "$0.0154 (T1), $0.0171 (T2)",
+      "position_size": "1.8%"
+    },
+    {
+      "symbol": "LPT",
+      "name": "Livepeer",
+      "price": 6.494330745733762,
+      "market_cap": 281857308.2527551,
+      "volume_24h": 39420167.47779834,
+      "change_24h": -8.32608387,
+      "technical": {
+        "success": true,
+        "confluence_score": 3,
+        "signals": {
+          "rsi_bullish": true,
+          "macd_bullish": false,
+          "ema_bullish": true,
+          "adx_strong": true
+        },
+        "values": {
+          "rsi": 38.7,
+          "macd_histogram": 0,
+          "ema": 6.78,
+          "adx": 24.1
+        }
+      },
+      "news": {
+        "success": false,
+        "error": "No news API token"
+      },
+      "overall_score": 87.8,
+      "entry_type": "market",
+      "entry_price": "$6.4943 (Market)",
+      "stop_loss_price": "$6.0397",
+      "take_profit_price": "$7.2737 (T1), $8.1179 (T2)",
+      "position_size": "1.8%"
+    },
+    {
+      "symbol": "CELO",
+      "name": "Celo",
+      "price": 0.33995259425234003,
+      "market_cap": 196737324.55140293,
+      "volume_24h": 24593359.74350014,
+      "change_24h": -8.6076087,
+      "technical": {
+        "success": true,
+        "confluence_score": 3,
+        "signals": {
+          "rsi_bullish": true,
+          "macd_bullish": false,
+          "ema_bullish": true,
+          "adx_strong": true
+        },
+        "values": {
+          "rsi": 38.4,
+          "macd_histogram": 0,
+          "ema": 0.35,
+          "adx": 23.8
+        }
+      },
+      "news": {
+        "success": false,
+        "error": "No news API token"
+      },
+      "overall_score": 87.7,
+      "entry_type": "market",
+      "entry_price": "$0.3400 (Market)",
+      "stop_loss_price": "$0.3162",
+      "take_profit_price": "$0.3807 (T1), $0.4249 (T2)",
+      "position_size": "1.8%"
+    },
+    {
+      "symbol": "THETA",
+      "name": "Theta Network",
+      "price": 0.8384170519830595,
+      "market_cap": 838417051.9830595,
+      "volume_24h": 53499753.31132363,
+      "change_24h": -8.12807661,
+      "technical": {
+        "success": true,
+        "confluence_score": 3,
+        "signals": {
+          "rsi_bullish": true,
+          "macd_bullish": false,
+          "ema_bullish": true,
+          "adx_strong": true
+        },
+        "values": {
+          "rsi": 39.3,
+          "macd_histogram": 0,
+          "ema": 0.87,
+          "adx": 24.8
+        }
+      },
+      "news": {
+        "success": false,
+        "error": "No news API token"
+      },
+      "overall_score": 87.5,
+      "entry_type": "market",
+      "entry_price": "$0.8384 (Market)",
+      "stop_loss_price": "$0.7797",
+      "take_profit_price": "$0.9390 (T1), $1.0480 (T2)",
       "position_size": "1.7%"
+    },
+    {
+      "symbol": "BAT",
+      "name": "Basic Attention Token",
+      "price": 0.14897729317285108,
+      "market_cap": 222820623.30308482,
+      "volume_24h": 25487928.730521,
+      "change_24h": -7.9760079,
+      "technical": {
+        "success": true,
+        "confluence_score": 3,
+        "signals": {
+          "rsi_bullish": true,
+          "macd_bullish": false,
+          "ema_bullish": true,
+          "adx_strong": true
+        },
+        "values": {
+          "rsi": 37.9,
+          "macd_histogram": 0,
+          "ema": 0.16,
+          "adx": 22.1
+        }
+      },
+      "news": {
+        "success": false,
+        "error": "No news API token"
+      },
+      "overall_score": 87.3,
+      "entry_type": "market",
+      "entry_price": "$0.1490 (Market)",
+      "stop_loss_price": "$0.1385",
+      "take_profit_price": "$0.1669 (T1), $0.1862 (T2)",
+      "position_size": "1.7%"
+    },
+    {
+      "symbol": "YFI",
+      "name": "yearn.finance",
+      "price": 5639.221839102363,
+      "market_cap": 190832732.0312968,
+      "volume_24h": 32360497.73630078,
+      "change_24h": -5.40536019,
+      "technical": {
+        "success": true,
+        "confluence_score": 3,
+        "signals": {
+          "rsi_bullish": true,
+          "macd_bullish": false,
+          "ema_bullish": true,
+          "adx_strong": true
+        },
+        "values": {
+          "rsi": 41.1,
+          "macd_histogram": 0,
+          "ema": 5787.73,
+          "adx": 28.4
+        }
+      },
+      "news": {
+        "success": false,
+        "error": "No news API token"
+      },
+      "overall_score": 87.3,
+      "entry_type": "market",
+      "entry_price": "$5639.2218 (Market)",
+      "stop_loss_price": "$5244.4763",
+      "take_profit_price": "$6315.9285 (T1), $7049.0273 (T2)",
+      "position_size": "1.7%"
+    },
+    {
+      "symbol": "SUI",
+      "name": "Sui",
+      "price": 3.738055387587508,
+      "market_cap": 13127768221.65709,
+      "volume_24h": 2590126188.3378854,
+      "change_24h": -6.31509974,
+      "technical": {
+        "success": true,
+        "confluence_score": 3,
+        "signals": {
+          "rsi_bullish": true,
+          "macd_bullish": false,
+          "ema_bullish": true,
+          "adx_strong": true
+        },
+        "values": {
+          "rsi": 42.6,
+          "macd_histogram": 0,
+          "ema": 3.85,
+          "adx": 20.0
+        }
+      },
+      "news": {
+        "success": false,
+        "error": "No news API token"
+      },
+      "overall_score": 86.2,
+      "entry_type": "market",
+      "entry_price": "$3.7381 (Market)",
+      "stop_loss_price": "$3.4764",
+      "take_profit_price": "$4.1866 (T1), $4.6726 (T2)",
+      "position_size": "1.7%"
+    },
+    {
+      "symbol": "INJ",
+      "name": "Injective",
+      "price": 15.169488918824932,
+      "market_cap": 1516507996.906558,
+      "volume_24h": 297602889.6844261,
+      "change_24h": -4.16316095,
+      "technical": {
+        "success": true,
+        "confluence_score": 3,
+        "signals": {
+          "rsi_bullish": true,
+          "macd_bullish": false,
+          "ema_bullish": true,
+          "adx_strong": true
+        },
+        "values": {
+          "rsi": 51.8,
+          "macd_histogram": 0,
+          "ema": 14.9,
+          "adx": 26.3
+        }
+      },
+      "news": {
+        "success": false,
+        "error": "No news API token"
+      },
+      "overall_score": 82.1,
+      "entry_type": "market",
+      "entry_price": "$15.1695 (Market)",
+      "stop_loss_price": "$14.1076",
+      "take_profit_price": "$16.9898 (T1), $18.9619 (T2)",
+      "position_size": "1.6%"
+    },
+    {
+      "symbol": "SUN",
+      "name": "Sun [New]",
+      "price": 0.02465726698689183,
+      "market_cap": 472304107.120058,
+      "volume_24h": 54771737.57349321,
+      "change_24h": 2.28478606,
+      "technical": {
+        "success": true,
+        "confluence_score": 3,
+        "signals": {
+          "rsi_bullish": true,
+          "macd_bullish": false,
+          "ema_bullish": true,
+          "adx_strong": true
+        },
+        "values": {
+          "rsi": 71.9,
+          "macd_histogram": 0,
+          "ema": 0.02,
+          "adx": 49.4
+        }
+      },
+      "news": {
+        "success": false,
+        "error": "No news API token"
+      },
+      "overall_score": 80.8,
+      "entry_type": "market",
+      "entry_price": "$0.0247 (Market)",
+      "stop_loss_price": "$0.0227",
+      "take_profit_price": "$0.0276 (T1), $0.0308 (T2)",
+      "position_size": "1.6%"
     }
   ]
 }
