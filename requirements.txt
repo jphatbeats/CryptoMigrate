@@ -28,3 +28,4 @@ pyyaml
 ta
 yfinance
 tradingview_ta
+tradingview-ta

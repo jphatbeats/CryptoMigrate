@@ -62,7 +62,7 @@ class LumifTradingViewClient:
         """Get comprehensive TradingView technical analysis - Enhanced by Lumif-ai"""
         try:
             # Rate limiting to prevent 429 errors
-            time.sleep(0.5)  # 500ms delay between requests
+            time.sleep(1.0)  # 1 second delay between requests
             
             # Convert interval to TradingView format
             tv_interval = self.interval_map.get(interval, Interval.INTERVAL_4_HOURS)
@@ -73,6 +73,9 @@ class LumifTradingViewClient:
             
             for attempt in range(max_retries):
                 try:
+                    logger.info(f"Getting TradingView analysis for {symbol} (attempt {attempt + 1}/{max_retries})")
+                    
+                    # Create handler with proper exchange mapping
                     handler = TA_Handler(
                         symbol=symbol,
                         screener=screener,
@@ -85,303 +88,187 @@ class LumifTradingViewClient:
                     break
                     
                 except Exception as e:
-                    if "429" in str(e) and attempt < max_retries - 1:
-                        # Rate limited, wait longer and retry
-                        wait_time = (attempt + 1) * 2  # Exponential backoff: 2s, 4s, 6s
+                    if "429" in str(e) or "rate" in str(e).lower():
+                        wait_time = (2 ** attempt) + 1  # Exponential backoff: 3, 5, 9 seconds
                         logger.warning(f"Rate limited for {symbol}, waiting {wait_time}s (attempt {attempt + 1}/{max_retries})")
                         time.sleep(wait_time)
-                        continue
+                        if attempt == max_retries - 1:
+                            logger.error(f"Error getting TradingView analysis for {symbol}: {e}")
+                            return {
+                                'status': 'error',
+                                'error': f'Rate limited after {max_retries} attempts: {e}',
+                                'symbol': symbol
+                            }
                     else:
-                        raise e
+                        logger.error(f"Error getting TradingView analysis for {symbol}: {e}")
+                        return {
+                            'status': 'error', 
+                            'error': str(e),
+                            'symbol': symbol
+                        }
             
-            if analysis is None:
-                raise Exception("Failed to get analysis after retries")
+            if not analysis:
+                return {
+                    'status': 'error',
+                    'error': 'Failed to get analysis after retries',
+                    'symbol': symbol
+                }
             
-            # Enhanced processing with Lumif-ai approach
-            enhanced_data = self._enhance_analysis(analysis, symbol, interval)
+            # Extract comprehensive technical data using python-tradingview-ta
+            indicators = analysis.indicators
+            summary = analysis.summary
             
-            return {
-                'status': 'success',
-                'symbol': symbol,
-                'exchange': exchange,
-                'interval': interval,
-                'timestamp': datetime.utcnow().isoformat(),
-                'summary': enhanced_data['summary'],
-                'indicators': enhanced_data['indicators'],
-                'oscillators': enhanced_data['oscillators'],
-                'moving_averages': enhanced_data['moving_averages'],
-                'confluence_score': enhanced_data['confluence_score'],
-                'pattern_signals': enhanced_data['pattern_signals'],
-                'source': 'lumif_tradingview_enhanced'
-            }
-            
-        except Exception as e:
-            logger.error(f"Error getting TradingView analysis for {symbol}: {e}")
-            return None
-    
-    def _enhance_analysis(self, analysis, symbol: str, interval: str) -> Dict[str, Any]:
-        """Enhanced analysis processing using Lumif-ai methodology"""
-        
-        # Extract core data
-        summary = analysis.summary
-        indicators = analysis.indicators
-        oscillators = analysis.oscillators  
-        moving_averages = analysis.moving_averages
-        
-        # Calculate enhanced confluence score (Lumif-ai approach)
-        confluence_score = self._calculate_confluence_score(summary, indicators)
-        
-        # Pattern recognition signals
-        pattern_signals = self._detect_patterns(indicators, symbol)
-        
-        return {
-            'summary': {
-                'recommendation': summary.get('RECOMMENDATION', 'NEUTRAL'),
-                'buy_signals': summary.get('BUY', 0),
-                'neutral_signals': summary.get('NEUTRAL', 0), 
-                'sell_signals': summary.get('SELL', 0),
-                'total_signals': summary.get('BUY', 0) + summary.get('NEUTRAL', 0) + summary.get('SELL', 0)
-            },
-            'indicators': {
-                'rsi': indicators.get('RSI'),
-                'rsi_signal': self._get_rsi_signal(indicators.get('RSI')),
-                'macd': {
-                    'value': indicators.get('MACD.macd'),
-                    'signal': indicators.get('MACD.signal'),
-                    'histogram': indicators.get('Histogram')
-                },
-                'stoch_k': indicators.get('Stoch.K'),
-                'stoch_d': indicators.get('Stoch.D'),
-                'cci': indicators.get('CCI20'),
-                'adx': indicators.get('ADX'),
-                'williams_r': indicators.get('W.R'),
-                'ultimate_oscillator': indicators.get('UO'),
-                'awesome_oscillator': indicators.get('AO')
-            },
-            'oscillators': oscillators,
-            'moving_averages': moving_averages,
-            'confluence_score': confluence_score,
-            'pattern_signals': pattern_signals
-        }
-    
-    def _calculate_confluence_score(self, summary: dict, indicators: dict) -> float:
-        """Calculate confluence score using Lumif-ai methodology"""
-        try:
-            total_signals = summary.get('BUY', 0) + summary.get('NEUTRAL', 0) + summary.get('SELL', 0)
-            if total_signals == 0:
-                return 0.0
-            
-            buy_ratio = summary.get('BUY', 0) / total_signals
-            sell_ratio = summary.get('SELL', 0) / total_signals
-            
-            # Enhanced scoring with RSI and MACD confluence
-            base_score = buy_ratio * 100
-            
-            # RSI confluence bonus
-            rsi = indicators.get('RSI')
-            if rsi:
-                if 30 <= rsi <= 70:  # Healthy range
-                    base_score += 10
-                elif rsi > 70:  # Overbought
-                    base_score -= 15
-                elif rsi < 30:  # Oversold - potential buy opportunity
-                    base_score += 5
-            
-            # MACD confluence bonus  
-            macd_value = indicators.get('MACD.macd')
-            macd_signal = indicators.get('MACD.signal')
-            if macd_value and macd_signal:
-                if macd_value > macd_signal:  # Bullish crossover
-                    base_score += 10
-                else:  # Bearish crossover
-                    base_score -= 10
-            
-            return min(max(base_score, 0), 100)  # Clamp between 0-100
-            
-        except Exception as e:
-            logger.error(f"Error calculating confluence score: {e}")
-            return 0.0
-    
-    def _get_rsi_signal(self, rsi: Optional[float]) -> str:
-        """Get RSI signal interpretation"""
-        if rsi is None:
-            return 'UNKNOWN'
-        elif rsi > 70:
-            return 'OVERBOUGHT'
-        elif rsi < 30:
-            return 'OVERSOLD'
-        else:
-            return 'NEUTRAL'
-    
-    def _detect_patterns(self, indicators: dict, symbol: str) -> Dict[str, Any]:
-        """Enhanced pattern detection using Lumif-ai approach"""
-        patterns = {
-            'bullish_signals': [],
-            'bearish_signals': [],
-            'neutral_signals': [],
-            'divergence_detected': False
-        }
-        
-        try:
-            rsi = indicators.get('RSI')
-            macd_value = indicators.get('MACD.macd')
-            macd_signal = indicators.get('MACD.signal')
-            stoch_k = indicators.get('Stoch.K')
-            stoch_d = indicators.get('Stoch.D')
-            
-            # RSI patterns
-            if rsi:
-                if rsi < 30:
-                    patterns['bullish_signals'].append('RSI_OVERSOLD')
-                elif rsi > 70:
-                    patterns['bearish_signals'].append('RSI_OVERBOUGHT')
-            
-            # MACD patterns
-            if macd_value and macd_signal:
-                if macd_value > macd_signal and macd_value > 0:
-                    patterns['bullish_signals'].append('MACD_BULLISH_ABOVE_ZERO')
-                elif macd_value < macd_signal and macd_value < 0:
-                    patterns['bearish_signals'].append('MACD_BEARISH_BELOW_ZERO')
-            
-            # Stochastic patterns
-            if stoch_k and stoch_d:
-                if stoch_k > stoch_d and stoch_k < 20:
-                    patterns['bullish_signals'].append('STOCH_BULLISH_CROSSOVER_OVERSOLD')
-                elif stoch_k < stoch_d and stoch_k > 80:
-                    patterns['bearish_signals'].append('STOCH_BEARISH_CROSSOVER_OVERBOUGHT')
-            
-            # If no clear signals, mark as neutral
-            if not patterns['bullish_signals'] and not patterns['bearish_signals']:
-                patterns['neutral_signals'].append('NO_CLEAR_PATTERN')
+            # Enhanced indicator extraction (208+ indicators available)
+            technical_data = {
+                # RSI Analysis
+                'rsi': indicators.get('RSI', 50.0),
+                'rsi_signal': 'BUY' if indicators.get('RSI', 50) < 30 else 'SELL' if indicators.get('RSI', 50) > 70 else 'NEUTRAL',
                 
-        except Exception as e:
-            logger.error(f"Error detecting patterns for {symbol}: {e}")
-            patterns['neutral_signals'].append('PATTERN_ANALYSIS_ERROR')
-        
-        return patterns
-    
-    def get_multi_timeframe_analysis(self, symbol: str, screener: str = 'crypto', 
-                                   exchange: str = 'BINANCE') -> Optional[Dict[str, Any]]:
-        """Get multi-timeframe analysis - Lumif-ai enhanced approach"""
-        timeframes = ['1h', '4h', '1d']
-        results = {}
-        
-        try:
-            logger.info(f"🔍 Multi-timeframe analysis for {symbol}")
+                # Moving Averages
+                'ema_20': indicators.get('EMA20', 0),
+                'ema_50': indicators.get('EMA50', 0),
+                'sma_20': indicators.get('SMA20', 0),
+                'sma_50': indicators.get('SMA50', 0),
+                
+                # MACD
+                'macd': indicators.get('MACD.macd', 0),
+                'macd_signal': indicators.get('MACD.signal', 0),
+                'macd_histogram': indicators.get('MACD.hist', 0),
+                
+                # Bollinger Bands
+                'bb_upper': indicators.get('BB.upper', 0),
+                'bb_middle': indicators.get('BB.middle', 0),
+                'bb_lower': indicators.get('BB.lower', 0),
+                
+                # Stochastic
+                'stoch_k': indicators.get('Stoch.K', 50),
+                'stoch_d': indicators.get('Stoch.D', 50),
+                
+                # Williams %R
+                'williams_r': indicators.get('W.R', -50),
+                
+                # ADX
+                'adx': indicators.get('ADX', 25),
+                
+                # CCI
+                'cci': indicators.get('CCI20', 0),
+                
+                # Volume indicators
+                'volume_sma': indicators.get('volume.SMA20', 0)
+            }
             
-            for tf in timeframes:
-                analysis = self.get_comprehensive_analysis(symbol, screener, exchange, tf)
-                if analysis:
-                    results[tf] = {
-                        'recommendation': analysis['summary']['recommendation'],
-                        'confluence_score': analysis['confluence_score'],
-                        'rsi': analysis['indicators']['rsi'],
-                        'rsi_signal': analysis['indicators']['rsi_signal']
-                    }
-                    time.sleep(0.5)  # Rate limiting
+            # Calculate confluence score (0-100)
+            confluence_signals = []
             
-            # Calculate overall confluence
-            overall_score = self._calculate_multi_timeframe_confluence(results)
+            # RSI signals
+            rsi = technical_data['rsi']
+            if rsi < 35:
+                confluence_signals.append('RSI_OVERSOLD')
+            elif rsi > 65:
+                confluence_signals.append('RSI_OVERBOUGHT')
+            
+            # MACD signals
+            if technical_data['macd'] > technical_data['macd_signal']:
+                confluence_signals.append('MACD_BULLISH')
+            
+            # Moving average signals
+            if technical_data['ema_20'] > technical_data['ema_50']:
+                confluence_signals.append('EMA_BULLISH')
+            
+            # Stochastic signals
+            if technical_data['stoch_k'] < 20:
+                confluence_signals.append('STOCH_OVERSOLD')
+            elif technical_data['stoch_k'] > 80:
+                confluence_signals.append('STOCH_OVERBOUGHT')
+                
+            # Summary recommendation
+            overall_recommendation = summary['RECOMMENDATION']
+            buy_signals = summary['BUY']
+            sell_signals = summary['SELL']
+            neutral_signals = summary['NEUTRAL']
+            
+            # Calculate confidence score
+            total_signals = buy_signals + sell_signals + neutral_signals
+            confidence_score = 0
+            
+            if total_signals > 0:
+                if overall_recommendation == 'STRONG_BUY':
+                    confidence_score = 85 + (buy_signals / total_signals * 15)
+                elif overall_recommendation == 'BUY':
+                    confidence_score = 65 + (buy_signals / total_signals * 15)
+                elif overall_recommendation == 'STRONG_SELL':
+                    confidence_score = 15 - (sell_signals / total_signals * 15)
+                elif overall_recommendation == 'SELL':
+                    confidence_score = 35 - (sell_signals / total_signals * 15)
+                else:  # NEUTRAL
+                    confidence_score = 50
             
             return {
                 'status': 'success',
                 'symbol': symbol,
-                'timeframes': results,
-                'overall_confluence_score': overall_score,
                 'timestamp': datetime.utcnow().isoformat(),
-                'source': 'lumif_multi_timeframe_enhanced'
+                'interval': interval,
+                'exchange': exchange,
+                'overall_recommendation': overall_recommendation,
+                'confidence_score': round(confidence_score, 1),
+                'signals': {
+                    'buy': buy_signals,
+                    'sell': sell_signals,
+                    'neutral': neutral_signals
+                },
+                'confluence_signals': confluence_signals,
+                'technical_indicators': technical_data,
+                'pattern_recognition': {
+                    'trend': 'BULLISH' if buy_signals > sell_signals else 'BEARISH' if sell_signals > buy_signals else 'SIDEWAYS',
+                    'strength': abs(buy_signals - sell_signals) / total_signals if total_signals > 0 else 0
+                }
             }
             
         except Exception as e:
-            logger.error(f"Error in multi-timeframe analysis for {symbol}: {e}")
-            return None
-    
-    def _calculate_multi_timeframe_confluence(self, timeframe_results: Dict) -> float:
-        """Calculate multi-timeframe confluence score"""
-        if not timeframe_results:
-            return 0.0
-        
-        total_score = 0
-        count = 0
-        
-        # Weight timeframes differently (higher weight for longer timeframes)
-        weights = {'1h': 1.0, '4h': 2.0, '1d': 3.0}
-        
-        for tf, data in timeframe_results.items():
-            if data.get('confluence_score') is not None:
-                weight = weights.get(tf, 1.0)
-                total_score += data['confluence_score'] * weight
-                count += weight
-        
-        return total_score / count if count > 0 else 0.0
-    
-    def get_market_scanner_signals(self, symbols: List[str], min_confluence: float = 75.0) -> List[Dict[str, Any]]:
-        """Enhanced market scanner using Lumif-ai methodology"""
-        signals = []
-        
-        try:
-            logger.info(f"🔍 Scanning {len(symbols)} symbols for confluence >= {min_confluence}%")
-            
-            for symbol in symbols:
-                try:
-                    analysis = self.get_comprehensive_analysis(f"{symbol}USDT", 'crypto', 'BINANCE', '4h')
-                    
-                    if analysis and analysis.get('confluence_score', 0) >= min_confluence:
-                        signals.append({
-                            'symbol': symbol,
-                            'confluence_score': analysis['confluence_score'],
-                            'recommendation': analysis['summary']['recommendation'],
-                            'rsi': analysis['indicators']['rsi'],
-                            'rsi_signal': analysis['indicators']['rsi_signal'],
-                            'pattern_signals': analysis['pattern_signals'],
-                            'timestamp': datetime.utcnow().isoformat()
-                        })
-                    
-                    time.sleep(0.3)  # Rate limiting
-                    
-                except Exception as e:
-                    logger.warning(f"Error analyzing {symbol}: {e}")
-                    continue
-            
-            # Sort by confluence score
-            signals.sort(key=lambda x: x['confluence_score'], reverse=True)
-            
-            logger.info(f"✅ Found {len(signals)} high-confluence signals")
-            return signals
-            
-        except Exception as e:
-            logger.error(f"Error in market scanner: {e}")
-            return []
+            logger.error(f"Comprehensive analysis error for {symbol}: {e}")
+            return {
+                'status': 'error',
+                'error': str(e),
+                'symbol': symbol
+            }
 
-# Global client instance
+# Global helper functions for easy access
+def get_enhanced_technical_analysis(symbol: str, exchange: str = 'BINANCE', interval: str = '4h') -> Optional[Dict[str, Any]]:
+    """Helper function for getting enhanced technical analysis"""
+    client = LumifTradingViewClient()
+    return client.get_comprehensive_analysis(symbol, 'crypto', exchange, interval)
+
+# Initialize global client
 lumif_tradingview_client = LumifTradingViewClient()
 
-# MCP integration functions
-async def initialize_lumif_tradingview() -> bool:
-    """Initialize Lumif-ai TradingView integration"""
+# Initialize function for server
+async def initialize_lumif_tradingview():
+    """Initialize Lumif-ai TradingView integration for the server"""
     return await lumif_tradingview_client.start_mcp_server()
 
-def get_enhanced_technical_analysis(symbol: str, exchange: str = 'BINANCE', interval: str = '4h') -> Optional[Dict[str, Any]]:
-    """Get enhanced technical analysis using Lumif-ai methodology"""
-    return lumif_tradingview_client.get_comprehensive_analysis(symbol, 'crypto', exchange, interval)
-
+# Additional helper functions for server compatibility
 def get_multi_timeframe_confluence(symbol: str, exchange: str = 'BINANCE') -> Optional[Dict[str, Any]]:
     """Get multi-timeframe confluence analysis"""
-    return lumif_tradingview_client.get_multi_timeframe_analysis(symbol, 'crypto', exchange)
+    client = LumifTradingViewClient()
+    results = {}
+    
+    timeframes = ['1h', '4h', '1d']
+    for tf in timeframes:
+        analysis = client.get_comprehensive_analysis(symbol, 'crypto', exchange, tf)
+        if analysis and analysis.get('status') == 'success':
+            results[tf] = analysis
+    
+    return results if results else None
 
-def scan_market_opportunities(symbols: List[str], min_confluence: float = 75.0) -> List[Dict[str, Any]]:
-    """Scan market for high-confluence opportunities"""
-    return lumif_tradingview_client.get_market_scanner_signals(symbols, min_confluence)
-
-if __name__ == "__main__":
-    import asyncio
-    async def test():
-        success = await initialize_lumif_tradingview()
-        print(f"Lumif-ai TradingView integration: {'SUCCESS' if success else 'FAILED'}")
-        
-        if success:
-            # Test Bitcoin analysis
-            btc_analysis = get_enhanced_technical_analysis('BTCUSDT')
-            print(f"BTC Analysis: {btc_analysis}")
-            
-    asyncio.run(test())
+def scan_market_opportunities(symbols: List[str], exchange: str = 'BINANCE') -> List[Dict[str, Any]]:
+    """Scan multiple symbols for market opportunities"""
+    client = LumifTradingViewClient()
+    opportunities = []
+    
+    for symbol in symbols:
+        analysis = client.get_comprehensive_analysis(symbol, 'crypto', exchange, '4h')
+        if analysis and analysis.get('status') == 'success':
+            if analysis.get('confidence_score', 0) > 70:  # High confidence threshold
+                opportunities.append(analysis)
+    
+    return opportunities

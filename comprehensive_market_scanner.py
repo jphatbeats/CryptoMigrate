@@ -19,11 +19,13 @@ import os
 try:
     import sys
     sys.path.append('mcp_servers')
-    from lumifai_tradingview_integration import get_enhanced_technical_analysis, lumif_tradingview_client
+    from lumifai_tradingview_integration import LumifTradingViewClient
+    lumif_client = LumifTradingViewClient()
     lumif_available = True
     print("✅ Lumif-ai TradingView Enhanced Analysis available for market scanning")
 except ImportError:
     lumif_available = False
+    lumif_client = None
     print("❌ Lumif-ai TradingView Enhanced Analysis not available - using local analysis")
 
 # Local API configuration
@@ -166,10 +168,10 @@ class ComprehensiveMarketScanner:
         """Enhanced technical analysis using Lumif-ai TradingView + fallback to local"""
         try:
             # First try Lumif-ai TradingView enhanced analysis
-            if lumif_available:
+            if lumif_available and lumif_client:
                 try:
                     symbol_formatted = f"{symbol}USDT" if not symbol.endswith('USDT') else symbol
-                    lumif_analysis = get_enhanced_technical_analysis(symbol_formatted, 'BINANCE', '4h')
+                    lumif_analysis = lumif_client.get_comprehensive_analysis(symbol_formatted, 'crypto', 'BINANCE', '4h')
                     
                     if lumif_analysis and lumif_analysis.get('status') == 'success':
                         # Extract key data for confluence scoring
