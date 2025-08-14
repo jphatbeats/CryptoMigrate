@@ -38,11 +38,9 @@ try:
     print("✅ Railway TAAPI indicators server configured successfully")
 except ImportError as e:
     taapi_available = False
-    taapi_indicators = None
     print(f"❌ Taapi.io indicators not available: {e}")
 except Exception as e:
     taapi_available = False
-    taapi_indicators = None
     print(f"❌ Taapi.io initialization error: {e}")
 
 # Import OpenAI trading intelligence
@@ -301,7 +299,7 @@ def analyze_trading_conditions(positions):
 
             # Get real technical indicators if available
             real_indicators = None
-            if taapi_available and taapi_indicators:
+            if taapi_available:
                 try:
                     # Convert symbol format for taapi (e.g., ETH/USDT -> ETHUSDT)
                     taapi_symbol = symbol.replace('/', '')
