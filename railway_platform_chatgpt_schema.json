@@ -1,0 +1,359 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "Railway Crypto Trading Intelligence API", 
+    "description": "Complete crypto trading platform with multi-exchange integration, technical analysis via taapi.io (208+ indicators), AI-powered analysis, and real-time market intelligence. Deployed on Railway with comprehensive error handling.",
+    "version": "2.0.0",
+    "contact": {
+      "name": "Crypto Trading Intelligence Platform",
+      "url": "https://titan-trading-2-production.up.railway.app"
+    }
+  },
+  "servers": [
+    {
+      "url": "https://titan-trading-2-production.up.railway.app",
+      "description": "Railway Production Server - Complete Trading Intelligence Platform"
+    }
+  ],
+  "paths": {
+    "/api/taapi/bulk": {
+      "post": {
+        "operationId": "getBulkTechnicalIndicators",
+        "tags": ["Technical Analysis"],
+        "summary": "Get multiple technical indicators via taapi.io bulk endpoint",
+        "description": "Fetch up to 20 technical indicators in a single API call using taapi.io's bulk endpoint. Supports 208+ indicators including RSI, MACD, Bollinger Bands, EMA, SMA, Stochastic, Williams %R, ADX, CCI across multiple timeframes. Uses embedded API key with bybit exchange as default.",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "construct": {
+                    "type": "object",
+                    "properties": {
+                      "exchange": {"type": "string", "default": "bybit", "example": "bybit"},
+                      "symbol": {"type": "string", "example": "BTC/USDT"},
+                      "interval": {"type": "string", "example": "1h", "enum": ["1m", "5m", "15m", "30m", "1h", "2h", "4h", "6h", "8h", "12h", "1d"]},
+                      "indicators": {
+                        "type": "array",
+                        "items": {
+                          "type": "object",
+                          "properties": {
+                            "indicator": {"type": "string", "example": "rsi"},
+                            "period": {"type": "integer", "example": 14}
+                          }
+                        },
+                        "example": [
+                          {"indicator": "rsi", "period": 14},
+                          {"indicator": "macd", "fastperiod": 12, "slowperiod": 26, "signalperiod": 9},
+                          {"indicator": "bbands", "period": 20, "stddev": 2}
+                        ]
+                      }
+                    },
+                    "required": ["symbol", "interval", "indicators"]
+                  }
+                },
+                "required": ["construct"]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Bulk technical indicators data",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "indicator": {"type": "string", "example": "rsi"},
+                          "result": {"type": "object", "description": "Indicator calculation result"}
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/taapi/{indicator}": {
+      "get": {
+        "operationId": "getSingleTechnicalIndicator",
+        "tags": ["Technical Analysis"],
+        "summary": "Get single technical indicator via taapi.io",
+        "description": "Fetch individual technical indicators from taapi.io. Supports 208+ indicators with customizable parameters and timeframes. Uses embedded API key with bybit exchange as default.",
+        "parameters": [
+          {
+            "name": "indicator",
+            "in": "path",
+            "required": true,
+            "description": "Technical indicator name (rsi, macd, bbands, ema, sma, stoch, willr, adx, cci, etc.)",
+            "schema": {
+              "type": "string",
+              "example": "rsi"
+            }
+          },
+          {
+            "name": "symbol",
+            "in": "query",
+            "required": true,
+            "description": "Trading pair symbol",
+            "schema": {
+              "type": "string",
+              "example": "BTC/USDT"
+            }
+          },
+          {
+            "name": "interval",
+            "in": "query", 
+            "required": true,
+            "description": "Timeframe for analysis",
+            "schema": {
+              "type": "string",
+              "example": "1h",
+              "enum": ["1m", "5m", "15m", "30m", "1h", "2h", "4h", "6h", "8h", "12h", "1d"]
+            }
+          },
+          {
+            "name": "exchange",
+            "in": "query",
+            "description": "Exchange name (defaults to bybit)",
+            "schema": {
+              "type": "string",
+              "default": "bybit",
+              "example": "bybit"
+            }
+          },
+          {
+            "name": "period",
+            "in": "query",
+            "description": "Indicator period (for indicators that support it)",
+            "schema": {
+              "type": "integer",
+              "example": 14
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Single technical indicator result",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "indicator": {"type": "string", "example": "rsi"},
+                    "result": {"type": "object", "description": "Indicator result data"},
+                    "timestamp": {"type": "string", "format": "date-time"}
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/chatgpt/portfolio-analysis": {
+      "get": {
+        "operationId": "getAiPortfolioAnalysis",
+        "tags": ["AI Analysis"],
+        "summary": "Get AI-powered portfolio analysis using OpenAI GPT-4",
+        "description": "Comprehensive AI analysis of your trading portfolio using real OpenAI GPT-4. Analyzes positions across all connected exchanges, provides risk assessment, profit/loss analysis, and actionable trading recommendations.",
+        "responses": {
+          "200": {
+            "description": "AI-generated portfolio analysis",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "analysis": {"type": "string", "description": "Detailed AI analysis"},
+                    "portfolio_health_score": {"type": "integer", "minimum": 0, "maximum": 100},
+                    "risk_assessment": {"type": "string"},
+                    "recommendations": {
+                      "type": "array", 
+                      "items": {"type": "string"}
+                    },
+                    "timestamp": {"type": "string", "format": "date-time"}
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/chatgpt/news-sentiment": {
+      "post": {
+        "operationId": "getAiNewsSentiment",
+        "tags": ["AI Analysis"],
+        "summary": "AI news sentiment analysis using OpenAI GPT-4",
+        "description": "Advanced sentiment analysis of cryptocurrency news articles using OpenAI GPT-4. Provides bullish/bearish scoring, market impact assessment, and trading signal generation.",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "articles": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "title": {"type": "string"},
+                        "content": {"type": "string"},
+                        "source": {"type": "string"}
+                      }
+                    }
+                  }
+                },
+                "required": ["articles"]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "AI sentiment analysis results",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "overall_sentiment": {"type": "string", "enum": ["very_bullish", "bullish", "neutral", "bearish", "very_bearish"]},
+                    "confidence_score": {"type": "number", "minimum": 0, "maximum": 1},
+                    "article_analysis": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "title": {"type": "string"},
+                          "sentiment": {"type": "string"},
+                          "impact_score": {"type": "number"},
+                          "key_points": {"type": "array", "items": {"type": "string"}}
+                        }
+                      }
+                    },
+                    "trading_signals": {"type": "array", "items": {"type": "string"}},
+                    "timestamp": {"type": "string", "format": "date-time"}
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/proxy/taapi/{indicator}": {
+      "get": {
+        "operationId": "getTechnicalIndicatorProxy",
+        "tags": ["Technical Analysis Proxy"],
+        "summary": "CORS-enabled proxy for taapi.io indicators",
+        "description": "Cross-Origin Resource Sharing (CORS) enabled proxy endpoint for accessing taapi.io technical indicators directly from web applications. Identical functionality to direct taapi.io API but with proper CORS headers for browser compatibility.",
+        "parameters": [
+          {
+            "name": "indicator",
+            "in": "path",
+            "required": true,
+            "description": "Technical indicator name",
+            "schema": {
+              "type": "string",
+              "example": "rsi"
+            }
+          },
+          {
+            "name": "symbol",
+            "in": "query",
+            "required": true,
+            "description": "Trading pair symbol",
+            "schema": {
+              "type": "string",
+              "example": "BTC/USDT"
+            }
+          },
+          {
+            "name": "interval",
+            "in": "query",
+            "required": true,
+            "description": "Timeframe",
+            "schema": {
+              "type": "string",
+              "example": "1h"
+            }
+          },
+          {
+            "name": "exchange",
+            "in": "query",
+            "description": "Exchange (defaults to bybit)",
+            "schema": {
+              "type": "string",
+              "default": "bybit"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Technical indicator data with CORS headers",
+            "headers": {
+              "Access-Control-Allow-Origin": {
+                "schema": {"type": "string"},
+                "description": "CORS header allowing cross-origin requests"
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "description": "Direct taapi.io API response with CORS headers"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "TechnicalIndicator": {
+        "type": "object",
+        "properties": {
+          "indicator": {"type": "string", "example": "rsi"},
+          "value": {"type": "number", "example": 65.5},
+          "timestamp": {"type": "string", "format": "date-time"}
+        }
+      },
+      "ErrorResponse": {
+        "type": "object",
+        "properties": {
+          "error": {"type": "string", "description": "Error message"},
+          "timestamp": {"type": "string", "format": "date-time"}
+        }
+      }
+    }
+  },
+  "tags": [
+    {
+      "name": "Technical Analysis", 
+      "description": "Comprehensive technical analysis powered by taapi.io with 208+ indicators. Supports all major indicators (RSI, MACD, Bollinger Bands, etc.) across multiple timeframes and exchanges."
+    },
+    {
+      "name": "AI Analysis",
+      "description": "Advanced AI-powered analysis using OpenAI GPT-4 for portfolio assessment, news sentiment analysis, and trading signal generation."
+    },
+    {
+      "name": "Technical Analysis Proxy",
+      "description": "CORS-enabled proxy endpoints for direct browser access to technical analysis data."
+    }
+  ]
+}

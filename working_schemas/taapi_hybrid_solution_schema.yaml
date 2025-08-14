@@ -1,0 +1,282 @@
+openapi: 3.1.0
+info:
+  title: TAAPI.io Hybrid Solution - Individual + Bulk Queries
+  description: Complete technical analysis with both individual REST calls and bulk NPM client support. Optimized for Basic plan with 25,000 daily calls.
+  version: 1.0.0
+servers:
+  - url: https://api.taapi.io
+    description: Direct TAAPI.io REST API for individual indicators
+  - url: http://localhost:4101
+    description: Local TAAPI.io NPM client for bulk queries
+paths:
+  /rsi:
+    get:
+      summary: RSI - Individual REST Call
+      description: Get RSI directly from TAAPI.io API. Reliable and authenticated.
+      operationId: getRSI
+      parameters:
+        - name: secret
+          in: query
+          required: true
+          schema:
+            type: string
+            default: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJjbHVlIjoiNjg5NDFjMGE4MDZmZjE2NTFlMmM1ZTM0IiwiaWF0IjoxNzU0NTM3NDUxLCJleHAiOjMzMjU5MDAxNDUxfQ.QRqOzRFsTcYKSYUuezVQMFdJcL2A6lHIwWC5L0JOLTU
+        - name: symbol
+          in: query
+          required: true
+          schema:
+            type: string
+            example: BTC/USDT
+        - name: exchange
+          in: query
+          schema:
+            type: string
+            enum: [binance, bybit, kraken, coinbase, kucoin]
+            default: binance
+        - name: interval
+          in: query
+          schema:
+            type: string
+            enum: [1m, 3m, 5m, 15m, 30m, 1h, 2h, 4h, 6h, 8h, 12h, 1d, 3d, 1w, 1M]
+            default: 1h
+        - name: period
+          in: query
+          schema:
+            type: integer
+            default: 14
+      responses:
+        '200':
+          description: RSI value (0-100)
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  value:
+                    type: number
+                    example: 52.25
+  /macd:
+    get:
+      summary: MACD - Individual REST Call
+      operationId: getMACD
+      parameters:
+        - name: secret
+          in: query
+          required: true
+          schema:
+            type: string
+            default: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJjbHVlIjoiNjg5NDFjMGE4MDZmZjE2NTFlMmM1ZTM0IiwiaWF0IjoxNzU0NTM3NDUxLCJleHAiOjMzMjU5MDAxNDUxfQ.QRqOzRFsTcYKSYUuezVQMFdJcL2A6lHIwWC5L0JOLTU
+        - name: symbol
+          in: query
+          required: true
+          schema:
+            type: string
+            example: BTC/USDT
+        - name: exchange
+          in: query
+          schema:
+            type: string
+            default: binance
+        - name: interval
+          in: query
+          schema:
+            type: string
+            default: 1h
+        - name: fast
+          in: query
+          schema:
+            type: integer
+            default: 12
+        - name: slow
+          in: query
+          schema:
+            type: integer
+            default: 26
+        - name: signal
+          in: query
+          schema:
+            type: integer
+            default: 9
+      responses:
+        '200':
+          description: MACD components
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  valueMACD:
+                    type: number
+                  valueMACDSignal:
+                    type: number
+                  valueMACDHist:
+                    type: number
+  /bbands:
+    get:
+      summary: Bollinger Bands - Individual REST Call
+      operationId: getBollingerBands
+      parameters:
+        - name: secret
+          in: query
+          required: true
+          schema:
+            type: string
+            default: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJjbHVlIjoiNjg5NDFjMGE4MDZmZjE2NTFlMmM1ZTM0IiwiaWF0IjoxNzU0NTM3NDUxLCJleHAiOjMzMjU5MDAxNDUxfQ.QRqOzRFsTcYKSYUuezVQMFdJcL2A6lHIwWC5L0JOLTU
+        - name: symbol
+          in: query
+          required: true
+          schema:
+            type: string
+            example: BTC/USDT
+        - name: exchange
+          in: query
+          schema:
+            type: string
+            default: binance
+        - name: interval
+          in: query
+          schema:
+            type: string
+            default: 1h
+        - name: period
+          in: query
+          schema:
+            type: integer
+            default: 20
+        - name: stddev
+          in: query
+          schema:
+            type: number
+            default: 2
+      responses:
+        '200':
+          description: Bollinger Bands values
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  valueUpperBand:
+                    type: number
+                  valueMiddleBand:
+                    type: number
+                  valueLowerBand:
+                    type: number
+  /ema:
+    get:
+      summary: EMA - Individual REST Call
+      operationId: getEMA
+      parameters:
+        - name: secret
+          in: query
+          required: true
+          schema:
+            type: string
+            default: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJjbHVlIjoiNjg5NDFjMGE4MDZmZjE2NTFlMmM1ZTM0IiwiaWF0IjoxNzU0NTM3NDUxLCJleHAiOjMzMjU5MDAxNDUxfQ.QRqOzRFsTcYKSYUuezVQMFdJcL2A6lHIwWC5L0JOLTU
+        - name: symbol
+          in: query
+          required: true
+          schema:
+            type: string
+            example: BTC/USDT
+        - name: exchange
+          in: query
+          schema:
+            type: string
+            default: binance
+        - name: interval
+          in: query
+          schema:
+            type: string
+            default: 1h
+        - name: period
+          in: query
+          schema:
+            type: integer
+            default: 20
+      responses:
+        '200':
+          description: EMA value
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  value:
+                    type: number
+  /indicator:
+    get:
+      summary: Universal Indicator - NPM Client Bulk Method
+      description: Access any of 200+ indicators through local NPM client server running on port 4101
+      operationId: getAnyIndicator
+      parameters:
+        - name: indicator
+          in: query
+          required: true
+          schema:
+            type: string
+            enum: [rsi, macd, bbands, ema, sma, atr, adx, stoch, ao, cmf, ma, obv, cci, williams, mfi, roc, trix, dpo, kama, tema, vwap, ppo, bop, cmo, aroon, dx, minus_di, plus_di, sar, natr, ultosc, willr, ad, adosc, pvi, nvi, eom, mom, midpoint, midprice, ht_dcperiod, ht_dcphase, ht_phasor, ht_sine, ht_trendmode, avgprice, medprice, typprice, wclprice, beta, correl, linearreg, linearreg_angle, linearreg_intercept, linearreg_slope, stddev, tsf, var]
+            example: rsi
+        - name: exchange
+          in: query
+          required: true
+          schema:
+            type: string
+            enum: [binance, bybit, kraken, coinbase, kucoin, bitfinex, bitstamp, gemini, huobi, okex, poloniex, bittrex, gate, mexc, lbank, ascendex, coinex, bithumb, upbit, bitmex, deribit, ftx, bitget, phemex, woo, xt, probit, hotcoin, tidex, exmo, crex24, stex, coinsbit, p2pb2b, latoken, hitbtc, digifinex, currency, nicehash, bitmax, zb, bibox, bigone, coinbene, luno, liquid, okcoin, cex, yobit, mercatox, cryptopia, livecoin, kuna, waves, indodax, btcbox, zaif, korbit, coinone, bithumb_global, coincheck, fisco, btcalpha, acx, southxchange, bleutrade, bitbank, quoine, qryptos, coinfalcon, coinfloor, lakebtc, bitso, urdubit, paymium, therock, vbtc, anxpro, btcchina, coinbase_pro, gdax, quadrigacx, coinegg, allcoin, yunbi, btc38, jubi, chbtc, huobipro, okcoins, binanceus, coinbaseprime, ftxus, bitfinex2, kraken2, binanceje, binancetr, binanceusdm, binancecoinm, bitmextest, bybitlinear, bybitinverse, deribitf, ftxf, binancef, krakenf, okexf]
+            example: binance
+        - name: symbol
+          in: query
+          required: true
+          schema:
+            type: string
+            example: BTC/USDT
+        - name: interval
+          in: query
+          required: true
+          schema:
+            type: string
+            enum: [1m, 3m, 5m, 15m, 30m, 1h, 2h, 4h, 6h, 8h, 12h, 1d, 3d, 1w, 1M]
+            example: 1h
+        - name: backtrack
+          in: query
+          schema:
+            type: integer
+            minimum: 0
+            maximum: 50
+            default: 0
+            description: Calculate indicator X candles back in time
+        - name: candlesCount
+          in: query
+          schema:
+            type: integer
+            minimum: 10
+            maximum: 1000
+            default: 100
+            description: Number of candles to fetch for calculation
+      responses:
+        '200':
+          description: Indicator result (varies by indicator type)
+          content:
+            application/json:
+              schema:
+                oneOf:
+                  - type: object
+                    properties:
+                      value:
+                        type: number
+                  - type: object
+                    properties:
+                      valueMACD:
+                        type: number
+                      valueMACDSignal:
+                        type: number
+                      valueMACDHist:
+                        type: number
+                  - type: object
+                    properties:
+                      valueUpperBand:
+                        type: number
+                      valueMiddleBand:
+                        type: number
+                      valueLowerBand:
+                        type: number

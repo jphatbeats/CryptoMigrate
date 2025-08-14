@@ -1,0 +1,17 @@
+SIMPLE 3-STEP RAILWAY FIX (No new project needed)
+
+STEP 1: Replace requirements.txt
+Copy contents from requirements_clean.txt to requirements.txt
+(removes duplicate entries causing build failures)
+
+STEP 2: Commit and push
+git add .
+git commit -m "Fix Railway build - clean requirements"
+git push origin main
+
+STEP 3: Wait 2-3 minutes
+Railway auto-deploys from GitHub push
+Test: curl https://titan-trading-2-production.up.railway.app/health
+
+Your existing Railway project will work fine once the build succeeds.
+The timeout issue is just a failed build, not a broken deployment setup.

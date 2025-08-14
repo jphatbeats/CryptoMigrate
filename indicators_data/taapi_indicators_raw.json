@@ -1,0 +1,299 @@
+[
+  {
+    "endpoint": "2crows",
+    "name": "Two Crows",
+    "category": "Pattern recognition",
+    "popular": false,
+    "description": "",
+    "parameters": [],
+    "examples": [
+      "[GET] https://api.taapi.io/2crows?secret=MY_SECRET&exchange=binance&symbol=BTC/USDT&interval=1h",
+      "[GET] https://api.taapi.io/2crows?secret=MY_SECRET&exchange=binance&symbol=BTC/USDT&interval=30m&backtrack=1",
+      "[GET] https://api.taapi.io/2crows?secret=MY_SECRET&exchange=binance&symbol=BTC/USDT&interval=1d&results=10"
+    ],
+    "use_cases": [
+      "Trend analysis"
+    ]
+  },
+  {
+    "endpoint": "3blackcrows",
+    "name": "Three Black Crows",
+    "category": "Pattern recognition",
+    "popular": false,
+    "description": "",
+    "parameters": [],
+    "examples": [
+      "[GET] https://api.taapi.io/3blackcrows?secret=MY_SECRET&exchange=binance&symbol=BTC/USDT&interval=1h",
+      "[GET] https://api.taapi.io/3blackcrows?secret=MY_SECRET&exchange=binance&symbol=BTC/USDT&interval=30m&backtrack=1",
+      "[GET] https://api.taapi.io/3blackcrows?secret=MY_SECRET&exchange=binance&symbol=BTC/USDT&interval=1d&results=10"
+    ],
+    "use_cases": [
+      "Trend analysis"
+    ]
+  },
+  {
+    "endpoint": "3inside",
+    "name": "Three Inside Up/Down",
+    "category": "Pattern recognition",
+    "popular": false,
+    "description": "",
+    "parameters": [],
+    "examples": [
+      "[GET] https://api.taapi.io/3inside?secret=MY_SECRET&exchange=binance&symbol=BTC/USDT&interval=1h",
+      "[GET] https://api.taapi.io/3inside?secret=MY_SECRET&exchange=binance&symbol=BTC/USDT&interval=30m&backtrack=1",
+      "[GET] https://api.taapi.io/3inside?secret=MY_SECRET&exchange=binance&symbol=BTC/USDT&interval=1d&results=10"
+    ],
+    "use_cases": []
+  },
+  {
+    "endpoint": "3linestrike",
+    "name": "Three-Line Strike",
+    "category": "Pattern recognition",
+    "popular": false,
+    "description": "",
+    "parameters": [],
+    "examples": [
+      "[GET] https://api.taapi.io/3linestrike?secret=MY_SECRET&exchange=binance&symbol=BTC/USDT&interval=1h",
+      "[GET] https://api.taapi.io/3linestrike?secret=MY_SECRET&exchange=binance&symbol=BTC/USDT&interval=30m&backtrack=1",
+      "[GET] https://api.taapi.io/3linestrike?secret=MY_SECRET&exchange=binance&symbol=BTC/USDT&interval=1d&results=10"
+    ],
+    "use_cases": []
+  },
+  {
+    "endpoint": "3outside",
+    "name": "Three Outside Up/Down",
+    "category": "Pattern recognition",
+    "popular": false,
+    "description": "",
+    "parameters": [],
+    "examples": [
+      "[GET] https://api.taapi.io/3outside?secret=MY_SECRET&exchange=binance&symbol=BTC/USDT&interval=1h",
+      "[GET] https://api.taapi.io/3outside?secret=MY_SECRET&exchange=binance&symbol=BTC/USDT&interval=30m&backtrack=1",
+      "[GET] https://api.taapi.io/3outside?secret=MY_SECRET&exchange=binance&symbol=BTC/USDT&interval=1d&results=10"
+    ],
+    "use_cases": []
+  },
+  {
+    "endpoint": "3starsinsouth",
+    "name": "Three Stars In The South",
+    "category": "Pattern recognition",
+    "popular": false,
+    "description": "",
+    "parameters": [],
+    "examples": [
+      "[GET] https://api.taapi.io/3starsinsouth?secret=MY_SECRET&exchange=binance&symbol=BTC/USDT&interval=1h",
+      "[GET] https://api.taapi.io/3starsinsouth?secret=MY_SECRET&exchange=binance&symbol=BTC/USDT&interval=30m&backtrack=1",
+      "[GET] https://api.taapi.io/3starsinsouth?secret=MY_SECRET&exchange=binance&symbol=BTC/USDT&interval=1d&results=10"
+    ],
+    "use_cases": []
+  },
+  {
+    "endpoint": "3whitesoldiers",
+    "name": "Three Advancing White Soldiers",
+    "category": "Pattern recognition",
+    "popular": false,
+    "description": "",
+    "parameters": [],
+    "examples": [
+      "[GET] https://api.taapi.io/3whitesoldiers?secret=MY_SECRET&exchange=binance&symbol=BTC/USDT&interval=1h",
+      "[GET] https://api.taapi.io/3whitesoldiers?secret=MY_SECRET&exchange=binance&symbol=BTC/USDT&interval=30m&backtrack=1",
+      "[GET] https://api.taapi.io/3whitesoldiers?secret=MY_SECRET&exchange=binance&symbol=BTC/USDT&interval=1d&results=10"
+    ],
+    "use_cases": [
+      "Trend analysis"
+    ]
+  },
+  {
+    "endpoint": "abandonedbaby",
+    "name": "Abandoned Baby",
+    "category": "Pattern recognition",
+    "popular": false,
+    "description": "",
+    "parameters": [],
+    "examples": [
+      "[GET] https://api.taapi.io/abandonedbaby?secret=MY_SECRET&exchange=binance&symbol=BTC/USDT&interval=1h",
+      "[GET] https://api.taapi.io/abandonedbaby?secret=MY_SECRET&exchange=binance&symbol=BTC/USDT&interval=30m&backtrack=1",
+      "[GET] https://api.taapi.io/abandonedbaby?secret=MY_SECRET&exchange=binance&symbol=BTC/USDT&interval=1d&results=10"
+    ],
+    "use_cases": []
+  },
+  {
+    "endpoint": "abs",
+    "name": "Vector Absolute Value",
+    "category": "Math Transform",
+    "popular": false,
+    "description": "",
+    "parameters": [],
+    "examples": [
+      "[GET] https://api.taapi.io/abs?secret=MY_SECRET&exchange=binance&symbol=BTC/USDT&interval=1h",
+      "[GET] https://api.taapi.io/abs?secret=MY_SECRET&exchange=binance&symbol=BTC/USDT&interval=30m&backtrack=1",
+      "[GET] https://api.taapi.io/abs?secret=MY_SECRET&exchange=binance&symbol=BTC/USDT&interval=1d&results=10"
+    ],
+    "use_cases": []
+  },
+  {
+    "endpoint": "accbands",
+    "name": "Acceleration Bands",
+    "category": "Overlap Studies",
+    "popular": false,
+    "description": "",
+    "parameters": [],
+    "examples": [
+      "[GET] https://api.taapi.io/accbands?secret=MY_SECRET&exchange=binance&symbol=BTC/USDT&interval=1h",
+      "[GET] https://api.taapi.io/accbands?secret=MY_SECRET&exchange=binance&symbol=BTC/USDT&interval=30m&backtrack=1",
+      "[GET] https://api.taapi.io/accbands?secret=MY_SECRET&exchange=binance&symbol=BTC/USDT&interval=1d&results=10"
+    ],
+    "use_cases": []
+  },
+  {
+    "endpoint": "accosc",
+    "name": "Accelerator Oscillator",
+    "category": "Oscillators",
+    "popular": false,
+    "description": "",
+    "parameters": [],
+    "examples": [
+      "[GET] https://api.taapi.io/accosc?secret=MY_SECRET&exchange=binance&symbol=BTC/USDT&interval=1h",
+      "[GET] https://api.taapi.io/accosc?secret=MY_SECRET&exchange=binance&symbol=BTC/USDT&interval=30m&backtrack=1",
+      "[GET] https://api.taapi.io/accosc?secret=MY_SECRET&exchange=binance&symbol=BTC/USDT&interval=1d&results=10"
+    ],
+    "use_cases": [
+      "Trend analysis",
+      "Momentum analysis"
+    ]
+  },
+  {
+    "endpoint": "ad",
+    "name": "Chaikin A/D Line",
+    "category": "Volume",
+    "popular": false,
+    "description": "",
+    "parameters": [],
+    "examples": [
+      "[GET] https://api.taapi.io/ad?secret=MY_SECRET&exchange=binance&symbol=BTC/USDT&interval=1h",
+      "[GET] https://api.taapi.io/ad?secret=MY_SECRET&exchange=binance&symbol=BTC/USDT&interval=30m&backtrack=1",
+      "[GET] https://api.taapi.io/ad?secret=MY_SECRET&exchange=binance&symbol=BTC/USDT&interval=1d&results=10"
+    ],
+    "use_cases": []
+  },
+  {
+    "endpoint": "add",
+    "name": "Vector Arithmetic Add",
+    "category": "Math Operators",
+    "popular": false,
+    "description": "",
+    "parameters": [],
+    "examples": [
+      "[GET] https://api.taapi.io/add?secret=MY_SECRET&exchange=binance&symbol=BTC/USDT&interval=1h",
+      "[GET] https://api.taapi.io/add?secret=MY_SECRET&exchange=binance&symbol=BTC/USDT&interval=30m&backtrack=1",
+      "[GET] https://api.taapi.io/add?secret=MY_SECRET&exchange=binance&symbol=BTC/USDT&interval=1d&results=10"
+    ],
+    "use_cases": []
+  },
+  {
+    "endpoint": "adosc",
+    "name": "Chaikin A/D Oscillator",
+    "category": "Volume",
+    "popular": false,
+    "description": "",
+    "parameters": [],
+    "examples": [
+      "[GET] https://api.taapi.io/adosc?secret=MY_SECRET&exchange=binance&symbol=BTC/USDT&interval=1h",
+      "[GET] https://api.taapi.io/adosc?secret=MY_SECRET&exchange=binance&symbol=BTC/USDT&interval=30m&backtrack=1",
+      "[GET] https://api.taapi.io/adosc?secret=MY_SECRET&exchange=binance&symbol=BTC/USDT&interval=1d&results=10"
+    ],
+    "use_cases": []
+  },
+  {
+    "endpoint": "advanceblock",
+    "name": "Advance Block",
+    "category": "Pattern recognition",
+    "popular": false,
+    "description": "",
+    "parameters": [],
+    "examples": [
+      "[GET] https://api.taapi.io/advanceblock?secret=MY_SECRET&exchange=binance&symbol=BTC/USDT&interval=1h",
+      "[GET] https://api.taapi.io/advanceblock?secret=MY_SECRET&exchange=binance&symbol=BTC/USDT&interval=30m&backtrack=1",
+      "[GET] https://api.taapi.io/advanceblock?secret=MY_SECRET&exchange=binance&symbol=BTC/USDT&interval=1d&results=10"
+    ],
+    "use_cases": []
+  },
+  {
+    "endpoint": "adx",
+    "name": "Average Directional Movement Index",
+    "category": "Momentum",
+    "popular": false,
+    "description": "",
+    "parameters": [],
+    "examples": [
+      "[GET] https://api.taapi.io/adx?secret=MY_SECRET&exchange=binance&symbol=BTC/USDT&interval=1h",
+      "[GET] https://api.taapi.io/adx?secret=MY_SECRET&exchange=binance&symbol=BTC/USDT&interval=30m&backtrack=1",
+      "[GET] https://api.taapi.io/adx?secret=MY_SECRET&exchange=binance&symbol=BTC/USDT&interval=1d&results=10"
+    ],
+    "use_cases": [
+      "Trend analysis"
+    ]
+  },
+  {
+    "endpoint": "adxr",
+    "name": "Average Directional Movement Index Rating",
+    "category": "Momentum",
+    "popular": false,
+    "description": "",
+    "parameters": [],
+    "examples": [
+      "[GET] https://api.taapi.io/adxr?secret=MY_SECRET&exchange=binance&symbol=BTC/USDT&interval=1h",
+      "[GET] https://api.taapi.io/adxr?secret=MY_SECRET&exchange=binance&symbol=BTC/USDT&interval=30m&backtrack=1",
+      "[GET] https://api.taapi.io/adxr?secret=MY_SECRET&exchange=binance&symbol=BTC/USDT&interval=1d&results=10"
+    ],
+    "use_cases": [
+      "Trend analysis",
+      "Momentum analysis"
+    ]
+  },
+  {
+    "endpoint": "ao",
+    "name": "Awesome Oscillator",
+    "category": "Momentum",
+    "popular": false,
+    "description": "",
+    "parameters": [],
+    "examples": [
+      "[GET] https://api.taapi.io/ao?secret=MY_SECRET&exchange=binance&symbol=BTC/USDT&interval=1h",
+      "[GET] https://api.taapi.io/ao?secret=MY_SECRET&exchange=binance&symbol=BTC/USDT&interval=30m&backtrack=1",
+      "[GET] https://api.taapi.io/ao?secret=MY_SECRET&exchange=binance&symbol=BTC/USDT&interval=1d&results=10"
+    ],
+    "use_cases": [
+      "Trend analysis",
+      "Momentum analysis"
+    ]
+  },
+  {
+    "endpoint": "apo",
+    "name": "Absolute Price Oscillator",
+    "category": "Momentum",
+    "popular": false,
+    "description": "",
+    "parameters": [],
+    "examples": [
+      "[GET] https://api.taapi.io/apo?secret=MY_SECRET&exchange=binance&symbol=BTC/USDT&interval=1h",
+      "[GET] https://api.taapi.io/apo?secret=MY_SECRET&exchange=binance&symbol=BTC/USDT&interval=30m&backtrack=1",
+      "[GET] https://api.taapi.io/apo?secret=MY_SECRET&exchange=binance&symbol=BTC/USDT&interval=1d&results=10"
+    ],
+    "use_cases": []
+  },
+  {
+    "endpoint": "aroon",
+    "name": "Aroon",
+    "category": "Momentum",
+    "popular": false,
+    "description": "",
+    "parameters": [],
+    "examples": [
+      "[GET] https://api.taapi.io/aroon?secret=MY_SECRET&exchange=binance&symbol=BTC/USDT&interval=1h",
+      "[GET] https://api.taapi.io/aroon?secret=MY_SECRET&exchange=binance&symbol=BTC/USDT&interval=30m&backtrack=1",
+      "[GET] https://api.taapi.io/aroon?secret=MY_SECRET&exchange=binance&symbol=BTC/USDT&interval=1d&results=10"
+    ],
+    "use_cases": []
+  }
+]

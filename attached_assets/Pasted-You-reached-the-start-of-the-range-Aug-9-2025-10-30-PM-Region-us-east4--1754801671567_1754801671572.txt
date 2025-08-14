@@ -1,0 +1,107 @@
+You reached the start of the range → Aug 9, 2025, 10:30 PM
+
+ 
+
+[Region: us-east4]
+
+==============
+
+Using Nixpacks
+
+==============
+
+
+context: 7r7w-P3wx
+
+╔═════════ Nixpacks v1.38.0 ═════════╗
+
+║ setup      │ nodejs_18, npm-9_x    ║
+
+║────────────────────────────────────║
+
+║ install    │ npm ci                ║
+
+║────────────────────────────────────║
+
+║ start      │ python main_server.py ║
+
+╚════════════════════════════════════╝
+
+[internal] load build definition from Dockerfile
+
+[internal] load build definition from Dockerfile  ✔ 0 ms
+
+[internal] load build definition from Dockerfile
+
+[internal] load build definition from Dockerfile  ✔ 14 ms
+
+[internal] load metadata for ghcr.io/railwayapp/nixpacks:ubuntu-1745885067
+
+[internal] load metadata for ghcr.io/railwayapp/nixpacks:ubuntu-1745885067  ✔ 47 ms
+
+[internal] load .dockerignore
+
+[internal] load .dockerignore  ✔ 0 ms
+
+[internal] load .dockerignore
+
+[internal] load .dockerignore  ✔ 12 ms
+
+[internal] load build context  ✔ 0 ms
+
+[internal] load build context
+
+[internal] load build context  ✔ 127 ms
+
+[stage-0 2/8] WORKDIR /app/  ✔ 0 ms – CACHED
+
+[stage-0 3/8] COPY .nixpacks/nixpkgs-ffeebf0acf3ae8b29f8c7049cd911b9636efd7e7.nix .nixpacks/nixpkgs-ffeebf0acf3ae8b29f8c7049cd911b9636efd7e7.nix  ✔ 0 ms – CACHED
+
+[stage-0 4/8] RUN nix-env -if .nixpacks/nixpkgs-ffeebf0acf3ae8b29f8c7049cd911b9636efd7e7.nix && nix-collect-garbage -d  ✔ 0 ms – CACHED
+
+[stage-0 5/8] COPY . /app/.
+
+[stage-0 5/8] COPY . /app/.  ✔ 417 ms
+
+[stage-0 6/8] RUN --mount=type=cache,id=s/fccc94d8-7c62-4936-897a-2d6626d89f05-/root/npm,target=/root/.npm npm ci
+
+npm warn config production Use `--omit=dev` instead.
+
+
+added 24 packages, and audited 25 packages in 835ms
+
+
+6 packages are looking for funding
+
+  run `npm fund` for details
+
+
+found 0 vulnerabilities
+
+[stage-0 6/8] RUN --mount=type=cache,id=s/fccc94d8-7c62-4936-897a-2d6626d89f05-/root/npm,target=/root/.npm npm ci  ✔ 1 sec
+
+[stage-0 7/8] RUN printf '\nPATH=/app/node_modules/.bin:$PATH' >> /root/.profile
+
+[stage-0 7/8] RUN printf '\nPATH=/app/node_modules/.bin:$PATH' >> /root/.profile  ✔ 122 ms
+
+[stage-0 8/8] COPY . /app
+
+[stage-0 8/8] COPY . /app  ✔ 81 ms
+
+exporting to docker image format
+
+exporting to image
+
+[auth] sharing credentials for production-us-east4-eqdc4a.railway-registry.com
+
+[auth] sharing credentials for production-us-east4-eqdc4a.railway-registry.com  ✔ 0 ms
+
+importing to docker
+
+importing to docker  ✔ 7 sec
+
+=== Successfully Built! ===
+
+Run:
+
+docker run -it production-us-east4-eqdc4a.railway-registry.com/fccc94d8-7c62-4936-897a-2d6626d89f05:ca21ad40-5506-4237-9a12-3e7c9cb15ee1

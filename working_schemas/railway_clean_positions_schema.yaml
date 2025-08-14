@@ -1,0 +1,166 @@
+openapi: 3.1.0
+info:
+  title: "THE ALPHA PLAYBOOK v4 - Trading Intelligence API"
+  description: "Crypto trading intelligence system with live position data, market analysis, and news intelligence"
+  version: "v2.1.3-CLEAN"
+servers:
+  - url: https://titan-trading-2-production.up.railway.app
+    description: "Railway Production Server"
+
+paths:
+  /api/positions/bingx:
+    get:
+      summary: "Get BingX Positions"
+      description: "Get live BingX positions in direct array format. Returns empty array [] if no positions, or array of position objects with live P&L data."
+      operationId: getBingXPositions
+      responses:
+        '200':
+          description: "Direct array of BingX positions - Empty [] means no positions, Array with objects means active positions"
+          content:
+            application/json:
+              schema:
+                type: array
+                description: "Direct array format. Empty [] = no positions. Array with objects = active positions with P&L data."
+                items:
+                  type: object
+                  required:
+                    - symbol
+                    - side
+                    - contracts
+                    - entryPrice
+                    - markPrice
+                    - unrealizedPnl
+                  properties:
+                    symbol:
+                      type: string
+                      description: "Trading pair like XRP/USDT:USDT"
+                      example: "XRP/USDT:USDT"
+                    side:
+                      type: string
+                      description: "Position side: long or short"
+                      example: "long"
+                    contracts:
+                      type: number
+                      description: "Position size in contracts"
+                      example: 824.0
+                    entryPrice:
+                      type: number
+                      description: "Entry price in USDT"
+                      example: 1.6341
+                    markPrice:
+                      type: number
+                      description: "Current market price"
+                      example: 3.2003
+                    unrealizedPnl:
+                      type: number
+                      description: "Current P&L in USDT. Positive = profit, Negative = loss"
+                      example: 1290.52
+                    leverage:
+                      type: number
+                      description: "Position leverage"
+                      example: 10.0
+                    marginMode:
+                      type: string
+                      description: "Margin mode"
+                      example: "isolated"
+                    realizedPnl:
+                      type: number
+                      description: "Realized profit/loss"
+                    notional:
+                      type: number
+                      description: "Position value in USDT"
+
+  /api/bingx/market-data/{symbol}:
+    get:
+      description: Get real-time market data for a specific symbol
+      operationId: getBingXMarketData
+      parameters:
+        - name: symbol
+          in: path
+          required: true
+          schema:
+            type: string
+          description: Trading symbol (e.g., BTC-USDT)
+      responses:
+        '200':
+          description: Market data
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  symbol:
+                    type: string
+                  price:
+                    type: number
+                  volume:
+                    type: number
+                  change_24h:
+                    type: number
+                  timestamp:
+                    type: string
+
+  /api/news/crypto:
+    get:
+      description: Get latest cryptocurrency news with sentiment analysis
+      operationId: getCryptoNews
+      parameters:
+        - name: items
+          in: query
+          required: false
+          schema:
+            type: integer
+            default: 10
+            minimum: 1
+            maximum: 50
+          description: Number of news articles to fetch
+        - name: sentiment
+          in: query
+          required: false
+          schema:
+            type: string
+            enum: ["positive", "negative", "neutral"]
+          description: Filter by sentiment
+      responses:
+        '200':
+          description: Crypto news articles
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  articles:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        title:
+                          type: string
+                        url:
+                          type: string
+                        sentiment:
+                          type: string
+                        timestamp:
+                          type: string
+                        source:
+                          type: string
+
+  /api/health:
+    get:
+      description: Check API health status
+      operationId: getHealthStatus
+      responses:
+        '200':
+          description: Health status
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: "healthy"
+                  version:
+                    type: string
+                  railway_ready:
+                    type: boolean

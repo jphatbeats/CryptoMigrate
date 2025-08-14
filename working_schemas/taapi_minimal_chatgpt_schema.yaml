@@ -1,0 +1,103 @@
+openapi: 3.1.0
+info:
+  title: TAAPI.io Technical Analysis
+  description: Access to 208+ technical indicators for crypto trading analysis with bulk endpoint support.
+  version: 1.0.0
+servers:
+  - url: https://api.taapi.io
+security:
+  - ApiKeyAuth: []
+components:
+  securitySchemes:
+    ApiKeyAuth:
+      type: apiKey
+      in: query
+      name: secret
+paths:
+  /bulk:
+    post:
+      summary: Get multiple indicators
+      description: Request up to 20 technical indicators in one call for comprehensive analysis.
+      operationId: getBulkIndicators
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                construct:
+                  type: object
+                  properties:
+                    exchange:
+                      type: string
+                      enum: [binance, bybit, kraken, coinbase]
+                      default: binance
+                    symbol:
+                      type: string
+                      example: BTC/USDT
+                    interval:
+                      type: string
+                      enum: [1m, 5m, 15m, 1h, 4h, 1d]
+                      default: 1h
+                    indicators:
+                      type: array
+                      maxItems: 20
+                      items:
+                        type: object
+                        properties:
+                          indicator:
+                            type: string
+                            example: rsi
+                          period:
+                            type: integer
+                            example: 14
+                        required: [indicator]
+                  required: [exchange, symbol, interval, indicators]
+              required: [construct]
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      type: object
+  /rsi:
+    get:
+      summary: Get RSI indicator
+      description: Quick RSI calculation for any trading pair.
+      operationId: getRSI
+      parameters:
+        - name: symbol
+          in: query
+          required: true
+          schema:
+            type: string
+            example: BTC/USDT
+        - name: exchange
+          in: query
+          schema:
+            type: string
+            default: binance
+        - name: interval
+          in: query
+          schema:
+            type: string
+            default: 1h
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  value:
+                    type: number
+                  timestamp:
+                    type: integer

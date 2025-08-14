@@ -1,0 +1,14 @@
+[phases.setup]
+nixPkgs = ["python311", "python311Packages.pip"]
+
+[phases.install]
+cmds = ["pip install --upgrade pip", "pip install -r requirements.txt"]
+
+[phases.build]
+cmds = ["echo 'THE ALPHA PLAYBOOK v4 - Forced rebuild'"]
+
+[start]
+cmd = "python app.py"
+
+[variables]
+NIXPACKS_PYTHON_VERSION = "3.11"

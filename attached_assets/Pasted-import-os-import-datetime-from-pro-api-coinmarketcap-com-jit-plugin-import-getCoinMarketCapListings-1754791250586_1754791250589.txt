@@ -1,0 +1,78 @@
+import os
+import datetime
+from pro_api_coinmarketcap_com__jit_plugin import getCoinMarketCapListings
+from lunarcrush_com__jit_plugin import getTrendingTopics, getTopic
+from indicators_production_up_railway_app__jit_plugin import getMultipleIndicators
+from cryptonews_api_com__jit_plugin import getCryptoTickerNews
+
+# ============ CONFIGURATION ============
+CMC_API_KEY = os.getenv("CMC_API_KEY")  # Your CoinMarketCap API key
+NEWS_API_TOKEN = os.getenv("NEWS_API_TOKEN")  # CryptoNews API token
+MARKET_CAP_MIN = 50_000_000
+MARKET_CAP_MAX = 1_000_000_000
+VOLUME_MIN = 1_000_000
+SOCIAL_GROWTH_MIN = 25  # %
+SENTIMENT_POSITIVE_MIN = 0.6  # 60%
+
+# ============ STEP 1: Market Universe Filtering ============
+listings = getCoinMarketCapListings(
+    start=1,
+    limit=200,
+    convert="USD",
+    sort="market_cap",
+    market_cap_min=MARKET_CAP_MIN,
+    market_cap_max=MARKET_CAP_MAX,
+    volume_24h_min=VOLUME_MIN
+)
+
+filtered_coins = [coin["symbol"] for coin in listings["data"] if coin["symbol"] not in ["USDT", "USDC", "DAI"]]
+
+# ============ STEP 2: Social Momentum Screening ============
+trending = getTrendingTopics()
+social_candidates = []
+for topic in trending["data"]:
+    if topic["title"] in filtered_coins:
+        details = getTopic({"topic": topic["topic"]})
+        if details["data"]["interactions_24h_change"] > SOCIAL_GROWTH_MIN and details["data"].get("sentiment_score", 0) > SENTIMENT_POSITIVE_MIN:
+            social_candidates.append(topic["title"])
+
+# ============ STEP 3: Technical Momentum Confirmation ============
+tech_candidates = []
+for symbol in social_candidates:
+    indicators = getMultipleIndicators(symbol=f"{symbol}/USDT", interval="4h", indicators=["rsi", "macd", "ema", "adx"])
+    rsi_val = indicators["rsi"]["value"]
+    macd_val = indicators["macd"]["histogram"]
+    ema20 = indicators["ema"]["ema20"]
+    ema50 = indicators["ema"]["ema50"]
+    adx_val = indicators["adx"]["value"]
+    
+    if 50 < rsi_val < 70 and macd_val > 0 and ema20 > ema50 and adx_val > 20:
+        tech_candidates.append(symbol)
+
+# ============ STEP 4: News Sentiment Filter ============
+final_candidates = []
+for symbol in tech_candidates:
+    news_data = getCryptoTickerNews({
+        "tickers": symbol,
+        "items": 10,
+        "token": NEWS_API_TOKEN
+    })
+    pos_count = sum(1 for n in news_data["data"] if n["sentiment"] == "positive")
+    neg_count = sum(1 for n in news_data["data"] if n["sentiment"] == "negative")
+    if neg_count == 0 or (pos_count / max(1, neg_count)) >= 2:
+        final_candidates.append(symbol)
+
+# ============ STEP 5: Output Trade Signals ============
+trade_signals = []
+for sym in final_candidates:
+    trade_signals.append({
+        "symbol": sym,
+        "entry": "market",
+        "stop_loss": "-8%",
+        "take_profit": "+15%, +30%, trailing",
+        "position_size": "2% portfolio"
+    })
+
+print("=== Small-Mid Cap Strategy Signals ===")
+for signal in trade_signals:
+    print(signal)

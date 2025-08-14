@@ -1,0 +1,94 @@
+[debug] Calling HTTP endpoint
+{
+  "domain": "cryptonews-api.com",
+  "method": "get",
+  "path": "/api/v1/category",
+  "operation": "getCryptoCategoryNews",
+  "operation_hash": "ebe8eab2133352dc97f2c55fcf123f8409064404",
+  "is_consequential": false,
+  "params": {
+    "section": "general",
+    "items": 5,
+    "datatype": "json",
+    "token": "ayimav7nlptgzetysg9dwhqteampvoirtfx5orqk"
+  }
+}
+[debug] Response received
+{
+  "function_name": "getCryptoCategoryNews",
+  "domain": "cryptonews-api.com",
+  "message": "The requested action requires approval",
+  "action_id": "g-60e57374e07d869b9d0233f419f3ed47c91b45c2"
+}
+[debug] Calling HTTP endpoint
+{
+  "domain": "cryptonews-api.com",
+  "method": "get",
+  "path": "/api/v1/category",
+  "operation": "getCryptoCategoryNews",
+  "operation_hash": "ebe8eab2133352dc97f2c55fcf123f8409064404",
+  "is_consequential": false,
+  "params": {
+    "section": "general",
+    "items": 5,
+    "datatype": "json",
+    "token": "ayimav7nlptgzetysg9dwhqteampvoirtfx5orqk"
+  }
+}
+[debug] Response received
+{
+  "response_data": {
+    "message": "The given data was invalid.",
+    "errors": {
+      "datatype": [
+        "The selected datatype is invalid."
+      ]
+    }
+  },
+  "status_code": 422,
+  "action_id": "g-60e57374e07d869b9d0233f419f3ed47c91b45c2"
+}
+[debug] Failed Outbound Call
+{
+  "text_raw": {
+    "response_data": {
+      "message": "The given data was invalid.",
+      "errors": {
+        "datatype": [
+          "The selected datatype is invalid."
+        ]
+      }
+    },
+    "status_code": 422,
+    "action_id": "g-60e57374e07d869b9d0233f419f3ed47c91b45c2"
+  },
+  "http_status": 422,
+  "domain": "cryptonews-api.com",
+  "method": "get",
+  "path": "/api/v1/category",
+  "operation": "getCryptoCategoryNews",
+  "operation_hash": "ebe8eab2133352dc97f2c55fcf123f8409064404",
+  "is_consequential": false,
+  "params": {
+    "section": "general",
+    "items": 5,
+    "datatype": "json",
+    "token": "ayimav7nlptgzetysg9dwhqteampvoirtfx5orqk"
+  }
+}
+Error talking to connector
+API call failed. The response returned was:
+
+json
+Copy
+Edit
+{
+  "message": "The given data was invalid.",
+  "errors": {
+    "datatype": ["The selected datatype is invalid."]
+  }
+}
+Status: Failed
+Error: The datatype parameter value was rejected as invalid.
+
+Let me rerun this using default parameters for a clean result. Stand by for a new scan.

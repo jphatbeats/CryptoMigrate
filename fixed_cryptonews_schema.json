@@ -1,0 +1,250 @@
+{
+  "openapi": "3.1.0",
+  "servers": [
+    {
+      "url": "https://cryptonews-api.com"
+    }
+  ],
+  "info": {
+    "title": "Crypto News API",
+    "version": "1.0.0"
+  },
+  "paths": {
+    "/api/v1": {
+      "get": {
+        "summary": "Get Crypto Ticker News (regular and advanced)",
+        "operationId": "getCryptoTickerNews",
+        "description": "Retrieve crypto news for tickers using regular or advanced filtering options.",
+        "parameters": [
+          {
+            "name": "tickers",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "example": "BTC,ETH,XRP"
+            },
+            "description": "News about any of these tickers (comma-separated)."
+          },
+          {
+            "name": "items",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 100,
+              "example": 3
+            },
+            "description": "Number of news items to return (1-100). This parameter is required."
+          },
+          {
+            "name": "page",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "default": 1,
+              "example": 1
+            },
+            "description": "Page number for pagination."
+          },
+          {
+            "name": "sentiment",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "enum": ["positive", "negative", "neutral"],
+              "example": "positive"
+            },
+            "description": "Filter by sentiment - positive, negative, or neutral news only."
+          },
+          {
+            "name": "date",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "example": "last7days"
+            },
+            "description": "Historical news filter. Use shortcuts like today, yesterday, last7days, last30days."
+          },
+          {
+            "name": "search",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "example": "Bitcoin,Ethereum"
+            },
+            "description": "Search keywords using AND logic."
+          },
+          {
+            "name": "extra-fields",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "example": "id,eventid,rankscore"
+            },
+            "description": "Additional fields - id, eventid, rankscore (comma-separated)."
+          },
+          {
+            "name": "token",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "example": "ayimav7nlptgzetysg9dwhqteampvoirtfx5orqk"
+            },
+            "description": "API token"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "List of crypto news items",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "title": {"type": "string"},
+                          "text": {"type": "string"},
+                          "source_name": {"type": "string"},
+                          "date": {"type": "string"},
+                          "sentiment": {"type": "string"},
+                          "tickers": {"type": "array", "items": {"type": "string"}},
+                          "url": {"type": "string"}
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/category": {
+      "get": {
+        "summary": "Get categorized crypto news by section",
+        "operationId": "getCryptoCategoryNews",
+        "description": "Get curated news articles from specific crypto market sections.",
+        "parameters": [
+          {
+            "name": "section",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "enum": ["general", "alltickers"],
+              "example": "general"
+            },
+            "description": "News section - 'general' for market-wide news, 'alltickers' for ticker news"
+          },
+          {
+            "name": "items",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 100,
+              "default": 10,
+              "example": 3
+            },
+            "description": "Number of news articles to return (1-100). Required parameter."
+          },
+          {
+            "name": "page",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "default": 1,
+              "example": 1
+            },
+            "description": "Page number for pagination"
+          },
+          {
+            "name": "sentiment",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "enum": ["positive", "negative", "neutral"],
+              "example": "positive"
+            },
+            "description": "Filter by sentiment - positive, negative, or neutral"
+          },
+          {
+            "name": "date",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "example": "last7days"
+            },
+            "description": "Historical news filter. Use shortcuts like today, yesterday, last7days"
+          },
+          {
+            "name": "extra-fields",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "example": "id,eventid,rankscore"
+            },
+            "description": "Additional fields - id, eventid, rankscore (comma-separated)"
+          },
+          {
+            "name": "token",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "example": "ayimav7nlptgzetysg9dwhqteampvoirtfx5orqk"
+            },
+            "description": "API token"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Categorized crypto news articles",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "title": {"type": "string"},
+                          "text": {"type": "string"},
+                          "source_name": {"type": "string"},
+                          "date": {"type": "string"},
+                          "sentiment": {"type": "string"},
+                          "tickers": {"type": "array", "items": {"type": "string"}},
+                          "url": {"type": "string"}
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

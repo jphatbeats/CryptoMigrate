@@ -1,0 +1,65 @@
+2025-08-05 13:41:40 - werkzeug - INFO - 100.64.0.4 - - [05/Aug/2025 13:41:40] "GET /api/alerts/prioritized?limit=5&urgency=HIGH HTTP/1.1" 503 -
+
+2025-08-05 13:47:18 - __main__ - ERROR - Unexpected error: 404 Not Found: The requested URL was not found on the server. If you entered the URL manually please check your spelling and try again.
+
+Traceback (most recent call last):
+
+  File "/opt/venv/lib/python3.10/site-packages/flask/app.py", line 1484, in full_dispatch_request
+
+    rv = self.dispatch_request()
+
+  File "/opt/venv/lib/python3.10/site-packages/flask/app.py", line 1458, in dispatch_request
+
+    self.raise_routing_exception(req)
+
+  File "/opt/venv/lib/python3.10/site-packages/flask/app.py", line 1440, in raise_routing_exception
+
+    raise request.routing_exception  # type: ignore
+
+  File "/opt/venv/lib/python3.10/site-packages/flask/ctx.py", line 353, in match_request
+
+    result = self.url_adapter.match(return_rule=True)  # type: ignore
+
+  File "/opt/venv/lib/python3.10/site-packages/werkzeug/routing/map.py", line 629, in match
+
+    raise NotFound() from None
+
+werkzeug.exceptions.NotFound: 404 Not Found: The requested URL was not found on the server. If you entered the URL manually please check your spelling and try again.
+
+ 
+
+2025-08-05 13:47:18 - werkzeug - INFO - 100.64.0.3 - - [05/Aug/2025 13:47:18] "GET /api/lunarcrush/trending HTTP/1.1" 500 -
+
+2025-08-05 13:47:19 - werkzeug - INFO - 100.64.0.4 - - [05/Aug/2025 13:47:19] "GET /api/chatgpt/opportunity-scanner HTTP/1.1" 503 -
+
+2025-08-05 13:48:38 - __main__ - ERROR - Unexpected error: 404 Not Found: The requested URL was not found on the server. If you entered the URL manually please check your spelling and try again.
+
+Traceback (most recent call last):
+
+  File "/opt/venv/lib/python3.10/site-packages/flask/app.py", line 1484, in full_dispatch_request
+
+    rv = self.dispatch_request()
+
+  File "/opt/venv/lib/python3.10/site-packages/flask/app.py", line 1458, in dispatch_request
+
+    self.raise_routing_exception(req)
+
+  File "/opt/venv/lib/python3.10/site-packages/flask/app.py", line 1440, in raise_routing_exception
+
+    raise request.routing_exception  # type: ignore
+
+  File "/opt/venv/lib/python3.10/site-packages/flask/ctx.py", line 353, in match_request
+
+    result = self.url_adapter.match(return_rule=True)  # type: ignore
+
+  File "/opt/venv/lib/python3.10/site-packages/werkzeug/routing/map.py", line 629, in match
+
+    raise NotFound() from None
+
+werkzeug.exceptions.NotFound: 404 Not Found: The requested URL was not found on the server. If you entered the URL manually please check your spelling and try again.
+
+ 
+
+2025-08-05 13:48:38 - werkzeug - INFO - 100.64.0.4 - - [05/Aug/2025 13:48:38] "GET /api/lunarcrush/trending HTTP/1.1" 500 -
+
+2025-08-05 13:48:38 - werkzeug - INFO - 100.64.0.3 - - [05/Aug/2025 13:48:38] "GET /api/chatgpt/opportunity-scanner HTTP/1.1" 503 -

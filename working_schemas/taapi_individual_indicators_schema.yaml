@@ -1,0 +1,283 @@
+openapi: 3.1.0
+info:
+  title: TAAPI.io Individual Indicators
+  description: Access to 200+ technical indicators for crypto trading analysis. Each indicator called individually.
+  version: 1.0.0
+servers:
+  - url: https://api.taapi.io
+paths:
+  /rsi:
+    get:
+      summary: Get RSI indicator
+      operationId: getRSI
+      parameters:
+        - name: secret
+          in: query
+          required: true
+          schema:
+            type: string
+            default: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJjbHVlIjoiNjg5NDFjMGE4MDZmZjE2NTFlMmM1ZTM0IiwiaWF0IjoxNzU0NTM3NDUxLCJleHAiOjMzMjU5MDAxNDUxfQ.QRqOzRFsTcYKSYUuezVQMFdJcL2A6lHIwWC5L0JOLTU
+        - name: symbol
+          in: query
+          required: true
+          schema:
+            type: string
+            example: BTC/USDT
+        - name: exchange
+          in: query
+          schema:
+            type: string
+            default: binance
+        - name: interval
+          in: query
+          schema:
+            type: string
+            default: 1h
+        - name: period
+          in: query
+          schema:
+            type: integer
+            default: 14
+      responses:
+        '200':
+          description: RSI value
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  value:
+                    type: number
+  /ema:
+    get:
+      summary: Get EMA indicator
+      operationId: getEMA
+      parameters:
+        - name: secret
+          in: query
+          required: true
+          schema:
+            type: string
+            default: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJjbHVlIjoiNjg5NDFjMGE4MDZmZjE2NTFlMmM1ZTM0IiwiaWF0IjoxNzU0NTM3NDUxLCJleHAiOjMzMjU5MDAxNDUxfQ.QRqOzRFsTcYKSYUuezVQMFdJcL2A6lHIwWC5L0JOLTU
+        - name: symbol
+          in: query
+          required: true
+          schema:
+            type: string
+            example: BTC/USDT
+        - name: exchange
+          in: query
+          schema:
+            type: string
+            default: binance
+        - name: interval
+          in: query
+          schema:
+            type: string
+            default: 1h
+        - name: period
+          in: query
+          schema:
+            type: integer
+            default: 20
+      responses:
+        '200':
+          description: EMA value
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  value:
+                    type: number
+  /sma:
+    get:
+      summary: Get SMA indicator
+      operationId: getSMA
+      parameters:
+        - name: secret
+          in: query
+          required: true
+          schema:
+            type: string
+            default: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJjbHVlIjoiNjg5NDFjMGE4MDZmZjE2NTFlMmM1ZTM0IiwiaWF0IjoxNzU0NTM3NDUxLCJleHAiOjMzMjU5MDAxNDUxfQ.QRqOzRFsTcYKSYUuezVQMFdJcL2A6lHIwWC5L0JOLTU
+        - name: symbol
+          in: query
+          required: true
+          schema:
+            type: string
+            example: BTC/USDT
+        - name: exchange
+          in: query
+          schema:
+            type: string
+            default: binance
+        - name: interval
+          in: query
+          schema:
+            type: string
+            default: 1h
+        - name: period
+          in: query
+          schema:
+            type: integer
+            default: 20
+      responses:
+        '200':
+          description: SMA value
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  value:
+                    type: number
+  /macd:
+    get:
+      summary: Get MACD indicator
+      operationId: getMACD
+      parameters:
+        - name: secret
+          in: query
+          required: true
+          schema:
+            type: string
+            default: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJjbHVlIjoiNjg5NDFjMGE4MDZmZjE2NTFlMmM1ZTM0IiwiaWF0IjoxNzU0NTM3NDUxLCJleHAiOjMzMjU5MDAxNDUxfQ.QRqOzRFsTcYKSYUuezVQMFdJcL2A6lHIwWC5L0JOLTU
+        - name: symbol
+          in: query
+          required: true
+          schema:
+            type: string
+            example: BTC/USDT
+        - name: exchange
+          in: query
+          schema:
+            type: string
+            default: binance
+        - name: interval
+          in: query
+          schema:
+            type: string
+            default: 1h
+        - name: fast
+          in: query
+          schema:
+            type: integer
+            default: 12
+        - name: slow
+          in: query
+          schema:
+            type: integer
+            default: 26
+        - name: signal
+          in: query
+          schema:
+            type: integer
+            default: 9
+      responses:
+        '200':
+          description: MACD values
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  valueMACD:
+                    type: number
+                  valueMACDSignal:
+                    type: number
+                  valueMACDHist:
+                    type: number
+  /bbands:
+    get:
+      summary: Get Bollinger Bands
+      operationId: getBollingerBands
+      parameters:
+        - name: secret
+          in: query
+          required: true
+          schema:
+            type: string
+            default: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJjbHVlIjoiNjg5NDFjMGE4MDZmZjE2NTFlMmM1ZTM0IiwiaWF0IjoxNzU0NTM3NDUxLCJleHAiOjMzMjU5MDAxNDUxfQ.QRqOzRFsTcYKSYUuezVQMFdJcL2A6lHIwWC5L0JOLTU
+        - name: symbol
+          in: query
+          required: true
+          schema:
+            type: string
+            example: BTC/USDT
+        - name: exchange
+          in: query
+          schema:
+            type: string
+            default: binance
+        - name: interval
+          in: query
+          schema:
+            type: string
+            default: 1h
+        - name: period
+          in: query
+          schema:
+            type: integer
+            default: 20
+        - name: stddev
+          in: query
+          schema:
+            type: number
+            default: 2
+      responses:
+        '200':
+          description: Bollinger Bands values
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  valueUpperBand:
+                    type: number
+                  valueMiddleBand:
+                    type: number
+                  valueLowerBand:
+                    type: number
+  /atr:
+    get:
+      summary: Get ATR indicator
+      operationId: getATR
+      parameters:
+        - name: secret
+          in: query
+          required: true
+          schema:
+            type: string
+            default: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJjbHVlIjoiNjg5NDFjMGE4MDZmZjE2NTFlMmM1ZTM0IiwiaWF0IjoxNzU0NTM3NDUxLCJleHAiOjMzMjU5MDAxNDUxfQ.QRqOzRFsTcYKSYUuezVQMFdJcL2A6lHIwWC5L0JOLTU
+        - name: symbol
+          in: query
+          required: true
+          schema:
+            type: string
+            example: BTC/USDT
+        - name: exchange
+          in: query
+          schema:
+            type: string
+            default: binance
+        - name: interval
+          in: query
+          schema:
+            type: string
+            default: 1h
+        - name: period
+          in: query
+          schema:
+            type: integer
+            default: 14
+      responses:
+        '200':
+          description: ATR value
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  value:
+                    type: number

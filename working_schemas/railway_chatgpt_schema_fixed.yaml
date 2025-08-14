@@ -1,0 +1,451 @@
+openapi: 3.1.0
+info:
+  title: Complete Trading Intelligence API - FIXED POSITIONS SCHEMA
+  description: Comprehensive trading portfolio management with CORRECT position data format
+  version: v2.1.2-FIXED
+servers:
+  - url: https://titan-trading-2-production.up.railway.app
+paths:
+  /health:
+    get:
+      description: Health check endpoint to verify API connectivity
+      operationId: healthCheck
+      responses:
+        '200':
+          description: API is healthy and responding
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status: {type: string}
+                  timestamp: {type: string}
+                  server: {type: string}
+                  version: {type: string}
+
+  /api/live/bingx-positions:
+    get:
+      description: "Get live BingX positions - Returns DIRECT ARRAY of position objects. Empty array [] = no positions, Array with objects = active positions."
+      operationId: getBingXPositions
+      responses:
+        '200':
+          description: Direct array of BingX position objects
+          content:
+            application/json:
+              schema:
+                type: array
+                description: "Direct array of positions. Empty [] means no positions. Objects in array mean active positions."
+                items:
+                  type: object
+                  properties:
+                    symbol:
+                      type: string
+                      description: "Trading pair like XRP/USDT:USDT or ETH/USDT:USDT"
+                      example: "XRP/USDT:USDT"
+                    side:
+                      type: string
+                      description: "Position side: long or short"
+                      example: "long"
+                    contracts:
+                      type: number
+                      description: "Position size in contracts"
+                      example: 824.0
+                    entryPrice:
+                      type: number  
+                      description: "Entry price in USDT"
+                      example: 1.6341
+                    markPrice:
+                      type: number
+                      description: "Current market price"
+                      example: 3.2003
+                    unrealizedPnl:
+                      type: number
+                      description: "Current profit/loss in USDT. Positive = profit, Negative = loss"
+                      example: 1290.52
+                    leverage:
+                      type: number
+                      description: "Position leverage (e.g. 10x)"
+                      example: 10.0
+                    marginMode:
+                      type: string
+                      description: "Margin mode: isolated or cross"
+                      example: "isolated"
+                    realizedPnl:
+                      type: number
+                      description: "Realized profit/loss"
+                    notional:
+                      type: number
+                      description: "Position value in USDT"
+
+  /api/live/all-exchanges:
+    get:
+      description: Get combined data from all exchanges (BingX & Blofin)
+      operationId: getAllExchangeData
+      responses:
+        '200':
+          description: Combined exchange data
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  exchanges:
+                    type: array
+                    items:
+                      type: string
+                  status:
+                    type: string
+                  data:
+                    type: object
+
+  /api/live/account-balances:
+    get:
+      description: Get account balances from all exchanges
+      operationId: getAccountBalances
+      responses:
+        '200':
+          description: Account balances
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  balances:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        asset:
+                          type: string
+                        free:
+                          type: number
+                        locked:
+                          type: number
+                        total:
+                          type: number
+
+  /api/live/market-data/{symbol}:
+    get:
+      description: Get live market data for a specific symbol
+      operationId: getMarketData
+      parameters:
+        - name: symbol
+          in: path
+          required: true
+          schema:
+            type: string
+          description: "Trading symbol (e.g., BTC-USDT)"
+      responses:
+        '200':
+          description: Live market data
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  symbol:
+                    type: string
+                  price:
+                    type: number
+                  change:
+                    type: number
+                  volume:
+                    type: number
+                  high:
+                    type: number
+                  low:
+                    type: number
+
+  /api/bingx/klines/{symbol}:
+    get:
+      description: Get BingX candlestick/OHLCV data for technical analysis
+      operationId: getBingXKlines
+      parameters:
+        - name: symbol
+          in: path
+          required: true
+          schema:
+            type: string
+          description: "Trading symbol (e.g., BTC-USDT)"
+        - name: interval
+          in: query
+          required: false
+          schema:
+            type: string
+            enum: ["1m", "3m", "5m", "15m", "30m", "1h", "2h", "4h", "6h", "8h", "12h", "1d", "3d", "1w", "1M"]
+            default: "1h"
+          description: "Kline interval"
+        - name: limit
+          in: query
+          required: false
+          schema:
+            type: integer
+            default: 100
+            minimum: 1
+            maximum: 1000
+          description: "Number of candlesticks to fetch"
+        - name: raw
+          in: query
+          required: false
+          schema:
+            type: string
+            enum: ["true", "false"]
+            default: "false"
+          description: "Return raw JSON string for better compatibility"
+      responses:
+        '200':
+          description: BingX candlestick data
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  symbol:
+                    type: string
+                  klines:
+                    type: array
+                    items:
+                      type: array
+                      items:
+                        oneOf:
+                          - type: number
+                          - type: string
+                  success:
+                    type: boolean
+
+  /:
+    get:
+      description: API documentation and available endpoints
+      operationId: getApiDocumentation
+      responses:
+        '200':
+          description: API documentation with all available endpoints
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                  version:
+                    type: string
+                  status:
+                    type: string
+                  available_exchanges:
+                    type: array
+                    items:
+                      type: string
+                  live_endpoints:
+                    type: object
+
+  /api/live/blofin-positions:
+    get:
+      description: Get live positions from Blofin exchange
+      operationId: getBlofinPositions
+      responses:
+        '200':
+          description: Blofin positions and orders
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  timestamp:
+                    type: string
+                  source:
+                    type: string
+                  positions:
+                    type: array
+                    items:
+                      type: object
+                  orders:
+                    type: array
+                    items:
+                      type: object
+
+  /api/kraken/balance:
+    get:
+      description: Get Kraken account balance
+      operationId: getKrakenBalance
+      responses:
+        '200':
+          description: Kraken account balance
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  timestamp:
+                    type: string
+                  exchange:
+                    type: string
+                  balance:
+                    type: object
+
+  /api/bingx/balance:
+    get:
+      description: Get BingX account balance
+      operationId: getBingXBalance
+      responses:
+        '200':
+          description: BingX account balance
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  timestamp:
+                    type: string
+                  exchange:
+                    type: string
+                  balance:
+                    type: object
+
+  /api/ticker/{exchange}/{symbol}:
+    get:
+      description: Get ticker data from specific exchange
+      operationId: getTicker
+      parameters:
+        - name: exchange
+          in: path
+          required: true
+          schema:
+            type: string
+          description: Exchange name (bingx, blofin, kraken)
+        - name: symbol
+          in: path
+          required: true
+          schema:
+            type: string
+          description: Trading symbol
+      responses:
+        '200':
+          description: Ticker data
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  timestamp:
+                    type: string
+                  exchange:
+                    type: string
+                  symbol:
+                    type: string
+                  ticker:
+                    type: object
+
+  /exchanges/status:
+    get:
+      description: Get status of all exchanges
+      operationId: getExchangesStatus
+      responses:
+        '200':
+          description: Status of all exchanges
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  exchanges:
+                    type: object
+                  status:
+                    type: string
+
+  /api/alpha/real-market-scan:
+    get:
+      description: Scan entire market for real alpha opportunities
+      operationId: realMarketScan
+      responses:
+        '200':
+          description: Alpha opportunities found in market
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                  opportunities:
+                    type: array
+                    items:
+                      type: object
+                  scan_time:
+                    type: string
+                  total_found:
+                    type: integer
+                  scan_type:
+                    type: string
+
+  /api/alpha/scan-opportunities:
+    get:
+      description: Alias for real-market-scan for Discord bot compatibility
+      operationId: scanAlphaOpportunities  
+      responses:
+        '200':
+          description: Alpha opportunities scan results
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                  opportunities:
+                    type: array
+                    items:
+                      type: object
+                  scan_time:
+                    type: string
+                  total_found:
+                    type: integer
+                  scan_type:
+                    type: string
+
+  /api/positions/bingx:
+    get:
+      description: "DIRECT POSITIONS ARRAY - Returns BingX positions as direct array format for ChatGPT compatibility"
+      operationId: getBingXPositionsArray
+      responses:
+        '200':
+          description: "CRITICAL: Direct array of BingX positions. Empty [] = no positions. Array with objects = active positions."
+          content:
+            application/json:
+              schema:
+                type: array
+                description: "Direct array format for ChatGPT. If empty [] = no positions. If contains objects = active positions with PnL data."
+                items:
+                  type: object
+                  properties:
+                    symbol:
+                      type: string
+                      description: "Trading pair like XRP/USDT:USDT"
+                      example: "XRP/USDT:USDT"
+                    side:
+                      type: string
+                      description: "Position side: long or short"
+                      example: "long"
+                    contracts:
+                      type: number
+                      description: "Position size in contracts"
+                      example: 824.0
+                    entryPrice:
+                      type: number
+                      description: "Entry price in USDT"
+                      example: 1.6341
+                    markPrice:
+                      type: number
+                      description: "Current market price"
+                      example: 3.2003
+                    unrealizedPnl:
+                      type: number
+                      description: "CRITICAL: Current P&L in USDT. Positive = profit, Negative = loss. Show ALL positions regardless of P&L"
+                      example: 1290.52
+                    leverage:
+                      type: number
+                      description: "Position leverage"
+                      example: 10.0
+                    marginMode:
+                      type: string
+                      description: "Margin mode"
+                      example: "isolated"

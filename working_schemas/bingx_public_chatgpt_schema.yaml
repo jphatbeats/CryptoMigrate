@@ -1,0 +1,428 @@
+openapi: 3.1.0
+info:
+  title: BingX Public Market Data API
+  description: Access BingX public market data without authentication - for real-time prices, candlestick data, order books, and market statistics
+  version: 1.0.0
+servers:
+  - url: https://open-api.bingx.com
+    description: BingX Public API Server
+
+paths:
+  /openApi/swap/v2/server/time:
+    get:
+      operationId: getServerTime
+      summary: Get server time
+      description: Get the current server time in milliseconds
+      responses:
+        '200':
+          description: Server time retrieved successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                  msg:
+                    type: string
+                  data:
+                    type: object
+                    properties:
+                      serverTime:
+                        type: integer
+                        description: Server time in milliseconds
+
+  /openApi/swap/v2/quote/contracts:
+    get:
+      operationId: getContracts
+      summary: Get all USDT-M perpetual futures symbols
+      description: Get list of all available trading pairs/contracts
+      parameters:
+        - name: symbol
+          in: query
+          required: false
+          schema:
+            type: string
+          description: Trading pair (e.g., BTC-USDT)
+        - name: timestamp
+          in: query
+          required: true
+          schema:
+            type: integer
+          description: Request timestamp in milliseconds
+        - name: recvWindow
+          in: query
+          required: false
+          schema:
+            type: integer
+            default: 5000
+          description: Request valid time window (default 5000ms)
+      responses:
+        '200':
+          description: Contracts list retrieved successfully
+
+  /openApi/swap/v2/quote/depth:
+    get:
+      operationId: getOrderBook
+      summary: Get order book depth
+      description: Get order book with bids and asks for a trading pair
+      parameters:
+        - name: symbol
+          in: query
+          required: true
+          schema:
+            type: string
+          description: Trading pair (e.g., BTC-USDT, ETH-USDT)
+        - name: limit
+          in: query
+          required: false
+          schema:
+            type: integer
+            enum: [5, 10, 20, 50, 100, 500, 1000]
+            default: 20
+          description: Number of order book levels
+        - name: timestamp
+          in: query
+          required: true
+          schema:
+            type: integer
+          description: Request timestamp in milliseconds
+        - name: recvWindow
+          in: query
+          required: false
+          schema:
+            type: integer
+            default: 5000
+          description: Request valid time window
+      responses:
+        '200':
+          description: Order book retrieved successfully
+
+  /openApi/swap/v2/quote/trades:
+    get:
+      operationId: getRecentTrades
+      summary: Get recent trades
+      description: Get list of recent trades for a trading pair
+      parameters:
+        - name: symbol
+          in: query
+          required: true
+          schema:
+            type: string
+          description: Trading pair (e.g., BTC-USDT)
+        - name: limit
+          in: query
+          required: false
+          schema:
+            type: integer
+            default: 500
+            maximum: 1000
+          description: Number of trades (max 1000)
+        - name: timestamp
+          in: query
+          required: true
+          schema:
+            type: integer
+          description: Request timestamp in milliseconds
+        - name: recvWindow
+          in: query
+          required: false
+          schema:
+            type: integer
+            default: 5000
+          description: Request valid time window
+      responses:
+        '200':
+          description: Recent trades retrieved successfully
+
+  /openApi/swap/v2/quote/ticker:
+    get:
+      operationId: get24hrTicker
+      summary: Get 24hr ticker price change statistics
+      description: Get 24-hour rolling window price change statistics for one or all symbols
+      parameters:
+        - name: symbol
+          in: query
+          required: false
+          schema:
+            type: string
+          description: Trading pair (e.g., BTC-USDT). If not provided, returns all symbols
+        - name: timestamp
+          in: query
+          required: true
+          schema:
+            type: integer
+          description: Request timestamp in milliseconds
+        - name: recvWindow
+          in: query
+          required: false
+          schema:
+            type: integer
+            default: 5000
+          description: Request valid time window
+      responses:
+        '200':
+          description: 24hr ticker data retrieved successfully
+
+  /openApi/swap/v1/ticker/price:
+    get:
+      operationId: getSymbolPrice
+      summary: Get symbol price ticker
+      description: Get latest price for a symbol or all symbols
+      parameters:
+        - name: symbol
+          in: query
+          required: false
+          schema:
+            type: string
+          description: Trading pair (e.g., BTC-USDT). If not provided, returns all symbols
+        - name: timestamp
+          in: query
+          required: true
+          schema:
+            type: integer
+          description: Request timestamp in milliseconds
+        - name: recvWindow
+          in: query
+          required: false
+          schema:
+            type: integer
+            default: 5000
+          description: Request valid time window
+      responses:
+        '200':
+          description: Price ticker retrieved successfully
+
+  /openApi/swap/v2/quote/bookTicker:
+    get:
+      operationId: getBookTicker
+      summary: Get symbol order book ticker
+      description: Get best bid/ask price and quantity on the order book
+      parameters:
+        - name: symbol
+          in: query
+          required: true
+          schema:
+            type: string
+          description: Trading pair (e.g., BTC-USDT)
+        - name: timestamp
+          in: query
+          required: true
+          schema:
+            type: integer
+          description: Request timestamp in milliseconds
+        - name: recvWindow
+          in: query
+          required: false
+          schema:
+            type: integer
+            default: 5000
+          description: Request valid time window
+      responses:
+        '200':
+          description: Book ticker retrieved successfully
+
+  /openApi/swap/v2/quote/premiumIndex:
+    get:
+      operationId: getPremiumIndex
+      summary: Get mark price and funding rate
+      description: Get mark price and funding rate for a symbol
+      parameters:
+        - name: symbol
+          in: query
+          required: false
+          schema:
+            type: string
+          description: Trading pair (e.g., BTC-USDT). If not provided, returns all symbols
+        - name: timestamp
+          in: query
+          required: true
+          schema:
+            type: integer
+          description: Request timestamp in milliseconds
+        - name: recvWindow
+          in: query
+          required: false
+          schema:
+            type: integer
+            default: 5000
+          description: Request valid time window
+      responses:
+        '200':
+          description: Premium index data retrieved successfully
+
+  /openApi/swap/v2/quote/fundingRate:
+    get:
+      operationId: getFundingRateHistory
+      summary: Get funding rate history
+      description: Get historical funding rate for a symbol
+      parameters:
+        - name: symbol
+          in: query
+          required: false
+          schema:
+            type: string
+          description: Trading pair (e.g., BTC-USDT)
+        - name: startTime
+          in: query
+          required: false
+          schema:
+            type: integer
+          description: Start time in milliseconds
+        - name: endTime
+          in: query
+          required: false
+          schema:
+            type: integer
+          description: End time in milliseconds
+        - name: limit
+          in: query
+          required: false
+          schema:
+            type: integer
+            default: 100
+            maximum: 1000
+          description: Number of records (max 1000)
+        - name: timestamp
+          in: query
+          required: true
+          schema:
+            type: integer
+          description: Request timestamp in milliseconds
+        - name: recvWindow
+          in: query
+          required: false
+          schema:
+            type: integer
+            default: 5000
+          description: Request valid time window
+      responses:
+        '200':
+          description: Funding rate history retrieved successfully
+
+  /openApi/swap/v2/quote/openInterest:
+    get:
+      operationId: getOpenInterest
+      summary: Get open interest statistics
+      description: Get open interest for a symbol
+      parameters:
+        - name: symbol
+          in: query
+          required: true
+          schema:
+            type: string
+          description: Trading pair (e.g., BTC-USDT)
+        - name: timestamp
+          in: query
+          required: true
+          schema:
+            type: integer
+          description: Request timestamp in milliseconds
+        - name: recvWindow
+          in: query
+          required: false
+          schema:
+            type: integer
+            default: 5000
+          description: Request valid time window
+      responses:
+        '200':
+          description: Open interest data retrieved successfully
+
+  /openApi/swap/v1/market/historicalTrades:
+    get:
+      operationId: getHistoricalTrades
+      summary: Get historical trades
+      description: Query historical transaction data in the market
+      parameters:
+        - name: symbol
+          in: query
+          required: false
+          schema:
+            type: string
+          description: Trading pair (e.g., ETH-USDT)
+        - name: fromId
+          in: query
+          required: false
+          schema:
+            type: integer
+          description: From which transaction ID to start
+        - name: limit
+          in: query
+          required: false
+          schema:
+            type: integer
+            default: 500
+          description: Number of records to return
+        - name: timestamp
+          in: query
+          required: true
+          schema:
+            type: integer
+          description: Request timestamp in milliseconds
+        - name: recvWindow
+          in: query
+          required: false
+          schema:
+            type: integer
+            default: 5000
+          description: Request valid time window
+      responses:
+        '200':
+          description: Historical trades retrieved successfully
+
+  /openApi/swap/v1/market/markPriceKlines:
+    get:
+      operationId: getMarkPriceKlines
+      summary: Get mark price kline/candlestick data
+      description: Get historical mark price kline data
+      parameters:
+        - name: symbol
+          in: query
+          required: true
+          schema:
+            type: string
+          description: Trading pair (e.g., BTC-USDT)
+        - name: interval
+          in: query
+          required: true
+          schema:
+            type: string
+            enum: ['1m', '3m', '5m', '15m', '30m', '1h', '2h', '4h', '6h', '12h', '1d', '3d', '1w', '1M']
+          description: Kline interval
+        - name: startTime
+          in: query
+          required: false
+          schema:
+            type: integer
+          description: Start time in milliseconds
+        - name: endTime
+          in: query
+          required: false
+          schema:
+            type: integer
+          description: End time in milliseconds
+        - name: limit
+          in: query
+          required: false
+          schema:
+            type: integer
+            default: 500
+            maximum: 1440
+          description: Number of klines (max 1440)
+        - name: timestamp
+          in: query
+          required: true
+          schema:
+            type: integer
+          description: Request timestamp in milliseconds
+        - name: recvWindow
+          in: query
+          required: false
+          schema:
+            type: integer
+            default: 5000
+          description: Request valid time window
+      responses:
+        '200':
+          description: Mark price kline data retrieved successfully

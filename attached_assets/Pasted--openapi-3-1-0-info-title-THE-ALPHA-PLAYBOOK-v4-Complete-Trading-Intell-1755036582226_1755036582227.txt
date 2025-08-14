@@ -1,0 +1,652 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "THE ALPHA PLAYBOOK v4 - Complete Trading Intelligence API",
+    "description": "Enhanced cryptocurrency trading intelligence with live position monitoring, account analytics, and comprehensive market data",
+    "version": "4.0.0"
+  },
+  "servers": [
+    { "url": "https://titan-trading-2-production.up.railway.app" }
+  ],
+  "paths": {
+    "/api/positions/bingx": {
+      "get": {
+        "operationId": "getBingXPositions",
+        "summary": "Get live BingX positions with integrated TP/SL analysis",
+        "description": "Retrieves current BingX trading positions with integrated stop loss/take profit fields, risk level, and TP/SL order details.",
+        "responses": {
+          "200": {
+            "description": "Array of BingX positions with integrated TP/SL information",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "symbol": { "type": "string", "description": "Trading pair symbol" },
+                      "side": { "type": "string", "description": "Position side (long/short)" },
+                      "contracts": { "type": "number", "description": "Contract size" },
+                      "entryPrice": { "type": "number", "description": "Entry price" },
+                      "markPrice": { "type": "number", "description": "Current mark price" },
+                      "unrealizedPnl": { "type": "number", "description": "Unrealized profit/loss" },
+                      "realizedPnl": { "type": "number", "description": "Realized profit/loss" },
+                      "leverage": { "type": "number", "description": "Position leverage" },
+                      "marginMode": { "type": "string", "description": "Margin mode (isolated/cross)" },
+                      "liquidationPrice": { "type": "number", "description": "Liquidation price" },
+                      "has_stop_loss": { "type": "boolean", "description": "True if position has active stop loss" },
+                      "has_take_profit": { "type": "boolean", "description": "True if position has active take profit" },
+                      "stop_loss_price": { "type": ["number", "null"], "description": "Stop loss trigger price" },
+                      "take_profit_price": { "type": ["number", "null"], "description": "Take profit trigger price" },
+                      "risk_level": { "type": "string", "description": "HIGH (no SL + loss), PROTECTED (has SL), or MEDIUM", "enum": ["HIGH", "PROTECTED", "MEDIUM"] },
+                      "tp_sl_analysis": { "type": "object", "description": "Optional analysis blob with comments/explanations" },
+                      "stop_loss_orders": {
+                        "type": "array",
+                        "description": "Active stop loss orders for this position",
+                        "items": {
+                          "type": "object",
+                          "properties": {
+                            "id": { "type": "string" },
+                            "price": { "type": "number" },
+                            "amount": { "type": "number" },
+                            "status": { "type": "string" },
+                            "type": { "type": "string" }
+                          }
+                        }
+                      },
+                      "take_profit_orders": {
+                        "type": "array",
+                        "description": "Active take profit orders for this position",
+                        "items": {
+                          "type": "object",
+                          "properties": {
+                            "id": { "type": "string" },
+                            "price": { "type": "number" },
+                            "amount": { "type": "number" },
+                            "status": { "type": "string" },
+                            "type": { "type": "string" }
+                          }
+                        }
+                      }
+                    },
+                    "required": ["symbol", "side"]
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+
+    "/api/orders/bingx/all": {
+      "get": {
+        "operationId": "getAllBingXOrders",
+        "summary": "Get ALL orders (open/closed/SL/TP)",
+        "description": "Get ALL orders (open, closed, stop loss, take profit) for a comprehensive account view.",
+        "responses": {
+          "200": {
+            "description": "Complete order information including stop loss and take profit orders",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "open_orders": { "type": "array", "items": { "type": "object" }, "description": "Regular open orders" },
+                    "closed_orders": { "type": "array", "items": { "type": "object" }, "description": "Recently closed orders" },
+                    "stop_loss_orders": { "type": "array", "items": { "type": "object" }, "description": "Active stop loss orders" },
+                    "take_profit_orders": { "type": "array", "items": { "type": "object" }, "description": "Active take profit orders" },
+                    "conditional_orders": { "type": "array", "items": { "type": "object" }, "description": "Other conditional orders" },
+                    "summary": {
+                      "type": "object",
+                      "properties": {
+                        "total_open": { "type": "number" },
+                        "total_stop_loss": { "type": "number" },
+                        "total_take_profit": { "type": "number" },
+                        "total_closed": { "type": "number" }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+
+    "/api/stop-orders/bingx": {
+      "get": {
+        "operationId": "getBingXStopOrders",
+        "summary": "Get stop orders with risk analysis",
+        "description": "Get stop loss and take profit orders with risk analysis - critical for risk management.",
+        "responses": {
+          "200": {
+            "description": "Stop loss and take profit orders with risk analysis",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "stop_loss_orders": { "type": "array", "items": { "type": "object" }, "description": "Active stop loss orders" },
+                    "take_profit_orders": { "type": "array", "items": { "type": "object" }, "description": "Active take profit orders" },
+                    "risk_analysis": {
+                      "type": "object",
+                      "properties": {
+                        "unprotected_positions": { "type": "array", "items": { "type": "object" }, "description": "Positions without stop losses" },
+                        "high_risk_positions": { "type": "array", "items": { "type": "object" }, "description": "High-risk unprotected positions" }
+                      }
+                    },
+                    "summary": {
+                      "type": "object",
+                      "properties": {
+                        "total_stop_loss": { "type": "number" },
+                        "total_take_profit": { "type": "number" },
+                        "positions_without_sl": { "type": "array", "items": { "type": "string" } },
+                        "positions_without_tp": { "type": "array", "items": { "type": "string" } },
+                        "unprotected_count": { "type": "number" }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+
+    "/api/account-info/bingx": {
+      "get": {
+        "operationId": "getAccountInfo",
+        "summary": "Get comprehensive account information and commission rates",
+        "description": "Retrieves enhanced account information including commission rates and trading permissions",
+        "responses": {
+          "200": {
+            "description": "Complete account information with enhanced features",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "account_info": {
+                      "type": "object",
+                      "properties": {
+                        "enhanced_features": { "type": "boolean" },
+                        "api_method": { "type": "string" },
+                        "commission_rates": { "type": "object" }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+
+    "/api/trades/bingx": {
+      "get": {
+        "operationId": "getBingXTrades",
+        "summary": "Get BingX trade history with P&L analysis",
+        "description": "Get BingX trade history with P&L analysis and trading statistics",
+        "responses": {
+          "200": {
+            "description": "Trade history with comprehensive analysis",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "trades": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "id": { "type": "string" },
+                          "symbol": { "type": "string" },
+                          "side": { "type": "string" },
+                          "amount": { "type": "number" },
+                          "price": { "type": "number" },
+                          "cost": { "type": "number" },
+                          "fee": { "type": "object" },
+                          "timestamp": { "type": "number" },
+                          "datetime": { "type": "string" }
+                        }
+                      }
+                    },
+                    "summary": {
+                      "type": "object",
+                      "properties": {
+                        "total_trades": { "type": "number" },
+                        "total_volume": { "type": "number" },
+                        "total_fees": { "type": "number" },
+                        "showing_recent": { "type": "number" }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+
+    "/api/funding/bingx": {
+      "get": {
+        "operationId": "getBingXFunding",
+        "summary": "Get BingX funding history",
+        "description": "Get BingX funding history - deposits, withdrawals, transfers",
+        "responses": {
+          "200": {
+            "description": "Complete funding history",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "deposits": { "type": "array", "items": { "type": "object" } },
+                    "withdrawals": { "type": "array", "items": { "type": "object" } },
+                    "transfers": { "type": "array", "items": { "type": "object" } },
+                    "summary": { "type": "object", "properties": { "total_deposits": { "type": "number" }, "total_withdrawals": { "type": "number" } } }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+
+    "/api/balance/bingx": {
+      "get": {
+        "operationId": "getBingXBalance",
+        "summary": "Get BingX account balance",
+        "description": "Get BingX account balance",
+        "responses": {
+          "200": {
+            "description": "Account balance information",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "USDT": { "type": "object", "properties": { "free": { "type": "number" }, "used": { "type": "number" }, "total": { "type": "number" } } },
+                    "BTC": { "type": "object", "properties": { "free": { "type": "number" }, "used": { "type": "number" }, "total": { "type": "number" } } }
+                  },
+                  "additionalProperties": { "type": "object", "properties": { "free": { "type": "number" }, "used": { "type": "number" }, "total": { "type": "number" } } }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+
+    "/api/orders/bingx": {
+      "get": {
+        "operationId": "getBingXOpenOrders",
+        "summary": "Get BingX open orders",
+        "description": "Get BingX open orders",
+        "responses": {
+          "200": {
+            "description": "Open orders",
+            "content": {
+              "application/json": {
+                "schema": { "type": "array", "items": { "type": "object" } }
+              }
+            }
+          }
+        }
+      }
+    },
+
+    "/api/positions/kraken": {
+      "get": {
+        "operationId": "getKrakenPositions",
+        "summary": "Get Kraken positions",
+        "description": "Get Kraken positions",
+        "responses": {
+          "200": {
+            "description": "Kraken positions",
+            "content": { "application/json": { "schema": { "type": "array", "items": { "type": "object" } } } }
+          }
+        }
+      }
+    },
+
+    "/api/balance/kraken": {
+      "get": {
+        "operationId": "getKrakenBalance",
+        "summary": "Get Kraken account balance",
+        "description": "Get Kraken account balance",
+        "responses": {
+          "200": {
+            "description": "Kraken balance information",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "USDT": { "type": "object", "properties": { "free": { "type": "number" }, "used": { "type": "number" }, "total": { "type": "number" } } },
+                    "USD": { "type": "object", "properties": { "free": { "type": "number" }, "used": { "type": "number" }, "total": { "type": "number" } } },
+                    "BTC": { "type": "object", "properties": { "free": { "type": "number" }, "used": { "type": "number" }, "total": { "type": "number" } } },
+                    "ETH": { "type": "object", "properties": { "free": { "type": "number" }, "used": { "type": "number" }, "total": { "type": "number" } } }
+                  },
+                  "additionalProperties": { "type": "object", "properties": { "free": { "type": "number" }, "used": { "type": "number" }, "total": { "type": "number" } } }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+
+    "/api/positions/blofin": {
+      "get": {
+        "operationId": "getBlofinPositions",
+        "summary": "Get Blofin positions",
+        "description": "Get Blofin positions",
+        "responses": {
+          "200": {
+            "description": "Blofin positions",
+            "content": { "application/json": { "schema": { "type": "array", "items": { "type": "object" } } } }
+          }
+        }
+      }
+    },
+
+    "/api/balance/blofin": {
+      "get": {
+        "operationId": "getBlofinBalance",
+        "summary": "Get Blofin account balance",
+        "description": "Get Blofin account balance",
+        "responses": {
+          "200": {
+            "description": "Blofin balance information",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "USDT": { "type": "object", "properties": { "free": { "type": "number" }, "used": { "type": "number" }, "total": { "type": "number" } } },
+                    "USD": { "type": "object", "properties": { "free": { "type": "number" }, "used": { "type": "number" }, "total": { "type": "number" } } },
+                    "BTC": { "type": "object", "properties": { "free": { "type": "number" }, "used": { "type": "number" }, "total": { "type": "number" } } },
+                    "ETH": { "type": "object", "properties": { "free": { "type": "number" }, "used": { "type": "number" }, "total": { "type": "number" } } }
+                  },
+                  "additionalProperties": { "type": "object", "properties": { "free": { "type": "number" }, "used": { "type": "number" }, "total": { "type": "number" } } }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+
+    "/api/pnl-history/bingx": {
+      "get": {
+        "operationId": "getPnLHistory",
+        "summary": "Get comprehensive P&L history and trading performance",
+        "description": "Retrieves detailed profit/loss history with performance analytics",
+        "parameters": [
+          { "name": "days", "in": "query", "description": "Number of days to retrieve (default: 7)", "schema": { "type": "integer", "default": 7 } }
+        ],
+        "responses": {
+          "200": {
+            "description": "Comprehensive P&L analysis with trading history",
+            "content": {
+              "application/json": {
+                "schema": { "type": "object", "properties": { "pnl_analysis": { "type": "object", "properties": { "summary": { "type": "object" }, "total_records_available": { "type": "integer" }, "enhanced_features": { "type": "boolean" } } } } }
+              }
+            }
+          }
+        }
+      }
+    },
+
+    "/exchanges/status": {
+      "get": {
+        "operationId": "getExchangeStatus",
+        "summary": "Get status of all exchanges",
+        "description": "Get status of all exchanges",
+        "responses": {
+          "200": {
+            "description": "Exchange status information",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "available_exchanges": { "type": "array", "items": { "type": "string" } },
+                    "detailed_status": {
+                      "type": "object",
+                      "properties": {
+                        "bingx": { "type": "object", "properties": { "status": { "type": "string" }, "error": { "type": ["string", "null"] } } },
+                        "kraken": { "type": "object", "properties": { "status": { "type": "string" }, "error": { "type": ["string", "null"] } } },
+                        "blofin": { "type": "object", "properties": { "status": { "type": "string" }, "error": { "type": ["string", "null"] } } }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+
+    "/api/market/rsi-scan": {
+      "get": {
+        "operationId": "scanMarketRSI",
+        "summary": "Scan entire market for RSI conditions",
+        "description": "Find coins with specific RSI values across the entire cryptocurrency market. Perfect for finding oversold (RSI < 30) or overbought (RSI > 70) opportunities.",
+        "parameters": [
+          { "name": "rsi_min", "in": "query", "description": "Minimum RSI value to find (0-100). Use 70+ for overbought coins.", "schema": { "type": "number", "minimum": 0, "maximum": 100, "default": 0 } },
+          { "name": "rsi_max", "in": "query", "description": "Maximum RSI value to find (0-100). Use 30 or less for oversold coins.", "schema": { "type": "number", "minimum": 0, "maximum": 100, "default": 100 } },
+          { "name": "timeframe", "in": "query", "description": "Timeframe for RSI calculation", "schema": { "type": "string", "enum": ["1m", "5m", "15m", "1h", "4h", "1d"], "default": "1h" } },
+          { "name": "limit", "in": "query", "description": "Maximum number of results to return", "schema": { "type": "integer", "minimum": 1, "maximum": 100, "default": 50 } },
+          { "name": "market_cap_min", "in": "query", "description": "Minimum market cap filter (USD)", "schema": { "type": "number", "default": 10000000 } }
+        ],
+        "responses": {
+          "200": {
+            "description": "RSI scan results",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/RSIScanResponse" }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "operationId": "scanSpecificCoinsRSI",
+        "summary": "Scan specific coins for RSI conditions",
+        "description": "Scan a specific list of cryptocurrencies for RSI conditions",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "symbols": { "type": "array", "items": { "type": "string" }, "description": "List of coin symbols to scan (e.g. [\"BTC\", \"ETH\", \"XRP\"])" },
+                  "rsi_min": { "type": "number", "minimum": 0, "maximum": 100, "default": 0 },
+                  "rsi_max": { "type": "number", "minimum": 0, "maximum": 100, "default": 100 },
+                  "timeframe": { "type": "string", "enum": ["1m", "5m", "15m", "1h", "4h", "1d"], "default": "1h" },
+                  "limit": { "type": "integer", "minimum": 1, "maximum": 100, "default": 50 }
+                },
+                "required": ["symbols"]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "RSI scan results for specific coins",
+            "content": { "application/json": { "schema": { "$ref": "#/components/schemas/RSIScanResponse" } } }
+          }
+        }
+      }
+    },
+
+    "/api/market/macd-scan": {
+      "get": {
+        "operationId": "scanMarketMACD",
+        "summary": "Scan market for MACD crossovers",
+        "description": "Find coins with MACD bullish or bearish crossovers across the entire cryptocurrency market. Ideal for trend change detection.",
+        "parameters": [
+          { "name": "signal", "in": "query", "description": "Type of MACD signal to find", "schema": { "type": "string", "enum": ["bullish", "bearish", "all"], "default": "bullish" } },
+          { "name": "timeframe", "in": "query", "description": "Timeframe for MACD analysis", "schema": { "type": "string", "enum": ["1h", "4h", "1d"], "default": "4h" } },
+          { "name": "limit", "in": "query", "description": "Maximum results to return", "schema": { "type": "integer", "minimum": 1, "maximum": 100, "default": 30 } }
+        ],
+        "responses": {
+          "200": {
+            "description": "MACD crossover scan results",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/MACDScanResponse" }
+              }
+            }
+          }
+        }
+      }
+    },
+
+    "/api/market/multi-indicator-scan": {
+      "post": {
+        "operationId": "multiIndicatorScan",
+        "summary": "Multi-indicator confluence scanning",
+        "description": "Scan for confluence of multiple technical indicators. Combine RSI, MACD, and other indicators for high-probability setups.",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "indicators": {
+                    "type": "object",
+                    "description": "Indicator conditions to check",
+                    "properties": {
+                      "rsi": { "type": "object", "properties": { "min": { "type": "number", "minimum": 0, "maximum": 100 }, "max": { "type": "number", "minimum": 0, "maximum": 100 } } },
+                      "macd": { "type": "object", "properties": { "signal": { "type": "string", "enum": ["bullish", "bearish"] } } }
+                    },
+                    "example": { "rsi": { "min": 30, "max": 70 }, "macd": { "signal": "bullish" } }
+                  },
+                  "timeframe": { "type": "string", "enum": ["1m", "5m", "15m", "1h", "4h", "1d"], "default": "1h" },
+                  "limit": { "type": "integer", "minimum": 1, "maximum": 50, "default": 20 },
+                  "require_all": { "type": "boolean", "description": "true = all conditions must match, false = any condition matches", "default": true },
+                  "symbols": { "type": "array", "items": { "type": "string" }, "description": "Optional: specific symbols to scan" }
+                },
+                "required": ["indicators"]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Multi-indicator confluence results",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/MultiIndicatorResponse" }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+
+  "components": {
+    "schemas": {
+      "RSIScanResponse": {
+        "type": "object",
+        "properties": {
+          "success": { "type": "boolean" },
+          "scan_type": { "type": "string" },
+          "parameters": {
+            "type": "object",
+            "properties": {
+              "rsi_range": { "type": "string" },
+              "timeframe": { "type": "string" },
+              "symbols_scanned": { "type": "integer" },
+              "results_found": { "type": "integer" }
+            }
+          },
+          "results": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "symbol": { "type": "string" },
+                "rsi": { "type": "number" },
+                "timeframe": { "type": "string" },
+                "price": { "type": "number" },
+                "change_24h": { "type": "number" },
+                "volume_24h": { "type": "number" },
+                "condition": { "type": "string", "enum": ["oversold", "overbought", "bearish", "bullish", "neutral"] },
+                "timestamp": { "type": "string" }
+              }
+            }
+          }
+        }
+      },
+
+      "MACDScanResponse": {
+        "type": "object",
+        "properties": {
+          "success": { "type": "boolean" },
+          "scan_type": { "type": "string" },
+          "signal_filter": { "type": "string" },
+          "timeframe": { "type": "string" },
+          "results": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "symbol": { "type": "string" },
+                "macd": { "type": "number" },
+                "signal": { "type": "number" },
+                "histogram": { "type": "number" },
+                "condition": { "type": "string", "enum": ["bullish", "bearish"] },
+                "timeframe": { "type": "string" },
+                "timestamp": { "type": "string" }
+              }
+            }
+          }
+        }
+      },
+
+      "MultiIndicatorResponse": {
+        "type": "object",
+        "properties": {
+          "success": { "type": "boolean" },
+          "scan_type": { "type": "string" },
+          "parameters": {
+            "type": "object",
+            "properties": {
+              "indicators_checked": { "type": "array", "items": { "type": "string" } },
+              "require_all_conditions": { "type": "boolean" },
+              "timeframe": { "type": "string" }
+            }
+          },
+          "results": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "symbol": { "type": "string" },
+                "matches": { "type": "array", "items": { "type": "string" } },
+                "indicator_values": { "type": "object" },
+                "match_score": { "type": "number", "description": "Percentage of conditions met (0-1)" },
+                "timeframe": { "type": "string" }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

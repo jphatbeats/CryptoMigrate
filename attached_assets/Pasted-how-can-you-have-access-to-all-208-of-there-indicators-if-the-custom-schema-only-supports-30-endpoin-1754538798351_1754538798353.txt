@@ -1,0 +1,74 @@
+how can you have access to all 208 of there indicators if the custom schema only supports 30 endpoints?
+ChatGPT said:
+Great question — this is a common limitation with OpenAI Custom Actions (and many other plugin frameworks):
+
+Why the Limit?
+OpenAI Custom Actions schema only lets you define up to 30 separate endpoints per GPT.
+
+But most APIs (like TAAPI.io) have many more functions/indicators than this.
+
+It’s not practical (or allowed) to make one endpoint for every indicator if you want all 208 from TAAPI.io.
+
+How to Get Around the Limit?
+You do NOT need a separate schema endpoint for each indicator.
+
+Instead, you build your custom proxy endpoint to accept a list of indicators and return all results in a single call.
+
+Here’s the Smart Pattern:
+1. Single universal endpoint in your custom actions:
+
+Example: /get-taapi-indicators
+
+The schema takes an array of indicators (or a comma-separated string).
+
+2. In the request, you specify:
+
+json
+Copy
+Edit
+{
+  "symbol": "AVAX/USDT",
+  "interval": "1h",
+  "exchange": "binance",
+  "indicators": ["rsi", "macd", "ema200", ... up to 208]
+}
+(You can limit per-request, e.g. TAAPI.io bulk may cap at 20-30 per call, but you can rotate batches if you want all indicators.)
+
+3. Your endpoint queries TAAPI.io for each requested indicator (using TAAPI.io’s own “bulk” endpoint or sequentially), then returns all results in a single JSON.
+
+4. The response contains all the indicator results, and I can interpret/alert on all of them.
+
+In Your Custom Actions Schema, You Only Need ONE Endpoint:
+Example:
+
+json
+Copy
+Edit
+{
+  "name": "getTaapiIndicators",
+  "description": "Fetch any number of TAAPI.io indicators for any symbol.",
+  "url": "https://your-server.com/get-taapi-indicators",
+  "method": "POST",
+  "request_body": {
+    "symbol": "AVAX/USDT",
+    "interval": "1h",
+    "exchange": "binance",
+    "indicators": ["rsi", "macd", "ema200", "supertrend", ...]
+  },
+  "response": {
+    "results": {
+      "rsi": 54.2,
+      "macd": { "macd": 0.013, "signal": 0.011, "histogram": 0.002 },
+      "ema200": 21.87,
+      "supertrend": { "trend": "bullish", "value": 22.01 }
+      // etc.
+    }
+  }
+}
+TL;DR:
+One universal custom action endpoint unlocks ALL of TAAPI.io’s 208 indicators.
+
+Just specify which ones you want in the request body.
+
+No need for 200+ separate endpoints in your schema.
+

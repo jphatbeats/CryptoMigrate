@@ -1,0 +1,404 @@
+openapi: 3.1.0
+info:
+  title: Railway TAAPI Universal Indicators API
+  description: |
+    Complete access to all 208+ TAAPI.io technical indicators via Railway server endpoints.
+    ChatGPT can dynamically choose which indicators to use for any trading analysis.
+    
+    KEY ADVANTAGE: ChatGPT reads the endpoint guide and chooses indicators intelligently based on market conditions and analysis requirements.
+    
+    Available Categories:
+    - Momentum: RSI, MACD, Stochastic, ADX, CCI, MFI, Williams %R, Aroon, etc.
+    - Volume: OBV, A/D Line, Chaikin, VWAP, Volume indicators
+    - Trend: EMA, SMA, DEMA, TEMA, SuperTrend, Moving Averages
+    - Volatility: Bollinger Bands, ATR, Standard Deviation
+    - Pattern Recognition: 50+ candlestick patterns
+    - Cycle Analysis: Hilbert Transform indicators
+    - Statistics: Linear Regression, Correlation, Beta
+    
+    WORKFLOW:
+    1. ChatGPT chooses appropriate indicators based on analysis type
+    2. Makes Railway API calls to get real-time data  
+    3. Combines results for confluence analysis
+    4. Generates trading insights based on indicator agreement
+  version: 1.0.0
+  contact:
+    name: Railway TAAPI Integration
+    url: https://titan-trading-2-production.up.railway.app
+
+servers:
+  - url: https://titan-trading-2-production.up.railway.app
+    description: Railway Production Server
+
+security:
+  - {}
+
+paths:
+  /api/taapi/indicators:
+    get:
+      operationId: getTaapiIndicatorsList
+      summary: Get All Available TAAPI Indicators
+      description: |
+        Returns categorized list of all 208+ available TAAPI indicators.
+        Use this to see what indicators are available for analysis.
+      responses:
+        '200':
+          description: List of all indicators by category
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  timestamp:
+                    type: string
+                    format: date-time
+                  total_indicators:
+                    type: integer
+                    description: Total number of indicators available
+                  categories:
+                    type: object
+                    properties:
+                      momentum:
+                        type: array
+                        items:
+                          type: string
+                        description: Momentum indicators like RSI, MACD, Stochastic
+                      volume:
+                        type: array
+                        items:
+                          type: string
+                        description: Volume indicators like OBV, A/D Line, VWAP
+                      trend:
+                        type: array
+                        items:
+                          type: string
+                        description: Trend indicators like EMA, SMA, SuperTrend
+                      volatility:
+                        type: array
+                        items:
+                          type: string
+                        description: Volatility indicators like Bollinger Bands, ATR
+                      pattern_recognition:
+                        type: array
+                        items:
+                          type: string
+                        description: Candlestick pattern indicators
+                      cycle:
+                        type: array
+                        items:
+                          type: string
+                        description: Cycle analysis indicators
+                      statistics:
+                        type: array
+                        items:
+                          type: string
+                        description: Statistical indicators
+                  usage:
+                    type: string
+                    description: Instructions for using individual indicators
+
+  /api/taapi/{indicator}:
+    get:
+      operationId: getTaapiIndicator
+      summary: Get Any TAAPI Indicator
+      description: |
+        Universal endpoint for any of the 208+ TAAPI indicators.
+        ChatGPT can choose any indicator dynamically based on analysis needs.
+        
+        Popular indicators:
+        - rsi: Relative Strength Index (momentum)
+        - macd: Moving Average Convergence Divergence
+        - bbands: Bollinger Bands (volatility)
+        - ema: Exponential Moving Average (trend)
+        - sma: Simple Moving Average (trend)
+        - stoch: Stochastic Oscillator
+        - adx: Average Directional Index
+        - obv: On Balance Volume
+        - atr: Average True Range
+        - cci: Commodity Channel Index
+        
+        Pattern recognition:
+        - cdldoji: Doji candlestick pattern
+        - cdlhammer: Hammer pattern
+        - cdlengulfing: Engulfing pattern
+        
+        Advanced indicators:
+        - supertrend: SuperTrend indicator
+        - vwap: Volume Weighted Average Price
+        - mfi: Money Flow Index
+        - willr: Williams %R
+      parameters:
+        - name: indicator
+          in: path
+          required: true
+          description: |
+            Any TAAPI indicator name (e.g., rsi, macd, bbands, ema, sma, stoch, adx, obv, atr, cci, cdldoji, supertrend, vwap, mfi, willr, etc.)
+            Choose based on analysis type:
+            - Quick analysis: rsi, macd, bbands
+            - Trend analysis: ema, sma, supertrend
+            - Volume analysis: obv, vwap, mfi
+            - Pattern recognition: cdldoji, cdlhammer, cdlengulfing
+          schema:
+            type: string
+            example: rsi
+        - name: symbol
+          in: query
+          required: false
+          description: Trading pair (default BTC/USDT)
+          schema:
+            type: string
+            default: BTC/USDT
+            example: ETH/USDT
+        - name: exchange
+          in: query
+          required: false
+          description: Exchange name (default binance)
+          schema:
+            type: string
+            default: binance
+            enum: [binance, bybit, kraken, coinbase, kucoin]
+        - name: interval
+          in: query
+          required: false
+          description: Timeframe (default 1h)
+          schema:
+            type: string
+            default: 1h
+            enum: [1m, 3m, 5m, 15m, 30m, 1h, 2h, 4h, 6h, 8h, 12h, 1d, 3d, 1w, 1M]
+        - name: period
+          in: query
+          required: false
+          description: Period for indicators like RSI, SMA, EMA (default varies by indicator)
+          schema:
+            type: integer
+            example: 14
+        - name: fast
+          in: query
+          required: false
+          description: Fast period for MACD (default 12)
+          schema:
+            type: integer
+            example: 12
+        - name: slow
+          in: query
+          required: false
+          description: Slow period for MACD (default 26)
+          schema:
+            type: integer
+            example: 26
+        - name: signal
+          in: query
+          required: false
+          description: Signal period for MACD (default 9)
+          schema:
+            type: integer
+            example: 9
+        - name: stddev
+          in: query
+          required: false
+          description: Standard deviations for Bollinger Bands (default 2.0)
+          schema:
+            type: number
+            example: 2.0
+      responses:
+        '200':
+          description: Indicator data
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  timestamp:
+                    type: string
+                    format: date-time
+                  indicator:
+                    type: string
+                    description: Indicator name
+                  symbol:
+                    type: string
+                    description: Trading pair
+                  exchange:
+                    type: string
+                    description: Exchange name
+                  interval:
+                    type: string
+                    description: Timeframe
+                  parameters:
+                    type: object
+                    description: Indicator-specific parameters used
+                  data:
+                    type: object
+                    description: Indicator results from TAAPI.io
+                    properties:
+                      indicator:
+                        type: string
+                      symbol:
+                        type: string
+                      result:
+                        oneOf:
+                          - type: number
+                            description: Single value indicators (RSI, ADX, etc.)
+                          - type: object
+                            description: Complex indicators (MACD, Bollinger Bands, etc.)
+                      status:
+                        type: string
+                        enum: [success, error]
+                  source:
+                    type: string
+                    example: taapi.io
+
+  /api/taapi/confluence:
+    get:
+      operationId: getTaapiConfluence
+      summary: Get Confluence Analysis
+      description: |
+        Get comprehensive confluence analysis using multiple key indicators.
+        Includes: RSI, MACD, Bollinger Bands, EMA, SMA, ATR, ADX, Stochastic, OBV, CCI, Williams %R, Awesome Oscillator, MFI, Aroon.
+        Perfect for complete technical analysis and confluence trading decisions.
+      parameters:
+        - name: symbol
+          in: query
+          required: false
+          schema:
+            type: string
+            default: BTC/USDT
+        - name: exchange
+          in: query
+          required: false
+          schema:
+            type: string
+            default: binance
+        - name: interval
+          in: query
+          required: false
+          schema:
+            type: string
+            default: 1h
+      responses:
+        '200':
+          description: Confluence analysis results
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  timestamp:
+                    type: string
+                    format: date-time
+                  confluence_analysis:
+                    type: object
+                    properties:
+                      symbol:
+                        type: string
+                      exchange:
+                        type: string
+                      interval:
+                        type: string
+                      indicators:
+                        type: object
+                        description: Results from all confluence indicators
+                      confluence_count:
+                        type: integer
+                        description: Number of indicators that returned successful data
+                  source:
+                    type: string
+
+  /api/taapi/multiple:
+    post:
+      operationId: getMultipleTaapiIndicators
+      summary: Get Multiple Indicators
+      description: |
+        Get multiple specific indicators in one request.
+        ChatGPT can send a list of desired indicators for efficient batch analysis.
+        
+        Example request body:
+        {
+          "indicators": ["rsi", "macd", "bbands", "ema", "obv"],
+          "symbol": "BTC/USDT",
+          "exchange": "binance", 
+          "interval": "1h"
+        }
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - indicators
+              properties:
+                indicators:
+                  type: array
+                  items:
+                    type: string
+                  description: List of indicator names to fetch
+                  example: ["rsi", "macd", "bbands", "ema", "sma"]
+                symbol:
+                  type: string
+                  default: BTC/USDT
+                  example: ETH/USDT
+                exchange:
+                  type: string
+                  default: binance
+                  example: bybit
+                interval:
+                  type: string
+                  default: 1h
+                  example: 4h
+      responses:
+        '200':
+          description: Multiple indicator results
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  timestamp:
+                    type: string
+                    format: date-time
+                  multiple_indicators:
+                    type: object
+                    properties:
+                      symbol:
+                        type: string
+                      exchange:
+                        type: string
+                      interval:
+                        type: string
+                      indicators:
+                        type: object
+                        description: Results for each requested indicator
+                      confluence_count:
+                        type: integer
+                  source:
+                    type: string
+
+components:
+  schemas:
+    TaapiIndicatorResult:
+      type: object
+      properties:
+        indicator:
+          type: string
+        symbol:
+          type: string
+        result:
+          oneOf:
+            - type: number
+            - type: object
+        status:
+          type: string
+          enum: [success, error]
+    
+    ConfluenceAnalysis:
+      type: object
+      properties:
+        symbol:
+          type: string
+        indicators:
+          type: object
+        confluence_count:
+          type: integer
+        agreement_score:
+          type: number
+          description: Percentage of indicators showing agreement

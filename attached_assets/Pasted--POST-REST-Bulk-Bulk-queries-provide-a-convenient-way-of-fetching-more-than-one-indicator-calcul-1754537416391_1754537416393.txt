@@ -1,0 +1,234 @@
+[POST] REST – Bulk
+Bulk queries provide a convenient way of fetching more than one indicator calculation in just one request. A maximum of 20 calculations is allowed for every plan, including the free plan.
+
+Getting started
+To get started you must send a POST with a JSON body containing your query, to the endpoint /bulk
+
+Endpoint
+[POST] https://api.taapi.io/bulk
+Query
+The query is a simple JSON object, and at the top level you will need to supply your secret token, and below that you define the construct. This is an object defining the basis for the query, specifically, which candle data is needed for the calculations.
+
+Finally, the construct takes an array of indicators, each with it’s own properties.
+
+Complete query example
+{
+	"secret": "TAAPI_SECRET",
+	"construct": {
+		"exchange": "binance",
+		"symbol": "BTC/USDT",
+		"interval": "1h",
+		"indicators": [
+			{
+				"indicator": "rsi"
+			},
+			{
+				"indicator": "cmf",
+				"period": 20
+			},
+			{
+				"id": "my_custom_id",
+				"indicator": "macd",
+				"backtrack": 1
+			}
+		]
+	}
+}
+The construct takes these parameters:
+
+Parameter	Type	Description
+exchange	String	The exchange you want to calculate the indicator from: binance, binancefutures or one of our supported exchanges. Mandatory only for type=crypto.
+symbol	String	Symbol names are always uppercase, with the coin separated by a forward slash and the market: COIN/MARKET. For example: BTC/USDT Bitcoin to Tether, or LTC/BTC Litecoin to Bitcoin…
+interval	String	Interval or time frame: We support the following time frames: 1m, 5m, 15m, 30m, 1h, 2h, 4h, 12h, 1d, 1w. So if you’re interested in values on hourly candles, use interval=1h, for daily values use interval=1d, etc.
+type	String	[crypto, stocks] Tells the query which asset type to look for. Defaults to crypto.
+indicators	Array	An array of indicator objects. See below ‘Indicators’ section.
+Indicators
+Each element in the above indicators array, must be an object containing at least one parameter: indicator. This is the name (or endpoint name) of the indicator. A complete list of indicators may be found here.
+
+Full indicator parameter list:
+
+Parameter	Type	Required	Description
+indicator	String	Yes	Requested indicator, please see the indicators page for a list of indicators.
+id	String	No	Custom IDs are useful so that you can keep track of which indicator call returns which result. By default, the response will show an ID comprised of <exchange>_<symbol>_<timeframe>_<indicator>_<[parameters]>
+backtrack	Integer	No	The backtrack parameter removes candles from the data set and calculates the indicator value X amount of candles back. So, if you’re fetching an indicator on the hourly and you want to know what the indicator value was 5 hours ago, set backtrack=5. The default is 0 and a maximum is 50.
+chart	String	No	The chart parameter accepts one of two values: candles or heikinashi. candles is the default, but if you set this to heikinashi, the indicator values will be calculated using Heikin Ashi candles.
+results	Int/’max’	No	The number of indicator results to be returned. Ex. 5 will return the last 5 RSI results for instance. With bulk calls, you are only allowed a max of 20 results. If you would like more results returned, please use the Direct Method.
+addResultTimestamp	Boolean	No	[true, false] – defaults to false. By setting to true, the API will return a timestamp with every result (real-time and historical) to which candle the value corresponds. This is helpful when requesting historical data.
+gaps	Boolean	No	[true, false] – defaults to true. By setting to false, the API will ensure that there are no candles missing. This often happens on lower timeframes in thin markets. Gaps will be filled by a new candle with 0 volume, and OHLC set the the close price of the latest candle with volume.
+<other>	–	Indicator dependant	Please refer to the indicators page and see applicable parameters for the specific indicator.
+Headers
+Some REST clients may need to be told explicitly which headers to use. Add these headers to the requests if the responses doesn’t match the expected output.
+
+Key	Value	Description
+Content-Type	application/json	The Content-Type representation header is used to indicate the original media type of the resource (prior to any content encoding applied for sending).
+Accept-Encoding	application/json	The Accept-Encoding request HTTP header indicates the content encoding (usually a compression algorithm) that the client can understand. The server uses content negotiation to select one of the proposals and informs the client of that choice with the Content-Encoding response header.
+Responses
+Response for above query
+{
+  "data": [
+    {
+      "id": "binance_BTC/USDT_1h_rsi_0",
+      "result": {
+        "value": 54.32482848167602
+      },
+      "errors": []
+    },
+    {
+      "id": "binance_BTC/USDT_1h_cmf_20_0",
+      "result": {
+        "value": -0.08128034485998774
+      },
+      "errors": []
+    },
+    {
+      "id": "my_custom_id",
+      "result": {
+        "valueMACD": 21.057252245545897,
+        "valueMACDSignal": 13.564391223138724,
+        "valueMACDHist": 7.4928610224071726
+      },
+      "errors": []
+    }
+  ]
+}
+Examples
+NodeJS
+Call taapi using your favourite REST client, or use NPM to do the heavier lifting. Please refer to the NPM | NodeJS | TypeScript guide for detailed guidelines on this.
+
+Bulk NodeJS
+// Require axios (npm i axios --save)
+const axios = require("axios");
+
+await axios.post("https://api.taapi.io/bulk", {
+    "secret": "TAAPI_SECRET",
+    "construct": {
+        "exchange": "binance",
+        "symbol": "BTC/USDT",
+        "interval": "1h",
+        "indicators": [
+            {
+                // Relative Strength Index
+                "indicator": "rsi"
+            },
+            {
+                // Chaikin Money Flow
+                "indicator": "cmf",
+                "period": 20 // Override the default 14
+            },
+            {
+                // MACD Backtracked 1
+                "id": "my_custom_id",
+                "indicator": "macd",
+                "backtrack": 1
+            }
+        ]
+    }            
+}).then( response => {
+    console.log(response);
+}).catch( error => {
+    console.error(error)
+});
+PHP
+Use the built in tools in PHP and make CURL request, or use Packagist.org | PHP Composer to make life easier.
+
+Bulk Native PHP
+<?php
+
+// Define endpoint
+$url = "https://api.taapi.io/bulk";
+
+// Create curl resource 
+$ch = curl_init( $url );
+
+// Setup query with JSON payload to be sent via POST.
+$query = json_encode( (object) array(
+
+    "secret" => "TAAPI_SECRET",
+    "construct" => (object) array(
+        "exchange" => "binance",
+        "symbol" => "BTC/USDT",
+        "interval" => "1h",
+        "indicators" => array(
+            (object) array(
+                // Relative Strength Index
+	        "indicator" => "rsi"
+            ),
+            (object) array(
+                // Chaikin Money Flow
+	        "indicator" => "cmf",
+	        "period" => 20,
+            ),
+            (object) array(
+                // MACD Backtracked 1
+                "id" => "my_custom_id",
+                "indicator" => "macd",
+                "backtrack" => 1
+            ),
+        )
+    )
+
+));
+
+// Add query to CURL
+curl_setopt( $ch, CURLOPT_POSTFIELDS, $query );
+
+// Define the content-type to JSON
+curl_setopt( $ch, CURLOPT_HTTPHEADER, array('Content-Type:application/json'));
+
+// Return response instead of printing.
+curl_setopt( $ch, CURLOPT_RETURNTRANSFER, true );
+
+// Send request.
+$result = curl_exec($ch);
+
+// Close curl resource to free up system resources 
+curl_close($ch);
+
+// View result
+print_r(json_decode($result)->data);
+Python
+Bulk Python
+import requests
+
+url = "https://api.taapi.io/bulk"
+
+payload = {
+    "secret": "TAAPI_SECRET",
+    "construct": {
+        "exchange": "binance",
+        "symbol": "BTC/USDT",
+        "interval": "1h",
+        "indicators": [
+            {
+                "indicator": "rsi"
+            }, {
+                "indicator": "ema",
+                "period": 20
+            },
+            {
+                "indicator": "macd"
+            }, 
+            {
+                "indicator": "kdj"
+            }
+        ]
+    }
+}
+headers = {"Content-Type": "application/json"}
+
+response = requests.request("POST", url, json=payload, headers=headers)
+
+print(response.text)
+Multiple Constructs
+Multiple constructs are a way of fetching indicator values across multiple and different candle sets. Examples might include different timeframes: binance:BTC/USDT:15m and binance:BTC/USDT:1h or different assets binance:XRP/USDT:1d, or even a different exchange: bybit:BTC/USDT:5m.
+
+The same goes for stocks: AAPL:15m and AAPL:1h, or MSFT:1h and TSLA:1h.
+
+Please visit our Multiple Constructs page for more information.
+
+Rate limits
+Bulk queries help you get the most out of your plan while making the queries more efficient. 1 bulk query = 1 API request, even if you include 20 different indicators inside. So you can get up to 20 calculations in a response by only spending 1 API request.
+
+Multiple constructs are limited according to your plan. For instance, the Expert Plan, will allow you 10 different constructs.
+
+Using the ‘results’ optional parameter, is limited to 20 results per calculation. If you’re looking for more results, please use the Direct Method.

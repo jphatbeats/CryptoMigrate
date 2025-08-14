@@ -1,0 +1,227 @@
+# 🌙 LunarCrush API Usage Instructions
+
+## 🔑 CRITICAL: How to Use LunarCrush Endpoints Properly
+
+**IMPORTANT:** LunarCrush endpoints are sensitive to parameter formats and values. Always follow these guidelines to get actual data instead of empty results.
+
+---
+
+## 📋 STEP 1: Always Start with Lists
+
+Before querying specific topics, categories, or coins, **ALWAYS** get the available options first:
+
+### **Get Available Categories:**
+```
+Operation: getCategoriesList
+Purpose: See what category names actually exist
+Usage: Call this FIRST to see valid category options
+```
+
+### **Get Available Topics:**
+```
+Operation: getTopicsList  
+Purpose: See trending topics and their exact names
+Usage: Call this to find valid topic names for other endpoints
+```
+
+### **Get Available Coins:**
+```
+Operation: getCoinsList
+Purpose: See all tracked coins with their exact symbols
+Parameters: 
+- sort: alt_rank (default, best for trending coins)
+- filter: Try "meme", "defi", "ai", "gaming" for specific categories
+- limit: 50 (good starting point)
+```
+
+---
+
+## 🎯 STEP 2: Use Exact Names from Lists
+
+**NEVER GUESS** topic, category, or coin names. Always use the exact strings returned from the list endpoints.
+
+### **Topic Names:**
+- ✅ Use: `bitcoin`, `ethereum`, `solana`, `dogecoin`
+- ❌ Don't use: `BTC`, `ETH`, `SOL`, `DOGE` (unless confirmed in list)
+- ✅ Try: `$btc`, `$eth` (if shown in topics list)
+
+### **Category Names:**
+- ✅ Use: Exact strings from getCategoriesList response
+- ❌ Don't assume: "meme", "defi", "ai" might not be the exact category names
+- 🔍 Common categories might be: "memecoins", "decentralized-finance", "artificial-intelligence"
+
+### **Coin Symbols:**
+- ✅ Use: Exact symbols from getCoinsList response
+- ✅ Try both: lowercase (`btc`) and uppercase (`BTC`)
+
+---
+
+## 🚀 STEP 3: Recommended Endpoint Usage Patterns
+
+### **For Finding Alpha:**
+
+1. **Start with trending coins:**
+```
+getCoinsList with sort=alt_rank, limit=20
+→ Look for coins with high galaxy_score or alt_rank movement
+```
+
+2. **Check social activity for specific coins:**
+```
+getTopic with topic="bitcoin" (or exact name from list)
+→ Get 24h social metrics, sentiment, interactions
+```
+
+3. **Find viral posts:**
+```
+getTopicPosts with topic="ethereum" 
+→ Get most engaging social posts about the topic
+```
+
+4. **Check category momentum:**
+```
+getCategoriesList → find exact category names
+getCategoryTopics with category="exact-name-from-list"
+→ See what's trending in that category
+```
+
+### **For Social Intelligence:**
+
+1. **Track creator influence:**
+```
+getCreatorsList → see trending crypto creators
+getCreator with network="x" and id="elonmusk"
+→ Get specific creator metrics
+```
+
+2. **Search social posts:**
+```
+searchPosts with term="bitcoin pump" or term="altseason"
+→ Find recent posts matching keywords
+```
+
+---
+
+## ⚠️ TROUBLESHOOTING EMPTY RESULTS
+
+### **If you get `{"data": []}` response:**
+
+1. **Check parameter format:**
+   - Use lowercase for topics: `bitcoin` not `Bitcoin`
+   - Use exact category names from list endpoints
+   - Use proper coin symbols from getCoinsList
+
+2. **Try alternative names:**
+   - `bitcoin` vs `$btc` vs `BTC`
+   - `ethereum` vs `$eth` vs `ETH`
+
+3. **Use popular/guaranteed topics:**
+   - `bitcoin` - almost always has data
+   - `ethereum` - very active
+   - `dogecoin` - meme coin activity
+   - `solana` - trending ecosystem
+
+4. **Add optional parameters:**
+   - For posts: add `start` timestamp for specific time ranges
+   - For lists: adjust `limit` parameter
+
+---
+
+## 🎯 CONFLUENCE WORKFLOW WITH CRYPTONEWS
+
+### **When CryptoNews finds a catalyst:**
+
+1. **Get LunarCrush social confirmation:**
+```
+getTopic with the coin name from news
+→ Check if social metrics are rising
+→ Look for sentiment alignment
+```
+
+2. **Check viral posts:**
+```
+getTopicPosts for the same coin
+→ See if social media is buzzing about the news
+→ Look for high-engagement posts
+```
+
+3. **Category momentum check:**
+```
+If coin is in DeFi/Gaming/AI category:
+getCategoryTopics for that category
+→ See if entire sector is moving
+```
+
+### **For discovering new opportunities:**
+
+1. **Social surge detection:**
+```
+getCoinsList with sort=interactions
+→ Find coins with high social activity
+→ Cross-check with CryptoNews for catalysts
+```
+
+2. **Category rotation signals:**
+```
+getCategoriesList → get all categories
+For each category: getCategoryTopics
+→ Find which sectors have momentum
+→ Use CryptoNews to find news catalysts in those sectors
+```
+
+---
+
+## 💡 PRO TIPS FOR MAXIMUM EFFECTIVENESS
+
+### **Best Practices:**
+1. **Always call list endpoints first** - Don't guess names
+2. **Use exact parameter values** from API responses
+3. **Start with popular topics** (`bitcoin`, `ethereum`) to test
+4. **Combine with CryptoNews** for powerful confluence signals
+5. **Check timestamps** - LunarCrush data is time-sensitive
+
+### **High-Probability Working Calls:**
+```
+1. getCoinsList (almost always returns data)
+2. getTopic with topic="bitcoin" (very reliable)
+3. getTopicPosts with topic="ethereum" (active community)
+4. getCreatorsList (shows trending influencers)
+```
+
+### **Parameter Formats That Usually Work:**
+- Topics: lowercase, full names (`bitcoin`, `ethereum`, `solana`)
+- Categories: use getCategoriesList first to see exact formats
+- Creator networks: `x`, `twitter`, `youtube`, `tiktok`
+- Timestamps: Unix timestamps for start/end parameters
+
+---
+
+## 🔥 CONFLUENCE SIGNALS TO LOOK FOR
+
+### **BULLISH CONFLUENCE:**
+- ✅ CryptoNews: Positive catalyst + High-tier source
+- ✅ LunarCrush: Rising social activity + Positive sentiment
+- ✅ LunarCrush: Viral posts about the news catalyst
+- ✅ LunarCrush: Category momentum if applicable
+
+### **BEARISH CONFLUENCE:**
+- ❌ CryptoNews: Negative catalyst + Multiple sources
+- ❌ LunarCrush: Declining social activity + Negative sentiment
+- ❌ LunarCrush: Viral posts spreading FUD
+
+### **DISCOVERY OPPORTUNITIES:**
+- 🔍 LunarCrush: High social activity + No major news yet
+- 🔍 LunarCrush: Category momentum + Individual coins lagging
+- 🔍 LunarCrush: Creator buzz + No mainstream coverage
+
+---
+
+## 🚨 REMEMBER: ALWAYS VALIDATE PARAMETERS
+
+**Before making any LunarCrush call:**
+1. Check if you're using exact names from list endpoints
+2. Test with known-good parameters first (`bitcoin`, `ethereum`)
+3. If you get empty results, try alternative parameter formats
+4. Use the working parameters as templates for similar calls
+
+**The key to LunarCrush success is using their exact parameter formats - never guess!**

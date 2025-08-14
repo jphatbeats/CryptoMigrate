@@ -1,0 +1,90 @@
+Preview
+Model
+5
+You said:
+lets test our indicators "Show me MACD for ETH/USDT on 4 hour timeframe"
+ChatGPT said:
+[debug] Calling HTTP endpoint
+{
+  "domain": "indicators-production.up.railway.app",
+  "method": "get",
+  "path": "/api/taapi/indicator/{indicator}",
+  "operation": "getTaapiIndicator",
+  "operation_hash": "610ff9ea8a10f97f5c8bffc639e01fce1c01b8e7",
+  "is_consequential": false,
+  "params": {
+    "indicator": "macd",
+    "symbol": "ETH/USDT",
+    "interval": "4h"
+  }
+}
+[debug] Response received
+{
+  "function_name": "getTaapiIndicator",
+  "domain": "indicators-production.up.railway.app",
+  "message": "The requested action requires approval",
+  "action_id": "g-221b178deb6e846f51c18c79cad74fe928d45e7e"
+}
+Stopped talking to connector
+[debug] Calling HTTP endpoint
+{
+  "domain": "indicators-production.up.railway.app",
+  "method": "get",
+  "path": "/api/taapi/indicator/{indicator}",
+  "operation": "getTaapiIndicator",
+  "operation_hash": "610ff9ea8a10f97f5c8bffc639e01fce1c01b8e7",
+  "is_consequential": false,
+  "params": {
+    "indicator": "macd",
+    "symbol": "ETH/USDT",
+    "interval": "4h"
+  }
+}
+[debug] Response received
+{
+  "function_name": "getTaapiIndicator",
+  "domain": "indicators-production.up.railway.app",
+  "message": "The requested action requires approval",
+  "action_id": "g-221b178deb6e846f51c18c79cad74fe928d45e7e"
+}
+Stopped talking to connector
+[debug] Calling HTTP endpoint
+{
+  "domain": "indicators-production.up.railway.app",
+  "method": "get",
+  "path": "/api/taapi/indicator/{indicator}",
+  "operation": "getTaapiIndicator",
+  "operation_hash": "610ff9ea8a10f97f5c8bffc639e01fce1c01b8e7",
+  "is_consequential": false,
+  "params": {
+    "indicator": "macd",
+    "symbol": "ETH/USDT",
+    "interval": "4h"
+  }
+}
+[debug] Response received
+{
+  "function_name": "getTaapiIndicator",
+  "domain": "indicators-production.up.railway.app",
+  "message": "The requested action requires approval",
+  "action_id": "g-221b178deb6e846f51c18c79cad74fe928d45e7e"
+}
+Stopped talking to connector
+[debug] Calling HTTP endpoint
+[debug] Response received
+Stopped talking to connector
+[debug] Calling HTTP endpoint
+[debug] Response received
+Stopped talking to connector
+[debug] Calling HTTP endpoint
+[debug] Response received
+Stopped talking to connector
+[debug] Calling HTTP endpoint
+[debug] Response received
+CRYPTO TITAN wants to talk to indicators-production.up.railway.app
+
+Allow
+
+Always Allow
+
+Decline

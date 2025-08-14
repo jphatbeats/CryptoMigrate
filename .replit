@@ -1,0 +1,123 @@
+modules = ["python-3.11", "nodejs-20", "python3"]
+
+[nix]
+channel = "stable-25_05"
+packages = ["cairo", "ffmpeg-full", "freetype", "ghostscript", "glibcLocales", "gobject-introspection", "gtk3", "libyaml", "nodejs", "pkg-config", "qhull", "tcl", "tk"]
+
+[workflows]
+runButton = "Project"
+
+[[workflows.workflow]]
+name = "Project"
+mode = "parallel"
+author = "agent"
+
+[[workflows.workflow.tasks]]
+task = "workflow.run"
+args = "Discord AI Alerts"
+
+[[workflows.workflow.tasks]]
+task = "workflow.run"
+args = "Enhanced Discord Intelligence"
+
+[[workflows.workflow.tasks]]
+task = "workflow.run"
+args = "Discord GPT Commands"
+
+[[workflows.workflow.tasks]]
+task = "workflow.run"
+args = "ChatGPT Alpha Discord Bot"
+
+[[workflows.workflow.tasks]]
+task = "workflow.run"
+args = "Trading Intelligence Server"
+
+[[workflows.workflow.tasks]]
+task = "workflow.run"
+args = "Analytics Dashboard"
+
+[[workflows.workflow.tasks]]
+task = "workflow.run"
+args = "Comprehensive Market Scanner"
+
+[[workflows.workflow]]
+name = "Discord AI Alerts"
+author = "agent"
+
+[[workflows.workflow.tasks]]
+task = "shell.exec"
+args = "python automated_trading_alerts.py"
+
+[[workflows.workflow]]
+name = "Enhanced Discord Intelligence"
+author = "agent"
+
+[[workflows.workflow.tasks]]
+task = "shell.exec"
+args = "python enhanced_discord_trading_intelligence.py"
+
+[workflows.workflow.metadata]
+outputType = "console"
+
+[[workflows.workflow]]
+name = "Discord GPT Commands"
+author = "agent"
+
+[[workflows.workflow.tasks]]
+task = "shell.exec"
+args = "python start_discord_gpt_bot.py"
+
+[workflows.workflow.metadata]
+outputType = "console"
+
+[[workflows.workflow]]
+name = "ChatGPT Alpha Discord Bot"
+author = "agent"
+
+[[workflows.workflow.tasks]]
+task = "shell.exec"
+args = "python start_chatgpt_alpha_discord.py"
+
+[workflows.workflow.metadata]
+outputType = "console"
+
+[[workflows.workflow]]
+name = "Trading Intelligence Server"
+author = "agent"
+
+[[workflows.workflow.tasks]]
+task = "shell.exec"
+args = "python app.py"
+waitForPort = 5000
+
+[[workflows.workflow]]
+name = "Analytics Dashboard"
+author = "agent"
+
+[[workflows.workflow.tasks]]
+task = "shell.exec"
+args = "python analytics_dashboard.py"
+waitForPort = 5001
+
+[[workflows.workflow]]
+name = "Comprehensive Market Scanner"
+author = "agent"
+
+[[workflows.workflow.tasks]]
+task = "shell.exec"
+args = "python start_live_scanner.py"
+
+[workflows.workflow.metadata]
+outputType = "console"
+
+[[ports]]
+localPort = 4101
+externalPort = 3001
+
+[[ports]]
+localPort = 5000
+externalPort = 80
+
+[[ports]]
+localPort = 5001
+externalPort = 3000

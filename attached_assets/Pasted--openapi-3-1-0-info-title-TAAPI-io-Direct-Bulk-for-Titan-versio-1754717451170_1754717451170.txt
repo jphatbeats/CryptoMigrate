@@ -1,0 +1,187 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "TAAPI.io (Direct Bulk for Titan)",
+    "version": "1.0.2"
+  },
+  "servers": [
+    { "url": "https://api.taapi.io" }
+  ],
+  "components": {
+    "securitySchemes": {
+      "taapiApiKey": {
+        "type": "apiKey",
+        "in": "query",
+        "name": "secret"
+      }
+    },
+    "schemas": {
+      "RSIResponse": {
+        "type": "object",
+        "properties": {
+          "value": { "type": "number" },
+          "timestamp": { "type": "integer" }
+        },
+        "required": ["value", "timestamp"]
+      },
+      "BulkIndicatorSpec": {
+        "type": "object",
+        "properties": {
+          "indicator": { "type": "string", "example": "rsi" },
+          "period": { "type": "integer" },
+          "fast": { "type": "integer" },
+          "slow": { "type": "integer" },
+          "signal": { "type": "integer" },
+          "stddev": { "type": "number" }
+        },
+        "required": ["indicator"]
+      },
+      "BulkRequest": {
+        "type": "object",
+        "properties": {
+          "construct": {
+            "type": "object",
+            "properties": {
+              "exchange": { "type": "string", "default": "binance" },
+              "symbol": { "type": "string", "example": "BTC/USDT" },
+              "interval": {
+                "type": "string",
+                "default": "1h",
+                "enum": ["1m","3m","5m","15m","30m","1h","2h","4h","6h","8h","12h","1d","3d","1w","1M"]
+              },
+              "indicators": {
+                "type": "array",
+                "maxItems": 20,
+                "items": { "$ref": "#/components/schemas/BulkIndicatorSpec" }
+              }
+            },
+            "required": ["exchange","symbol","interval","indicators"]
+          }
+        },
+        "required": ["construct"]
+      },
+      "BulkDataItem": {
+        "type": "object",
+        "properties": {
+          "indicator": { "type": "string" },
+          "result": {},
+          "errors": {
+            "type": "array",
+            "items": { "type": "string" }
+          }
+        },
+        "required": ["indicator"]
+      },
+      "BulkResponse": {
+        "type": "object",
+        "properties": {
+          "requested": { "type": "object" },
+          "data": {
+            "type": "array",
+            "items": { "$ref": "#/components/schemas/BulkDataItem" }
+          },
+          "note": { "type": "string" }
+        },
+        "required": ["data"]
+      },
+      "ErrorResponse": {
+        "type": "object",
+        "properties": {
+          "error": { "type": "string" },
+          "hint": { "type": "string" }
+        },
+        "required": ["error"]
+      }
+    }
+  },
+  "security": [
+    { "taapiApiKey": [] }
+  ],
+  "paths": {
+    "/bulk": {
+      "post": {
+        "summary": "Fetch up to 20 indicators in one request",
+        "operationId": "getBulkIndicators",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/BulkRequest" }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Bulk indicators result",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/BulkResponse" }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid request",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ErrorResponse" }
+              }
+            }
+          },
+          "503": {
+            "description": "Service unavailable",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ErrorResponse" }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/rsi": {
+      "get": {
+        "summary": "Quick RSI (health/sanity check)",
+        "operationId": "getRSIQuick",
+        "parameters": [
+          { "name": "exchange", "in": "query", "schema": { "type": "string", "default": "binance" } },
+          { "name": "symbol", "in": "query", "required": true, "schema": { "type": "string", "example": "BTC/USDT" } },
+          {
+            "name": "interval",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "default": "1h",
+              "enum": ["1m","3m","5m","15m","30m","1h","2h","4h","6h","8h","12h","1d","3d","1w","1M"]
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "RSI value",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/RSIResponse" }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid request",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ErrorResponse" }
+              }
+            }
+          },
+          "503": {
+            "description": "Service unavailable",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ErrorResponse" }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

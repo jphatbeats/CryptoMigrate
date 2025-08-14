@@ -1,0 +1,167 @@
+ild Logs
+Deploy Logs
+HTTP Logs
+
+Filter
+Filter logs using "", (), AND, OR, -
+
+
+
+You reached the start of the range → Aug 11, 2025, 11:49 AM
+
+2025-08-11 17:08:24,328 - get_indicator_by_name - WARNING - ⚠️ rsi API error: API error: 429
+
+2025-08-11 17:08:31,228 - werkzeug - INFO - 100.64.0.5 - - [11/Aug/2025 17:08:31] "GET /api/taapi/multiple?symbol=CVX/USDT&interval=4h&indicators=rsi,macd,ema,adx HTTP/1.1" 200 -
+
+2025-08-11 17:08:38,115 - taapi_indicators - WARNING - ⚠️ Rate limited! Waiting 1.5s (#1)
+
+2025-08-11 17:08:38,116 - get_indicator_by_name - WARNING - ⚠️ ema API error: API error: 429
+
+2025-08-11 17:08:40,408 - taapi_indicators - WARNING - ⚠️ Rate limited! Waiting 1.5s (#2)
+
+2025-08-11 17:08:40,408 - get_indicator_by_name - WARNING - ⚠️ adx API error: API error: 429
+
+2025-08-11 17:08:40,409 - werkzeug - INFO - 100.64.0.5 - - [11/Aug/2025 17:08:40] "GET /api/taapi/multiple?symbol=XEC/USDT&interval=4h&indicators=rsi,macd,ema,adx HTTP/1.1" 200 -
+
+2025-08-11 17:08:49,631 - werkzeug - INFO - 100.64.0.5 - - [11/Aug/2025 17:08:49] "GET /api/taapi/multiple?symbol=SUN/USDT&interval=4h&indicators=rsi,macd,ema,adx HTTP/1.1" 200 -
+
+2025-08-11 17:08:54,217 - taapi_indicators - WARNING - ⚠️ Rate limited! Waiting 1.5s (#1)
+
+2025-08-11 17:08:54,217 - get_indicator_by_name - WARNING - ⚠️ macd API error: API error: 429
+
+2025-08-11 17:08:56,517 - taapi_indicators - WARNING - ⚠️ Rate limited! Waiting 1.5s (#2)
+
+2025-08-11 17:08:56,517 - get_indicator_by_name - WARNING - ⚠️ ema API error: API error: 429
+
+2025-08-11 17:08:58,829 - werkzeug - INFO - 100.64.0.5 - - [11/Aug/2025 17:08:58] "GET /api/taapi/multiple?symbol=KAVA/USDT&interval=4h&indicators=rsi,macd,ema,adx HTTP/1.1" 200 -
+
+2025-08-11 17:09:08,073 - werkzeug - INFO - 100.64.0.5 - - [11/Aug/2025 17:09:08] "GET /api/taapi/multiple?symbol=CHZ/USDT&interval=4h&indicators=rsi,macd,ema,adx HTTP/1.1" 200 -
+
+2025-08-11 17:09:10,319 - taapi_indicators - WARNING - ⚠️ Rate limited! Waiting 1.5s (#1)
+
+2025-08-11 17:09:10,320 - get_indicator_by_name - WARNING - ⚠️ rsi API error: API error: 429
+
+2025-08-11 17:09:12,618 - taapi_indicators - WARNING - ⚠️ Rate limited! Waiting 1.5s (#2)
+
+2025-08-11 17:09:12,619 - get_indicator_by_name - WARNING - ⚠️ macd API error: API error: 429
+
+2025-08-11 17:09:17,225 - werkzeug - INFO - 100.64.0.5 - - [11/Aug/2025 17:09:17] "GET /api/taapi/multiple?symbol=AXS/USDT&interval=4h&indicators=rsi,macd,ema,adx HTTP/1.1" 200 -
+
+2025-08-11 17:09:19,529 - taapi_indicators - WARNING - Taapi.io API error 400: {"errors":["Bad request. Check your request parameters and try again!","No candles were found!"]}
+
+2025-08-11 17:09:19,529 - get_indicator_by_name - WARNING - ⚠️ rsi API error: API error: 400
+
+2025-08-11 17:09:21,819 - taapi_indicators - WARNING - Taapi.io API error 400: {"errors":["Bad request. Check your request parameters and try again!","No candles were found!"]}
+
+2025-08-11 17:09:21,819 - get_indicator_by_name - WARNING - ⚠️ macd API error: API error: 400
+
+2025-08-11 17:09:24,419 - taapi_indicators - WARNING - Taapi.io API error 400: {"errors":["Bad request. Check your request parameters and try again!","No candles were found!"]}
+
+2025-08-11 17:09:24,419 - get_indicator_by_name - WARNING - ⚠️ ema API error: API error: 400
+
+2025-08-11 17:09:26,418 - taapi_indicators - WARNING - ⚠️ Rate limited! Waiting 1.5s (#1)
+
+2025-08-11 17:09:26,418 - get_indicator_by_name - WARNING - ⚠️ adx API error: API error: 429
+
+2025-08-11 17:09:26,419 - werkzeug - INFO - 100.64.0.5 - - [11/Aug/2025 17:09:26] "GET /api/taapi/multiple?symbol=WEMIX/USDT&interval=4h&indicators=rsi,macd,ema,adx HTTP/1.1" 200 -
+
+2025-08-11 17:09:28,720 - taapi_indicators - WARNING - ⚠️ Rate limited! Waiting 1.5s (#2)
+
+2025-08-11 17:09:28,720 - get_indicator_by_name - WARNING - ⚠️ rsi API error: API error: 429
+
+2025-08-11 17:09:35,630 - werkzeug - INFO - 100.64.0.5 - - [11/Aug/2025 17:09:35] "GET /api/taapi/multiple?symbol=1INCH/USDT&interval=4h&indicators=rsi,macd,ema,adx HTTP/1.1" 200 -
+
+2025-08-11 17:09:42,518 - taapi_indicators - WARNING - ⚠️ Rate limited! Waiting 1.5s (#1)
+
+2025-08-11 17:09:42,518 - get_indicator_by_name - WARNING - ⚠️ ema API error: API error: 429
+
+2025-08-11 17:09:44,820 - taapi_indicators - WARNING - ⚠️ Rate limited! Waiting 1.5s (#2)
+
+2025-08-11 17:09:44,820 - get_indicator_by_name - WARNING - ⚠️ adx API error: API error: 429
+
+2025-08-11 17:09:44,821 - werkzeug - INFO - 100.64.0.5 - - [11/Aug/2025 17:09:44] "GET /api/taapi/multiple?symbol=AXL/USDT&interval=4h&indicators=rsi,macd,ema,adx HTTP/1.1" 200 -
+
+2025-08-11 17:09:54,485 - werkzeug - INFO - 100.64.0.5 - - [11/Aug/2025 17:09:54] "GET /api/taapi/multiple?symbol=GNO/USDT&interval=4h&indicators=rsi,macd,ema,adx HTTP/1.1" 200 -
+
+2025-08-11 17:09:58,721 - taapi_indicators - WARNING - ⚠️ Rate limited! Waiting 1.5s (#1)
+
+2025-08-11 17:09:58,722 - get_indicator_by_name - WARNING - ⚠️ macd API error: API error: 429
+
+2025-08-11 17:10:00,926 - taapi_indicators - WARNING - ⚠️ Rate limited! Waiting 1.5s (#2)
+
+2025-08-11 17:10:00,926 - get_indicator_by_name - WARNING - ⚠️ ema API error: API error: 429
+
+2025-08-11 17:10:03,342 - werkzeug - INFO - 100.64.0.5 - - [11/Aug/2025 17:10:03] "GET /api/taapi/multiple?symbol=LUNC/USDT&interval=4h&indicators=rsi,macd,ema,adx HTTP/1.1" 200 -
+
+2025-08-11 17:10:12,436 - werkzeug - INFO - 100.64.0.5 - - [11/Aug/2025 17:10:12] "GET /api/taapi/multiple?symbol=JST/USDT&interval=4h&indicators=rsi,macd,ema,adx HTTP/1.1" 200 -
+
+2025-08-11 17:10:14,727 - taapi_indicators - WARNING - ⚠️ Rate limited! Waiting 1.5s (#1)
+
+2025-08-11 17:10:14,728 - get_indicator_by_name - WARNING - ⚠️ rsi API error: API error: 429
+
+2025-08-11 17:10:17,216 - taapi_indicators - WARNING - ⚠️ Rate limited! Waiting 1.5s (#2)
+
+2025-08-11 17:10:17,216 - get_indicator_by_name - WARNING - ⚠️ macd API error: API error: 429
+
+2025-08-11 17:10:21,633 - werkzeug - INFO - 100.64.0.5 - - [11/Aug/2025 17:10:21] "GET /api/taapi/multiple?symbol=TWT/USDT&interval=4h&indicators=rsi,macd,ema,adx HTTP/1.1" 200 -
+
+2025-08-11 17:10:24,494 - taapi_indicators - WARNING - Taapi.io API error 400: {"errors":["Bad request. Check your request parameters and try again!","No candles were found!"]}
+
+2025-08-11 17:10:24,494 - get_indicator_by_name - WARNING - ⚠️ rsi API error: API error: 400
+
+2025-08-11 17:10:26,223 - taapi_indicators - WARNING - Taapi.io API error 400: {"errors":["Bad request. Check your request parameters and try again!","No candles were found!"]}
+
+2025-08-11 17:10:26,223 - get_indicator_by_name - WARNING - ⚠️ macd API error: API error: 400
+
+2025-08-11 17:10:28,533 - taapi_indicators - WARNING - Taapi.io API error 400: {"errors":["Bad request. Check your request parameters and try again!","No candles were found!"]}
+
+2025-08-11 17:10:28,533 - get_indicator_by_name - WARNING - ⚠️ ema API error: API error: 400
+
+2025-08-11 17:10:30,825 - taapi_indicators - WARNING - ⚠️ Rate limited! Waiting 1.5s (#1)
+
+2025-08-11 17:10:30,826 - get_indicator_by_name - WARNING - ⚠️ adx API error: API error: 429
+
+2025-08-11 17:10:30,826 - werkzeug - INFO - 100.64.0.5 - - [11/Aug/2025 17:10:30] "GET /api/taapi/multiple?symbol=AKT/USDT&interval=4h&indicators=rsi,macd,ema,adx HTTP/1.1" 200 -
+
+2025-08-11 17:10:33,126 - taapi_indicators - WARNING - ⚠️ Rate limited! Waiting 1.5s (#2)
+
+2025-08-11 17:10:33,127 - get_indicator_by_name - WARNING - ⚠️ rsi API error: API error: 429
+
+2025-08-11 17:10:40,036 - werkzeug - INFO - 100.64.0.5 - - [11/Aug/2025 17:10:40] "GET /api/taapi/multiple?symbol=FTT/USDT&interval=4h&indicators=rsi,macd,ema,adx HTTP/1.1" 200 -
+
+2025-08-11 17:10:42,816 - get_indicator_by_name - INFO - 🔧 Fixed indicator: ema20 → ema (period=20)
+
+2025-08-11 17:10:46,925 - taapi_indicators - WARNING - ⚠️ Rate limited! Waiting 1.5s (#1)
+
+2025-08-11 17:10:46,926 - get_indicator_by_name - WARNING - ⚠️ ema20 API error: API error: 429
+
+2025-08-11 17:10:46,926 - get_indicator_by_name - INFO - 🔧 Fixed indicator: ema50 → ema (period=50)
+
+2025-08-11 17:10:49,227 - taapi_indicators - WARNING - ⚠️ Rate limited! Waiting 1.5s (#2)
+
+2025-08-11 17:10:49,227 - get_indicator_by_name - WARNING - ⚠️ ema API error: API error: 429
+
+2025-08-11 17:10:53,831 - werkzeug - INFO - 100.64.0.5 - - [11/Aug/2025 17:10:53] "GET /api/taapi/multiple?symbol=AMP/USDT&interval=4h&indicators=rsi,macd,ema,adx HTTP/1.1" 200 -
+
+2025-08-11 17:11:03,041 - taapi_indicators - WARNING - ⚠️ Rate limited! Waiting 1.5s (#1)
+
+2025-08-11 17:11:03,041 - get_indicator_by_name - WARNING - ⚠️ macd API error: API error: 429
+
+2025-08-11 17:11:05,328 - taapi_indicators - WARNING - ⚠️ Rate limited! Waiting 1.5s (#2)
+
+2025-08-11 17:11:05,329 - get_indicator_by_name - WARNING - ⚠️ vwap API error: API error: 429
+
+2025-08-11 17:11:09,947 - werkzeug - INFO - 100.64.0.7 - - [11/Aug/2025 17:11:09] "POST /api/taapi/multiple HTTP/1.1" 200 -
+
+2025-08-11 17:11:12,243 - werkzeug - INFO - 100.64.0.5 - - [11/Aug/2025 17:11:12] "GET /api/taapi/multiple?symbol=LPT/USDT&interval=4h&indicators=rsi,macd,ema,adx HTTP/1.1" 200 -
+
+2025-08-11 17:11:19,149 - taapi_indicators - WARNING - ⚠️ Rate limited! Waiting 1.5s (#1)
+
+2025-08-11 17:11:19,150 - get_indicator_by_name - WARNING - ⚠️ ema API error: API error: 429
+
+2025-08-11 17:11:21,434 - taapi_indicators - WARNING - ⚠️ Rate limited! Waiting 1.5s (#2)
+
+2025-08-11 17:11:21,435 - get_indicator_by_name - WARNING - ⚠️ adx API error: API error: 429
+
+2025-08-11 17:11:21,436 - werkzeug - INFO - 100.64.0.2 - - [11/Aug/2025 17:11:21] "GET /api/taapi/multiple?symbol=DASH/USDT&interval=4h&indicators=rsi,macd,ema,adx HTTP/1.1" 200 -
+

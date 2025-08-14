@@ -1,0 +1,1967 @@
+
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "Complete Trading Intelligence API",
+    "description": "Comprehensive trading portfolio management with live exchange data from BingX & Blofin, advanced crypto news intelligence, opportunity scanning, and AI-optimized analysis",
+    "version": "v2.1.0"
+  },
+  "servers": [
+    {
+      "url": "https://titan-trading-2-production.up.railway.app"
+    }
+  ],
+  "paths": {
+    "/health": {
+      "get": {
+        "description": "Health check endpoint to verify API connectivity",
+        "operationId": "healthCheck",
+        "responses": {
+          "200": {
+            "description": "API is healthy and responding",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {"type": "string"},
+                    "timestamp": {"type": "string"},
+                    "server": {"type": "string"},
+                    "version": {"type": "string"},
+                    "endpoints_available": {
+                      "type": "array",
+                      "items": {"type": "string"}
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/": {
+      "get": {
+        "description": "API documentation and available endpoints",
+        "operationId": "getApiDocumentation",
+        "responses": {
+          "200": {
+            "description": "API documentation with all available endpoints",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {"type": "string"},
+                    "live_endpoints": {"type": "object"},
+                    "bingx_candlestick_endpoints": {"type": "object"},
+                    "chatgpt_endpoints": {"type": "object"},
+                    "crypto_news_intelligence": {"type": "object"}
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/live/all-exchanges": {
+      "get": {
+        "description": "Get live positions and orders from all exchanges (BingX & Blofin)",
+        "operationId": "getAllExchangeData",
+        "responses": {
+          "200": {
+            "description": "Live exchange data",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "timestamp": { "type": "string" },
+                    "exchanges": {
+                      "type": "object",
+                      "properties": {
+                        "bingx": {
+                          "type": "object",
+                          "properties": {
+                            "status": { "type": "string" },
+                            "positions": { "type": "object" },
+                            "orders": { "type": "object" }
+                          }
+                        },
+                        "blofin": {
+                          "type": "object",
+                          "properties": {
+                            "status": { "type": "string" },
+                            "positions": { "type": "array", "items": { "type": "object" } },
+                            "orders": { "type": "array", "items": { "type": "object" } }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/live/account-balances": {
+      "get": {
+        "description": "Get account balances from all exchanges",
+        "operationId": "getAccountBalances",
+        "responses": {
+          "200": {
+            "description": "Account balances",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "timestamp": { "type": "string" },
+                    "balances": {
+                      "type": "object",
+                      "properties": {
+                        "bingx": {
+                          "type": "object",
+                          "properties": {
+                            "status": { "type": "string" },
+                            "data": { "type": "object" }
+                          }
+                        },
+                        "blofin": {
+                          "type": "object",
+                          "properties": {
+                            "status": { "type": "string" },
+                            "data": { "type": "object" }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/live/bingx-positions": {
+      "get": {
+        "description": "Get live positions from BingX exchange",
+        "operationId": "getBingXPositions",
+        "responses": {
+          "200": {
+            "description": "BingX positions and orders",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "timestamp": { "type": "string" },
+                    "source": { "type": "string" },
+                    "positions": {
+                      "type": "object",
+                      "properties": {
+                        "code": { "type": "integer" },
+                        "data": {
+                          "type": "object",
+                          "properties": {
+                            "positions": {
+                              "type": "array",
+                              "items": { "type": "object" }
+                            }
+                          }
+                        }
+                      }
+                    },
+                    "orders": {
+                      "type": "object",
+                      "properties": {
+                        "code": { "type": "integer" },
+                        "data": {
+                          "type": "object",
+                          "properties": {
+                            "orders": {
+                              "type": "array",
+                              "items": {
+                                "type": "object",
+                                "properties": {
+                                  "symbol": { "type": "string" },
+                                  "positionSide": { "type": "string" },
+                                  "leverage": { "type": "string" },
+                                  "status": { "type": "string" },
+                                  "avgPrice": { "type": "string" },
+                                  "stopLoss": { "type": "object" },
+                                  "takeProfit": { "type": "object" }
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/live/blofin-positions": {
+      "get": {
+        "description": "Get live positions from Blofin exchange",
+        "operationId": "getBlofinPositions",
+        "responses": {
+          "200": {
+            "description": "Blofin positions and orders",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "timestamp": { "type": "string" },
+                    "source": { "type": "string" },
+                    "positions": {
+                      "type": "array",
+                      "items": { "type": "object" }
+                    },
+                    "orders": {
+                      "type": "array",
+                      "items": { "type": "object" }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/live/market-data/{symbol}": {
+      "get": {
+        "description": "Get live market data for a specific symbol",
+        "operationId": "getMarketData",
+        "parameters": [
+          {
+            "name": "symbol",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "string" },
+            "description": "Trading symbol (e.g., BTC-USDT)"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Live market data",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "timestamp": { "type": "string" },
+                    "symbol": { "type": "string" },
+                    "market_data": {
+                      "type": "object",
+                      "properties": {
+                        "blofin": {
+                          "type": "object",
+                          "properties": {
+                            "status": { "type": "string" },
+                            "ticker": { "type": "object" },
+                            "orderbook": { "type": "object" }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/bingx/klines/{symbol}": {
+      "get": {
+        "description": "Get BingX candlestick/OHLCV data for technical analysis",
+        "operationId": "getBingXKlines",
+        "parameters": [
+          {
+            "name": "symbol",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "string" },
+            "description": "Trading symbol (e.g., BTC-USDT)"
+          },
+          {
+            "name": "interval",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "enum": ["1m", "3m", "5m", "15m", "30m", "1h", "2h", "4h", "6h", "8h", "12h", "1d", "3d", "1w", "1M"],
+              "default": "1h"
+            },
+            "description": "Kline interval"
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "default": 100,
+              "minimum": 1,
+              "maximum": 1000
+            },
+            "description": "Number of candlesticks to fetch"
+          },
+          {
+            "name": "raw",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "enum": ["true", "false"],
+              "default": "false"
+            },
+            "description": "Return raw JSON string for better compatibility"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "BingX candlestick data",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "timestamp": { "type": "string" },
+                    "symbol": { "type": "string" },
+                    "interval": { "type": "string" },
+                    "limit": { "type": "integer" },
+                    "klines": {
+                      "type": "object",
+                      "properties": {
+                        "code": { "type": "integer" },
+                        "data": {
+                          "type": "array",
+                          "items": {
+                            "type": "object",
+                            "properties": {
+                              "open_time": { "type": "integer" },
+                              "open_time_readable": { "type": "string" },
+                              "open": { "type": "number" },
+                              "high": { "type": "number" },
+                              "low": { "type": "number" },
+                              "close": { "type": "number" },
+                              "volume": { "type": "number" },
+                              "close_time": { "type": "integer" },
+                              "close_time_readable": { "type": "string" }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/bingx/market-analysis/{symbol}": {
+      "get": {
+        "description": "Get comprehensive BingX market data with 24hr ticker and analysis",
+        "operationId": "getBingXMarketAnalysis",
+        "parameters": [
+          {
+            "name": "symbol",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "string" },
+            "description": "Trading symbol (e.g., BTC-USDT)"
+          },
+          {
+            "name": "raw",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "enum": ["true", "false"],
+              "default": "false"
+            },
+            "description": "Return raw JSON string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Comprehensive market analysis",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "timestamp": { "type": "string" },
+                    "symbol": { "type": "string" },
+                    "market_analysis": {
+                      "type": "object",
+                      "properties": {
+                        "current_price": { "type": "number" },
+                        "24h_change": { "type": "number" },
+                        "24h_change_percent": { "type": "number" },
+                        "24h_high": { "type": "number" },
+                        "24h_low": { "type": "number" },
+                        "24h_volume": { "type": "number" },
+                        "price_trend": { "type": "string" },
+                        "volume_trend": { "type": "string" }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/bingx/candlestick-analysis/{symbol}": {
+      "get": {
+        "description": "Get BingX candlestick pattern analysis and trading signals",
+        "operationId": "getBingXCandlestickAnalysis",
+        "parameters": [
+          {
+            "name": "symbol",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "string" },
+            "description": "Trading symbol (e.g., BTC-USDT)"
+          },
+          {
+            "name": "interval",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "enum": ["15m", "30m", "1h", "2h", "4h", "6h", "12h", "1d"],
+              "default": "1h"
+            },
+            "description": "Analysis timeframe"
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "default": 50,
+              "minimum": 20,
+              "maximum": 200
+            },
+            "description": "Number of candlesticks to analyze"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Candlestick pattern analysis and signals",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "timestamp": { "type": "string" },
+                    "symbol": { "type": "string" },
+                    "interval": { "type": "string" },
+                    "technical_signals": {
+                      "type": "object",
+                      "properties": {
+                        "trend_signal": { "type": "string", "enum": ["bullish", "bearish", "neutral"] },
+                        "price_vs_sma20": { "type": "string" },
+                        "momentum": { "type": "string" },
+                        "support_level": { "type": "number" },
+                        "resistance_level": { "type": "number" }
+                      }
+                    },
+                    "trend_analysis": {
+                      "type": "object",
+                      "properties": {
+                        "recent_bullish_candles": { "type": "integer" },
+                        "recent_bearish_candles": { "type": "integer" },
+                        "momentum": { "type": "string" },
+                        "volatility": { "type": "string" }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/bingx/multi-timeframe/{symbol}": {
+      "get": {
+        "description": "Get multi-timeframe technical analysis across different intervals",
+        "operationId": "getBingXMultiTimeframeAnalysis",
+        "parameters": [
+          {
+            "name": "symbol",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "string" },
+            "description": "Trading symbol (e.g., BTC-USDT)"
+          },
+          {
+            "name": "raw",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "enum": ["true", "false"],
+              "default": "false"
+            },
+            "description": "Return raw JSON string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Multi-timeframe analysis",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "timestamp": { "type": "string" },
+                    "symbol": { "type": "string" },
+                    "timeframes": {
+                      "type": "object",
+                      "properties": {
+                        "15m": { "type": "object" },
+                        "1h": { "type": "object" },
+                        "4h": { "type": "object" },
+                        "1d": { "type": "object" }
+                      }
+                    },
+                    "overall_assessment": {
+                      "type": "object",
+                      "properties": {
+                        "bullish_timeframes": { "type": "integer" },
+                        "bearish_timeframes": { "type": "integer" },
+                        "neutral_timeframes": { "type": "integer" },
+                        "overall_trend": { "type": "string", "enum": ["bullish", "bearish", "neutral"] },
+                        "confidence": { "type": "number", "minimum": 0, "maximum": 1 }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/chatgpt/account-summary": {
+      "get": {
+        "description": "Get ChatGPT-safe account connectivity summary without exposing sensitive balance details",
+        "operationId": "getChatGPTAccountSummary",
+        "responses": {
+          "200": {
+            "description": "Account connectivity status",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "timestamp": {"type": "string"},
+                    "account_health": {
+                      "type": "object",
+                      "properties": {
+                        "bingx": {
+                          "type": "object",
+                          "properties": {
+                            "status": {"type": "string"},
+                            "has_balance": {"type": "boolean"}
+                          }
+                        },
+                        "blofin": {
+                          "type": "object",
+                          "properties": {
+                            "status": {"type": "string"},
+                            "has_balance": {"type": "boolean"}
+                          }
+                        }
+                      }
+                    },
+                    "total_exchanges_active": {"type": "integer"},
+                    "message": {"type": "string"}
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/chatgpt/portfolio-analysis": {
+      "get": {
+        "description": "Get ChatGPT-optimized portfolio analysis with clean formatting for AI analysis",
+        "operationId": "getChatGPTPortfolioAnalysis",
+        "responses": {
+          "200": {
+            "description": "AI-optimized portfolio analysis with detailed metrics and recommendations",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "timestamp": { "type": "string" },
+                    "portfolio_overview": {
+                      "type": "object",
+                      "properties": {
+                        "total_positions": { "type": "integer" },
+                        "profitable_count": { "type": "integer" },
+                        "losing_count": { "type": "integer" },
+                        "high_risk_count": { "type": "integer" }
+                      }
+                    },
+                    "position_details": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "symbol": { "type": "string" },
+                          "platform": { "type": "string" },
+                          "side": { "type": "string" },
+                          "entry_price": { "type": "number" },
+                          "mark_price": { "type": "number" },
+                          "leverage": { "type": "number" },
+                          "margin_size_usd": { "type": "number" },
+                          "unrealized_pnl_usd": { "type": "number" },
+                          "pnl_percentage": { "type": "number" },
+                          "status": { "type": "string" },
+                          "risk_level": { "type": "string" }
+                        }
+                      }
+                    },
+                    "key_metrics": {
+                      "type": "object",
+                      "properties": {
+                        "total_unrealized_pnl": { "type": "number" },
+                        "total_margin_used": { "type": "number" },
+                        "average_leverage": { "type": "number" },
+                        "portfolio_pnl_percentage": { "type": "number" }
+                      }
+                    },
+                    "risk_alerts": {
+                      "type": "array",
+                      "items": { "type": "string" }
+                    },
+                    "top_performers": {
+                      "type": "array",
+                      "items": { "type": "string" }
+                    },
+                    "recommendations": {
+                      "type": "array",
+                      "items": { "type": "string" }
+                    },
+                    "analysis_context": {
+                      "type": "object",
+                      "properties": {
+                        "instructions": { "type": "string" },
+                        "focus_areas": {
+                          "type": "array",
+                          "items": { "type": "string" }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/crypto-news/portfolio": {
+      "get": {
+        "description": "Get comprehensive crypto news analysis for current portfolio positions including confluence alerts, risk signals, and bullish indicators",
+        "operationId": "getPortfolioCryptoNews",
+        "responses": {
+          "200": {
+            "description": "Portfolio-specific crypto news intelligence with categorized alerts",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "timestamp": { "type": "string" },
+                    "total_alerts": { "type": "integer" },
+                    "news_categories": {
+                      "type": "object",
+                      "properties": {
+                        "confluence": { "type": "integer", "description": "News articles mentioning portfolio symbols" },
+                        "risk": { "type": "integer", "description": "Bearish/risk alerts detected" },
+                        "bullish": { "type": "integer", "description": "Bullish signals found" }
+                      }
+                    },
+                    "alerts": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "type": { "type": "string", "enum": ["confluence", "risk", "bullish"] },
+                          "symbol": { "type": "string", "description": "Crypto symbol mentioned" },
+                          "title": { "type": "string" },
+                          "sentiment": { "type": "string" },
+                          "source": { "type": "string" },
+                          "url": { "type": "string" },
+                          "message": { "type": "string" },
+                          "flags": {
+                            "type": "array",
+                            "items": { "type": "string" },
+                            "description": "Detected keywords/flags"
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/crypto-news/symbols/{symbols}": {
+      "get": {
+        "description": "Get crypto news for specific symbols with optional sentiment and type filtering",
+        "operationId": "getCryptoNewsBySymbols",
+        "parameters": [
+          {
+            "name": "symbols",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "string" },
+            "description": "Comma-separated list of crypto symbols (e.g., BTC,ETH,XRP)"
+          },
+          {
+            "name": "sentiment",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "enum": ["positive", "negative", "neutral"]
+            },
+            "description": "Filter by sentiment"
+          },
+          {
+            "name": "type",
+            "in": "query",
+            "required": false,
+            "schema": { "type": "string" },
+            "description": "Filter by news type"
+          },
+          {
+            "name": "items",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "default": 50,
+              "minimum": 1,
+              "maximum": 100
+            },
+            "description": "Number of news articles to fetch (1-100)"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Crypto news for specified symbols",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "timestamp": { "type": "string" },
+                    "symbols_requested": {
+                      "type": "array",
+                      "items": { "type": "string" }
+                    },
+                    "total_articles": { "type": "integer" },
+                    "news_data": {
+                      "type": "object",
+                      "properties": {
+                        "data": {
+                          "type": "array",
+                          "items": {
+                            "type": "object",
+                            "properties": {
+                              "title": { "type": "string" },
+                              "text": { "type": "string" },
+                              "date": { "type": "string" },
+                              "sentiment": { "type": "string" },
+                              "source_name": { "type": "string" },
+                              "news_url": { "type": "string" },
+                              "tickers": {
+                                "type": "array",
+                                "items": { "type": "string" }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/crypto-news/risk-alerts": {
+      "get": {
+        "description": "Get bearish risk alerts and FUD signals - scans ALL crypto market by default to discover risks across the entire ecosystem, not just portfolio positions",
+        "operationId": "getCryptoRiskAlerts",
+        "parameters": [
+          {
+            "name": "portfolio_only",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "boolean",
+              "default": false
+            },
+            "description": "Set to true to scan only portfolio positions, false (default) scans entire crypto market"
+          },
+          {
+            "name": "items",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "default": 100,
+              "minimum": 10,
+              "maximum": 200
+            },
+            "description": "Number of articles to analyze"
+          },
+          {
+            "name": "raw",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "enum": ["true", "false"],
+              "default": "false"
+            },
+            "description": "Return raw JSON string for better ChatGPT compatibility"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Risk alerts and bearish signals",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "timestamp": { "type": "string" },
+                    "portfolio_symbols": {
+                      "type": "array",
+                      "items": { "type": "string" }
+                    },
+                    "total_risk_alerts": { "type": "integer" },
+                    "risk_alerts": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "title": { "type": "string" },
+                          "date": { "type": "string" },
+                          "url": { "type": "string" },
+                          "matched_flags": {
+                            "type": "array",
+                            "items": { "type": "string" },
+                            "description": "Risk keywords detected (e.g., HACK, EXPLOIT, RUG, SCAM)"
+                          },
+                          "sentiment": { "type": "string" },
+                          "source": { "type": "string" }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/crypto-news/bullish-signals": {
+      "get": {
+        "description": "Get bullish crypto news signals - scans ALL crypto market by default to discover new opportunities, partnerships, adoptions, and positive developments across the entire ecosystem",
+        "operationId": "getCryptoBullishSignals",
+        "parameters": [
+          {
+            "name": "portfolio_only",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "boolean",
+              "default": false
+            },
+            "description": "Set to true to scan only portfolio positions, false (default) scans entire crypto market"
+          },
+          {
+            "name": "exclude_portfolio",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "boolean",
+              "default": false
+            },
+            "description": "Set to true to exclude portfolio symbols from results - perfect for discovering NEW opportunities"
+          },
+          {
+            "name": "items",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "default": 100,
+              "minimum": 10,
+              "maximum": 200
+            },
+            "description": "Number of articles to analyze"
+          },
+          {
+            "name": "raw",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "enum": ["true", "false"],
+              "default": "false"
+            },
+            "description": "Return raw JSON string for better ChatGPT compatibility"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Bullish signals and positive news",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "timestamp": { "type": "string" },
+                    "portfolio_symbols": {
+                      "type": "array",
+                      "items": { "type": "string" }
+                    },
+                    "total_bullish_signals": { "type": "integer" },
+                    "bullish_signals": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "title": { "type": "string" },
+                          "date": { "type": "string" },
+                          "url": { "type": "string" },
+                          "matched_flags": {
+                            "type": "array",
+                            "items": { "type": "string" },
+                            "description": "Bullish keywords detected (e.g., PARTNERSHIP, ADOPTION, INSTITUTIONAL)"
+                          },
+                          "sentiment": { "type": "string" },
+                          "source": { "type": "string" }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/crypto-news/breaking-news": {
+      "get": {
+        "description": "Get ultra-recent breaking crypto news with immediate opportunity discovery - scans entire market for immediate trading opportunities and market-moving events",
+        "operationId": "getBreakingCryptoNews",
+        "parameters": [
+          {
+            "name": "hours",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "default": 2,
+              "minimum": 1,
+              "maximum": 24
+            },
+            "description": "Get news from last X hours (1-24)"
+          },
+          {
+            "name": "items",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "default": 100,
+              "minimum": 10,
+              "maximum": 200
+            },
+            "description": "Number of articles to fetch (10-200)"
+          },
+          {
+            "name": "sentiment",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "enum": ["positive", "negative", "neutral"]
+            },
+            "description": "Filter by sentiment"
+          },
+          {
+            "name": "exclude_portfolio",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "boolean",
+              "default": false
+            },
+            "description": "Set to true to exclude portfolio symbols and focus on NEW opportunities"
+          },
+          {
+            "name": "raw",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "enum": ["true", "false"],
+              "default": "false"
+            },
+            "description": "Return raw JSON string for better ChatGPT compatibility"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Ultra-recent breaking crypto news",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "timestamp": { "type": "string" },
+                    "time_window_hours": { "type": "integer" },
+                    "total_articles": { "type": "integer" },
+                    "breaking_news": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "title": { "type": "string" },
+                          "text": { "type": "string" },
+                          "date": { "type": "string" },
+                          "sentiment": { "type": "string" },
+                          "source_name": { "type": "string" },
+                          "news_url": { "type": "string" },
+                          "tickers": { "type": "array", "items": { "type": "string" } },
+                          "urgency_score": { "type": "number", "description": "Calculated urgency based on keywords and timing" }
+                        }
+                      }
+                    },
+                    "trending_symbols": {
+                      "type": "array",
+                      "items": { "type": "string" },
+                      "description": "Most mentioned crypto symbols in breaking news"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/crypto-news/opportunity-scanner": {
+      "get": {
+        "description": "Scan for emerging crypto opportunities - detects coins about to pump/dump, new listings, partnerships, and market catalysts",
+        "operationId": "scanCryptoOpportunities",
+        "parameters": [
+          {
+            "name": "opportunity_type",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "enum": ["pump", "dump", "listing", "partnership", "all"],
+              "default": "all"
+            },
+            "description": "Type of opportunity to scan for"
+          },
+          {
+            "name": "exclude_portfolio",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "boolean",
+              "default": true
+            },
+            "description": "Exclude symbols already in portfolio"
+          },
+          {
+            "name": "min_market_cap",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "enum": ["micro", "small", "mid", "large", "all"],
+              "default": "all"
+            },
+            "description": "Filter by market cap category"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Emerging crypto opportunities detected",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "timestamp": { "type": "string" },
+                    "scan_parameters": {
+                      "type": "object",
+                      "properties": {
+                        "opportunity_type": { "type": "string" },
+                        "exclude_portfolio": { "type": "boolean" },
+                        "min_market_cap": { "type": "string" }
+                      }
+                    },
+                    "total_opportunities": { "type": "integer" },
+                    "opportunities": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "symbol": { "type": "string" },
+                          "opportunity_type": { "type": "string", "enum": ["pump_signal", "dump_signal", "new_listing", "partnership", "institutional_backing", "technical_breakout"] },
+                          "confidence_score": { "type": "number", "description": "Confidence score 0-100" },
+                          "time_sensitivity": { "type": "string", "enum": ["immediate", "short_term", "medium_term"] },
+                          "catalysts": {
+                            "type": "array",
+                            "items": { "type": "string" },
+                            "description": "News events driving the opportunity"
+                          },
+                          "risk_level": { "type": "string", "enum": ["low", "medium", "high", "extreme"] },
+                          "supporting_articles": {
+                            "type": "array",
+                            "items": {
+                              "type": "object",
+                              "properties": {
+                                "title": { "type": "string" },
+                                "url": { "type": "string" },
+                                "source": { "type": "string" },
+                                "sentiment": { "type": "string" }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    },
+                    "excluded_portfolio_symbols": {
+                      "type": "array",
+                      "items": { "type": "string" }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/crypto-news/market-intelligence": {
+      "get": {
+        "description": "Comprehensive market intelligence feed - all crypto news with advanced filtering for opportunity discovery",
+        "operationId": "getMarketIntelligence",
+        "parameters": [
+          {
+            "name": "search_terms",
+            "in": "query",
+            "required": false,
+            "schema": { "type": "string" },
+            "description": "Comma-separated search terms (e.g., 'listing,partnership,hack,regulation')"
+          },
+          {
+            "name": "sentiment",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "enum": ["positive", "negative", "neutral"]
+            },
+            "description": "Filter by sentiment"
+          },
+          {
+            "name": "category",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "enum": ["defi", "nft", "gaming", "layer1", "layer2", "meme", "ai", "all"],
+              "default": "all"
+            },
+            "description": "Focus on specific crypto category"
+          },
+          {
+            "name": "timeframe",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "enum": ["1h", "6h", "12h", "24h", "48h", "week"],
+              "default": "24h"
+            },
+            "description": "Time window for news"
+          },
+          {
+            "name": "priority",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "enum": ["breaking", "high", "medium", "all"],
+              "default": "all"
+            },
+            "description": "News priority level"
+          },
+          {
+            "name": "items",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "default": 150,
+              "minimum": 50,
+              "maximum": 500
+            },
+            "description": "Number of articles (50-500)"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Comprehensive market intelligence data",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "timestamp": { "type": "string" },
+                    "search_parameters": {
+                      "type": "object",
+                      "properties": {
+                        "search_terms": { "type": "string" },
+                        "sentiment": { "type": "string" },
+                        "category": { "type": "string" },
+                        "timeframe": { "type": "string" },
+                        "priority": { "type": "string" }
+                      }
+                    },
+                    "total_articles": { "type": "integer" },
+                    "market_pulse": {
+                      "type": "object",
+                      "properties": {
+                        "overall_sentiment": { "type": "string" },
+                        "trending_topics": { "type": "array", "items": { "type": "string" } },
+                        "hot_symbols": { "type": "array", "items": { "type": "string" } },
+                        "risk_events": { "type": "integer" },
+                        "opportunity_events": { "type": "integer" }
+                      }
+                    },
+                    "articles": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "title": { "type": "string" },
+                          "text": { "type": "string" },
+                          "date": { "type": "string" },
+                          "sentiment": { "type": "string" },
+                          "source_name": { "type": "string" },
+                          "news_url": { "type": "string" },
+                          "tickers": { "type": "array", "items": { "type": "string" } },
+                          "category": { "type": "string" },
+                          "priority_score": { "type": "number" },
+                          "opportunity_flags": { "type": "array", "items": { "type": "string" } },
+                          "risk_flags": { "type": "array", "items": { "type": "string" } }
+                        }
+                      }
+                    },
+                    "actionable_insights": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "insight_type": { "type": "string", "enum": ["opportunity", "risk", "trend", "catalyst"] },
+                          "description": { "type": "string" },
+                          "symbols_affected": { "type": "array", "items": { "type": "string" } },
+                          "time_sensitivity": { "type": "string" },
+                          "confidence": { "type": "number" }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/crypto-news/pump-dump-detector": {
+      "get": {
+        "description": "Advanced pump/dump detection system - identifies coins showing unusual activity and potential price movements",
+        "operationId": "detectPumpDumpSignals",
+        "parameters": [
+          {
+            "name": "signal_type",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "enum": ["pump", "dump", "both"],
+              "default": "both"
+            },
+            "description": "Type of signals to detect"
+          },
+          {
+            "name": "confidence_threshold",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "default": 60,
+              "minimum": 30,
+              "maximum": 95
+            },
+            "description": "Minimum confidence score (30-95)"
+          },
+          {
+            "name": "exclude_known_projects",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "boolean",
+              "default": false
+            },
+            "description": "Exclude well-established projects (BTC, ETH, etc.)"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Pump/dump signals detected",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "timestamp": { "type": "string" },
+                    "detection_parameters": {
+                      "type": "object",
+                      "properties": {
+                        "signal_type": { "type": "string" },
+                        "confidence_threshold": { "type": "integer" },
+                        "exclude_known_projects": { "type": "boolean" }
+                      }
+                    },
+                    "total_signals": { "type": "integer" },
+                    "pump_signals": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "symbol": { "type": "string" },
+                          "confidence_score": { "type": "number" },
+                          "trigger_events": { "type": "array", "items": { "type": "string" } },
+                          "social_momentum": { "type": "string", "enum": ["low", "medium", "high", "viral"] },
+                          "news_catalyst": { "type": "string" },
+                          "risk_assessment": { "type": "string" },
+                          "time_window": { "type": "string", "description": "Expected timeframe for movement" }
+                        }
+                      }
+                    },
+                    "dump_signals": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "symbol":{ "type": "string" },
+                          "confidence_score": { "type": "number" },
+                          "warning_events": { "type": "array", "items": { "type": "string" } },
+                          "fud_intensity": { "type": "string", "enum": ["low", "medium", "high", "critical"] },
+                          "risk_catalyst": { "type": "string" },
+                          "severity_level": { "type": "string" },
+                          "time_window": { "type": "string", "description": "Expected timeframe for movement" }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/kraken/positions": {
+      "get": {
+        "description": "Get enhanced Kraken positions with comprehensive analytics including USD values, entry analysis, and time in trade",
+        "operationId": "getKrakenPositions",
+        "responses": {
+          "200": {
+            "description": "Enhanced Kraken positions with detailed analytics",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "timestamp": { "type": "string" },
+                    "source": { "type": "string" },
+                    "total_positions": { "type": "integer" },
+                    "total_portfolio_value": { "type": "number" },
+                    "positions": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "symbol": { "type": "string" },
+                          "side": { "type": "string" },
+                          "contracts": { "type": "number" },
+                          "entryPrice": { "type": "number" },
+                          "markPrice": { "type": "number" },
+                          "unrealizedPnl": { "type": "number" },
+                          "percentage": { "type": "number" },
+                          "enhanced_data": {
+                            "type": "object",
+                            "properties": {
+                              "token_amount": { "type": "number" },
+                              "usd_value": { "type": "number" },
+                              "entry_price_calculated": { "type": "number" },
+                              "current_price": { "type": "number" },
+                              "unrealized_pnl_usd": { "type": "number" },
+                              "pnl_percentage": { "type": "number" },
+                              "time_in_trade": { "type": "string" },
+                              "trade_count": { "type": "integer" },
+                              "avg_trade_size": { "type": "number" },
+                              "total_fees_paid": { "type": "number" }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/kraken/balance": {
+      "get": {
+        "description": "Get Kraken account balance with USD valuations and portfolio breakdown",
+        "operationId": "getKrakenBalance",
+        "responses": {
+          "200": {
+            "description": "Kraken account balance with detailed breakdown",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "timestamp": { "type": "string" },
+                    "source": { "type": "string" },
+                    "total_fiat_balance": { "type": "number" },
+                    "total_crypto_value": { "type": "number" },
+                    "total_portfolio_value": { "type": "number" },
+                    "balances": {
+                      "type": "object",
+                      "additionalProperties": {
+                        "type": "object",
+                        "properties": {
+                          "free": { "type": "number" },
+                          "used": { "type": "number" },
+                          "total": { "type": "number" },
+                          "usd_value": { "type": "number" },
+                          "percentage_of_portfolio": { "type": "number" }
+                        }
+                      }
+                    },
+                    "top_holdings": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "symbol": { "type": "string" },
+                          "amount": { "type": "number" },
+                          "usd_value": { "type": "number" },
+                          "percentage": { "type": "number" }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/kraken/trade-history": {
+      "get": {
+        "description": "Get comprehensive Kraken trade history with performance analytics and entry/exit analysis",
+        "operationId": "getKrakenTradeHistory",
+        "parameters": [
+          {
+            "name": "limit",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "default": 50,
+              "minimum": 10,
+              "maximum": 500
+            },
+            "description": "Number of trades to fetch (10-500)"
+          },
+          {
+            "name": "symbol",
+            "in": "query",
+            "required": false,
+            "schema": { "type": "string" },
+            "description": "Filter by specific symbol (e.g., BTC/USD)"
+          },
+          {
+            "name": "days_back",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "default": 30,
+              "minimum": 1,
+              "maximum": 365
+            },
+            "description": "Look back X days for trade history"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Comprehensive trade history with analytics",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "timestamp": { "type": "string" },
+                    "total_trades": { "type": "integer" },
+                    "date_range": { "type": "string" },
+                    "summary_stats": {
+                      "type": "object",
+                      "properties": {
+                        "total_volume_usd": { "type": "number" },
+                        "total_fees_paid": { "type": "number" },
+                        "average_trade_size": { "type": "number" },
+                        "most_traded_symbol": { "type": "string" },
+                        "trading_frequency": { "type": "string" }
+                      }
+                    },
+                    "trades": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "id": { "type": "string" },
+                          "symbol": { "type": "string" },
+                          "side": { "type": "string" },
+                          "amount": { "type": "number" },
+                          "price": { "type": "number" },
+                          "cost": { "type": "number" },
+                          "fee": { "type": "number" },
+                          "timestamp": { "type": "string" },
+                          "datetime": { "type": "string" },
+                          "age_days": { "type": "integer" }
+                        }
+                      }
+                    },
+                    "symbol_breakdown": {
+                      "type": "object",
+                      "additionalProperties": {
+                        "type": "object",
+                        "properties": {
+                          "trade_count": { "type": "integer" },
+                          "total_volume": { "type": "number" },
+                          "avg_price": { "type": "number" },
+                          "total_fees": { "type": "number" }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/kraken/orders": {
+      "get": {
+        "description": "Get Kraken open orders with detailed order book analysis",
+        "operationId": "getKrakenOrders",
+        "responses": {
+          "200": {
+            "description": "Kraken open orders with analysis",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "timestamp": { "type": "string" },
+                    "source": { "type": "string" },
+                    "total_orders": { "type": "integer" },
+                    "orders": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "id": { "type": "string" },
+                          "symbol": { "type": "string" },
+                          "type": { "type": "string" },
+                          "side": { "type": "string" },
+                          "amount": { "type": "number" },
+                          "price": { "type": "number" },
+                          "stopPrice": { "type": "number" },
+                          "status": { "type": "string" },
+                          "timestamp": { "type": "string" },
+                          "datetime": { "type": "string" },
+                          "remaining": { "type": "number" },
+                          "filled": { "type": "number" },
+                          "fee": { "type": "number" }
+                        }
+                      }
+                    },
+                    "order_analysis": {
+                      "type": "object",
+                      "properties": {
+                        "buy_orders": { "type": "integer" },
+                        "sell_orders": { "type": "integer" },
+                        "stop_orders": { "type": "integer" },
+                        "limit_orders": { "type": "integer" },
+                        "total_order_value": { "type": "number" }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/kraken/market-data/{symbol}": {
+      "get": {
+        "description": "Get Kraken market data for specific symbol including ticker, orderbook, and recent trades",
+        "operationId": "getKrakenMarketData",
+        "parameters": [
+          {
+            "name": "symbol",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "string" },
+            "description": "Trading symbol (e.g., BTC/USD, ETH/USD)"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Kraken market data for symbol",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "timestamp": { "type": "string" },
+                    "symbol": { "type": "string" },
+                    "ticker": {
+                      "type": "object",
+                      "properties": {
+                        "last": { "type": "number" },
+                        "bid": { "type": "number" },
+                        "ask": { "type": "number" },
+                        "high": { "type": "number" },
+                        "low": { "type": "number" },
+                        "volume": { "type": "number" },
+                        "change": { "type": "number" },
+                        "percentage": { "type": "number" }
+                      }
+                    },
+                    "orderbook": {
+                      "type": "object",
+                      "properties": {
+                        "bids": {
+                          "type": "array",
+                          "items": {
+                            "type": "array",
+                            "items": { "type": "number" }
+                          }
+                        },
+                        "asks": {
+                          "type": "array",
+                          "items": {
+                            "type": "array",
+                            "items": { "type": "number" }
+                          }
+                        },
+                        "spread": { "type": "number" },
+                        "spread_percentage": { "type": "number" }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/kraken/portfolio-performance": {
+      "get": {
+        "description": "Get comprehensive Kraken portfolio performance analytics with P&L analysis, time-weighted returns, and risk metrics",
+        "operationId": "getKrakenPortfolioPerformance",
+        "parameters": [
+          {
+            "name": "period",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "enum": ["7d", "30d", "90d", "1y", "all"],
+              "default": "30d"
+            },
+            "description": "Performance analysis period"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Comprehensive portfolio performance analysis",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "timestamp": { "type": "string" },
+                    "analysis_period": { "type": "string" },
+                    "portfolio_summary": {
+                      "type": "object",
+                      "properties": {
+                        "total_value_usd": { "type": "number" },
+                        "total_positions": { "type": "integer" },
+                        "unrealized_pnl": { "type": "number" },
+                        "realized_pnl": { "type": "number" },
+                        "total_fees_paid": { "type": "number" }
+                      }
+                    },
+                    "performance_metrics": {
+                      "type": "object",
+                      "properties": {
+                        "total_return_percentage": { "type": "number" },
+                        "annualized_return": { "type": "number" },
+                        "sharpe_ratio": { "type": "number" },
+                        "max_drawdown": { "type": "number" },
+                        "win_rate": { "type": "number" },
+                        "average_hold_time": { "type": "string" }
+                      }
+                    },
+                    "position_analysis": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "symbol": { "type": "string" },
+                          "current_value": { "type": "number" },
+                          "unrealized_pnl": { "type": "number" },
+                          "pnl_percentage": { "type": "number" },
+                          "time_held": { "type": "string" },
+                          "performance_grade": { "type": "string" }
+                        }
+                      }
+                    },
+                    "risk_analysis": {
+                      "type": "object",
+                      "properties": {
+                        "portfolio_volatility": { "type": "number" },
+                        "largest_position_percentage": { "type": "number" },
+                        "diversification_score": { "type": "number" },
+                        "concentration_risk": { "type": "string" }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/kraken/asset-allocation": {
+      "get": {
+        "description": "Get detailed Kraken asset allocation analysis with diversification metrics and rebalancing recommendations",
+        "operationId": "getKrakenAssetAllocation",
+        "responses": {
+          "200": {
+            "description": "Asset allocation analysis with diversification insights",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "timestamp": { "type": "string" },
+                    "total_portfolio_value": { "type": "number" },
+                    "asset_breakdown": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "asset": { "type": "string" },
+                          "amount": { "type": "number" },
+                          "usd_value": { "type": "number" },
+                          "percentage": { "type": "number" },
+                          "asset_type": { "type": "string", "enum": ["major", "altcoin", "stablecoin", "defi", "layer1", "layer2"] },
+                          "risk_level": { "type": "string", "enum": ["low", "medium", "high"] }
+                        }
+                      }
+                    },
+                    "allocation_by_type": {
+                      "type": "object",
+                      "properties": {
+                        "major_coins": { "type": "number" },
+                        "altcoins": { "type": "number" },
+                        "stablecoins": { "type": "number" },
+                        "defi_tokens": { "type": "number" }
+                      }
+                    },
+                    "diversification_metrics": {
+                      "type": "object",
+                      "properties": {
+                        "herfindahl_index": { "type": "number" },
+                        "effective_assets": { "type": "number" },
+                        "concentration_ratio": { "type": "number" },
+                        "diversification_score": { "type": "string", "enum": ["well_diversified", "moderately_diversified", "concentrated", "highly_concentrated"] }
+                      }
+                    },
+                    "rebalancing_recommendations": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "action": { "type": "string", "enum": ["reduce", "increase", "maintain"] },
+                          "asset": { "type": "string" },
+                          "current_percentage": { "type": "number" },
+                          "recommended_percentage": { "type": "number" },
+                          "reason": { "type": "string" }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/kraken/trading-stats": {
+      "get": {
+        "description": "Get comprehensive Kraken trading statistics and behavioral analysis",
+        "operationId": "getKrakenTradingStats",
+        "parameters": [
+          {
+            "name": "period",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "enum": ["7d", "30d", "90d", "1y", "all"],
+              "default": "90d"
+            },
+            "description": "Statistics analysis period"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Comprehensive trading statistics and behavioral insights",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "timestamp": { "type": "string" },
+                    "analysis_period": { "type": "string" },
+                    "trading_overview": {
+                      "type": "object",
+                      "properties": {
+                        "total_trades": { "type": "integer" },
+                        "total_volume": { "type": "number" },
+                        "total_fees": { "type": "number" },
+                        "average_trade_size": { "type": "number" },
+                        "trading_frequency": { "type": "number", "description": "Trades per day" }
+                      }
+                    },
+                    "performance_stats": {
+                      "type": "object",
+                      "properties": {
+                        "win_rate": { "type": "number" },
+                        "average_win": { "type": "number" },
+                        "average_loss": { "type": "number" },
+                        "profit_factor": { "type": "number" },
+                        "largest_win": { "type": "number" },
+                        "largest_loss": { "type": "number" }
+                      }
+                    },
+                    "trading_patterns": {
+                      "type": "object",
+                      "properties": {
+                        "most_active_hours": { "type": "array", "items": { "type": "integer" } },
+                        "most_active_days": { "type": "array", "items": { "type": "string" } },
+                        "preferred_symbols": { "type": "array", "items": { "type": "string" } },
+                        "average_hold_time": { "type": "string" },
+                        "trading_style": { "type": "string", "enum": ["scalper", "day_trader", "swing_trader", "position_trader"] }
+                      }
+                    },
+                    "fee_analysis": {
+                      "type": "object",
+                      "properties": {
+                        "total_fees_paid": { "type": "number" },
+                        "fees_as_percentage_of_volume": { "type": "number" },
+                        "average_fee_per_trade": { "type": "number" },
+                        "fee_optimization_potential": { "type": "number" }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

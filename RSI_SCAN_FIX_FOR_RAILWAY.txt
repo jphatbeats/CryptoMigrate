@@ -1,0 +1,25 @@
+CRITICAL FIX FOR RAILWAY DEPLOYMENT - RSI MARKET SCANNING
+
+FIND AND REPLACE THESE LINES IN main_server.py ON GITHUB:
+
+Line ~500:  rsi_data = taapi_universal_indicators.get_indicator(
+REPLACE WITH: rsi_data = taapi_universal.get_indicator(
+
+Line ~653:  macd_data = taapi_universal_indicators.get_indicator(
+REPLACE WITH: macd_data = taapi_universal.get_indicator(
+
+Line ~747:  rsi_data = taapi_universal_indicators.get_indicator(
+REPLACE WITH: rsi_data = taapi_universal.get_indicator(
+
+Line ~760:  macd_data = taapi_universal_indicators.get_indicator(
+REPLACE WITH: macd_data = taapi_universal.get_indicator(
+
+Line ~1297: result = taapi_universal_indicators.get_indicator_by_name(symbol, indicator, interval, **kwargs)
+REPLACE WITH: result = taapi_universal.get_indicator_by_name(symbol, indicator, interval, **kwargs)
+
+AFTER FIXING:
+- Railway will auto-redeploy in 2-3 minutes
+- ChatGPT RSI scans will process 60 symbols instead of 0
+- All market scanning endpoints will work perfectly
+
+Your local Alpha Playbook is already working perfectly - just finished analyzing 217 mid-cap candidates!

@@ -1,0 +1,107 @@
+You reached the start of the range → Aug 2, 2025, 9:49 PM
+
+2025-08-03 02:50:40 - __main__ - INFO - Available exchanges: ['bingx', 'kraken', 'blofin']
+
+ * Serving Flask app 'main_server'
+
+ * Debug mode: off
+
+2025-08-03 02:50:40 - werkzeug - INFO - WARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.
+
+ * Running on all addresses (0.0.0.0)
+
+ * Running on http://127.0.0.1:8080
+
+ * Running on http://10.250.16.110:8080
+
+2025-08-03 02:50:40 - werkzeug - INFO - Press CTRL+C to quit
+
+2025-08-03 02:51:30 - __main__ - ERROR - Unexpected error: 404 Not Found: The requested URL was not found on the server. If you entered the URL manually please check your spelling and try again.
+
+Traceback (most recent call last):
+
+  File "/opt/venv/lib/python3.10/site-packages/flask/app.py", line 1484, in full_dispatch_request
+
+    rv = self.dispatch_request()
+
+  File "/opt/venv/lib/python3.10/site-packages/flask/app.py", line 1458, in dispatch_request
+
+    self.raise_routing_exception(req)
+
+  File "/opt/venv/lib/python3.10/site-packages/flask/app.py", line 1440, in raise_routing_exception
+
+    raise request.routing_exception  # type: ignore
+
+  File "/opt/venv/lib/python3.10/site-packages/flask/ctx.py", line 353, in match_request
+
+    result = self.url_adapter.match(return_rule=True)  # type: ignore
+
+  File "/opt/venv/lib/python3.10/site-packages/werkzeug/routing/map.py", line 629, in match
+
+    raise NotFound() from None
+
+werkzeug.exceptions.NotFound: 404 Not Found: The requested URL was not found on the server. If you entered the URL manually please check your spelling and try again.
+
+ 
+
+2025-08-03 02:51:30 - werkzeug - INFO - 100.64.0.2 - - [03/Aug/2025 02:51:30] "GET /api/kraken/balance HTTP/1.1" 500 -
+
+2025-08-03 02:51:39 - __main__ - ERROR - Unexpected error: 404 Not Found: The requested URL was not found on the server. If you entered the URL manually please check your spelling and try again.
+
+Traceback (most recent call last):
+
+  File "/opt/venv/lib/python3.10/site-packages/flask/app.py", line 1484, in full_dispatch_request
+
+    rv = self.dispatch_request()
+
+  File "/opt/venv/lib/python3.10/site-packages/flask/app.py", line 1458, in dispatch_request
+
+    self.raise_routing_exception(req)
+
+  File "/opt/venv/lib/python3.10/site-packages/flask/app.py", line 1440, in raise_routing_exception
+
+    raise request.routing_exception  # type: ignore
+
+  File "/opt/venv/lib/python3.10/site-packages/flask/ctx.py", line 353, in match_request
+
+    result = self.url_adapter.match(return_rule=True)  # type: ignore
+
+  File "/opt/venv/lib/python3.10/site-packages/werkzeug/routing/map.py", line 629, in match
+
+    raise NotFound() from None
+
+werkzeug.exceptions.NotFound: 404 Not Found: The requested URL was not found on the server. If you entered the URL manually please check your spelling and try again.
+
+ 
+
+2025-08-03 02:51:39 - werkzeug - INFO - 100.64.0.3 - - [03/Aug/2025 02:51:39] "GET /api/live/bingx-positions HTTP/1.1" 500 -
+
+2025-08-03 02:51:44 - __main__ - ERROR - Unexpected error: 404 Not Found: The requested URL was not found on the server. If you entered the URL manually please check your spelling and try again.
+
+Traceback (most recent call last):
+
+  File "/opt/venv/lib/python3.10/site-packages/flask/app.py", line 1484, in full_dispatch_request
+
+    rv = self.dispatch_request()
+
+  File "/opt/venv/lib/python3.10/site-packages/flask/app.py", line 1458, in dispatch_request
+
+    self.raise_routing_exception(req)
+
+  File "/opt/venv/lib/python3.10/site-packages/flask/app.py", line 1440, in raise_routing_exception
+
+    raise request.routing_exception  # type: ignore
+
+  File "/opt/venv/lib/python3.10/site-packages/flask/ctx.py", line 353, in match_request
+
+    result = self.url_adapter.match(return_rule=True)  # type: ignore
+
+  File "/opt/venv/lib/python3.10/site-packages/werkzeug/routing/map.py", line 629, in match
+
+    raise NotFound() from None
+
+werkzeug.exceptions.NotFound: 404 Not Found: The requested URL was not found on the server. If you entered the URL manually please check your spelling and try again.
+
+ 
+
+2025-08-03 02:51:44 - werkzeug - INFO - 100.64.0.2 - - [03/Aug/2025 02:51:44] "GET /api/live/blofin-positions HTTP/1.1" 500 -

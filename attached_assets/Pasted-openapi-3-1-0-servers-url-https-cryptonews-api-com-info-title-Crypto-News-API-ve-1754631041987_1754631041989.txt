@@ -1,0 +1,652 @@
+openapi: 3.1.0
+servers:
+  - url: https://cryptonews-api.com
+info:
+  title: Crypto News API
+  version: 1.0.0
+paths:
+  /api/v1:
+    get:
+      summary: Get Crypto Ticker News (regular and advanced)
+      operationId: getCryptoTickerNews
+      description: Retrieve crypto news for tickers using regular or advanced filtering options.
+      parameters:
+        - name: tickers
+          in: query
+          required: false
+          schema:
+            type: string
+            example: BTC,ETH,XRP
+          description: News about any of these tickers (comma-separated).
+        - name: tickers-include
+          in: query
+          required: false
+          schema:
+            type: string
+            example: BTC,ETH,XRP
+          description: News where *all* these tickers are mentioned together in the same article.
+        - name: tickers-only
+          in: query
+          required: false
+          schema:
+            type: string
+            example: BTC
+          description: News mentioning *only* this ticker, and no others.
+        - name: items
+          in: query
+          required: false
+          schema:
+            type: integer
+            minimum: 1
+            maximum: 100
+            example: 3
+          description: Number of news items to return (1-100). This parameter is required.
+        - name: page
+          in: query
+          required: false
+          schema:
+            type: integer
+            example: 1
+          description: Page number for pagination. Premium plans can access more than 5 pages.
+        - name: datatype
+          in: query
+          required: false
+          schema:
+            type: string
+            enum: [json, csv]
+            default: json
+            example: csv
+          description: Response format - json or csv file download.
+        - name: source
+          in: query
+          required: false
+          schema:
+            type: string
+            example: Coindesk,CryptoSlate,NewsBTC
+          description: Include specific news sources (comma-separated). Available sources include Coindesk, CryptoSlate, NewsBTC, Forbes, Reuters, etc.
+        - name: sourceexclude
+          in: query
+          required: false
+          schema:
+            type: string
+            example: Reddit,Twitter
+          description: Exclude specific news sources (comma-separated).
+        - name: type
+          in: query
+          required: false
+          schema:
+            type: string
+            enum: [video, article]
+            example: article
+          description: Filter by content type - video or article news.
+        - name: sentiment
+          in: query
+          required: false
+          schema:
+            type: string
+            enum: [positive, negative, neutral]
+            example: positive
+          description: Filter by sentiment - positive, negative, or neutral news only.
+        - name: sortby
+          in: query
+          required: false
+          schema:
+            type: string
+            enum: [rank, oldestfirst]
+            example: rank
+          description: Sort method - 'rank' for importance algorithm, 'oldestfirst' for oldest news first. Default is newest first.
+        - name: days
+          in: query
+          required: false
+          schema:
+            type: integer
+            minimum: 1
+            maximum: 30
+            example: 3
+          description: When using sortby=rank, limit ranking to last X days (1-30).
+        - name: extra-fields
+          in: query
+          required: false
+          schema:
+            type: string
+            example: id,eventid,rankscore
+          description: Additional fields to include in response - id, eventid, rankscore (comma-separated).
+        - name: news_id
+          in: query
+          required: false
+          schema:
+            type: string
+            example: 123455,123456
+          description: Retrieve specific news items by news_id (comma-separated for multiple).
+        - name: metadata
+          in: query
+          required: false
+          schema:
+            type: integer
+            enum: [0, 1]
+            default: 0
+            example: 1
+          description: Include metadata and field explanations in response (0 or 1).
+        - name: date
+          in: query
+          required: false
+          schema:
+            type: string
+            example: last7days
+          description: Historical news filter (up to Dec 2020). Format MMDDYYYY (12012020-12072020) or shortcuts (last5min, last10min, last15min, last30min, last45min, last60min, today, yesterday, last7days, last30days, last60days, last90days, yeartodate).
+        - name: time
+          in: query
+          required: false
+          schema:
+            type: string
+            example: 103050-110530
+          description: Filter by exact time in HHMMSS format (103050-110530). Only compatible with date parameter.
+        - name: datetimerange
+          in: query
+          required: false
+          schema:
+            type: string
+            example: yesterday+160000-today+090000
+          description: Filter on date and time range using DATE+TIME-DATE+TIME format (e.g., yesterday+160000-today+090000 for yesterday 4pm until today 9am).
+        - name: topic
+          in: query
+          required: false
+          schema:
+            type: string
+            example: Digital+Yuan,Libra
+          description: Filter by topics using AND logic (Digital+Yuan,Libra finds articles with both topics).
+        - name: topicOR
+          in: query
+          required: false
+          schema:
+            type: string
+            example: Technical+Analysis,Libra
+          description: Filter by topics using OR logic (Technical+Analysis,Libra finds articles with either topic).
+        - name: topicexclude
+          in: query
+          required: false
+          schema:
+            type: string
+            example: stablecoins
+          description: Exclude specific topics from results.
+        - name: search
+          in: query
+          required: false
+          schema:
+            type: string
+            example: Congress,Hard+Fork
+          description: Search keywords using AND logic (Congress,Hard+Fork finds articles with both keywords).
+        - name: searchOR
+          in: query
+          required: false
+          schema:
+            type: string
+            example: Congress,Hard+Fork
+          description: Search keywords using OR logic (Congress,Hard+Fork finds articles with either keyword).
+        - name: fallback
+          in: query
+          required: false
+          schema:
+            type: boolean
+            example: true
+          description: If a specific ticker has no news, fallback to general crypto news to avoid empty responses.
+        - name: token
+          in: query
+          required: true
+          schema:
+            type: string
+            example: ayimav7nlptgzetysg9dwhqteampvoirtfx5orqk
+          description: ayimav7nlptgzetysg9dwhqteampvoirtfx5orqk
+      responses:
+        '200':
+          description: List of crypto news items. Use 'tickers' for broad coverage, 'tickers-include' for news mentioning all specified tickers together, or 'tickers-only' for exclusive ticker news. Advanced filters reduce results but provide more focused news.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      type: object
+  /api/v1/category:
+    get:
+      summary: Get categorized crypto news by section
+      operationId: getCryptoCategoryNews
+      description: Get curated news articles from specific crypto market sections like general, alltickers, defi, nft, metaverse, etc.
+      parameters:
+        - name: section
+          in: query
+          required: true
+          schema:
+            type: string
+            enum: [general, alltickers]
+            example: general
+          description: News section - 'general' for market-wide news, 'alltickers' for all crypto ticker news
+        - name: items
+          in: query
+          required: true
+          schema:
+            type: integer
+            minimum: 1
+            maximum: 100
+            default: 10
+            example: 3
+          description: Number of news articles to return per page (1-100). This parameter is required.
+        - name: page
+          in: query
+          required: false
+          schema:
+            type: integer
+            default: 1
+            example: 1
+          description: Page number for pagination. Premium plans can access more than 5 pages
+        - name: datatype
+          in: query
+          required: false
+          schema:
+            type: string
+            enum: [json, csv]
+            default: json
+            example: csv
+          description: Response format - json or csv file download
+        - name: source
+          in: query
+          required: false
+          schema:
+            type: string
+            example: Coindesk,CryptoSlate,NewsBTC
+          description: Include specific news sources (comma-separated). Available sources include Coindesk, CryptoSlate, NewsBTC, Forbes, Reuters, etc.
+        - name: sourceexclude
+          in: query
+          required: false
+          schema:
+            type: string
+            example: Reddit,Twitter
+          description: Exclude specific news sources (comma-separated).
+        - name: type
+          in: query
+          required: false
+          schema:
+            type: string
+            enum: [video, article]
+            example: article
+          description: Filter by content type - video or article news.
+        - name: sentiment
+          in: query
+          required: false
+          schema:
+            type: string
+            enum: [positive, negative, neutral]
+            example: positive
+          description: Filter by sentiment - positive, negative, or neutral news only.
+        - name: extra-fields
+          in: query
+          required: false
+          schema:
+            type: string
+            example: id,eventid,rankscore
+          description: Additional fields to include in response - id, eventid, rankscore (comma-separated).
+        - name: news_id
+          in: query
+          required: false
+          schema:
+            type: string
+            example: 123455,123456
+          description: Retrieve specific news items by news_id (comma-separated for multiple).
+        - name: metadata
+          in: query
+          required: false
+          schema:
+            type: integer
+            enum: [0, 1]
+            default: 0
+            example: 1
+          description: Include metadata and field explanations in response (0 or 1).
+        - name: date
+          in: query
+          required: false
+          schema:
+            type: string
+            example: last7days
+          description: Historical news filter (up to Dec 2020). Format MMDDYYYY (12012020-12072020) or shortcuts (last5min, last10min, last15min, last30min, last45min, last60min, today, yesterday, last7days, last30days, last60days, last90days, yeartodate).
+        - name: time
+          in: query
+          required: false
+          schema:
+            type: string
+            example: 103050-110530
+          description: Filter by exact time in HHMMSS format (103050-110530). Only compatible with date parameter.
+        - name: datetimerange
+          in: query
+          required: false
+          schema:
+            type: string
+            example: yesterday+160000-today+090000
+          description: Filter on date and time range using DATE+TIME-DATE+TIME format (e.g., yesterday+160000-today+090000 for yesterday 4pm until today 9am).
+        - name: topic
+          in: query
+          required: false
+          schema:
+            type: string
+            example: Digital+Yuan,Libra
+          description: Filter by topics using AND logic (Digital+Yuan,Libra finds articles with both topics).
+        - name: topicOR
+          in: query
+          required: false
+          schema:
+            type: string
+            example: Technical+Analysis,Libra
+          description: Filter by topics using OR logic (Technical+Analysis,Libra finds articles with either topic).
+        - name: topicexclude
+          in: query
+          required: false
+          schema:
+            type: string
+            example: stablecoins
+          description: Exclude specific topics from results.
+        - name: search
+          in: query
+          required: false
+          schema:
+            type: string
+            example: Congress,Hard+Fork
+          description: Search keywords using AND logic (Congress,Hard+Fork finds articles with both keywords).
+        - name: searchOR
+          in: query
+          required: false
+          schema:
+            type: string
+            example: Congress,Hard+Fork
+          description: Search keywords using OR logic (Congress,Hard+Fork finds articles with either keyword).
+        - name: token
+          in: query
+          required: true
+          schema:
+            type: string
+            example: ayimav7nlptgzetysg9dwhqteampvoirtfx5orqk
+          description: ayimav7nlptgzetysg9dwhqteampvoirtfx5orqk
+      responses:
+        '200':
+          description: Categorized news with pagination. Use section=general for industry news, section=alltickers for all-coin coverage, or sector-specific sections like defi/nft.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        title:
+                          type: string
+                        text:
+                          type: string
+                        source_name:
+                          type: string
+                        date:
+                          type: string
+                        sentiment:
+                          type: string
+                        type:
+                          type: string
+                        news_url:
+                          type: string
+                        image_url:
+                          type: string
+                        topics:
+                          type: array
+                          items:
+                            type: string
+                        tickers:
+                          type: array
+                          items:
+                            type: string
+                  total_pages:
+                    type: integer
+                  total_items:
+                    type: integer
+  /api/v1/account/tickersdbv2:
+    get:
+      summary: Get complete tickers database
+      operationId: getTickersDatabase
+      description: View all available tickers/symbols in the database. Limited to once per day for non-trial accounts.
+      parameters:
+        - name: token
+          in: query
+          required: true
+          schema:
+            type: string
+            example: ayimav7nlptgzetysg9dwhqteampvoirtfx5orqk
+          description: ayimav7nlptgzetysg9dwhqteampvoirtfx5orqk
+      responses:
+        '200':
+          description: Complete database of supported ticker symbols and cryptocurrencies
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      type: object
+  /api/v1/top-mention:
+    get:
+      summary: Get top mentioned crypto tickers
+      operationId: getTopMentionedTickers
+      parameters:
+        - name: date
+          in: query
+          required: false
+          schema:
+            type: string
+            example: '2025-07-30'
+          description: Date for which to retrieve top mentioned tickers (YYYY-MM-DD)
+        - name: cache
+          in: query
+          required: false
+          schema:
+            type: integer
+            example: 1
+          description: Cache control
+        - name: token
+          in: query
+          required: true
+          schema:
+            type: string
+            example: ayimav7nlptgzetysg9dwhqteampvoirtfx5orqk
+          description: ayimav7nlptgzetysg9dwhqteampvoirtfx5orqk
+      responses:
+        '200':
+          description: Top mentioned crypto tickers
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      type: object
+  /api/v1/stat:
+    get:
+      summary: Get sentiment analysis
+      operationId: getSentimentAnalysis
+      parameters:
+        - name: tickers
+          in: query
+          required: false
+          schema:
+            type: string
+            example: BTC,ETH
+          description: One or more ticker symbols (comma-separated)
+        - name: section
+          in: query
+          required: false
+          schema:
+            type: string
+            example: general
+          description: News section (general, alltickers, etc.)
+        - name: date
+          in: query
+          required: false
+          schema:
+            type: string
+            example: '2025-07-30'
+          description: Date for sentiment analysis (YYYY-MM-DD)
+        - name: page
+          in: query
+          required: false
+          schema:
+            type: integer
+            example: 1
+          description: Page number for pagination
+        - name: cache
+          in: query
+          required: false
+          schema:
+            type: integer
+            example: 0
+          description: Cache control
+        - name: token
+          in: query
+          required: true
+          schema:
+            type: string
+            example: ayimav7nlptgzetysg9dwhqteampvoirtfx5orqk
+          description: ayimav7nlptgzetysg9dwhqteampvoirtfx5orqk
+      responses:
+        '200':
+          description: Sentiment analysis data
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      type: object
+  /api/v1/events:
+    get:
+      summary: Get news events
+      operationId: getEvents
+      parameters:
+        - name: eventid
+          in: query
+          required: false
+          schema:
+            type: string
+            example: 12345
+          description: Specific event ID to retrieve
+        - name: tickers
+          in: query
+          required: false
+          schema:
+            type: string
+            example: BTC,ETH
+          description: One or more ticker symbols (comma-separated)
+        - name: page
+          in: query
+          required: false
+          schema:
+            type: integer
+            example: 1
+          description: Page number for pagination
+        - name: token
+          in: query
+          required: true
+          schema:
+            type: string
+            example: ayimav7nlptgzetysg9dwhqteampvoirtfx5orqk
+          description: ayimav7nlptgzetysg9dwhqteampvoirtfx5orqk
+      responses:
+        '200':
+          description: List of news events
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      type: object
+  /api/v1/trending-headlines:
+    get:
+      summary: Get trending crypto news headlines
+      operationId: getTrendingHeadlines
+      parameters:
+        - name: ticker
+          in: query
+          required: false
+          schema:
+            type: string
+            example: BTC
+          description: Ticker symbol for which to get trending headlines
+        - name: page
+          in: query
+          required: false
+          schema:
+            type: integer
+            example: 1
+          description: Page number for pagination
+        - name: token
+          in: query
+          required: true
+          schema:
+            type: string
+            example: ayimav7nlptgzetysg9dwhqteampvoirtfx5orqk
+          description: ayimav7nlptgzetysg9dwhqteampvoirtfx5orqk
+      responses:
+        '200':
+          description: List of trending headlines
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      type: object
+  /api/v1/sundown-digest:
+    get:
+      summary: Get Sundown Digest
+      operationId: getSundownDigest
+      parameters:
+        - name: items
+          in: query
+          required: false
+          schema:
+            type: integer
+            example: 10
+          description: Number of news items to return
+        - name: page
+          in: query
+          required: false
+          schema:
+            type: integer
+            example: 1
+          description: Page number for pagination
+        - name: token
+          in: query
+          required: true
+          schema:
+            type: string
+            example: ayimav7nlptgzetysg9dwhqteampvoirtfx5orqk
+          description: ayimav7nlptgzetysg9dwhqteampvoirtfx5orqk
+      responses:
+        '200':
+          description: Sundown Digest data
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      type: object

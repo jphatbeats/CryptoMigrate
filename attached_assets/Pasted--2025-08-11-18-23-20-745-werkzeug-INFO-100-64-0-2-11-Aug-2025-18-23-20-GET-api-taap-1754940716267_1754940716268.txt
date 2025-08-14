@@ -1,0 +1,51 @@
+
+
+2025-08-11 18:23:20,745 - werkzeug - INFO - 100.64.0.2 - - [11/Aug/2025 18:23:20] "GET /api/taapi/multiple?symbol=BSV/USDT&interval=4h&indicators=rsi,macd,ema,adx HTTP/1.1" 200 -
+
+2025-08-11 18:23:21,040 - werkzeug - INFO - 100.64.0.2 - - [11/Aug/2025 18:23:21] "POST /api/coordinator/request-access HTTP/1.1" 200 -
+
+2025-08-11 18:23:24,761 - taapi_indicators - WARNING - Taapi.io API error 400: {"errors":["Bad request. Check your request parameters and try again!","No candles were found!"]}
+
+2025-08-11 18:23:24,762 - get_indicator_by_name - WARNING - ⚠️ rsi API error: API error: 400
+
+2025-08-11 18:23:29,590 - taapi_indicators - WARNING - Taapi.io API error 400: {"errors":["Bad request. Check your request parameters and try again!","No candles were found!"]}
+
+2025-08-11 18:23:29,590 - get_indicator_by_name - WARNING - ⚠️ macd API error: API error: 400
+
+2025-08-11 18:23:32,820 - taapi_indicators - WARNING - Taapi.io API error 400: {"errors":["Bad request. Check your request parameters and try again!","No candles were found!"]}
+
+2025-08-11 18:23:32,820 - get_indicator_by_name - WARNING - ⚠️ ema API error: API error: 400
+
+2025-08-11 18:23:36,862 - taapi_indicators - WARNING - Taapi.io API error 400: {"errors":["Bad request. Check your request parameters and try again!","No candles were found!"]}
+
+2025-08-11 18:23:36,863 - get_indicator_by_name - WARNING - ⚠️ adx API error: API error: 400
+
+2025-08-11 18:23:36,864 - werkzeug - INFO - 100.64.0.2 - - [11/Aug/2025 18:23:36] "GET /api/taapi/multiple?symbol=HNT/USDT&interval=4h&indicators=rsi,macd,ema,adx HTTP/1.1" 200 -
+
+2025-08-11 18:23:37,151 - werkzeug - INFO - 100.64.0.2 - - [11/Aug/2025 18:23:37] "POST /api/coordinator/request-access HTTP/1.1" 200 -
+
+2025-08-11 18:23:52,990 - werkzeug - INFO - 100.64.0.2 - - [11/Aug/2025 18:23:52] "GET /api/taapi/multiple?symbol=RSR/USDT&interval=4h&indicators=rsi,macd,ema,adx HTTP/1.1" 200 -
+
+2025-08-11 18:23:53,278 - werkzeug - INFO - 100.64.0.2 - - [11/Aug/2025 18:23:53] "POST /api/coordinator/request-access HTTP/1.1" 200 -
+
+2025-08-11 18:23:56,997 - taapi_indicators - WARNING - Taapi.io API error 400: {"errors":["Bad request. Check your request parameters and try again!","No candles were found!"]}
+
+2025-08-11 18:23:56,997 - get_indicator_by_name - WARNING - ⚠️ rsi API error: API error: 400
+
+2025-08-11 18:24:01,043 - taapi_indicators - WARNING - Taapi.io API error 400: {"errors":["Bad request. Check your request parameters and try again!","No candles were found!"]}
+
+2025-08-11 18:24:01,044 - get_indicator_by_name - WARNING - ⚠️ macd API error: API error: 400
+
+2025-08-11 18:24:05,073 - taapi_indicators - WARNING - Taapi.io API error 400: {"errors":["Bad request. Check your request parameters and try again!","No candles were found!"]}
+
+2025-08-11 18:24:05,073 - get_indicator_by_name - WARNING - ⚠️ ema API error: API error: 400
+
+2025-08-11 18:24:09,102 - taapi_indicators - WARNING - Taapi.io API error 400: {"errors":["Bad request. Check your request parameters and try again!","No candles were found!"]}
+
+2025-08-11 18:24:09,102 - get_indicator_by_name - WARNING - ⚠️ adx API error: API error: 400
+
+2025-08-11 18:24:09,103 - werkzeug - INFO - 100.64.0.2 - - [11/Aug/2025 18:24:09] "GET /api/taapi/multiple?symbol=USDD/USDT&interval=4h&indicators=rsi,macd,ema,adx HTTP/1.1" 200 -
+
+2025-08-11 18:24:09,395 - werkzeug - INFO - 100.64.0.2 - - [11/Aug/2025 18:24:09] "POST /api/coordinator/request-access HTTP/1.1" 200 -
+
+2025-08-11 18:24:25,224 - werkzeug - INFO - 100.64.0.2 - - [11/Aug/2025 18:24:25] "GET /api/taapi/multiple?symbol=AR/USDT&interval=4h&indicators=rsi,macd,ema,adx HTTP/1.1" 200 -

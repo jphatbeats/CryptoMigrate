@@ -1,0 +1,3485 @@
+Introduction
+Welcome to the BingX API, welcome to sign up for the BingX BrokerProject BingX Broker Program Application
+
+You can use our API to access market data, trading, and account management endpoints of Perpetual Swap. The market data API is publicly accessible and provides market data such as The Latest Trade of a Trading Pair. The account and trading APIs require authentication with an API Key which allows you to place and cancel orders and enquire order status and account info.
+
+This page presents the USDT-M Perpetual Futures API documentation (V2), which is advised over the V1 version. For V1 version, please refer to USDT-M Perpetual Futures API Reference V1
+
+If you have any questions or feedback, you can join the API issue Telegram group.
+
+BingX sincerely invites you to participate in the API function user survey and share your ideas so that we can better serve you and enhance your trading experience.
+Fill in the questionnaire
+
+below every instruction there will most likely be an example  i tryed to copy the whole pages contents
+--
+
+Frequently Asked Questions
+Q: What is UID?
+
+A: UID stands for User ID, which is a unique identifier for each user (including parent users and sub-users). UID can be viewed in the personal information section of the web or app interface, and it can also be obtained through the GET /openApi/account/v1/uid interface.
+
+Q: How many API Keys can a user apply for?
+
+A: Each parent user can create up to 20 sets of API Keys. Each parent user can also create up to 20 sub-users, and each sub-user can create up to 20 sets of API Keys. Each API Key can be set with different permissions.
+
+Q: Why do I often experience disconnections and timeouts?
+
+A: It could be due to network fluctuations. We recommend reconnecting in such cases.
+
+Q: Why does WebSocket connection always get disconnected?
+
+A: You can check if your code returns a Pong after receiving a Ping. If you are subscribing to account-related websockets, please also check if you are regularly updating the listenkey. We recommend using our sample code first.
+
+Q: Why does signature authentication always fail?
+
+A: Please carefully read our signature authentication instructions, or test using our sample code first.
+
+Q: Is the API Key for U-based contracts the same as Spot trading?
+
+A: The API Key for U-based contracts is the same as the API Key for Spot trading. However, the permissions for spot trading and contract trading are separate and need to be configured accordingly.
+
+Q: How many types of risk control restrictions does BingX have for APIs?
+
+A: BingX has three types of risk control strategies for APIs: api rate limiting, trading restrictions, and network firewall restrictions. These restrictions may change at any time.
+
+Interface rate limiting:
+
+The rate limiting for each api may vary. Please refer to the specific api documentation for details.
+Trading restrictions: Trading behavior is evaluated based on the behavior of regular users. If your trading behavior deviates significantly from that of regular users, you may be prohibited from trading, and the duration of the prohibition is uncertain. The duration of the trading prohibition may increase under the following circumstances:
+
+1. Frequently occupying the best bid and ask prices.
+2. Frequently placing/canceling orders without any trades.
+3. Very low trade completion rate, where the completion rate = number of trades / (number of placed orders + number of canceled orders).
+4. Very low trade weight, where the trade weight = total trade amount / (total placed order amount + total canceled order amount).
+5. Continuously sending frequent requests after receiving a 429 error response.
+Network Firewall Restrictions
+
+Currently, we do not provide explicit information about network firewall restrictions. If you receive an HTTP 403 error message, it means you have violated a network firewall rule. In most cases, this error occurs due to excessive requests and will result in a five-minute temporary ban. However, if your requests are considered malicious, it may lead to a longer ban or even permanent suspension.
+Q: How to report API api errors?
+
+Please contact our official customer service and provide the following template to report the issue. Our technical support will assist you:
+
+1. Problem description
+2. User ID (UID) and order ID (if related to account or order), API KEY
+3. Complete request parameters (if applicable)
+4. Complete JSON formatted response
+5. Time and frequency of the issue (when it started, if it can be reproduced)
+6. Signature information
+Q: Does the API support standard contract trading?
+
+A: Currently not supported.
+
+Q: Does the API support stock and forex trading?
+
+A: Currently not supported.
+
+Q: Does the mobile app support API management?
+
+A: This feature is under development.
+
+Q: How many channels can be subscribed per IP address on BingX?
+
+A: Currently, there is no limit, but there is a subscription rate limit. Please do not exceed 10/s.
+
+--
+
+interface
+The api of the GET method, parameters must be sent in the query string.
+
+Interface for POST, PUT, and DELETE methods, parameters can be sent in query string or request body (content type application/x-www-form-urlencoded). It is allowed to mix these two ways to send parameters. But if the same parameter name exists in both query string and request body, the one in query string will be used first.
+
+The order of parameters is not required.
+
+--
+
+Authentication
+Generate an API Key
+Before being able to sign any requests, you must create an API Key at the API Management page onBingXUpon creating a key you will have 2 pieces of information which you should remember:API key and Secret key.
+While setting the API key, it is recommended to set the IP access whitelist for security reasons
+Never tell anyone your API key/Secret key
+If the API key is accidentally leaked, please delete it immediately and produce a new API key
+Permission Settings
+The default permission for newly created APIs is read-only.
+If you need to perform write operations such as placing an order through the API, you need to modify it to the corresponding permission on the UI.
+Make Requests
+All private REST requests must contain the following parameters:
+
+Pass the API Key with X-BX-APIKEY on the request header.
+The request parameter carries the signature obtained by using the signature algorithm.
+timestamp is the timestamp of your request, in milliseconds. When the server receives the request, it will judge the timestamp in the request. If it is sent before 5000 milliseconds, the request will be considered invalid. This time window value can be defined by sending the optional parameter recvWindow.
+Signature Description
+signatureRequest parameter by using HMAC SHA256 encode
+
+for example
+
+api parameters
+
+symbol=BTC-USDT
+timestamp=1696751141337
+recvWindow=0
+
+
+api information
+
+apiKey = hO6oQotzTE0S5FRYze2Jx2wGx7eVnJGMolpA1nZyehsoMgCcgKNWQHd4QgTFZuwl4Zt4xMe2PqGBegWXO4A
+secretKey = mheO6dR8ovSsxZQCOYEFCtelpuxcWGTfHw7te326y6jOwq5WpvFQ9JNljoTwBXZGv5It07m9RXSPpDQEK2w
+
+
+Example of sending parameters through query string
+
+1. Splice all api parameters (without sorting)
+
+recvWindow=0&symbol=BTC-USDT&timestamp=1696751141337
+
+2. Use secretKey to generate a signature for the concatenated parameter string: 1e63e8cfd1c04919881e60cf369e404b9b7c87d3a09bc300f1abfdcce7da57e8
+
+echo -n "recvWindow=0&symbol=BTC-USDT&timestamp=1696751141337" | openssl dgst -sha256 -hmac "mheO6dR8ovSsxZQCOYEFCtelpuxcWGTfHw7te326y6jOwq5WpvFQ9JNljoTwBXZGv5It07m9RXSPpDQEK2w" -hex
+
+3. Send request
+
+Some query string scenarios (such as a='1 '&b={a:'2'}) require URL encoding for each value of the request parameters, only for the value value, without URL encoding for the field key, nor for the entire original parameters string. Here is a special field: the value of timestamp does not require URL encoding. Please refer toURL encoding scenario description
+
+Example of sending parameters through request body
+
+1. Sort and concatenate all api parameters according to (a-z) (sorting required)
+
+recvWindow=0&subAccountString=abc12345&timestamp=1696751141337
+
+2. Use secretKey to generate a signature for the concatenated parameter string:1e63e8cfd1c04919881e60cf369e404b9b7c87d3a09bc300f1abfdcce7da57e8
+
+echo -n "recvWindow=0&subAccountString=abc12345&timestamp=1696751141337" | openssl dgst -sha256 -hmac "mheO6dR8ovSsxZQCOYEFCtelpuxcWGTfHw7te326y6jOwq5WpvFQ9JNljoTwBXZGv5It07m9RXSPpDQEK2w" -hex
+
+3. Combine into JSON, place the request body, and set header: 'Content Type': 'application/JSON'
+
+{"recvWindow":0,"subAccountString":"abc12345","timestamp":1696751141337,"signature":"1e63e8cfd1c04919881e60cf369e404b9b7c87d3a09bc300f1abfdcce7da57e8"}
+
+Requests
+Root URL for REST access: https://open-api.bingx.com
+Alternate domain name: open-api.bingx.io (total frequency limit: 60/min) Release the frequency limit of the alternate domain name only when there is a problem with the primary domain name open-api.bingx.com
+
+Request Description
+
+Request parameter: Parameter encapsulation is performed according to the api request parameter specification.
+
+Submit request parameters: Submit the encapsulated request parameters to the server through POST/GET/DELETE, etc.
+
+Server response: The server first performs parameter security verification on the user request data, and returns the response data to the user in JSON format after passing the verification according to the business logic.
+
+Data processing: process the server response data.
+
+Success
+
+A successful response is indicated by HTTP status code 200 and may optionally contain a body. If the response has a body, it will be included under each resource below.
+
+--
+
+Common Error Codes
+Types:
+
+4XX error codes are used to indicate wrong request content, behavior, format.
+
+5XX error codes are used to indicate problems with the Bingx service.
+
+Error Codes:
+
+400 Bad Request – Invalid request format Invalid request format
+
+401 Unauthorized – Invalid API Key Invalid API Key
+
+403 Forbidden – You do not have access to the requested resource
+
+404 - Not Found
+
+429 - Too Many Requests Return code is used when breaking a request rate limit.
+
+418 - return code is used when an IP has been auto-banned for continuing to send requests after receiving 429 codes.
+
+500 - Internal Server Error – We had a problem with our server We had a problem with our server
+
+504 - return code means that the API server has submitted a request to the service center but failed to get a response. It should be noted that the 504 return code does not mean that the request failed. It refers to an unknown status. The request may have been executed, or it may have failed. Further confirmation is required.
+
+Common business error codes:
+
+100001 - signature verification failed#
+
+100500 - Internal system error
+
+80012 - service unavailable
+
+80014 - Invalid parameter
+
+80016 - Order does not exist
+
+80017 - position does not exist
+
+80020 - risk forbidden
+
+100004 - Permission denied as the API key was created without the permission
+
+100419 - IP does not match IP whitelist
+
+101204 - Insufficient margin
+
+80013 - The number of your entrusted orders has reached the system limit. If you need to place an order, please cancel other orders first
+
+80018 - order is already filled
+
+80019 - The order is being processed. Please use the allOrders api to retrieve the order details later
+
+100400
+
+arguments invalid
+miss arguments
+100412 - Null signature
+
+100413 - Incorrect apiKey
+
+100421 - Null timestamp or timestamp mismatch
+
+100410 - rate limitation
+
+101209 - The maximum position value for this leverage is ** USDT
+
+101212 - Failed. Please check if you have pending orders under the trading pair. If yes, please cancel them and try again
+
+101215 - The Maker (Post Only) order ensures that the user always acts as a maker. If the order would immediately match with available orders in the market, it will be canceled.
+
+101414 - The maximum leverage for the trading pair is *, please reduce the leverage
+
+101415 - This trading pair is suspended from opening new position
+
+101460 - The order price should be higher than the estimated liquidation price of the long position
+
+101500 - rpc timeout
+
+101514 - You're temporarily suspended from opening positions. Please try again later
+
+109201 - The same order number is only allowed to be submitted once within 1 second.
+
+101211
+
+Order price should be lower than*
+Order price should be higher than*
+80012
+
+GetMarketTrades getContractInfo failled
+symbol not exist
+invalid parameter
+Service Unavailable
+leverage illegal
+connect: connection refused
+margin is not enough
+startTime is later than endTime
+OpenInterestNotExist
+The current system is busy, please try again later
+invalid connection
+stop order cnt hit limit 50
+network failed
+trading has been locked
+position limit
+101400
+
+No position to close
+Order size error
+Insufficient margin
+Must be lower than the maximum callback rate of 90%
+Must be greater than the minimum callback rate of 0.1%
+Invalid Parameter
+80001
+
+tickers is nil
+Request failed
+service has some errors, order not exist
+orderId and clientOrderId are both empty, orderId and clientOrderId are both empty
+order state illegal, order not exist
+the account has positions or pending orders
+margin is not enough
+You're temporarily suspended from opening positions. Please try again later
+order state illegalorder not exist
+Mismatch type
+At present, the actual position is occupied by a Limit Order. If you need to close the position, please cancel other orders first
+trading strategy available is false
+order not exist
+The maximum leverage for the trading pair is 5, please reduce the leverage
+Order size error
+The current system is busy
+Notes:
+
+If it fails, there will be an error description included in the response body.
+
+Errors may be thrown from every interface.
+
+Timestamp
+Unless otherwise specified, all timestamps from the API are returned with millisseconds resolution.
+The timestamp of the request must be within 5 seconds of the API service time, otherwise the request will be considered expired and rejected. If there is a large deviation between the local server time and the API server time, we recommend that you update the http header by querying the API server time. header。
+Example
+
+1587091154123
+
+Numbers
+Decimal numbers are returned as "Strings" in order to preserve full precision. It is recommended that the numbers are converted to "Strings" to avoid truncation and precision loss.
+Integer numbers (such as trade ID and sequences) are unquoted.
+Rate limit
+If the request is too frequent, the system will automatically restrict the request and recover after 5 minutes;
+
+Based on account UID rate limit, each api has its own independent rate limit, which does not affect each other
+
+Users can check the current frequency limit usage and the expiration of the time window according to "X-RateLimit-Requests-Remain" (remaining number of frequency limits) and "X-RateLimit-Requests-Expire" (window expiration time) in the Http Header. time, and dynamically adjust your request frequency based on this value.
+
+REST API
+
+The API requests are subject to different rate limits based on UID and IP. Please refer to the respective API documentation for UID rate limits. IP rate limits are based on the following grouping rules:
+
+Market API Group [1]: The total IP rate limit for all interfaces within the group is 100 requests per 10 seconds and 500 requests per minute
+
+Account API Group [2]: The total IP rate limit for all interfaces within the group is 1000 requests per 10 seconds, with an individual IP rate limit of 100 requests per 10 seconds for each interface.
+
+Account API Group [3]: The total IP rate limit for all interfaces within the group is 1000 requests per 10 seconds, with an individual IP rate limit of 200 requests per 10 seconds for each interface.
+
+Get Server Time
+HTTP Request
+
+GET https://open-api.bingx.com/openApi/swap/v2/server/time
+Parameters: null
+
+code - int64 - error code, 0 means successfully response, others means response failure
+
+msg - string - Error Details Description
+
+serverTime - int64 - The current time of the system，unit: ms
+
+{"code": 0,"msg": "","data": {"serverTime": 1675319535362}}
+
+--
+
+Market Data
+USDT-M Perp Futures symbols
+Key steps for using the API
+
+1. Create Account
+  
+2. Pass KYC/KYB
+  
+3. Create API KEY
+  
+4. Configure API KEY permissions
+  
+5. Understanding signature authentication
+ 6. Run the following example code  
+7. Understand common error codes
+  
+8. Understand rate limitations
+  
+9. Understanding request timestamps
+ 
+10. Understand fee schedule
+ 
+11. Understand trading rules
+request parameters https://open-api.bingx.com
+
+GET /openApi/swap/v2/quote/contracts
+
+rate limitation by IP in group Number: 
+API KEY permission: 
+No API KEY signature required
+Content-Type:  
+  
+RequestResponse
+symbol
+string
+no
+trading pair, for example: BTC...
+recvWindow
+int64
+no
+Timestamp of initiating the re...
+timestamp
+int64
+yes
+Request valid time window valu...
+  
+Sample code
+Python    JavaC#phpShell
+
+import time
+import requests
+import hmac
+from hashlib import sha256
+
+APIURL = "https://open-api.bingx.com"
+APIKEY = ""
+SECRETKEY = ""
+
+def demo():
+    payload = {}
+    path = '/openApi/swap/v2/quote/contracts'
+    method = "GET"
+    paramsMap = {}
+    paramsStr = parseParam(paramsMap)
+    return send_request(method, path, paramsStr, payload)
+
+def get_sign(api_secret, payload):
+    signature = hmac.new(api_secret.encode("utf-8"), payload.encode("utf-8"), digestmod=sha256).hexdigest()
+    print("sign=" + signature)
+    return signature
+
+
+def send_request(method, path, urlpa, payload):
+    url = "%s%s?%s&signature=%s" % (APIURL, path, urlpa, get_sign(SECRETKEY, urlpa))
+    print(url)
+    headers = {
+        'X-BX-APIKEY': APIKEY,
+    }Order Book
+Key steps for using the API
+
+1. Create Account
+  
+2. Pass KYC/KYB
+  
+3. Create API KEY
+  
+4. Configure API KEY permissions
+  
+5. Understanding signature authentication
+ 6. Run the following example code  
+7. Understand common error codes
+  
+8. Understand rate limitations
+  
+9. Understanding request timestamps
+ 
+10. Understand fee schedule
+ 
+11. Understand trading rules
+request parameters https://open-api.bingx.com
+
+GET /openApi/swap/v2/quote/depth
+
+rate limitation by IP in group Number: 
+API KEY permission: 
+No API KEY signature required
+Content-Type:  
+  
+RequestResponse
+symbol
+string
+yes
+Trading pair, for example: BTC...
+limit
+int
+no
+Default 20, optional value:[5,...
+recvWindow
+int64
+no
+Timestamp of initiating the re...
+timestamp
+int64
+yes
+Request valid time window valu...
+  
+Sample code
+Python    JavaC#phpShell
+
+import time
+import requests
+import hmac
+from hashlib import sha256
+
+APIURL = "https://open-api.bingx.com"
+APIKEY = ""
+SECRETKEY = ""
+
+def demo():
+    payload = {}
+    path = '/openApi/swap/v2/quote/depth'
+    method = "GET"
+    paramsMap = {
+    "symbol": "SHIB-USDT",
+    "limit": "5"
+}
+    paramsStr = parseParam(paramsMap)
+    return send_request(method, path, paramsStr, payload)
+
+def get_sign(api_secret, payload):
+    signature = hmac.new(api_secret.encode("utf-8"), payload.encode("utf-8"), digestmod=sha256).hexdigest()
+    print("sign=" + signature)
+    return signature
+
+
+def send_request(method, path, urlpa, payload):
+    url = "%s%s?%s&signature=%s" % (APIURL, path, urlpa, get_sign(SECRETKEY, urlpa))
+    print(url)
+    headers = {
+        'X-BX-APIKEY': APIKEY,
+    }
+    response = requests.request(method, url, headers=headers, data=payload)
+    return response.text
+
+def parseParam(paramsMap):
+    sortedKeys = sorted(paramsMap)
+    paramsStr = "&".join(["%s=%s" % (x, paramsMap[x]) for x in sortedKeys])
+    if paramsStr != "": 
+     return paramsStr+"&timestamp="+str(int(time.time() * 1000))
+    else:
+     return paramsStr+"timestamp="+str(int(time.time() * 1000))
+
+
+if __name__ == '__main__':
+    print("demo:", demo())
+
+--
+
+Recent Trades List
+Key steps for using the API
+
+1. Create Account
+  
+2. Pass KYC/KYB
+  
+3. Create API KEY
+  
+4. Configure API KEY permissions
+  
+5. Understanding signature authentication
+ 6. Run the following example code  
+7. Understand common error codes
+  
+8. Understand rate limitations
+  
+9. Understanding request timestamps
+ 
+10. Understand fee schedule
+ 
+11. Understand trading rules
+request parameters https://open-api.bingx.com
+
+GET /openApi/swap/v2/quote/trades
+
+rate limitation by IP in group Number: 
+API KEY permission: 
+No API KEY signature required
+Content-Type:  
+  
+RequestResponse
+symbol
+string
+yes
+There must be a hyphen/ "-" in...
+limit
+int
+no
+default: 500, maximum 1000
+recvWindow
+int64
+no
+Timestamp of initiating the re...
+timestamp
+int64
+yes
+Request valid time window valu...
+  
+Sample code
+Python    JavaC#phpShell
+
+import time
+import requests
+import hmac
+from hashlib import sha256
+
+APIURL = "https://open-api.bingx.com"
+APIKEY = ""
+SECRETKEY = ""
+
+def demo():
+    payload = {}
+    path = '/openApi/swap/v2/quote/trades'
+    method = "GET"
+    paramsMap = {
+    "symbol": "BTC-USDT",
+    "limit": 10
+}
+    paramsStr = parseParam(paramsMap)
+    return send_request(method, path, paramsStr, payload)
+
+def get_sign(api_secret, payload):
+    signature = hmac.new(api_secret.encode("utf-8"), payload.encode("utf-8"), digestmod=sha256).hexdigest()
+    print("sign=" + signature)
+    return signature
+
+
+def send_request(method, path, urlpa, payload):
+    url = "%s%s?%s&signature=%s" % (APIURL, path, urlpa, get_sign(SECRETKEY, urlpa))
+    print(url)
+    headers = {
+        'X-BX-APIKEY': APIKEY,
+    }
+    response = requests.request(method, url, headers=headers, data=payload)
+    return response.text
+
+def parseParam(paramsMap):
+    sortedKeys = sorted(paramsMap)
+    paramsStr = "&".join(["%s=%s" % (x, paramsMap[x]) for x in sortedKeys])
+    if paramsStr != "": 
+     return paramsStr+"&timestamp="+str(int(time.time() * 1000))
+    else:
+     return paramsStr+"timestamp="+str(int(time.time() * 1000))
+
+
+if __name__ == '__main__':
+    print("demo:", demo())
+
+--
+
+Mark Price and Funding Rate
+Key steps for using the API
+
+1. Create Account
+  
+2. Pass KYC/KYB
+  
+3. Create API KEY
+  
+4. Configure API KEY permissions
+  
+5. Understanding signature authentication
+ 6. Run the following example code  
+7. Understand common error codes
+  
+8. Understand rate limitations
+  
+9. Understanding request timestamps
+ 
+10. Understand fee schedule
+ 
+11. Understand trading rules
+request parameters https://open-api.bingx.com
+
+GET /openApi/swap/v2/quote/premiumIndex
+
+rate limitation by IP in group Number: 
+API KEY permission: 
+No API KEY signature required
+Content-Type:  
+  
+RequestResponse
+symbol
+string
+no
+There must be a hyphen/ "-" in...
+recvWindow
+int64
+no
+Timestamp of initiating the re...
+timestamp
+int64
+yes
+Request valid time window valu...
+  
+Sample code
+Python    JavaC#phpShell
+
+import time
+import requests
+import hmac
+from hashlib import sha256
+
+APIURL = "https://open-api.bingx.com"
+APIKEY = ""
+SECRETKEY = ""
+
+def demo():
+    payload = {}
+    path = '/openApi/swap/v2/quote/premiumIndex'
+    method = "GET"
+    paramsMap = {
+    "symbol": "BTC-USDT"
+}
+    paramsStr = parseParam(paramsMap)
+    return send_request(method, path, paramsStr, payload)
+
+def get_sign(api_secret, payload):
+    signature = hmac.new(api_secret.encode("utf-8"), payload.encode("utf-8"), digestmod=sha256).hexdigest()
+    print("sign=" + signature)
+    return signature
+
+
+def send_request(method, path, urlpa, payload):
+    url = "%s%s?%s&signature=%s" % (APIURL, path, urlpa, get_sign(SECRETKEY, urlpa))
+    print(url)
+    headers = {
+        'X-BX-APIKEY': APIKEY,
+    }
+    response = requests.request(method, url, headers=headers, data=payload)
+    return response.text
+
+def parseParam(paramsMap):
+    sortedKeys = sorted(paramsMap)
+    paramsStr = "&".join(["%s=%s" % (x, paramsMap[x]) for x in sortedKeys])
+    if paramsStr != "": 
+     return paramsStr+"&timestamp="+str(int(time.time() * 1000))
+    else:
+     return paramsStr+"timestamp="+str(int(time.time() * 1000))
+
+
+if __name__ == '__main__':
+    print("demo:", demo())
+
+--
+
+Get Funding Rate History
+Key steps for using the API
+
+If both startTime and endTime are not sent, return the latest limit data.
+
+The returned list is sorted by time from smallest to largest
+
+If the amount of data between startTime and endTime is greater than limit, return the data in the case of startTime + limit.
+
+1. Create Account
+  
+2. Pass KYC/KYB
+  
+3. Create API KEY
+  
+4. Configure API KEY permissions
+  
+5. Understanding signature authentication
+ 6. Run the following example code  
+7. Understand common error codes
+  
+8. Understand rate limitations
+  
+9. Understanding request timestamps
+ 
+10. Understand fee schedule
+ 
+11. Understand trading rules
+request parameters https://open-api.bingx.com
+
+GET /openApi/swap/v2/quote/fundingRate
+
+rate limitation by IP in group Number: 
+API KEY permission: 
+No API KEY signature required
+Content-Type:  
+  
+RequestResponse
+symbol
+string
+no
+There must be a hyphen/ "-" in...
+startTime
+int64
+no
+Start time, unit: millisecond
+endTime
+int64
+no
+End time, unit: millisecond
+limit
+int32
+no
+default: 100 maximum: 1000
+recvWindow
+int64
+no
+Timestamp of initiating the re...
+timestamp
+int64
+yes
+Request valid time window valu...
+  
+Sample code
+Python    JavaC#phpShell
+
+import time
+import requests
+import hmac
+from hashlib import sha256
+
+APIURL = "https://open-api.bingx.com"
+APIKEY = ""
+SECRETKEY = ""
+
+def demo():
+    payload = {}
+    path = '/openApi/swap/v2/quote/fundingRate'
+    method = "GET"
+    paramsMap = {
+    "symbol": "QNT-USDT",
+    "limit": 2
+}
+    paramsStr = parseParam(paramsMap)
+    return send_request(method, path, paramsStr, payload)
+
+def get_sign(api_secret, payload):
+    signature = hmac.new(api_secret.encode("utf-8"), payload.encode("utf-8"), digestmod=sha256).hexdigest()
+    print("sign=" + signature)
+    return signature
+
+
+def send_request(method, path, urlpa, payload):
+    url = "%s%s?%s&signature=%s" % (APIURL, path, urlpa, get_sign(SECRETKEY, urlpa))
+    print(url)
+    headers = {
+        'X-BX-APIKEY': APIKEY,
+    }
+    response = requests.request(method, url, headers=headers, data=payload)
+    return response.text
+
+def parseParam(paramsMap):
+    sortedKeys = sorted(paramsMap)
+    paramsStr = "&".join(["%s=%s" % (x, paramsMap[x]) for x in sortedKeys])
+    if paramsStr != "": 
+     return paramsStr+"&timestamp="+str(int(time.time() * 1000))
+    else:
+     return paramsStr+"timestamp="+str(int(time.time() * 1000))
+
+
+if __name__ == '__main__':
+    print("demo:", demo())
+    response = requests.request(method, url, headers=headers, data=payload)
+    return response.text
+
+def parseParam(paramsMap):
+    sortedKeys = sorted(paramsMap)
+    paramsStr = "&".join(["%s=%s" % (x, paramsMap[x]) for x in sortedKeys])
+    if paramsStr != "": 
+     return paramsStr+"&timestamp="+str(int(time.time() * 1000))
+    else:
+     return paramsStr+"timestamp="+str(int(time.time() * 1000))
+
+
+if __name__ == '__main__':
+    print("demo:", demo())
+
+--
+
+Kline/Candlestick Data
+Get the latest Kline Data
+
+Key steps for using the API
+
+1. Create Account
+  
+2. Pass KYC/KYB
+  
+3. Create API KEY
+  
+4. Configure API KEY permissions
+  
+5. Understanding signature authentication
+ 6. Run the following example code  
+7. Understand common error codes
+  
+8. Understand rate limitations
+  
+9. Understanding request timestamps
+ 
+10. Understand fee schedule
+ 
+11. Understand trading rules
+request parameters https://open-api.bingx.com
+
+GET /openApi/swap/v3/quote/klines
+
+rate limitation by UID: 5/s & rate limitation by IP in group Number: 
+API KEY permission: 
+No API KEY signature required
+Content-Type:  
+  
+RequestResponseinterval
+symbol
+string
+yes
+There must be a hyphen/ "-" in...
+interval
+string
+yes
+time interval, refer to field ...
+startTime
+int64
+no
+Start time, unit: millisecond
+endTime
+int64
+no
+End time, unit: millisecond
+limit
+int64
+no
+default: 500 maximum: 1440
+recvWindow
+int64
+no
+Timestamp of initiating the re...
+timestamp
+int64
+yes
+Request valid time window valu...
+  
+Sample code
+Python    JavaC#phpShell
+
+import time
+import requests
+import hmac
+from hashlib import sha256
+
+APIURL = "https://open-api.bingx.com"
+APIKEY = ""
+SECRETKEY = ""
+
+def demo():
+    payload = {}
+    path = '/openApi/swap/v3/quote/klines'
+    method = "GET"
+    paramsMap = {
+    "symbol": "KNC-USDT",
+    "interval": "1h",
+    "limit": "1000",
+    "startTime": "1702717199998"
+}
+    paramsStr = parseParam(paramsMap)
+    return send_request(method, path, paramsStr, payload)
+
+def get_sign(api_secret, payload):
+    signature = hmac.new(api_secret.encode("utf-8"), payload.encode("utf-8"), digestmod=sha256).hexdigest()
+    print("sign=" + signature)
+    return signature
+
+
+def send_request(method, path, urlpa, payload):
+    url = "%s%s?%s&signature=%s" % (APIURL, path, urlpa, get_sign(SECRETKEY, urlpa))
+    print(url)
+    headers = {
+        'X-BX-APIKEY': APIKEY,
+    }
+    response = requests.request(method, url, headers=headers, data=payload)
+    return response.text
+
+def parseParam(paramsMap):
+    sortedKeys = sorted(paramsMap)
+    paramsStr = "&".join(["%s=%s" % (x, paramsMap[x]) for x in sortedKeys])
+    if paramsStr != "": 
+     return paramsStr+"&timestamp="+str(int(time.time() * 1000))
+    else:
+     return paramsStr+"timestamp="+str(int(time.time() * 1000))
+
+
+if __name__ == '__main__':
+    print("demo:", demo())
+
+--
+
+Open Interest Statistics
+Key steps for using the API
+
+1. Create Account
+  
+2. Pass KYC/KYB
+  
+3. Create API KEY
+  
+4. Configure API KEY permissions
+  
+5. Understanding signature authentication
+ 6. Run the following example code  
+7. Understand common error codes
+  
+8. Understand rate limitations
+  
+9. Understanding request timestamps
+ 
+10. Understand fee schedule
+ 
+11. Understand trading rules
+request parameters https://open-api.bingx.com
+
+GET /openApi/swap/v2/quote/openInterest
+
+rate limitation by IP in group Number: 
+API KEY permission: 
+No API KEY signature required
+Content-Type:  
+  
+RequestResponse
+symbol
+string
+yes
+There must be a hyphen/ "-" in...
+recvWindow
+int64
+no
+Timestamp of initiating the re...
+timestamp
+int64
+yes
+Request valid time window valu...
+  
+Sample code
+Python    JavaC#phpShell
+
+import time
+import requests
+import hmac
+from hashlib import sha256
+
+APIURL = "https://open-api.bingx.com"
+APIKEY = ""
+SECRETKEY = ""
+
+def demo():
+    payload = {}
+    path = '/openApi/swap/v2/quote/openInterest'
+    method = "GET"
+    paramsMap = {
+    "symbol": "EOS-USDT"
+}
+    paramsStr = parseParam(paramsMap)
+    return send_request(method, path, paramsStr, payload)
+
+def get_sign(api_secret, payload):
+    signature = hmac.new(api_secret.encode("utf-8"), payload.encode("utf-8"), digestmod=sha256).hexdigest()
+    print("sign=" + signature)
+    return signature
+
+
+def send_request(method, path, urlpa, payload):
+    url = "%s%s?%s&signature=%s" % (APIURL, path, urlpa, get_sign(SECRETKEY, urlpa))
+    print(url)
+    headers = {
+        'X-BX-APIKEY': APIKEY,
+    }
+    response = requests.request(method, url, headers=headers, data=payload)
+    return response.text
+
+def parseParam(paramsMap):
+    sortedKeys = sorted(paramsMap)
+    paramsStr = "&".join(["%s=%s" % (x, paramsMap[x]) for x in sortedKeys])
+    if paramsStr != "": 
+     return paramsStr+"&timestamp="+str(int(time.time() * 1000))
+    else:
+     return paramsStr+"timestamp="+str(int(time.time() * 1000))
+
+
+if __name__ == '__main__':
+    print("demo:", demo())
+
+--
+
+24hr Ticker Price Change Statistics
+Key steps for using the API
+
+If no transaction pair parameters are sent, all transaction pair information will be returned
+
+1. Create Account
+  
+2. Pass KYC/KYB
+  
+3. Create API KEY
+  
+4. Configure API KEY permissions
+  
+5. Understanding signature authentication
+ 6. Run the following example code  
+7. Understand common error codes
+  
+8. Understand rate limitations
+  
+9. Understanding request timestamps
+ 
+10. Understand fee schedule
+ 
+11. Understand trading rules
+request parameters https://open-api.bingx.com
+
+GET /openApi/swap/v2/quote/ticker
+
+rate limitation by IP in group Number: 
+API KEY permission: 
+No API KEY signature required
+Content-Type:  
+  
+RequestResponse
+symbol
+string
+no
+There must be a hyphen/ "-" in...
+recvWindow
+int64
+no
+Timestamp of initiating the re...
+timestamp
+int64
+yes
+Request valid time window valu...
+  
+Sample code
+Python    JavaC#phpShell
+
+import time
+import requests
+import hmac
+from hashlib import sha256
+
+APIURL = "https://open-api.bingx.com"
+APIKEY = ""
+SECRETKEY = ""
+
+def demo():
+    payload = {}
+    path = '/openApi/swap/v2/quote/ticker'
+    method = "GET"
+    paramsMap = {
+    "symbol": "SFP-USDT",
+    "timestamp": "1702719836770"
+}
+    paramsStr = parseParam(paramsMap)
+    return send_request(method, path, paramsStr, payload)
+
+def get_sign(api_secret, payload):
+    signature = hmac.new(api_secret.encode("utf-8"), payload.encode("utf-8"), digestmod=sha256).hexdigest()
+    print("sign=" + signature)
+    return signature
+
+
+def send_request(method, path, urlpa, payload):
+    url = "%s%s?%s&signature=%s" % (APIURL, path, urlpa, get_sign(SECRETKEY, urlpa))
+    print(url)
+    headers = {
+        'X-BX-APIKEY': APIKEY,
+    }
+    response = requests.request(method, url, headers=headers, data=payload)
+    return response.text
+
+def parseParam(paramsMap):
+    sortedKeys = sorted(paramsMap)
+    paramsStr = "&".join(["%s=%s" % (x, paramsMap[x]) for x in sortedKeys])
+    if paramsStr != "": 
+     return paramsStr+"&timestamp="+str(int(time.time() * 1000))
+    else:
+     return paramsStr+"timestamp="+str(int(time.time() * 1000))
+
+
+if __name__ == '__main__':
+    print("demo:", demo())
+--
+
+Query historical transaction orders
+Used to query historical transaction data in the market
+
+Key steps for using the API
+
+1. Create Account
+  
+2. Pass KYC/KYB
+  
+3. Create API KEY
+  
+4. Configure API KEY permissions
+  
+5. Understanding signature authentication
+ 6. Run the following example code  
+7. Understand common error codes
+  
+8. Understand rate limitations
+  
+9. Understanding request timestamps
+ 
+10. Understand fee schedule
+ 
+11. Understand trading rules
+request parameters https://open-api.bingx.com
+
+GET /openApi/swap/v1/market/historicalTrades
+
+rate limitation by IP in group Number: 
+API KEY permission: 
+No API KEY signature required
+Content-Type:  
+  
+RequestResponse
+fromId
+int64
+no
+From which transaction ID to s...
+symbol
+string
+no
+There must be a hyphen/ "-" in...
+limit
+int
+no
+The number of returned result ...
+timestamp
+int64
+yes
+request timestamp, unit: milli...
+recvWindow
+int64
+no
+Request valid time window valu...
+  
+Sample code
+Python    JavaC#phpShell
+
+import time
+import requests
+import hmac
+from hashlib import sha256
+
+APIURL = "https://open-api.bingx.com"
+APIKEY = ""
+SECRETKEY = ""
+
+def demo():
+    payload = {}
+    path = '/openApi/swap/v1/market/historicalTrades'
+    method = "GET"
+    paramsMap = {
+    "fromId": "412551",
+    "limit": "500",
+    "symbol": "ETH-USDT",
+    "timestamp": "1702731995838",
+    "recvWindow": "60000"
+}
+    paramsStr = parseParam(paramsMap)
+    return send_request(method, path, paramsStr, payload)
+
+def get_sign(api_secret, payload):
+    signature = hmac.new(api_secret.encode("utf-8"), payload.encode("utf-8"), digestmod=sha256).hexdigest()
+    print("sign=" + signature)
+    return signature
+
+
+def send_request(method, path, urlpa, payload):
+    url = "%s%s?%s&signature=%s" % (APIURL, path, urlpa, get_sign(SECRETKEY, urlpa))
+    print(url)
+    headers = {
+        'X-BX-APIKEY': APIKEY,
+    }
+    response = requests.request(method, url, headers=headers, data=payload)
+    return response.text
+
+def parseParam(paramsMap):
+    sortedKeys = sorted(paramsMap)
+    paramsStr = "&".join(["%s=%s" % (x, paramsMap[x]) for x in sortedKeys])
+    if paramsStr != "": 
+     return paramsStr+"&timestamp="+str(int(time.time() * 1000))
+    else:
+     return paramsStr+"timestamp="+str(int(time.time() * 1000))
+
+
+if __name__ == '__main__':
+    print("demo:", demo())
+
+--
+
+Symbol Order Book Ticker
+Obtain the current optimal order
+
+Key steps for using the API
+
+1. Create Account
+  
+2. Pass KYC/KYB
+  
+3. Create API KEY
+  
+4. Configure API KEY permissions
+  
+5. Understanding signature authentication
+ 6. Run the following example code  
+7. Understand common error codes
+  
+8. Understand rate limitations
+  
+9. Understanding request timestamps
+ 
+10. Understand fee schedule
+ 
+11. Understand trading rules
+request parameters https://open-api.bingx.com
+
+GET /openApi/swap/v2/quote/bookTicker
+
+rate limitation by IP in group Number: 
+API KEY permission: 
+No API KEY signature required
+Content-Type:  
+  
+RequestResponse
+symbol
+string
+yes
+There must be a hyphen/ "-" in...
+recvWindow
+int64
+no
+Timestamp of initiating the re...
+timestamp
+int64
+yes
+Request valid time window valu...
+  
+Sample code
+Python    JavaC#phpShell
+
+import time
+import requests
+import hmac
+from hashlib import sha256
+
+APIURL = "https://open-api.bingx.com"
+APIKEY = ""
+SECRETKEY = ""
+
+def demo():
+    payload = {}
+    path = '/openApi/swap/v2/quote/bookTicker'
+    method = "GET"
+    paramsMap = {
+    "symbol": "BTC-USDT",
+    "timestamp": "1702719942130"
+}
+    paramsStr = parseParam(paramsMap)
+    return send_request(method, path, paramsStr, payload)
+
+def get_sign(api_secret, payload):
+    signature = hmac.new(api_secret.encode("utf-8"), payload.encode("utf-8"), digestmod=sha256).hexdigest()
+    print("sign=" + signature)
+    return signature
+
+
+def send_request(method, path, urlpa, payload):
+    url = "%s%s?%s&signature=%s" % (APIURL, path, urlpa, get_sign(SECRETKEY, urlpa))
+    print(url)
+    headers = {
+        'X-BX-APIKEY': APIKEY,
+    }
+    response = requests.request(method, url, headers=headers, data=payload)
+    return response.text
+
+def parseParam(paramsMap):
+    sortedKeys = sorted(paramsMap)
+    paramsStr = "&".join(["%s=%s" % (x, paramsMap[x]) for x in sortedKeys])
+    if paramsStr != "": 
+     return paramsStr+"&timestamp="+str(int(time.time() * 1000))
+    else:
+     return paramsStr+"timestamp="+str(int(time.time() * 1000))
+
+
+if __name__ == '__main__':
+    print("demo:", demo())
+
+--
+
+Mark Price Kline/Candlestick Data
+Get the latest mark price Kline Data
+
+Key steps for using the API
+
+1. Create Account
+  
+2. Pass KYC/KYB
+  
+3. Create API KEY
+  
+4. Configure API KEY permissions
+  
+5. Understanding signature authentication
+ 6. Run the following example code  
+7. Understand common error codes
+  
+8. Understand rate limitations
+  
+9. Understanding request timestamps
+ 
+10. Understand fee schedule
+ 
+11. Understand trading rules
+request parameters https://open-api.bingx.com
+
+GET /openApi/swap/v1/market/markPriceKlines
+
+rate limitation by IP in group Number: 
+API KEY permission: 
+No API KEY signature required
+Content-Type:  
+  
+RequestResponseinterval
+symbol
+string
+yes
+There must be a hyphen/ "-" in...
+interval
+string
+yes
+time interval, refer to field ...
+startTime
+int64
+no
+Start time, unit: millisecond
+endTime
+int64
+no
+End time, unit: millisecond
+limit
+int64
+no
+default: 500 maximum: 1440
+recvWindow
+int64
+no
+Timestamp of initiating the re...
+timestamp
+int64
+yes
+Request valid time window valu...
+  
+Sample code
+Python    JavaC#phpShell
+
+import time
+import requests
+import hmac
+from hashlib import sha256
+
+APIURL = "https://open-api.bingx.com"
+APIKEY = ""
+SECRETKEY = ""
+
+def demo():
+    payload = {}
+    path = '/openApi/swap/v1/market/markPriceKlines'
+    method = "GET"
+    paramsMap = {
+    "symbol": "KNC-USDT",
+    "interval": "1h",
+    "limit": "1000",
+    "startTime": "1702717199998"
+}
+    paramsStr = parseParam(paramsMap)
+    return send_request(method, path, paramsStr, payload)
+
+def get_sign(api_secret, payload):
+    signature = hmac.new(api_secret.encode("utf-8"), payload.encode("utf-8"), digestmod=sha256).hexdigest()
+    print("sign=" + signature)
+    return signature
+
+
+def send_request(method, path, urlpa, payload):
+    url = "%s%s?%s&signature=%s" % (APIURL, path, urlpa, get_sign(SECRETKEY, urlpa))
+    print(url)
+    headers = {
+        'X-BX-APIKEY': APIKEY,
+    }
+    response = requests.request(method, url, headers=headers, data=payload)
+    return response.text
+
+def parseParam(paramsMap):
+    sortedKeys = sorted(paramsMap)
+    paramsStr = "&".join(["%s=%s" % (x, paramsMap[x]) for x in sortedKeys])
+    if paramsStr != "": 
+     return paramsStr+"&timestamp="+str(int(time.time() * 1000))
+    else:
+     return paramsStr+"timestamp="+str(int(time.time() * 1000))
+
+
+if __name__ == '__main__':
+    print("demo:", demo())
+
+
+--
+
+Symbol Price Ticker
+Key steps for using the API
+
+1. Create Account
+  
+2. Pass KYC/KYB
+  
+3. Create API KEY
+  
+4. Configure API KEY permissions
+  
+5. Understanding signature authentication
+ 6. Run the following example code  
+7. Understand common error codes
+  
+8. Understand rate limitations
+  
+9. Understanding request timestamps
+ 
+10. Understand fee schedule
+ 
+11. Understand trading rules
+request parameters https://open-api.bingx.com
+
+GET /openApi/swap/v1/ticker/price
+
+rate limitation by IP in group Number: 
+API KEY permission: 
+No API KEY signature required
+Content-Type:  
+  
+RequestResponse
+symbol
+string
+no
+There must be a hyphen/ "-" in...
+recvWindow
+int64
+no
+Timestamp of initiating the re...
+timestamp
+int64
+yes
+Request valid time window valu...
+  
+Sample code
+Python    JavaC#phpShell
+
+import time
+import requests
+import hmac
+from hashlib import sha256
+
+APIURL = "https://open-api.bingx.com"
+APIKEY = ""
+SECRETKEY = ""
+
+def demo():
+    payload = {}
+    path = '/openApi/swap/v1/ticker/price'
+    method = "GET"
+    paramsMap = {
+    "timestamp": "1702718923479",
+    "symbol": "TIA-USDT"
+}
+    paramsStr = parseParam(paramsMap)
+    return send_request(method, path, paramsStr, payload)
+
+def get_sign(api_secret, payload):
+    signature = hmac.new(api_secret.encode("utf-8"), payload.encode("utf-8"), digestmod=sha256).hexdigest()
+    print("sign=" + signature)
+    return signature
+
+
+def send_request(method, path, urlpa, payload):
+    url = "%s%s?%s&signature=%s" % (APIURL, path, urlpa, get_sign(SECRETKEY, urlpa))
+    print(url)
+    headers = {
+        'X-BX-APIKEY': APIKEY,
+    }
+    response = requests.request(method, url, headers=headers, data=payload)
+    return response.text
+
+def parseParam(paramsMap):
+    sortedKeys = sorted(paramsMap)
+    paramsStr = "&".join(["%s=%s" % (x, paramsMap[x]) for x in sortedKeys])
+    if paramsStr != "": 
+     return paramsStr+"&timestamp="+str(int(time.time() * 1000))
+    else:
+     return paramsStr+"timestamp="+str(int(time.time() * 1000))
+
+
+if __name__ == '__main__':
+    print("demo:", demo())
+
+--
+
+ACCOUNT ENDPOINTS Account Endpoints
+Query account data
+Get asset information of user‘s Perpetual Account of USDC and USDT
+
+Key steps for using the API
+
+1. Create Account
+  
+2. Pass KYC/KYB
+  
+3. Create API KEY
+  
+4. Configure API KEY permissions
+  
+5. Understanding signature authentication
+ 6. Run the following example code  
+7. Understand common error codes
+  
+8. Understand rate limitations
+  
+9. Understanding request timestamps
+ 
+10. Understand fee schedule
+ 
+11. Understand trading rules
+request parameters https://open-api.bingx.com
+
+GET /openApi/swap/v3/user/balance
+
+rate limitation by UID: 5/s & rate limitation by IP in group Number: 
+API KEY permission: 
+Read
+Content-Type:  
+  
+RequestResponse
+timestamp
+int64
+yes
+request timestamp in milliseco...
+recvWindow
+int64
+no
+Request valid time window valu...
+  
+Sample code
+Python    JavaC#phpShell
+
+import time
+import requests
+import hmac
+from hashlib import sha256
+
+APIURL = "https://open-api.bingx.com"
+APIKEY = ""
+SECRETKEY = ""
+
+def demo():
+    payload = {}
+    path = '/openApi/swap/v3/user/balance'
+    method = "GET"
+    paramsMap = {}
+    paramsStr = parseParam(paramsMap)
+    return send_request(method, path, paramsStr, payload)
+
+def get_sign(api_secret, payload):
+    signature = hmac.new(api_secret.encode("utf-8"), payload.encode("utf-8"), digestmod=sha256).hexdigest()
+    print("sign=" + signature)
+    return signature
+
+
+def send_request(method, path, urlpa, payload):
+    url = "%s%s?%s&signature=%s" % (APIURL, path, urlpa, get_sign(SECRETKEY, urlpa))
+    print(url)
+    headers = {
+        'X-BX-APIKEY': APIKEY,
+    }
+    response = requests.request(method, url, headers=headers, data=payload)
+    return response.text
+
+def parseParam(paramsMap):
+    sortedKeys = sorted(paramsMap)
+    paramsStr = "&".join(["%s=%s" % (x, paramsMap[x]) for x in sortedKeys])
+    if paramsStr != "": 
+     return paramsStr+"&timestamp="+str(int(time.time() * 1000))
+    else:
+     return paramsStr+"timestamp="+str(int(time.time() * 1000))
+
+
+if __name__ == '__main__':
+    print("demo:", demo())
+
+Query position data
+Retrieve information on users' positions of Perpetual Swap.
+
+Key steps for using the API
+
+1. Create Account
+  
+2. Pass KYC/KYB
+  
+3. Create API KEY
+  
+4. Configure API KEY permissions
+  
+5. Understanding signature authentication
+ 6. Run the following example code  
+7. Understand common error codes
+  
+8. Understand rate limitations
+  
+9. Understanding request timestamps
+ 
+10. Understand fee schedule
+ 
+11. Understand trading rules
+request parameters https://open-api.bingx.com
+
+GET /openApi/swap/v2/user/positions
+
+rate limitation by UID: 5/s & rate limitation by IP in group Number: 
+API KEY permission: 
+Read
+Content-Type:  
+  
+RequestResponse
+symbol
+string
+no
+There must be a hyphen/ "-" in...
+timestamp
+int64
+yes
+request timestamp in milliseco...
+recvWindow
+int64
+no
+Request valid time window valu...
+  
+Sample code
+Python    JavaC#phpShell
+
+import time
+import requests
+import hmac
+from hashlib import sha256
+
+APIURL = "https://open-api.bingx.com"
+APIKEY = ""
+SECRETKEY = ""
+
+def demo():
+    payload = {}
+    path = '/openApi/swap/v2/user/positions'
+    method = "GET"
+    paramsMap = {
+    "symbol": "BNB-USDT"
+}
+    paramsStr = parseParam(paramsMap)
+    return send_request(method, path, paramsStr, payload)
+
+def get_sign(api_secret, payload):
+    signature = hmac.new(api_secret.encode("utf-8"), payload.encode("utf-8"), digestmod=sha256).hexdigest()
+    print("sign=" + signature)
+    return signature
+
+
+def send_request(method, path, urlpa, payload):
+    url = "%s%s?%s&signature=%s" % (APIURL, path, urlpa, get_sign(SECRETKEY, urlpa))
+    print(url)
+    headers = {
+        'X-BX-APIKEY': APIKEY,
+    }
+    response = requests.request(method, url, headers=headers, data=payload)
+    return response.text
+
+def parseParam(paramsMap):
+    sortedKeys = sorted(paramsMap)
+    paramsStr = "&".join(["%s=%s" % (x, paramsMap[x]) for x in sortedKeys])
+    if paramsStr != "": 
+     return paramsStr+"&timestamp="+str(int(time.time() * 1000))
+    else:
+     return paramsStr+"timestamp="+str(int(time.time() * 1000))
+
+
+if __name__ == '__main__':
+    print("demo:", demo())
+
+--
+
+Get Account Profit and Loss Fund Flow
+Query the capital flow of the perpetual contract under the current account.
+
+Key steps for using the API
+
+1. Create Account
+  
+2. Pass KYC/KYB
+  
+3. Create API KEY
+  
+4. Configure API KEY permissions
+  
+5. Understanding signature authentication
+ 6. Run the following example code  
+7. Understand common error codes
+  
+8. Understand rate limitations
+  
+9. Understanding request timestamps
+ 
+10. Understand fee schedule
+ 
+11. Understand trading rules
+request parameters https://open-api.bingx.com
+
+If neither startTime nor endTime is sent, only the data of the last 7 days will be returned.
+
+If the incomeType is not sent, return all types of account profit and loss fund flow.
+
+Only keep the last 3 months data.
+
+GET /openApi/swap/v2/user/income
+
+rate limitation by UID: 5/s & rate limitation by IP in group Number: 
+API KEY permission: 
+Perpetual Futures Trading
+Content-Type:  
+  
+RequestResponseincomeType
+symbol
+string
+no
+There must be a hyphen/ "-" in...
+incomeType
+string
+no
+Income type, see remarks
+startTime
+int64
+no
+start time
+endTime
+int64
+no
+end time
+limit
+int64
+no
+Number of result sets to retur...
+timestamp
+int64
+yes
+request timestamp in milliseco...
+recvWindow
+int64
+no
+Request valid time window valu...
+  
+Sample code
+Python    JavaC#phpShell
+
+import time
+import requests
+import hmac
+from hashlib import sha256
+
+APIURL = "https://open-api.bingx.com"
+APIKEY = ""
+SECRETKEY = ""
+
+def demo():
+    payload = {}
+    path = '/openApi/swap/v2/user/income'
+    method = "GET"
+    paramsMap = {
+    "startTime": "1702713615001",
+    "endTime": "1702731787011",
+    "limit": "1000"
+}
+    paramsStr = parseParam(paramsMap)
+    return send_request(method, path, paramsStr, payload)
+
+def get_sign(api_secret, payload):
+    signature = hmac.new(api_secret.encode("utf-8"), payload.encode("utf-8"), digestmod=sha256).hexdigest()
+    print("sign=" + signature)
+    return signature
+
+
+def send_request(method, path, urlpa, payload):
+    url = "%s%s?%s&signature=%s" % (APIURL, path, urlpa, get_sign(SECRETKEY, urlpa))
+    print(url)
+    headers = {
+        'X-BX-APIKEY': APIKEY,
+    }
+    response = requests.request(method, url, headers=headers, data=payload)
+    return response.text
+
+def parseParam(paramsMap):
+    sortedKeys = sorted(paramsMap)
+    paramsStr = "&".join(["%s=%s" % (x, paramsMap[x]) for x in sortedKeys])
+    if paramsStr != "": 
+     return paramsStr+"&timestamp="+str(int(time.time() * 1000))
+    else:
+     return paramsStr+"timestamp="+str(int(time.time() * 1000))
+
+
+if __name__ == '__main__':
+    print("demo:", demo())
+
+--
+
+Export fund flow
+Export fund flow
+
+Key steps for using the API
+
+response: Excel File
+1. Create Account
+  
+2. Pass KYC/KYB
+  
+3. Create API KEY
+  
+4. Configure API KEY permissions
+  
+5. Understanding signature authentication
+ 6. Run the following example code  
+7. Understand common error codes
+  
+8. Understand rate limitations
+  
+9. Understanding request timestamps
+ 
+10. Understand fee schedule
+ 
+11. Understand trading rules
+request parameters https://open-api.bingx.com
+
+Only keep the last 3 months data.
+
+GET /openApi/swap/v2/user/income/export
+
+rate limitation by UID: 5/s & rate limitation by IP in group Number: 
+API KEY permission: 
+Perpetual Futures Trading
+Content-Type:  
+  
+Request
+symbol
+string
+no
+trading pair, for example: BTC...
+incomeType
+string
+no
+Fund flow type, optional value...
+startTime
+int64
+no
+Start time, unit: millisecond
+endTime
+int64
+no
+End time, unit: millisecond
+limit
+int
+no
+Number of returned result sets...
+timestamp
+int64
+yes
+request timestamp, unit: milli...
+recvWindow
+int64
+no
+Request valid time window valu...
+  
+Sample code
+Python    JavaC#phpShell
+
+import time
+import requests
+import hmac
+from hashlib import sha256
+
+APIURL = "https://open-api.bingx.com"
+APIKEY = ""
+SECRETKEY = ""
+
+def demo():
+    payload = {}
+    path = '/openApi/swap/v2/user/income/export'
+    method = "GET"
+    paramsMap = {
+    "endTime": "",
+    "limit": "200",
+    "recvWindow": "10000",
+    "startTime": "",
+    "symbol": "BTC-USDT"
+}
+    paramsStr = parseParam(paramsMap)
+    return send_request(method, path, paramsStr, payload)
+
+def get_sign(api_secret, payload):
+    signature = hmac.new(api_secret.encode("utf-8"), payload.encode("utf-8"), digestmod=sha256).hexdigest()
+    print("sign=" + signature)
+    return signature
+
+
+def send_request(method, path, urlpa, payload):
+    url = "%s%s?%s&signature=%s" % (APIURL, path, urlpa, get_sign(SECRETKEY, urlpa))
+    print(url)
+    headers = {
+        'X-BX-APIKEY': APIKEY,
+    }
+    response = requests.request(method, url, headers=headers, data=payload)
+    return response.text
+
+def parseParam(paramsMap):
+    sortedKeys = sorted(paramsMap)
+    paramsStr = "&".join(["%s=%s" % (x, paramsMap[x]) for x in sortedKeys])
+    if paramsStr != "": 
+     return paramsStr+"&timestamp="+str(int(time.time() * 1000))
+    else:
+     return paramsStr+"timestamp="+str(int(time.time() * 1000))
+
+
+if __name__ == '__main__':
+    print("demo:", demo())
+
+
+--
+
+Query Trading Commission Rate
+Obtain the transaction rate for the current user
+
+Key steps for using the API
+
+1. Create Account
+  
+2. Pass KYC/KYB
+  
+3. Create API KEY
+  
+4. Configure API KEY permissions
+  
+5. Understanding signature authentication
+ 6. Run the following example code  
+7. Understand common error codes
+  
+8. Understand rate limitations
+  
+9. Understanding request timestamps
+ 
+10. Understand fee schedule
+ 
+11. Understand trading rules
+request parameters https://open-api.bingx.com
+
+GET /openApi/swap/v2/user/commissionRate
+
+rate limitation by UID: 5/s & rate limitation by IP in group Number: 
+API KEY permission: 
+Perpetual Futures Trading
+Content-Type:  
+  
+RequestResponse
+timestamp
+int64
+yes
+request timestamp, unit: milli...
+recvWindow
+int64
+no
+Request valid time window valu...
+  
+Sample code
+Python    JavaC#phpShell
+
+import time
+import requests
+import hmac
+from hashlib import sha256
+
+APIURL = "https://open-api.bingx.com"
+APIKEY = ""
+SECRETKEY = ""
+
+def demo():
+    payload = {}
+    path = '/openApi/swap/v2/user/commissionRate'
+    method = "GET"
+    paramsMap = {
+    "recvWindow": "5000"
+}
+    paramsStr = parseParam(paramsMap)
+    return send_request(method, path, paramsStr, payload)
+
+def get_sign(api_secret, payload):
+    signature = hmac.new(api_secret.encode("utf-8"), payload.encode("utf-8"), digestmod=sha256).hexdigest()
+    print("sign=" + signature)
+    return signature
+
+
+def send_request(method, path, urlpa, payload):
+    url = "%s%s?%s&signature=%s" % (APIURL, path, urlpa, get_sign(SECRETKEY, urlpa))
+    print(url)
+    headers = {
+        'X-BX-APIKEY': APIKEY,
+    }
+    response = requests.request(method, url, headers=headers, data=payload)
+    return response.text
+
+def parseParam(paramsMap):
+    sortedKeys = sorted(paramsMap)
+    paramsStr = "&".join(["%s=%s" % (x, paramsMap[x]) for x in sortedKeys])
+    if paramsStr != "": 
+     return paramsStr+"&timestamp="+str(int(time.time() * 1000))
+    else:
+     return paramsStr+"timestamp="+str(int(time.time() * 1000))
+
+
+if __name__ == '__main__':
+    print("demo:", demo())
+
+--
+
+Introduction
+Connection limitations
+A websocket is limited to a maximum of 200 topics, and 80403 error codes will be returned.
+
+An IP limit is up to 60 websockets, beyond which the link will fail.
+
+Access
+the base URL of Live Websocket Market Data ：wss://open-api-swap.bingx.com/swap-market
+
+the base URL of VST Websocket Market Data ：wss://vst-open-api-ws.bingx.com/swap-market
+
+Data Compression
+All response data from Websocket server are compressed into GZIP format. Clients have to decompress them for further use.
+
+Heartbeats
+Once the Websocket Client and Websocket Server get connected, the server will send a heartbeat- Ping message every 5 seconds (the frequency might change).
+
+When the Websocket Client receives this heartbeat message, it should return Pong message.
+
+Subscriptions
+After successfully establishing a connection with the Websocket server, the Websocket client sends the following request to subscribe to a specific topic:
+
+{ "id": "id1", "reqType": "sub", "dataType": "data to sub" }
+
+After a successful subscription, the Websocket client will receive a confirmation message:
+
+{ "id": "id1", "code": 0, "msg": "" }
+
+After that, once the subscribed data is updated, the Websocket client will receive the update message pushed by the server.
+
+Unsubscribe
+The format of unsubscription is as follows:
+
+{ "id": "id1", "reqType": "unsub", "dataType": "data to unsub"}
+
+Confirmation of Unsubscription:
+
+{ "id": "id1", "code": 0, "msg": "" }
+
+--
+
+Listen Key
+websocket interface
+
+wss://open-api-swap.bingx.com/swap-market
+
+account subscription data stream /swap-market?listenKey=
+
+wss://open-api-swap.bingx.com/swap-market?listenKey=a8ea75681542e66f1a50a1616dd06ed77dab61baa0c296bca03a9b13ee5f2dd7
+
+generate Listen Key
+listen key Valid for 1 hour
+
+interface
+
+CURL
+
+response
+
+{"listenKey":"a8ea75681542e66f1a50a1616dd06ed77dab61baa0c296bca03a9b13ee5f2dd7"}
+
+POST /openApi/user/auth/userDataStream
+
+rate limitation by UID: 2/s & rate limitation by IP in group Number: 
+API KEY permission: 
+Read
+Content-Type:  
+  
+HeaderResponse
+X-BX-APIKEY
+string
+no
+API KEY
+  
+Sample code
+Python    JavaC#phpShell
+
+import time
+import requests
+import hmac
+from hashlib import sha256
+
+APIURL = "https://open-api.bingx.com"
+APIKEY = ""
+SECRETKEY = ""
+
+def demo():
+    payload = {}
+    path = '/openApi/user/auth/userDataStream'
+    method = "POST"
+    paramsMap = {}
+    paramsStr = parseParam(paramsMap)
+    return send_request(method, path, paramsStr, payload)
+
+def get_sign(api_secret, payload):
+    signature = hmac.new(api_secret.encode("utf-8"), payload.encode("utf-8"), digestmod=sha256).hexdigest()
+    print("sign=" + signature)
+    return signature
+
+
+def send_request(method, path, urlpa, payload):
+    url = "%s%s?%s&signature=%s" % (APIURL, path, urlpa, get_sign(SECRETKEY, urlpa))
+    print(url)
+    headers = {
+        'X-BX-APIKEY': APIKEY,
+    }
+    response = requests.request(method, url, headers=headers, data=payload)
+    return response.text
+
+def parseParam(paramsMap):
+    sortedKeys = sorted(paramsMap)
+    paramsStr = "&".join(["%s=%s" % (x, paramsMap[x]) for x in sortedKeys])
+    if paramsStr != "": 
+     return paramsStr+"&timestamp="+str(int(time.time() * 1000))
+    else:
+     return paramsStr+"timestamp="+str(int(time.time() * 1000))
+
+
+if __name__ == '__main__':
+    print("demo:", demo())
+
+--
+
+extend Listen Key Validity period
+The validity period is extended to 60 minutes after this call, and it is recommended to send a ping every 30 minutes.
+
+Key steps for using the API
+
+CURL
+
+response
+
+http status 200 success
+
+http status 204 not content
+
+http status 404 not find key
+
+1. Create Account
+  
+2. Pass KYC/KYB
+  
+3. Create API KEY
+  
+4. Configure API KEY permissions
+  
+5. Understanding signature authentication
+ 6. Run the following example code  
+7. Understand common error codes
+  
+8. Understand rate limitations
+  
+9. Understanding request timestamps
+ 
+10. Understand fee schedule
+ 
+11. Understand trading rules
+request parameters https://open-api.bingx.com
+
+PUT /openApi/user/auth/userDataStream
+
+rate limitation by UID: 2/s & rate limitation by IP in group Number: 
+API KEY permission: 
+Read
+Content-Type:  
+  
+Request
+listenKey
+string
+yes
+listen Key
+  
+Sample code
+Python    JavaC#phpShell
+
+import time
+import requests
+import hmac
+from hashlib import sha256
+
+APIURL = "https://open-api.bingx.com"
+APIKEY = ""
+SECRETKEY = ""
+
+def demo():
+    payload = {}
+    path = '/openApi/user/auth/userDataStream'
+    method = "PUT"
+    paramsMap = {}
+    paramsStr = parseParam(paramsMap)
+    return send_request(method, path, paramsStr, payload)
+
+def get_sign(api_secret, payload):
+    signature = hmac.new(api_secret.encode("utf-8"), payload.encode("utf-8"), digestmod=sha256).hexdigest()
+    print("sign=" + signature)
+    return signature
+
+
+def send_request(method, path, urlpa, payload):
+    url = "%s%s?%s&signature=%s" % (APIURL, path, urlpa, get_sign(SECRETKEY, urlpa))
+    print(url)
+    headers = {
+        'X-BX-APIKEY': APIKEY,
+    }
+    response = requests.request(method, url, headers=headers, data=payload)
+    return response.text
+
+def parseParam(paramsMap):
+    sortedKeys = sorted(paramsMap)
+    paramsStr = "&".join(["%s=%s" % (x, paramsMap[x]) for x in sortedKeys])
+    if paramsStr != "": 
+     return paramsStr+"&timestamp="+str(int(time.time() * 1000))
+    else:
+     return paramsStr+"timestamp="+str(int(time.time() * 1000))
+
+
+if __name__ == '__main__':
+    print("demo:", demo())
+
+--
+
+delete Listen Key
+delete User data flow.
+
+Key steps for using the API
+
+CURL
+
+response
+
+http status 200 success
+
+http status 204 not content
+
+http status 404 not find key
+
+1. Create Account
+  
+2. Pass KYC/KYB
+  
+3. Create API KEY
+  
+4. Configure API KEY permissions
+  
+5. Understanding signature authentication
+ 6. Run the following example code  
+7. Understand common error codes
+  
+8. Understand rate limitations
+  
+9. Understanding request timestamps
+ 
+10. Understand fee schedule
+ 
+11. Understand trading rules
+request parameters https://open-api.bingx.com
+
+DELETE /openApi/user/auth/userDataStream
+
+rate limitation by UID: 2/s & rate limitation by IP in group Number: 
+API KEY permission: 
+Read
+Content-Type:  
+  
+Request
+listenKey
+string
+yes
+listen Key
+  
+Sample code
+Python    JavaC#phpShell
+
+import time
+import requests
+import hmac
+from hashlib import sha256
+
+APIURL = "https://open-api.bingx.com"
+APIKEY = ""
+SECRETKEY = ""
+
+def demo():
+    payload = {}
+    path = '/openApi/user/auth/userDataStream'
+    method = "DELETE"
+    paramsMap = {}
+    paramsStr = parseParam(paramsMap)
+    return send_request(method, path, paramsStr, payload)
+
+def get_sign(api_secret, payload):
+    signature = hmac.new(api_secret.encode("utf-8"), payload.encode("utf-8"), digestmod=sha256).hexdigest()
+    print("sign=" + signature)
+    return signature
+
+
+def send_request(method, path, urlpa, payload):
+    url = "%s%s?%s&signature=%s" % (APIURL, path, urlpa, get_sign(SECRETKEY, urlpa))
+    print(url)
+    headers = {
+        'X-BX-APIKEY': APIKEY,
+    }
+    response = requests.request(method, url, headers=headers, data=payload)
+    return response.text
+
+def parseParam(paramsMap):
+    sortedKeys = sorted(paramsMap)
+    paramsStr = "&".join(["%s=%s" % (x, paramsMap[x]) for x in sortedKeys])
+    if paramsStr != "": 
+     return paramsStr+"&timestamp="+str(int(time.time() * 1000))
+    else:
+     return paramsStr+"timestamp="+str(int(time.time() * 1000))
+
+
+if __name__ == '__main__':
+    print("demo:", demo())
+
+--
+
+Websocket Market Data
+Subscribe Market Depth Data
+Push limited order book depth information.
+
+Subscription Type
+
+The dataType is <symbol>@depth<level>@<interval>, for example, BTC-USDT@depth20@200ms, SOL-USDT@depth100@500ms.
+
+The push interval for BTC-USDT and ETH-USDT is 200ms, and for other contracts it is 500ms.
+
+Subscription Parameters
+
+ 
+RequestResponselevelinterval
+id
+string
+yes
+Subscription ID
+reqType
+string
+yes
+Request type: Subscribe - sub; Unsubscribe - unsub
+dataType
+string
+yes
+There must be a hyphen/ "-" in the trading pair symbol. eg: BTC-USD.Depth level, such as 5，10，20，50，100.Interval, e.g., 200ms, 500ms
+Python    JavaC#php
+
+import json
+import websocket
+import gzip
+import io
+URL="wss://open-api-swap.bingx.com/swap-market" 
+CHANNEL= {"id":"e745cd6d-d0f6-4a70-8d5a-043e4c741b40","reqType": "sub","dataType":"BTC-USDT@depth5@500ms"}
+class Test(object):
+
+    def __init__(self):
+        self.url = URL 
+        self.ws = None
+
+    def on_open(self, ws):
+        print('WebSocket connected')
+        subStr = json.dumps(CHANNEL)
+        ws.send(subStr)
+        print("Subscribed to :",subStr)
+
+    def on_data(self, ws, string, type, continue_flag):
+        compressed_data = gzip.GzipFile(fileobj=io.BytesIO(string), mode='rb')
+        decompressed_data = compressed_data.read()
+        utf8_data = decompressed_data.decode('utf-8')
+        print(utf8_data)
+
+    def on_message(self, ws, message):
+        compressed_data = gzip.GzipFile(fileobj=io.BytesIO(message), mode='rb')
+        decompressed_data = compressed_data.read()
+        utf8_data = decompressed_data.decode('utf-8')
+        print(utf8_data)  #this is the message you need 
+        if utf8_data == "Ping": # this is very important , if you receive 'Ping' you need to send 'Pong' 
+           ws.send("Pong")
+
+    def on_error(self, ws, error):
+        print(error)
+
+    def on_close(self, ws, close_status_code, close_msg):
+        print('The connection is closed!')
+
+    def start(self):
+        self.ws = websocket.WebSocketApp(
+            self.url,
+            on_open=self.on_open,
+            on_message=self.on_message,
+            # on_data=self.on_data,
+            on_error=self.on_error,
+            on_close=self.on_close,
+        )
+        self.ws.run_forever()
+
+
+if __name__ == "__main__":
+    test = Test()
+    test.start()
+
+--
+
+Subscribe the Latest Trade Detail
+Real time push.
+
+Subscribe to the trade detail data of a trading pair
+
+Subscription Type
+
+The dataType is <symbol>@trade E.g. BTC-USDT@trade ETH-USDT@trade
+
+Subscription Parameters
+
+ 
+RequestResponse
+id
+string
+yes
+Subscription ID
+reqType
+string
+yes
+Request type: Subscribe - sub; Unsubscribe - unsub
+dataType
+string
+yes
+There must be a hyphen/ "-" in the trading pair symbol. eg: BTC-USD
+Python    JavaC#php
+
+import json
+import websocket
+import gzip
+import io
+URL="wss://open-api-swap.bingx.com/swap-market" 
+CHANNEL= {"id":"e745cd6d-d0f6-4a70-8d5a-043e4c741b40","reqType": "sub","dataType":"BTC-USDT@trade"}
+class Test(object):
+
+    def __init__(self):
+        self.url = URL 
+        self.ws = None
+
+    def on_open(self, ws):
+        print('WebSocket connected')
+        subStr = json.dumps(CHANNEL)
+        ws.send(subStr)
+        print("Subscribed to :",subStr)
+
+    def on_data(self, ws, string, type, continue_flag):
+        compressed_data = gzip.GzipFile(fileobj=io.BytesIO(string), mode='rb')
+        decompressed_data = compressed_data.read()
+        utf8_data = decompressed_data.decode('utf-8')
+        print(utf8_data)
+
+    def on_message(self, ws, message):
+        compressed_data = gzip.GzipFile(fileobj=io.BytesIO(message), mode='rb')
+        decompressed_data = compressed_data.read()
+        utf8_data = decompressed_data.decode('utf-8')
+        print(utf8_data)  #this is the message you need 
+        if utf8_data == "Ping": # this is very important , if you receive 'Ping' you need to send 'Pong' 
+           ws.send("Pong")
+
+    def on_error(self, ws, error):
+        print(error)
+
+    def on_close(self, ws, close_status_code, close_msg):
+        print('The connection is closed!')
+
+    def start(self):
+        self.ws = websocket.WebSocketApp(
+            self.url,
+            on_open=self.on_open,
+            on_message=self.on_message,
+            # on_data=self.on_data,
+            on_error=self.on_error,
+            on_close=self.on_close,
+        )
+        self.ws.run_forever()
+
+
+if __name__ == "__main__":
+    test = Test()
+    test.start()
+
+--
+
+Subscribe K-Line Data
+Subscribe to market k-line data of one trading pair
+
+Subscription Type
+
+The dataType is <symbol>@kline_<interval> E.g. BTC-USDT@kline_1m
+
+Subscription Example
+
+{"id":"e745cd6d-d0f6-4a70-8d5a-043e4c741b40","reqType": "sub","dataType":"BTC-USDT@kline_1m"}
+
+For more about return error codes, please see the error code description on the homepage.
+
+Subscription Parameters
+
+ 
+RequestResponseinterval
+id
+string
+yes
+Subscription ID
+reqType
+string
+yes
+Request type: Subscribe - sub; Unsubscribe - unsub
+dataType
+string
+yes
+There must be a hyphen/ "-" in the trading pair symbol. eg: BTC-USD.The type of K-Line ( minutes, hours, weeks etc.)
+Python    JavaC#php
+
+import json
+import websocket
+import gzip
+import io
+URL="wss://open-api-swap.bingx.com/swap-market" 
+CHANNEL= {"id":"e745cd6d-d0f6-4a70-8d5a-043e4c741b40","reqType": "sub","dataType":"BTC-USDT@kline_1m"}
+class Test(object):
+
+    def __init__(self):
+        self.url = URL 
+        self.ws = None
+
+    def on_open(self, ws):
+        print('WebSocket connected')
+        subStr = json.dumps(CHANNEL)
+        ws.send(subStr)
+        print("Subscribed to :",subStr)
+
+    def on_data(self, ws, string, type, continue_flag):
+        compressed_data = gzip.GzipFile(fileobj=io.BytesIO(string), mode='rb')
+        decompressed_data = compressed_data.read()
+        utf8_data = decompressed_data.decode('utf-8')
+        print(utf8_data)
+
+    def on_message(self, ws, message):
+        compressed_data = gzip.GzipFile(fileobj=io.BytesIO(message), mode='rb')
+        decompressed_data = compressed_data.read()
+        utf8_data = decompressed_data.decode('utf-8')
+        print(utf8_data)  #this is the message you need 
+        if utf8_data == "Ping": # this is very important , if you receive 'Ping' you need to send 'Pong' 
+           ws.send("Pong")
+
+    def on_error(self, ws, error):
+        print(error)
+
+    def on_close(self, ws, close_status_code, close_msg):
+        print('The connection is closed!')
+
+    def start(self):
+        self.ws = websocket.WebSocketApp(
+            self.url,
+            on_open=self.on_open,
+            on_message=self.on_message,
+            # on_data=self.on_data,
+            on_error=self.on_error,
+            on_close=self.on_close,
+        )
+        self.ws.run_forever()
+
+
+if __name__ == "__main__":
+    test = Test()
+    test.start()
+
+--
+
+Subscribe to 24-hour price changes
+Push every 1 second.
+
+Push 24-hour price changes.
+
+Subscription Type
+
+dataType is <symbol>@ticker, such as BTC-USDT@ticker.
+
+Subscription Parameters
+
+ 
+RequestResponse
+id
+string
+yes
+Subscription ID
+reqType
+string
+yes
+Request type: Subscribe - sub; Unsubscribe - unsub
+dataType
+string
+yes
+There must be a hyphen/ "-" in the trading pair symbol. eg: BTC-USD
+Python    JavaC#php
+
+import json
+import websocket
+import gzip
+import io
+URL="wss://open-api-swap.bingx.com/swap-market" 
+CHANNEL= {"id":"24dd0e35-56a4-4f7a-af8a-394c7060909c","reqType": "sub","dataType":"BTC-USDT@ticker"}
+class Test(object):
+
+    def __init__(self):
+        self.url = URL 
+        self.ws = None
+
+    def on_open(self, ws):
+        print('WebSocket connected')
+        subStr = json.dumps(CHANNEL)
+        ws.send(subStr)
+        print("Subscribed to :",subStr)
+
+    def on_data(self, ws, string, type, continue_flag):
+        compressed_data = gzip.GzipFile(fileobj=io.BytesIO(string), mode='rb')
+        decompressed_data = compressed_data.read()
+        utf8_data = decompressed_data.decode('utf-8')
+        print(utf8_data)
+
+    def on_message(self, ws, message):
+        compressed_data = gzip.GzipFile(fileobj=io.BytesIO(message), mode='rb')
+        decompressed_data = compressed_data.read()
+        utf8_data = decompressed_data.decode('utf-8')
+        print(utf8_data)  #this is the message you need 
+        if utf8_data == "Ping": # this is very important , if you receive 'Ping' you need to send 'Pong' 
+           ws.send("Pong")
+
+    def on_error(self, ws, error):
+        print(error)
+
+    def on_close(self, ws, close_status_code, close_msg):
+        print('The connection is closed!')
+
+    def start(self):
+        self.ws = websocket.WebSocketApp(
+            self.url,
+            on_open=self.on_open,
+            on_message=self.on_message,
+            # on_data=self.on_data,
+            on_error=self.on_error,
+            on_close=self.on_close,
+        )
+        self.ws.run_forever()
+
+
+if __name__ == "__main__":
+    test = Test()
+    test.start()
+
+--
+
+Subscribe to latest price changes
+Real time push.
+
+Push latest price changes.
+
+Subscription Type
+
+dataType is <symbol>@lastPrice, such as BTC-USDT@lastPrice.
+
+Subscription Parameters
+
+ 
+RequestResponse
+id
+string
+yes
+Subscription ID
+reqType
+string
+yes
+Request type: Subscribe - sub; Unsubscribe - unsub
+dataType
+string
+yes
+There must be a hyphen/ "-" in the trading pair symbol. eg: BTC-USD
+Python    JavaC#php
+
+import json
+import websocket
+import gzip
+import io
+URL="wss://open-api-swap.bingx.com/swap-market" 
+CHANNEL= {"id":"24dd0e35-56a4-4f7a-af8a-394c7060909c","reqType": "sub","dataType":"BTC-USDT@lastPrice"}
+class Test(object):
+
+    def __init__(self):
+        self.url = URL 
+        self.ws = None
+
+    def on_open(self, ws):
+        print('WebSocket connected')
+        subStr = json.dumps(CHANNEL)
+        ws.send(subStr)
+        print("Subscribed to :",subStr)
+
+    def on_data(self, ws, string, type, continue_flag):
+        compressed_data = gzip.GzipFile(fileobj=io.BytesIO(string), mode='rb')
+        decompressed_data = compressed_data.read()
+        utf8_data = decompressed_data.decode('utf-8')
+        print(utf8_data)
+
+    def on_message(self, ws, message):
+        compressed_data = gzip.GzipFile(fileobj=io.BytesIO(message), mode='rb')
+        decompressed_data = compressed_data.read()
+        utf8_data = decompressed_data.decode('utf-8')
+        print(utf8_data)  #this is the message you need 
+        if utf8_data == "Ping": # this is very important , if you receive 'Ping' you need to send 'Pong' 
+           ws.send("Pong")
+
+    def on_error(self, ws, error):
+        print(error)
+
+    def on_close(self, ws, close_status_code, close_msg):
+        print('The connection is closed!')
+
+    def start(self):
+        self.ws = websocket.WebSocketApp(
+            self.url,
+            on_open=self.on_open,
+            on_message=self.on_message,
+            # on_data=self.on_data,
+            on_error=self.on_error,
+            on_close=self.on_close,
+        )
+        self.ws.run_forever()
+
+
+if __name__ == "__main__":
+    test = Test()
+    test.start()
+
+--
+
+Subscribe to latest mark price changes
+Real time push.
+
+Push latest mark price changes.
+
+Subscription Type
+
+dataType is <symbol>@markPrice, such as BTC-USDT@markPrice.
+
+Subscription Parameters
+
+ 
+RequestResponse
+id
+string
+yes
+Subscription ID
+reqType
+string
+yes
+Request type: Subscribe - sub; Unsubscribe - unsub
+dataType
+string
+yes
+There must be a hyphen/ "-" in the trading pair symbol. eg: BTC-USD
+Python    JavaC#php
+
+import json
+import websocket
+import gzip
+import io
+URL="wss://open-api-swap.bingx.com/swap-market" 
+CHANNEL= {"id":"24dd0e35-56a4-4f7a-af8a-394c7060909c","reqType": "sub","dataType":"BTC-USDT@markPrice"}
+class Test(object):
+
+    def __init__(self):
+        self.url = URL 
+        self.ws = None
+
+    def on_open(self, ws):
+        print('WebSocket connected')
+        subStr = json.dumps(CHANNEL)
+        ws.send(subStr)
+        print("Subscribed to :",subStr)
+
+    def on_data(self, ws, string, type, continue_flag):
+        compressed_data = gzip.GzipFile(fileobj=io.BytesIO(string), mode='rb')
+        decompressed_data = compressed_data.read()
+        utf8_data = decompressed_data.decode('utf-8')
+        print(utf8_data)
+
+    def on_message(self, ws, message):
+        compressed_data = gzip.GzipFile(fileobj=io.BytesIO(message), mode='rb')
+        decompressed_data = compressed_data.read()
+        utf8_data = decompressed_data.decode('utf-8')
+        print(utf8_data)  #this is the message you need 
+        if utf8_data == "Ping": # this is very important , if you receive 'Ping' you need to send 'Pong' 
+           ws.send("Pong")
+
+    def on_error(self, ws, error):
+        print(error)
+
+    def on_close(self, ws, close_status_code, close_msg):
+        print('The connection is closed!')
+
+    def start(self):
+        self.ws = websocket.WebSocketApp(
+            self.url,
+            on_open=self.on_open,
+            on_message=self.on_message,
+            # on_data=self.on_data,
+            on_error=self.on_error,
+            on_close=self.on_close,
+        )
+        self.ws.run_forever()
+
+
+if __name__ == "__main__":
+    test = Test()
+    test.start()
+
+--
+
+Subscribe to the Book Ticker Streams
+Push every 200 ms.
+
+Push the Book Ticker Streams.
+
+Subscription Type
+
+dataType is <symbol>@bookTicker, such as BTC-USDT@bookTicker.
+
+Subscription Parameters
+
+ 
+RequestResponse
+id
+string
+yes
+Subscription ID
+reqType
+string
+yes
+Request type: Subscribe - sub; Unsubscribe - unsub
+dataType
+string
+yes
+There must be a hyphen/ "-" in the trading pair symbol. eg: BTC-USD
+Python    JavaC#php
+
+import json
+import websocket
+import gzip
+import io
+URL="wss://open-api-swap.bingx.com/swap-market" 
+CHANNEL= {"id":"24dd0e35-56a4-4f7a-af8a-394c7060909c","reqType": "sub","dataType":"BTC-USDT@bookTicker"}
+class Test(object):
+
+    def __init__(self):
+        self.url = URL 
+        self.ws = None
+
+    def on_open(self, ws):
+        print('WebSocket connected')
+        subStr = json.dumps(CHANNEL)
+        ws.send(subStr)
+        print("Subscribed to :",subStr)
+
+    def on_data(self, ws, string, type, continue_flag):
+        compressed_data = gzip.GzipFile(fileobj=io.BytesIO(string), mode='rb')
+        decompressed_data = compressed_data.read()
+        utf8_data = decompressed_data.decode('utf-8')
+        print(utf8_data)
+
+    def on_message(self, ws, message):
+        compressed_data = gzip.GzipFile(fileobj=io.BytesIO(message), mode='rb')
+        decompressed_data = compressed_data.read()
+        utf8_data = decompressed_data.decode('utf-8')
+        print(utf8_data)  #this is the message you need 
+        if utf8_data == "Ping": # this is very important , if you receive 'Ping' you need to send 'Pong' 
+           ws.send("Pong")
+
+    def on_error(self, ws, error):
+        print(error)
+
+    def on_close(self, ws, close_status_code, close_msg):
+        print('The connection is closed!')
+
+    def start(self):
+        self.ws = websocket.WebSocketApp(
+            self.url,
+            on_open=self.on_open,
+            on_message=self.on_message,
+            # on_data=self.on_data,
+            on_error=self.on_error,
+            on_close=self.on_close,
+        )
+        self.ws.run_forever()
+
+
+if __name__ == "__main__":
+    test = Test()
+    test.start()
+
+--
+
+Incremental Depth Information
+Push Frequency Description
+
+The push frequency for BTC-USDT and ETH-USDT is 200ms, while for other trading pairs it is 800ms.
+
+How the client should maintain incremental depth locally
+
+1. After successfully subscribing, a full depth with an action field value of 'all' will be returned, along with a lastUpdateId used to handle the continuity of subsequent incremental depth. After receiving the full depth, the WebSocket should cache the full depth data in memory.
+
+2. Subsequent depth changes will return incremental depth, with the action field set to 'update'. The value of the Nth incremental depth's lastUpdateId should be the N-1th depth's lastUpdateId + 1.
+
+3. In rare cases where lastUpdateId is not continuous, you can choose to reconnect, or cache the last three incremental depths and try to merge the data by finding continuous lastUpdateId from the cache (because due to multithreading or network routing issues, data order may not be strongly guaranteed).
+
+4. Then, iterate over the received incremental depth and compare it with the current depth one by one. It's recommended to consider thread-safe design and coding practices (as the push frequency may increase later). The data structure could be a sorted map, such as TreeMap:
+
+(1) If the price level does not exist in the current depth, it means a new price level should be added. (Add)
+
+(2) If the quantity corresponding to the price is 0, the price level should be removed from the current depth. (Delete)
+
+(3) If the quantity corresponding to the price is different from the current value, replace it with the quantity returned by the incremental depth. (Update)
+
+(4) After traversing, you will obtain the latest depth, update the depth cache, and remember to update the lastUpdateId.
+
+Subscription Type
+
+dataType is <symbol>@incrDepth, for example, BTC-USDT@incrDepth
+
+Subscription Example
+
+{"id":"975f7385-7f28-4ef1-93af-df01cb9ebb53","reqType": "sub","dataType":"BTC-USDT@incrDepth"}
+
+Subscription Parameters
+
+ 
+RequestResponse
+id
+string
+yes
+Subscription ID
+reqType
+string
+yes
+Request type: Subscribe - sub; Unsubscribe - unsub
+dataType
+string
+yes
+There must be a hyphen/ "-" in the trading pair symbol. eg: BTC-USD
+Python    JavaC#php
+
+import json
+import websocket
+import gzip
+import io
+URL="wss://open-api-swap.bingx.com/swap-market" 
+CHANNEL= {"id":"e745cd6d-d0f6-4a70-8d5a-043e4c741b40","reqType": "sub","dataType":"BTC-USDT@incrDepth"}
+class Test(object):
+
+    def __init__(self):
+        self.url = URL 
+        self.ws = None
+
+    def on_open(self, ws):
+        print('WebSocket connected')
+        subStr = json.dumps(CHANNEL)
+        ws.send(subStr)
+        print("Subscribed to :",subStr)
+
+    def on_data(self, ws, string, type, continue_flag):
+        compressed_data = gzip.GzipFile(fileobj=io.BytesIO(string), mode='rb')
+        decompressed_data = compressed_data.read()
+        utf8_data = decompressed_data.decode('utf-8')
+        print(utf8_data)
+
+    def on_message(self, ws, message):
+        compressed_data = gzip.GzipFile(fileobj=io.BytesIO(message), mode='rb')
+        decompressed_data = compressed_data.read()
+        utf8_data = decompressed_data.decode('utf-8')
+        print(utf8_data)  #this is the message you need 
+        if utf8_data == "Ping": # this is very important , if you receive 'Ping' you need to send 'Pong' 
+           ws.send("Pong")
+
+    def on_error(self, ws, error):
+        print(error)
+
+    def on_close(self, ws, close_status_code, close_msg):
+        print('The connection is closed!')
+
+    def start(self):
+        self.ws = websocket.WebSocketApp(
+            self.url,
+            on_open=self.on_open,
+            on_message=self.on_message,
+            # on_data=self.on_data,
+            on_error=self.on_error,
+            on_close=self.on_close,
+        )
+        self.ws.run_forever()
+
+
+if __name__ == "__main__":
+    test = Test()
+    test.start()
+
+--
+
+Websocket Account Data
+Note that obtaining such information requires websocket authentication, use listenKey, and check the Listen Key
+
+The websocket api is wss://open-api-swap.bingx.com/swap-market
+
+The stream name of the subscription account data stream is /swap-market?listenKey=
+
+wss://open-api-swap.bingx.com/swap-market?listenKey=a8ea75681542e66f1a50a1616dd06ed77dab61baa0c296bca03a9b13ee5f2dd7
+
+listenKey expired push
+The user data stream will push this event when the valid listenKey used by the current connection expires.
+
+Notice:
+
+This event is not necessarily related to the interruption of the websocket connection
+This message will only be received when the valid listenKey being connected has expired
+After receiving this message, the user data stream will not be updated until the user uses a new and valid listenKey
+Push data
+
+ 
+Response
+e
+event type：listenKeyExpired
+E
+event time：1676964520421
+listenKey
+invalid listenKey：53c1067059c5401e216ec0562f4e9741f49c3c18239a743653d844a50c4db6c0
+Python    JavaC#php
+
+import json
+import websocket
+import gzip
+import io
+URL="wss://open-api-swap.bingx.com/swap-market?listenKey=a8ea75681542e66f1a50a1616dd06ed77dab61baa0c296bca03a9b13ee5f2dd7" 
+CHANNEL= {"notice:":"no need to subscribe to  any specific channel,please check the hightlight msg in the api docs"}
+class Test(object):
+
+    def __init__(self):
+        self.url = URL 
+        self.ws = None
+
+    def on_open(self, ws):
+        print('WebSocket connected')
+        subStr = json.dumps(CHANNEL)
+        ws.send(subStr)
+        print("Subscribed to :",subStr)
+
+    def on_data(self, ws, string, type, continue_flag):
+        compressed_data = gzip.GzipFile(fileobj=io.BytesIO(string), mode='rb')
+        decompressed_data = compressed_data.read()
+        utf8_data = decompressed_data.decode('utf-8')
+        print(utf8_data)
+
+    def on_message(self, ws, message):
+        compressed_data = gzip.GzipFile(fileobj=io.BytesIO(message), mode='rb')
+        decompressed_data = compressed_data.read()
+        utf8_data = decompressed_data.decode('utf-8')
+        print(utf8_data)  #this is the message you need 
+        if utf8_data == "Ping": # this is very important , if you receive 'Ping' you need to send 'Pong' 
+           ws.send("Pong")
+
+    def on_error(self, ws, error):
+        print(error)
+
+    def on_close(self, ws, close_status_code, close_msg):
+        print('The connection is closed!')
+
+    def start(self):
+        self.ws = websocket.WebSocketApp(
+            self.url,
+            on_open=self.on_open,
+            on_message=self.on_message,
+            # on_data=self.on_data,
+            on_error=self.on_error,
+            on_close=self.on_close,
+        )
+        self.ws.run_forever()
+
+
+if __name__ == "__main__":
+    test = Test()
+    test.start()
+
+--
+
+Account balance and position update push
+The event type of the account update event is fixed as ACCOUNT_UPDATE
+
+When the account information changes, this event will be pushed：
+
+This event will only be pushed when there is a change in account information (including changes in funds, positions, etc.); This event will not be pushed if the change in the order status does not cause changes in the account and positions;
+position information: push only when there is a change in the symbol position.
+Fund balance changes caused by "FUNDING FEE", only push brief events:
+
+When "FUNDING FEE" occurs in a user's cross position, the event ACCOUNT_UPDATE will only push the relevant user's asset balance information B (only push the asset balance information related to the occurrence of FUNDING FEE), and will not push any position information P.
+When "FUNDING FEE" occurs in a user's isolated position, the event ACCOUNT_UPDATE will only push the relevant user asset balance information B (only push the asset balance information used by "FUNDING FEE"), and related position information P( Only the position information where this "FUNDING FEE" occurred is pushed), and the rest of the position information will not be pushed.
+The field "m" represents the reason for the launch of the event, including the following possible types: -DEPOSIT
+
+DEPOSIT
+WITHDRAW
+ORDER
+FUNDING_FEE
+Account data no longer need to subscribe to channel type,after connect wss://open-api-swap.bingx.com/swap-market?listenKey=a8ea75681542e66f1a50a1616dd06ed77dab61baa0c296bca03a9b13ee5f2dd7 ,All event types will be pushed
+The effective time of the listen key is 1 hour. In order to ensure that your subscription is not interrupted, please update the listen key regularly
+Push data
+
+ 
+ResponseaBP
+e
+event type:ACCOUNT_UPDATE
+E
+event time：1676603102163
+T
+push timestamp: 1676603102163
+a
+account update event
+Python    JavaC#php
+
+import json
+import websocket
+import gzip
+import io
+URL="wss://open-api-swap.bingx.com/swap-market?listenKey=a8ea75681542e66f1a50a1616dd06ed77dab61baa0c296bca03a9b13ee5f2dd7" 
+CHANNEL= {"notice:":"no need to subscribe to  any specific channel,please check the hightlight msg in the api docs"}
+class Test(object):
+
+    def __init__(self):
+        self.url = URL 
+        self.ws = None
+
+    def on_open(self, ws):
+        print('WebSocket connected')
+        subStr = json.dumps(CHANNEL)
+        ws.send(subStr)
+        print("Subscribed to :",subStr)
+
+    def on_data(self, ws, string, type, continue_flag):
+        compressed_data = gzip.GzipFile(fileobj=io.BytesIO(string), mode='rb')
+        decompressed_data = compressed_data.read()
+        utf8_data = decompressed_data.decode('utf-8')
+        print(utf8_data)
+
+    def on_message(self, ws, message):
+        compressed_data = gzip.GzipFile(fileobj=io.BytesIO(message), mode='rb')
+        decompressed_data = compressed_data.read()
+        utf8_data = decompressed_data.decode('utf-8')
+        print(utf8_data)  #this is the message you need 
+        if utf8_data == "Ping": # this is very important , if you receive 'Ping' you need to send 'Pong' 
+           ws.send("Pong")
+
+    def on_error(self, ws, error):
+        print(error)
+
+    def on_close(self, ws, close_status_code, close_msg):
+        print('The connection is closed!')
+
+    def start(self):
+        self.ws = websocket.WebSocketApp(
+            self.url,
+            on_open=self.on_open,
+            on_message=self.on_message,
+            # on_data=self.on_data,
+            on_error=self.on_error,
+            on_close=self.on_close,
+        )
+        self.ws.run_forever()
+
+
+if __name__ == "__main__":
+    test = Test()
+    test.start()
+
+--
+
+Order update push
+This type of event will be pushed when a new order is created, an order has a new deal, or a new status change. The event type is unified as ORDER_TRADE_UPDATE
+
+order direction
+
+BUY buy
+SELL sell
+Order Type
+
+MARKET market order
+TAKE_PROFIT_MARKET take profit market order
+STOP_MARKET stop market order
+LIMIT limit order
+TAKE_PROFIT take profit limit order
+STOP stop limit order
+TRIGGER_MARKET stop market order with trigger
+TRIGGER_LIMIT stop limit order with trigger
+TRAILING_STOP_MARKET trailing stop market order
+TRAILING_TP_SL trailing take profit or stop loss
+LIQUIDATION strong liquidation order
+The specific execution type of this event
+
+NEW
+CANCELED removed
+CALCULATED order ADL or liquidation
+EXPIRED order lapsed
+TRADE transaction
+Order Status
+
+NEW
+PARTIALLY_FILLED
+FILLED
+CANCELED
+EXPIRED
+Account data no longer need to subscribe to channel type,after connect wss://open-api-swap.bingx.com/swap-market?listenKey=a8ea75681542e66f1a50a1616dd06ed77dab61baa0c296bca03a9b13ee5f2dd7 ,All event types will be pushed
+The effective time of the listen key is 1 hour. In order to ensure that your subscription is not interrupted, please update the listen key regularly
+Push data
+
+ 
+Responseo
+e
+event type:ORDER_TRADE_UPDATE
+E
+event time：1676603102163
+T
+order update time：1676603102163
+o
+order<Object>
+Python    JavaC#php
+
+import json
+import websocket
+import gzip
+import io
+URL="wss://open-api-swap.bingx.com/swap-market?listenKey=a8ea75681542e66f1a50a1616dd06ed77dab61baa0c296bca03a9b13ee5f2dd7" 
+CHANNEL= {"notice:":"no need to subscribe to  any specific channel,please check the hightlight msg in the api docs"}
+class Test(object):
+
+    def __init__(self):
+        self.url = URL 
+        self.ws = None
+
+    def on_open(self, ws):
+        print('WebSocket connected')
+        subStr = json.dumps(CHANNEL)
+        ws.send(subStr)
+        print("Subscribed to :",subStr)
+
+    def on_data(self, ws, string, type, continue_flag):
+        compressed_data = gzip.GzipFile(fileobj=io.BytesIO(string), mode='rb')
+        decompressed_data = compressed_data.read()
+        utf8_data = decompressed_data.decode('utf-8')
+        print(utf8_data)
+
+    def on_message(self, ws, message):
+        compressed_data = gzip.GzipFile(fileobj=io.BytesIO(message), mode='rb')
+        decompressed_data = compressed_data.read()
+        utf8_data = decompressed_data.decode('utf-8')
+        print(utf8_data)  #this is the message you need 
+        if utf8_data == "Ping": # this is very important , if you receive 'Ping' you need to send 'Pong' 
+           ws.send("Pong")
+
+    def on_error(self, ws, error):
+        print(error)
+
+    def on_close(self, ws, close_status_code, close_msg):
+        print('The connection is closed!')
+
+    def start(self):
+        self.ws = websocket.WebSocketApp(
+            self.url,
+            on_open=self.on_open,
+            on_message=self.on_message,
+            # on_data=self.on_data,
+            on_error=self.on_error,
+            on_close=self.on_close,
+        )
+        self.ws.run_forever()
+
+
+if __name__ == "__main__":
+    test = Test()
+    test.start()
+
+--
+
+Configuration updates such as leverage and margin mode
+When the account configuration changes, the event type will be pushed as ACCOUNT_CONFIG_UPDATE
+
+When the leverage of a trading pair changes, the push message will contain the object ac, which represents the account configuration of the trading pair, where s represents the specific trading pair, l represents the leverage of long positions, S represents the leverage of short positions, and mt represents the margin mode.
+
+For more about return error codes, please see the error code description on the homepage.
+
+Each time a connection is successfully established, a full data push will occur once, followed by another full push every 5 seconds.
+Account data no longer need to subscribe to channel type,after connect wss://open-api-swap.bingx.com/swap-market?listenKey=a8ea75681542e66f1a50a1616dd06ed77dab61baa0c296bca03a9b13ee5f2dd7 ,All event types will be pushed
+The effective time of the listen key is 1 hour. In order to ensure that your subscription is not interrupted, please update the listen key regularly
+Push data
+
+ 
+Responseac
+Python    JavaC#php
+
+import json
+import websocket
+import gzip
+import io
+URL="wss://open-api-swap.bingx.com/swap-market?listenKey=a8ea75681542e66f1a50a1616dd06ed77dab61baa0c296bca03a9b13ee5f2dd7" 
+CHANNEL= {"notice:":"no need to subscribe to  any specific channel,please check the hightlight msg in the api docs"}
+class Test(object):
+
+    def __init__(self):
+        self.url = URL 
+        self.ws = None
+
+    def on_open(self, ws):
+        print('WebSocket connected')
+        subStr = json.dumps(CHANNEL)
+        ws.send(subStr)
+        print("Subscribed to :",subStr)
+
+    def on_data(self, ws, string, type, continue_flag):
+        compressed_data = gzip.GzipFile(fileobj=io.BytesIO(string), mode='rb')
+        decompressed_data = compressed_data.read()
+        utf8_data = decompressed_data.decode('utf-8')
+        print(utf8_data)
+
+    def on_message(self, ws, message):
+        compressed_data = gzip.GzipFile(fileobj=io.BytesIO(message), mode='rb')
+        decompressed_data = compressed_data.read()
+        utf8_data = decompressed_data.decode('utf-8')
+        print(utf8_data)  #this is the message you need 
+        if utf8_data == "Ping": # this is very important , if you receive 'Ping' you need to send 'Pong' 
+           ws.send("Pong")
+
+    def on_error(self, ws, error):
+        print(error)
+
+    def on_close(self, ws, close_status_code, close_msg):
+        print('The connection is closed!')
+
+    def start(self):
+        self.ws = websocket.WebSocketApp(
+            self.url,
+            on_open=self.on_open,
+            on_message=self.on_message,
+            # on_data=self.on_data,
+            on_error=self.on_error,
+            on_close=self.on_close,
+        )
+        self.ws.run_forever()
+
+
+if __name__ == "__main__":
+    test = Test()
+    test.start()
+
+--
+
+
+
+

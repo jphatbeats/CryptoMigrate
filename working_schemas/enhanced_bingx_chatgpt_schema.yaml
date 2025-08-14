@@ -1,0 +1,431 @@
+openapi: 3.1.0
+info:
+  title: Enhanced BingX Intelligence API
+  description: |
+    Comprehensive market intelligence using enhanced BingX analysis with AI-powered insights.
+    This API combines real-time price data, volume analysis, orderbook depth, candlestick patterns,
+    momentum indicators, volatility metrics, and market structure analysis.
+  version: 2.0.0
+servers:
+  - url: https://titan-trading-2-production.up.railway.app
+    description: Railway Production Server
+
+paths:
+  /api/enhanced-intelligence/{symbols}:
+    get:
+      operationId: getEnhancedMarketIntelligence
+      summary: Get comprehensive market intelligence with AI analysis
+      description: |
+        Provides comprehensive market analysis including:
+        - Real-time price data and spreads
+        - Volume patterns and spikes detection
+        - Orderbook depth and liquidity analysis
+        - Candlestick pattern recognition
+        - Momentum indicators (RSI, moving averages)
+        - Volatility metrics (ATR, price stability)
+        - Market structure and trend analysis
+        - AI-powered trading opportunities (optional)
+      parameters:
+        - name: symbols
+          in: path
+          required: true
+          schema:
+            type: string
+          description: Comma-separated list of trading pairs (e.g., "BTC/USDT,ETH/USDT")
+          example: "BTC/USDT,ETH/USDT"
+        - name: timeframe
+          in: query
+          required: false
+          schema:
+            type: string
+            default: "1h"
+            enum: ["1m", "3m", "5m", "15m", "30m", "1h", "2h", "4h", "6h", "8h", "12h", "1d", "3d", "1w", "1M"]
+          description: Chart timeframe for technical analysis
+        - name: include_ai
+          in: query
+          required: false
+          schema:
+            type: boolean
+            default: true
+          description: Include AI-powered trading opportunities analysis
+      responses:
+        '200':
+          description: Comprehensive market intelligence data
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  enhanced_analysis:
+                    type: boolean
+                    description: Indicates enhanced analysis was performed
+                  data_sources:
+                    type: array
+                    items:
+                      type: string
+                    description: List of data sources used
+                  symbols_analyzed:
+                    type: integer
+                    description: Number of symbols analyzed
+                  timeframe:
+                    type: string
+                    description: Chart timeframe used
+                  market_intelligence:
+                    type: object
+                    additionalProperties:
+                      type: object
+                      properties:
+                        price_data:
+                          type: object
+                          properties:
+                            last:
+                              type: number
+                              description: Current price
+                            bid:
+                              type: number
+                              description: Best bid price
+                            ask:
+                              type: number
+                              description: Best ask price
+                            high:
+                              type: number
+                              description: 24h high price
+                            low:
+                              type: number
+                              description: 24h low price
+                            volume:
+                              type: number
+                              description: 24h volume
+                            percentage:
+                              type: number
+                              description: 24h price change percentage
+                            spread:
+                              type: number
+                              description: Bid-ask spread
+                            spread_percentage:
+                              type: number
+                              description: Spread as percentage of price
+                            volume_usd:
+                              type: number
+                              description: 24h volume in USD
+                        volume_analysis:
+                          type: object
+                          properties:
+                            current_volume:
+                              type: number
+                              description: Current period volume
+                            average_volume_20:
+                              type: number
+                              description: 20-period average volume
+                            volume_ratio:
+                              type: number
+                              description: Current volume vs average ratio
+                            volume_trend:
+                              type: string
+                              enum: ["increasing", "decreasing"]
+                              description: Volume trend direction
+                            price_volume_correlation:
+                              type: number
+                              description: Correlation between price and volume
+                            volume_spikes:
+                              type: array
+                              items:
+                                type: object
+                                properties:
+                                  volume:
+                                    type: number
+                                  multiplier:
+                                    type: number
+                                  price:
+                                    type: number
+                              description: Detected volume spikes
+                            volume_score:
+                              type: number
+                              description: Volume strength score (0-10)
+                        orderbook_analysis:
+                          type: object
+                          properties:
+                            best_bid:
+                              type: number
+                              description: Best bid price
+                            best_ask:
+                              type: number
+                              description: Best ask price
+                            spread:
+                              type: number
+                              description: Bid-ask spread
+                            bid_depth_5:
+                              type: number
+                              description: Total bid depth (top 5 levels)
+                            ask_depth_5:
+                              type: number
+                              description: Total ask depth (top 5 levels)
+                            total_depth:
+                              type: number
+                              description: Combined orderbook depth
+                            depth_imbalance:
+                              type: number
+                              description: Imbalance between bid and ask depth
+                            imbalance_direction:
+                              type: string
+                              enum: ["bullish", "bearish", "neutral"]
+                              description: Direction of orderbook imbalance
+                            liquidity_score:
+                              type: number
+                              description: Liquidity quality score (0-10)
+                            market_pressure:
+                              type: string
+                              enum: ["buying", "selling", "balanced"]
+                              description: Overall market pressure direction
+                        technical_patterns:
+                          type: object
+                          properties:
+                            detected_patterns:
+                              type: array
+                              items:
+                                type: string
+                              description: List of detected candlestick patterns
+                            pattern_count:
+                              type: integer
+                              description: Number of patterns detected
+                            latest_candle:
+                              type: object
+                              properties:
+                                type:
+                                  type: string
+                                  enum: ["bullish", "bearish"]
+                                body_percentage:
+                                  type: number
+                                  description: Body size as % of total range
+                                upper_wick_ratio:
+                                  type: number
+                                  description: Upper wick ratio
+                                lower_wick_ratio:
+                                  type: number
+                                  description: Lower wick ratio
+                            pattern_strength:
+                              type: number
+                              description: Overall pattern strength score
+                        momentum_indicators:
+                          type: object
+                          properties:
+                            rsi_14:
+                              type: number
+                              description: 14-period RSI value
+                            rsi_signal:
+                              type: string
+                              enum: ["overbought", "oversold", "neutral"]
+                              description: RSI signal interpretation
+                            momentum_5_periods:
+                              type: number
+                              description: 5-period momentum percentage
+                            momentum_10_periods:
+                              type: number
+                              description: 10-period momentum percentage
+                            sma_10:
+                              type: number
+                              description: 10-period simple moving average
+                            sma_20:
+                              type: number
+                              description: 20-period simple moving average
+                            price_vs_sma10:
+                              type: string
+                              enum: ["above", "below"]
+                              description: Price position vs SMA10
+                            price_vs_sma20:
+                              type: string
+                              enum: ["above", "below"]
+                              description: Price position vs SMA20
+                            sma_cross:
+                              type: string
+                              enum: ["bullish", "bearish"]
+                              description: SMA10 vs SMA20 cross direction
+                            momentum_score:
+                              type: number
+                              description: Overall momentum score
+                            trend_strength:
+                              type: number
+                              description: Trend strength measurement
+                        volatility_metrics:
+                          type: object
+                          properties:
+                            price_volatility:
+                              type: number
+                              description: Price volatility percentage
+                            atr_14:
+                              type: number
+                              description: 14-period Average True Range
+                            volatility_percentile:
+                              type: number
+                              description: Volatility percentile (0-100)
+                            volatility_rating:
+                              type: string
+                              enum: ["low", "medium", "high"]
+                              description: Volatility classification
+                            price_stability:
+                              type: string
+                              enum: ["stable", "moderate", "volatile"]
+                              description: Price stability assessment
+                            recent_range:
+                              type: number
+                              description: Recent price range
+                            range_percentage:
+                              type: number
+                              description: Range as percentage of price
+                        market_structure:
+                          type: object
+                          properties:
+                            short_term_trend:
+                              type: number
+                              description: Short-term trend percentage
+                            medium_term_trend:
+                              type: number
+                              description: Medium-term trend percentage
+                            trend_direction:
+                              type: string
+                              enum: ["bullish", "bearish", "sideways"]
+                              description: Overall trend direction
+                            trend_strength:
+                              type: number
+                              description: Trend strength measurement
+                            resistance_level:
+                              type: number
+                              description: Identified resistance level
+                            support_level:
+                              type: number
+                              description: Identified support level
+                            distance_to_resistance:
+                              type: number
+                              description: Distance to resistance as percentage
+                            distance_to_support:
+                              type: number
+                              description: Distance to support as percentage
+                            position_in_range:
+                              type: number
+                              description: Position within support-resistance range (0-100)
+                            breakout_probability:
+                              type: string
+                              enum: ["low", "medium", "high"]
+                              description: Probability of breakout
+                        timestamp:
+                          type: string
+                          format: date-time
+                          description: Analysis timestamp
+                  ai_analysis:
+                    type: object
+                    description: AI-powered trading opportunities (when include_ai=true)
+                    properties:
+                      high_probability_setups:
+                        type: array
+                        items:
+                          type: object
+                        description: Top trading setups identified by AI
+                      entry_price_analysis:
+                        type: object
+                        description: Specific entry price recommendations
+                      target_levels:
+                        type: object
+                        description: Profit target analysis
+                      stop_loss_recommendations:
+                        type: object
+                        description: Stop loss level suggestions
+                      risk_reward_ratios:
+                        type: object
+                        description: Risk/reward calculations
+                      volume_confirmation:
+                        type: object
+                        description: Volume-based trade confirmation
+                      technical_signals:
+                        type: object
+                        description: Technical indicator signals
+                      timeline_expectations:
+                        type: object
+                        description: Expected timeframes for trades
+                      position_sizing_suggestions:
+                        type: object
+                        description: Recommended position sizes
+                  generation_timestamp:
+                    type: string
+                    format: date-time
+                    description: When the analysis was generated
+                  analysis_completeness:
+                    type: string
+                    description: Completeness level of analysis
+        '503':
+          description: Enhanced intelligence not available
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                  fallback:
+                    type: string
+
+  /api/enhanced-intelligence/test:
+    get:
+      operationId: testEnhancedIntelligence
+      summary: Test enhanced intelligence system
+      description: |
+        Test the enhanced intelligence system with BTC/USDT and ETH/USDT.
+        Returns system health and data quality metrics.
+      responses:
+        '200':
+          description: Test results
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  test_status:
+                    type: string
+                    enum: ["success", "failed"]
+                    description: Overall test status
+                  symbols_tested:
+                    type: array
+                    items:
+                      type: string
+                    description: Symbols used in test
+                  timeframe:
+                    type: string
+                    description: Timeframe used for test
+                  data_quality:
+                    type: object
+                    additionalProperties:
+                      type: object
+                      properties:
+                        price_data_available:
+                          type: boolean
+                          description: Whether price data is available
+                        volume_score:
+                          type: number
+                          description: Volume analysis quality score
+                        rsi_value:
+                          type: number
+                          description: RSI calculation result
+                        volatility_rating:
+                          type: string
+                          description: Volatility classification
+                        trend_direction:
+                          type: string
+                          description: Trend analysis result
+                        pattern_count:
+                          type: integer
+                          description: Number of patterns detected
+                  test_timestamp:
+                    type: string
+                    format: date-time
+                    description: When the test was performed
+        '503':
+          description: Test failed - system not available
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  test_status:
+                    type: string
+                    value: "failed"
+                  error:
+                    type: string

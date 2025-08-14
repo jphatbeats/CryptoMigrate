@@ -1,0 +1,3 @@
+Force Railway redeployment - Fixed time import in coordination system
+Timestamp: 2025-08-11 17:42:00
+Fix: Added missing time import to indicators/main.py for coordination endpoints

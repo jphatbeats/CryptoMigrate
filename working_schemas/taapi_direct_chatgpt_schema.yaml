@@ -1,0 +1,280 @@
+openapi: 3.1.0
+info:
+  title: TAAPI.io Direct Bulk for Titan
+  description: >
+    INTELLIGENT DATA SOURCING: For ANY token input, ChatGPT will automatically discover the best available data source.
+    
+    Priority Hierarchy: 1) BingX API (Primary) - Major exchange data, high liquidity. 2) DexScreener API (Secondary) - DEX tokens, meme coins, new listings. 3) Taapi.io Multi-Exchange (Fallback) - Binance/Bybit/Kraken data via 208+ indicators.
+    
+    Complete 208+ Indicators Arsenal: Momentum (RSI, MACD, Stochastic, Williams %R, CCI, Ultimate Oscillator), Trend (SMA, EMA, Hull MA, ADX, Parabolic SAR, Supertrend, Ichimoku), Volatility (Bollinger Bands, ATR, Keltner Channels, Donchian Channels), Volume (OBV, VWAP, Chaikin Money Flow, Volume Oscillator, A/D Line), Oscillators (Awesome Oscillator, Commodity Channel Index, TRIX), Pattern Recognition (Doji, Hammer, Engulfing, Morning/Evening Star), Support/Resistance (Pivot Points, Fibonacci Retracement, Price levels).
+    
+    Usage Protocol: Input 'Analyze PEPE' or 'Check BTC technicals' → Auto-discover data source (BingX → DexScreener → Taapi.io) → Apply ALL relevant indicators from 208+ arsenal → Generate confluence analysis with authentic data only → Provide trading recommendations with risk assessment.
+    
+    Multi-Exchange Support: Binance, Bybit, Kraken, Coinbase Pro for maximum token coverage.
+  version: 1.0.2
+servers:
+  - url: https://api.taapi.io
+    description: Taapi.io Direct API
+components:
+  securitySchemes:
+    taapiApiKey:
+      type: apiKey
+      in: query
+      name: secret
+  schemas:
+    RSIResponse:
+      type: object
+      properties:
+        value:
+          type: number
+          description: RSI value (0-100 scale)
+        timestamp:
+          type: integer
+          description: Unix timestamp of calculation
+      required: ["value", "timestamp"]
+    BulkIndicatorSpec:
+      type: object
+      properties:
+        indicator:
+          type: string
+          description: Indicator name from 208+ arsenal. Popular choices - Momentum (rsi, stoch, willr, cci, roc, mfi), Trend (sma, ema, hma, adx, sar, supertrend), Volatility (bbands, atr, keltner, donchian), Volume (obv, vwap, cmf, vosc), Oscillators (ao, cmo, trix, ppo), Pattern (doji, hammer, engulfing, morningstar).
+          example: "rsi"
+        period:
+          type: integer
+          description: Period for calculation (common: 14 for RSI, 20 for Bollinger)
+        fast:
+          type: integer
+          description: Fast period (for MACD, Stochastic, etc.)
+        slow:
+          type: integer
+          description: Slow period (for MACD, Stochastic, etc.)
+        signal:
+          type: integer
+          description: Signal period (for MACD signal line)
+        stddev:
+          type: number
+          description: Standard deviation multiplier (for Bollinger Bands)
+      required: ["indicator"]
+    BulkRequest:
+      type: object
+      properties:
+        construct:
+          type: object
+          properties:
+            exchange:
+              type: string
+              description: Exchange for data source
+              default: "binance"
+              enum: ["binance", "bybit", "kraken", "coinbase", "kucoin"]
+            symbol:
+              type: string
+              description: Trading pair symbol. Works with ANY crypto token - Major coins (BTC/USDT, ETH/USDT, ADA/USDT), Meme tokens (PEPE/USDT, SHIB/USDT, DOGE/USDT), New listings (Any token available on supported exchanges).
+              example: "BTC/USDT"
+            interval:
+              type: string
+              description: Timeframe for analysis
+              default: "1h"
+              enum: ["1m","3m","5m","15m","30m","1h","2h","4h","6h","8h","12h","1d","3d","1w","1M"]
+            indicators:
+              type: array
+              description: List of indicators to calculate (max 20 per request). Recommended sets - Momentum Analysis (rsi, stoch, willr, cci, mfi), Trend Confirmation (ema, sma, adx, sar, supertrend), Volatility Assessment (bbands, atr, keltner), Volume Validation (obv, vwap, cmf), Complete Analysis (rsi, macd, bbands, ema, adx, atr, obv, vwap).
+              maxItems: 20
+              items:
+                $ref: "#/components/schemas/BulkIndicatorSpec"
+          required: ["exchange","symbol","interval","indicators"]
+      required: ["construct"]
+    BulkDataItem:
+      type: object
+      properties:
+        indicator:
+          type: string
+          description: Name of the indicator
+        result:
+          description: Indicator calculation result. Format varies by indicator - Single value (RSI, ATR, ADX as number), Multiple values (MACD as macd/signal/histogram, Bollinger Bands as upper/middle/lower), Complex (Ichimoku as tenkan/kijun/senkou_a/senkou_b/chikou).
+        errors:
+          type: array
+          items:
+            type: string
+          description: Any errors encountered during calculation
+      required: ["indicator"]
+    BulkResponse:
+      type: object
+      properties:
+        requested:
+          type: object
+          description: Echo of the request parameters
+        data:
+          type: array
+          items:
+            $ref: "#/components/schemas/BulkDataItem"
+          description: Array of indicator results
+        note:
+          type: string
+          description: Additional information about the response
+      required: ["data"]
+    ErrorResponse:
+      type: object
+      properties:
+        error:
+          type: string
+          description: Error message
+        hint:
+          type: string
+          description: Suggestion for fixing the error
+      required: ["error"]
+security:
+  - taapiApiKey: []
+paths:
+  /bulk:
+    post:
+      summary: Fetch up to 20 indicators in one request
+      description: PRIMARY ENDPOINT for comprehensive technical analysis. Request multiple indicators simultaneously for efficient confluence analysis. Intelligent Usage Pattern - 1) Auto-discover token availability across exchanges, 2) Select relevant indicators based on trading strategy, 3) Use multiple timeframes for confluence, 4) Generate trading recommendations with risk assessment. Popular Indicator Combinations - Scalping (rsi, stoch, ema9, ema21, bbands), Swing Trading (rsi, macd, sma50, sma200, atr), Trend Following (adx, sar, supertrend, ema20, ema50), Breakout (bbands, atr, keltner, volume, rsi).
+      operationId: getBulkIndicators
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/BulkRequest"
+            examples:
+              comprehensive_analysis:
+                summary: Complete Technical Analysis
+                description: Full confluence analysis with momentum, trend, volatility, and volume
+                value:
+                  construct:
+                    exchange: "binance"
+                    symbol: "BTC/USDT"
+                    interval: "1h"
+                    indicators:
+                      - indicator: "rsi"
+                        period: 14
+                      - indicator: "macd"
+                        fast: 12
+                        slow: 26
+                        signal: 9
+                      - indicator: "bbands"
+                        period: 20
+                        stddev: 2
+                      - indicator: "ema"
+                        period: 20
+                      - indicator: "sma"
+                        period: 50
+                      - indicator: "adx"
+                        period: 14
+                      - indicator: "atr"
+                        period: 14
+                      - indicator: "obv"
+                      - indicator: "vwap"
+              meme_token_analysis:
+                summary: Meme Token Analysis
+                description: Technical analysis optimized for high-volatility meme tokens
+                value:
+                  construct:
+                    exchange: "binance"
+                    symbol: "PEPE/USDT"
+                    interval: "15m"
+                    indicators:
+                      - indicator: "rsi"
+                        period: 14
+                      - indicator: "stoch"
+                        fast: 14
+                        slow: 3
+                        signal: 3
+                      - indicator: "bbands"
+                        period: 20
+                        stddev: 2.5
+                      - indicator: "willr"
+                        period: 14
+                      - indicator: "cci"
+                        period: 14
+                      - indicator: "atr"
+                        period: 14
+      responses:
+        '200':
+          description: Bulk indicators result
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/BulkResponse"
+              examples:
+                success_response:
+                  summary: Successful Analysis
+                  value:
+                    requested:
+                      exchange: "binance"
+                      symbol: "BTC/USDT"
+                      interval: "1h"
+                    data:
+                      - indicator: "rsi"
+                        result:
+                          value: 58.42
+                          timestamp: 1736426400
+                      - indicator: "macd"
+                        result:
+                          macd: 234.56
+                          signal: 123.45
+                          histogram: 111.11
+                          timestamp: 1736426400
+                      - indicator: "bbands"
+                        result:
+                          upper: 45123.45
+                          middle: 44567.89
+                          lower: 44012.33
+                          timestamp: 1736426400
+                    note: "All indicators calculated successfully"
+        '400':
+          description: Invalid request
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+        '503':
+          description: Service unavailable
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+  /rsi:
+    get:
+      summary: Quick RSI (health/sanity check)
+      description: Quick health check endpoint to verify API connectivity and basic functionality. Returns RSI for any supported trading pair. Use for system health checks, API key validation, quick single indicator lookup.
+      operationId: getRSIQuick
+      parameters:
+        - name: exchange
+          in: query
+          schema:
+            type: string
+            default: "binance"
+            enum: ["binance", "bybit", "kraken", "coinbase", "kucoin"]
+        - name: symbol
+          in: query
+          required: true
+          schema:
+            type: string
+            example: "BTC/USDT"
+          description: Trading pair symbol (works with ANY token available on the exchange)
+        - name: interval
+          in: query
+          schema:
+            type: string
+            default: "1h"
+            enum: ["1m","3m","5m","15m","30m","1h","2h","4h","6h","8h","12h","1d","3d","1w","1M"]
+      responses:
+        '200':
+          description: RSI value
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/RSIResponse"
+        '400':
+          description: Invalid request
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+        '503':
+          description: Service unavailable
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"

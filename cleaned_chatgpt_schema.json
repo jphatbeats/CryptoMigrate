@@ -1,0 +1,674 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "Personal Trading Intelligence API",
+    "description": "Personal trading portfolio management with authenticated position data from BingX & Blofin exchanges, AI analysis, and crypto news intelligence. This API focuses on YOUR trading positions and performance, not general market data.",
+    "version": "v2.2.0"
+  },
+  "servers": [
+    {
+      "url": "https://titan-trading-2-production.up.railway.app"
+    }
+  ],
+  "paths": {
+    "/health": {
+      "get": {
+        "description": "Health check endpoint to verify API connectivity",
+        "operationId": "healthCheck",
+        "responses": {
+          "200": {
+            "description": "API is healthy and responding",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {"type": "string"},
+                    "timestamp": {"type": "string"},
+                    "server": {"type": "string"},
+                    "version": {"type": "string"},
+                    "endpoints_available": {
+                      "type": "array",
+                      "items": {"type": "string"}
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/live/all-exchanges": {
+      "get": {
+        "description": "Get YOUR live positions and orders from all exchanges (BingX & Blofin)",
+        "operationId": "getAllExchangeData",
+        "responses": {
+          "200": {
+            "description": "Your personal trading positions across exchanges",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "timestamp": { "type": "string" },
+                    "exchanges": {
+                      "type": "object",
+                      "properties": {
+                        "bingx": {
+                          "type": "object",
+                          "properties": {
+                            "status": { "type": "string" },
+                            "positions": { "type": "object" },
+                            "orders": { "type": "object" }
+                          }
+                        },
+                        "blofin": {
+                          "type": "object",
+                          "properties": {
+                            "status": { "type": "string" },
+                            "positions": { "type": "array", "items": { "type": "object" } },
+                            "orders": { "type": "array", "items": { "type": "object" } }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/live/account-balances": {
+      "get": {
+        "description": "Get YOUR account balances from all exchanges",
+        "operationId": "getAccountBalances",
+        "security": [
+          {
+            "ApiKeyAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Your personal account balances",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "timestamp": { "type": "string" },
+                    "balances": {
+                      "type": "object",
+                      "properties": {
+                        "bingx": {
+                          "type": "object",
+                          "properties": {
+                            "status": { "type": "string" },
+                            "data": { "type": "object" }
+                          }
+                        },
+                        "blofin": {
+                          "type": "object",
+                          "properties": {
+                            "status": { "type": "string" },
+                            "data": { "type": "object" }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/live/bingx-positions": {
+      "get": {
+        "description": "Get YOUR live positions from BingX exchange - your actual trades and P&L",
+        "operationId": "getBingXPositions",
+        "security": [
+          {
+            "ApiKeyAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Your BingX trading positions and orders",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "timestamp": { "type": "string" },
+                    "source": { "type": "string" },
+                    "positions": {
+                      "type": "object",
+                      "properties": {
+                        "code": { "type": "integer" },
+                        "data": {
+                          "type": "object",
+                          "properties": {
+                            "positions": {
+                              "type": "array",
+                              "items": { 
+                                "type": "object",
+                                "properties": {
+                                  "symbol": { "type": "string" },
+                                  "positionSide": { "type": "string" },
+                                  "leverage": { "type": "string" },
+                                  "positionAmt": { "type": "string" },
+                                  "entryPrice": { "type": "string" },
+                                  "markPrice": { "type": "string" },
+                                  "unRealizedProfit": { "type": "string" },
+                                  "percentage": { "type": "string" }
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    },
+                    "orders": {
+                      "type": "object",
+                      "properties": {
+                        "code": { "type": "integer" },
+                        "data": {
+                          "type": "object",
+                          "properties": {
+                            "orders": {
+                              "type": "array",
+                              "items": {
+                                "type": "object",
+                                "properties": {
+                                  "symbol": { "type": "string" },
+                                  "positionSide": { "type": "string" },
+                                  "leverage": { "type": "string" },
+                                  "status": { "type": "string" },
+                                  "avgPrice": { "type": "string" },
+                                  "stopLoss": { "type": "object" },
+                                  "takeProfit": { "type": "object" }
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/live/blofin-positions": {
+      "get": {
+        "description": "Get YOUR live positions from Blofin exchange - your actual trades and P&L",
+        "operationId": "getBlofinPositions",
+        "security": [
+          {
+            "ApiKeyAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Your Blofin trading positions and orders",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "timestamp": { "type": "string" },
+                    "source": { "type": "string" },
+                    "positions": {
+                      "type": "array",
+                      "items": { 
+                        "type": "object",
+                        "properties": {
+                          "symbol": { "type": "string" },
+                          "side": { "type": "string" },
+                          "size": { "type": "string" },
+                          "entryPrice": { "type": "string" },
+                          "markPrice": { "type": "string" },
+                          "unrealizedPnl": { "type": "string" },
+                          "percentage": { "type": "string" }
+                        }
+                      }
+                    },
+                    "orders": {
+                      "type": "array",
+                      "items": { "type": "object" }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/chatgpt/portfolio-analysis": {
+      "get": {
+        "description": "AI-powered analysis of YOUR trading portfolio using GPT-4o",
+        "operationId": "getPortfolioAnalysis",
+        "responses": {
+          "200": {
+            "description": "AI analysis of your personal trading performance",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "overall_assessment": { "type": "string" },
+                    "risk_level": { "type": "string" },
+                    "recommendations": { "type": "array", "items": { "type": "string" } },
+                    "position_analysis": { "type": "array", "items": { "type": "object" } },
+                    "diversification_score": { "type": "integer" },
+                    "next_actions": { "type": "array", "items": { "type": "string" } },
+                    "market_outlook": { "type": "string" }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/chatgpt/news-sentiment": {
+      "post": {
+        "description": "AI news sentiment analysis for YOUR trading positions",
+        "operationId": "getNewsSentiment",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "articles": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "title": { "type": "string" },
+                        "text": { "type": "string" },
+                        "tickers": { "type": "array", "items": { "type": "string" } },
+                        "source_name": { "type": "string" }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Sentiment analysis results",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "sentiment": { "type": "string" },
+                    "impact_score": { "type": "integer" },
+                    "trading_signal": { "type": "string" },
+                    "confidence": { "type": "integer" },
+                    "overall_market_sentiment": { "type": "string" }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/chatgpt/trade-grader": {
+      "post": {
+        "description": "AI grading of YOUR trading performance with improvement suggestions",
+        "operationId": "getTradeGrade",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "symbol": { "type": "string" },
+                  "entry_price": { "type": "number" },
+                  "exit_price": { "type": "number" },
+                  "position_size": { "type": "number" },
+                  "trade_duration": { "type": "string" },
+                  "stop_loss": { "type": "number" },
+                  "take_profit": { "type": "number" }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Trade performance grade and analysis",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "trade_grade": { "type": "string" },
+                    "execution_score": { "type": "integer" },
+                    "risk_management_score": { "type": "integer" },
+                    "improvement_suggestions": { "type": "array", "items": { "type": "string" } },
+                    "lessons_learned": { "type": "array", "items": { "type": "string" } }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/chatgpt/hourly-insights": {
+      "get": {
+        "description": "AI-powered hourly insights for YOUR trading positions",
+        "operationId": "getHourlyInsights",
+        "responses": {
+          "200": {
+            "description": "Time-sensitive trading insights for your portfolio",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "market_pulse": { "type": "string" },
+                    "immediate_opportunities": { "type": "array", "items": { "type": "string" } },
+                    "risk_alerts": { "type": "array", "items": { "type": "string" } },
+                    "portfolio_adjustments": { "type": "array", "items": { "type": "string" } },
+                    "next_hour_outlook": { "type": "string" },
+                    "action_items": { "type": "array", "items": { "type": "string" } }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/chatgpt/risk-assessment": {
+      "get": {
+        "description": "AI risk assessment of YOUR trading portfolio",
+        "operationId": "getRiskAssessment",
+        "responses": {
+          "200": {
+            "description": "Comprehensive risk analysis of your positions",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "overall_risk_score": { "type": "integer" },
+                    "risk_factors": { "type": "array", "items": { "type": "string" } },
+                    "position_risks": { "type": "array", "items": { "type": "object" } },
+                    "correlation_risks": { "type": "array", "items": { "type": "string" } },
+                    "recommended_hedges": { "type": "array", "items": { "type": "string" } },
+                    "stress_test_scenarios": { "type": "array", "items": { "type": "object" } }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/chatgpt/opportunity-scanner": {
+      "get": {
+        "description": "AI opportunity scanner for YOUR trading strategy",
+        "operationId": "getOpportunityScanner",
+        "responses": {
+          "200": {
+            "description": "High-probability trading opportunities for your portfolio",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "high_probability_setups": { "type": "array", "items": { "type": "object" } },
+                    "breakout_candidates": { "type": "array", "items": { "type": "string" } },
+                    "momentum_plays": { "type": "array", "items": { "type": "string" } },
+                    "entry_strategies": { "type": "array", "items": { "type": "object" } },
+                    "risk_reward_analysis": { "type": "array", "items": { "type": "object" } },
+                    "probability_of_success": { "type": "array", "items": { "type": "object" } }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/kraken/positions": {
+      "get": {
+        "description": "Get YOUR enhanced Kraken positions with comprehensive analytics including USD values, entry analysis, and time in trade",
+        "operationId": "getKrakenPositions",
+        "security": [
+          {
+            "ApiKeyAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Your enhanced Kraken positions with detailed analytics",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "timestamp": { "type": "string" },
+                    "source": { "type": "string" },
+                    "total_positions": { "type": "integer" },
+                    "total_portfolio_value": { "type": "number" },
+                    "positions": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "symbol": { "type": "string" },
+                          "side": { "type": "string" },
+                          "contracts": { "type": "number" },
+                          "entryPrice": { "type": "number" },
+                          "markPrice": { "type": "number" },
+                          "unrealizedPnl": { "type": "number" },
+                          "percentage": { "type": "number" },
+                          "enhanced_data": {
+                            "type": "object",
+                            "properties": {
+                              "token_amount": { "type": "number" },
+                              "usd_value": { "type": "number" },
+                              "entry_price_calculated": { "type": "number" },
+                              "current_price": { "type": "number" },
+                              "unrealized_pnl_usd": { "type": "number" },
+                              "pnl_percentage": { "type": "number" },
+                              "time_in_trade": { "type": "string" },
+                              "trade_count": { "type": "integer" },
+                              "avg_trade_size": { "type": "number" },
+                              "total_fees_paid": { "type": "number" }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/kraken/balance": {
+      "get": {
+        "description": "Get YOUR Kraken account balance with USD valuations and portfolio breakdown",
+        "operationId": "getKrakenBalance",
+        "security": [
+          {
+            "ApiKeyAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Your Kraken account balance with detailed breakdown",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "timestamp": { "type": "string" },
+                    "source": { "type": "string" },
+                    "total_fiat_balance": { "type": "number" },
+                    "total_crypto_value": { "type": "number" },
+                    "total_portfolio_value": { "type": "number" },
+                    "balances": {
+                      "type": "object",
+                      "additionalProperties": {
+                        "type": "object",
+                        "properties": {
+                          "free": { "type": "number" },
+                          "used": { "type": "number" },
+                          "total": { "type": "number" },
+                          "usd_value": { "type": "number" },
+                          "percentage_of_portfolio": { "type": "number" }
+                        }
+                      }
+                    },
+                    "top_holdings": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "symbol": { "type": "string" },
+                          "amount": { "type": "number" },
+                          "usd_value": { "type": "number" },
+                          "percentage": { "type": "number" }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/kraken/trade-history": {
+      "get": {
+        "description": "Get YOUR comprehensive Kraken trade history with performance analytics",
+        "operationId": "getKrakenTradeHistory",
+        "security": [
+          {
+            "ApiKeyAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "limit",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "default": 50,
+              "minimum": 10,
+              "maximum": 500
+            },
+            "description": "Number of trades to fetch (10-500)"
+          },
+          {
+            "name": "symbol",
+            "in": "query",
+            "required": false,
+            "schema": { "type": "string" },
+            "description": "Filter by specific symbol (e.g., BTC/USD)"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Your comprehensive trade history with analytics",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "timestamp": { "type": "string" },
+                    "source": { "type": "string" },
+                    "total_trades": { "type": "integer" },
+                    "trades": { "type": "array", "items": { "type": "object" } },
+                    "performance_summary": { "type": "object" }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/kraken/portfolio-performance": {
+      "get": {
+        "description": "Get YOUR comprehensive Kraken portfolio performance analytics",
+        "operationId": "getKrakenPortfolioPerformance",
+        "security": [
+          {
+            "ApiKeyAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Your detailed portfolio performance metrics",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "timestamp": { "type": "string" },
+                    "source": { "type": "string" },
+                    "performance_metrics": { "type": "object" },
+                    "risk_metrics": { "type": "object" },
+                    "trading_patterns": { "type": "object" }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "Error": {
+        "type": "object",
+        "properties": {
+          "error": { "type": "string" },
+          "message": { "type": "string" },
+          "timestamp": { "type": "string" }
+        }
+      }
+    },
+    "securitySchemes": {
+      "ApiKeyAuth": {
+        "type": "apiKey",
+        "in": "header",
+        "name": "Authorization",
+        "description": "Exchange API authentication (automatically handled by Railway server)"
+      }
+    }
+  },
+  "security": [
+    {
+      "ApiKeyAuth": []
+    }
+  ]
+}

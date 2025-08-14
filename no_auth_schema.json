@@ -1,0 +1,573 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "Complete Trading Intelligence API",
+    "description": "Comprehensive trading portfolio management with live exchange data from BingX & Blofin, advanced crypto news intelligence, opportunity scanning, and AI-optimized analysis",
+    "version": "v2.1.0"
+  },
+  "servers": [
+    {
+      "url": "https://titan-trading-2-production.up.railway.app"
+    }
+  ],
+  "paths": {
+    "/health": {
+      "get": {
+        "description": "Health check endpoint to verify API connectivity",
+        "operationId": "healthCheck",
+        "responses": {
+          "200": {
+            "description": "API is healthy and responding",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {"type": "string"},
+                    "timestamp": {"type": "string"},
+                    "server": {"type": "string"},
+                    "version": {"type": "string"},
+                    "endpoints_available": {
+                      "type": "array",
+                      "items": {"type": "string"}
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/": {
+      "get": {
+        "description": "API documentation and available endpoints",
+        "operationId": "getApiDocumentation",
+        "responses": {
+          "200": {
+            "description": "API documentation with all available endpoints",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {"type": "string"},
+                    "live_endpoints": {"type": "object"},
+                    "chatgpt_endpoints": {"type": "object"},
+                    "crypto_news_intelligence": {"type": "object"}
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/live/all-exchanges": {
+      "get": {
+        "description": "Get live positions and orders from all exchanges (BingX & Blofin)",
+        "operationId": "getAllExchangeData",
+        "responses": {
+          "200": {
+            "description": "Live exchange data",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "timestamp": { "type": "string" },
+                    "exchanges": {
+                      "type": "object",
+                      "properties": {
+                        "bingx": {
+                          "type": "object",
+                          "properties": {
+                            "status": { "type": "string" },
+                            "positions": { "type": "object" },
+                            "orders": { "type": "object" }
+                          }
+                        },
+                        "blofin": {
+                          "type": "object",
+                          "properties": {
+                            "status": { "type": "string" },
+                            "positions": { "type": "array", "items": { "type": "object" } },
+                            "orders": { "type": "array", "items": { "type": "object" } }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/live/account-balances": {
+      "get": {
+        "description": "Get YOUR account balances from all exchanges",
+        "operationId": "getAccountBalances",
+        "responses": {
+          "200": {
+            "description": "Account balances",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "timestamp": { "type": "string" },
+                    "balances": {
+                      "type": "object",
+                      "properties": {
+                        "bingx": {
+                          "type": "object",
+                          "properties": {
+                            "status": { "type": "string" },
+                            "data": { "type": "object" }
+                          }
+                        },
+                        "blofin": {
+                          "type": "object",
+                          "properties": {
+                            "status": { "type": "string" },
+                            "data": { "type": "object" }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+
+
+    "/api/live/market-data/{symbol}": {
+      "get": {
+        "description": "Get live market data for a specific symbol",
+        "operationId": "getMarketData",
+        "parameters": [
+          {
+            "name": "symbol",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "string" },
+            "description": "Trading symbol (e.g., BTC-USDT)"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Live market data",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "timestamp": { "type": "string" },
+                    "symbol": { "type": "string" },
+                    "market_data": {
+                      "type": "object",
+                      "properties": {
+                        "blofin": {
+                          "type": "object",
+                          "properties": {
+                            "status": { "type": "string" },
+                            "ticker": { "type": "object" },
+                            "orderbook": { "type": "object" }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/chatgpt/account-summary": {
+      "get": {
+        "description": "Get ChatGPT-safe account connectivity summary without exposing sensitive balance details",
+        "operationId": "getChatGPTAccountSummary",
+        "responses": {
+          "200": {
+            "description": "Account connectivity status",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "timestamp": {"type": "string"},
+                    "account_health": {
+                      "type": "object",
+                      "properties": {
+                        "bingx": {
+                          "type": "object",
+                          "properties": {
+                            "status": {"type": "string"},
+                            "has_balance": {"type": "boolean"}
+                          }
+                        },
+                        "blofin": {
+                          "type": "object",
+                          "properties": {
+                            "status": {"type": "string"},
+                            "has_balance": {"type": "boolean"}
+                          }
+                        }
+                      }
+                    },
+                    "total_exchanges_active": {"type": "integer"},
+                    "message": {"type": "string"}
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/chatgpt/portfolio-analysis": {
+      "get": {
+        "description": "Get ChatGPT-optimized portfolio analysis with clean formatting for AI analysis",
+        "operationId": "getChatGPTPortfolioAnalysis",
+        "responses": {
+          "200": {
+            "description": "AI-optimized portfolio analysis with detailed metrics and recommendations",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "timestamp": { "type": "string" },
+                    "portfolio_overview": {
+                      "type": "object",
+                      "properties": {
+                        "total_positions": { "type": "integer" },
+                        "total_value_usd": { "type": "number" },
+                        "total_pnl_usd": { "type": "number" },
+                        "exchanges_connected": { "type": "array", "items": { "type": "string" } }
+                      }
+                    },
+                    "position_analysis": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "symbol": { "type": "string" },
+                          "exchange": { "type": "string" },
+                          "position_side": { "type": "string" },
+                          "size": { "type": "number" },
+                          "entry_price": { "type": "number" },
+                          "current_price": { "type": "number" },
+                          "pnl_usd": { "type": "number" },
+                          "pnl_percentage": { "type": "number" },
+                          "leverage": { "type": "string" },
+                          "margin_used": { "type": "number" },
+                          "days_held": { "type": "integer" }
+                        }
+                      }
+                    },
+                    "risk_metrics": {
+                      "type": "object",
+                      "properties": {
+                        "largest_loss_position": { "type": "object" },
+                        "highest_leverage_positions": { "type": "array", "items": { "type": "object" } },
+                        "positions_without_stop_loss": { "type": "array", "items": { "type": "object" } },
+                        "portfolio_risk_score": { "type": "number", "minimum": 1, "maximum": 10 }
+                      }
+                    },
+                    "recommendations": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "type": { "type": "string", "enum": ["profit_taking", "stop_loss", "position_sizing", "risk_management"] },
+                          "message": { "type": "string" },
+                          "urgency": { "type": "string", "enum": ["low", "medium", "high", "critical"] }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/crypto-news/search/{ticker}": {
+      "get": {
+        "description": "Search crypto news for specific ticker symbols with enhanced filtering",
+        "operationId": "searchCryptoNews",
+        "parameters": [
+          {
+            "name": "ticker",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "string" },
+            "description": "Cryptocurrency ticker symbol (e.g., BTC, ETH, SOL)"
+          },
+          {
+            "name": "items",
+            "in": "query",
+            "required": false,
+            "schema": { "type": "integer", "default": 10, "minimum": 1, "maximum": 50 },
+            "description": "Number of news articles to return"
+          },
+          {
+            "name": "sentiment",
+            "in": "query",
+            "required": false,
+            "schema": { "type": "string", "enum": ["positive", "negative", "neutral"] },
+            "description": "Filter by news sentiment"
+          },
+          {
+            "name": "date",
+            "in": "query",
+            "required": false,
+            "schema": { "type": "string" },
+            "description": "Filter by date (YYYY-MM-DD format)"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Crypto news search results",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "timestamp": { "type": "string" },
+                    "ticker": { "type": "string" },
+                    "total_results": { "type": "integer" },
+                    "articles": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "title": { "type": "string" },
+                          "text": { "type": "string" },
+                          "url": { "type": "string" },
+                          "source_name": { "type": "string" },
+                          "date": { "type": "string" },
+                          "sentiment": { "type": "string" },
+                          "type": { "type": "string" },
+                          "tickers": { "type": "array", "items": { "type": "string" } }
+                        }
+                      }
+                    },
+                    "sentiment_summary": {
+                      "type": "object",
+                      "properties": {
+                        "positive": { "type": "integer" },
+                        "negative": { "type": "integer" },
+                        "neutral": { "type": "integer" },
+                        "overall_sentiment": { "type": "string" }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/crypto-news/breaking": {
+      "get": {
+        "description": "Get breaking crypto news with impact analysis",
+        "operationId": "getBreakingCryptoNews",
+        "parameters": [
+          {
+            "name": "items",
+            "in": "query",
+            "required": false,
+            "schema": { "type": "integer", "default": 10, "minimum": 1, "maximum": 20 },
+            "description": "Number of breaking news items to return"
+          },
+          {
+            "name": "hours",
+            "in": "query",
+            "required": false,
+            "schema": { "type": "integer", "default": 24, "minimum": 1, "maximum": 168 },
+            "description": "Time window in hours for breaking news"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Breaking crypto news with impact analysis",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "timestamp": { "type": "string" },
+                    "time_window": { "type": "string" },
+                    "breaking_news": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "title": { "type": "string" },
+                          "text": { "type": "string" },
+                          "url": { "type": "string" },
+                          "source_name": { "type": "string" },
+                          "date": { "type": "string" },
+                          "sentiment": { "type": "string" },
+                          "impact_score": { "type": "number", "minimum": 0, "maximum": 10 },
+                          "affected_tickers": { "type": "array", "items": { "type": "string" } },
+                          "category": { "type": "string" },
+                          "urgency": { "type": "string", "enum": ["low", "medium", "high", "critical"] }
+                        }
+                      }
+                    },
+                    "market_impact": {
+                      "type": "object",
+                      "properties": {
+                        "overall_sentiment": { "type": "string" },
+                        "most_mentioned_tickers": { "type": "array", "items": { "type": "string" } },
+                        "high_impact_events": { "type": "integer" },
+                        "trend_analysis": { "type": "string" }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/crypto-news/portfolio-intelligence": {
+      "get": {
+        "description": "Get portfolio-specific crypto news intelligence and risk analysis",
+        "operationId": "getPortfolioNewsIntelligence",
+        "responses": {
+          "200": {
+            "description": "Portfolio-specific news intelligence with risk assessment",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "timestamp": { "type": "string" },
+                    "portfolio_positions": { "type": "array", "items": { "type": "string" } },
+                    "position_news": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "symbol": { "type": "string" },
+                          "news_count": { "type": "integer" },
+                          "sentiment_score": { "type": "number", "minimum": -1, "maximum": 1 },
+                          "risk_level": { "type": "string", "enum": ["very_low", "low", "moderate", "high", "very_high"] },
+                          "key_headlines": { "type": "array", "items": { "type": "string" } },
+                          "recommendation": { "type": "string", "enum": ["hold", "reduce", "exit", "increase"] }
+                        }
+                      }
+                    },
+                    "portfolio_risk_analysis": {
+                      "type": "object",
+                      "properties": {
+                        "overall_news_sentiment": { "type": "string" },
+                        "positions_at_risk": { "type": "array", "items": { "type": "string" } },
+                        "positive_catalysts": { "type": "array", "items": { "type": "string" } },
+                        "negative_catalysts": { "type": "array", "items": { "type": "string" } },
+                        "correlation_risks": { "type": "array", "items": { "type": "string" } }
+                      }
+                    },
+                    "actionable_insights": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "insight_type": { "type": "string", "enum": ["opportunity", "risk", "neutral"] },
+                          "priority": { "type": "string", "enum": ["low", "medium", "high", "urgent"] },
+                          "message": { "type": "string" },
+                          "affected_positions": { "type": "array", "items": { "type": "string" } },
+                          "recommended_action": { "type": "string" },
+                          "time_sensitivity": { "type": "string" }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/crypto-news/sundown-digest": {
+      "get": {
+        "description": "Get comprehensive end-of-day crypto market digest with professional analysis",
+        "operationId": "getSundownDigest",
+        "responses": {
+          "200": {
+            "description": "Professional end-of-day market analysis and news digest",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "timestamp": { "type": "string" },
+                    "market_date": { "type": "string" },
+                    "digest_summary": {
+                      "type": "object",
+                      "properties": {
+                        "total_articles": { "type": "integer" },
+                        "overall_sentiment": { "type": "string" },
+                        "top_movers": { "type": "array", "items": { "type": "string" } },
+                        "key_themes": { "type": "array", "items": { "type": "string" } }
+                      }
+                    },
+                    "market_highlights": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "headline": { "type": "string" },
+                          "summary": { "type": "string" },
+                          "impact": { "type": "string", "enum": ["low", "medium", "high"] },
+                          "affected_assets": { "type": "array", "items": { "type": "string" } },
+                          "source": { "type": "string" },
+                          "url": { "type": "string" }
+                        }
+                      }
+                    },
+                    "sector_analysis": {
+                      "type": "object",
+                      "properties": {
+                        "defi": { "type": "object", "properties": { "sentiment": { "type": "string" }, "news_count": { "type": "integer" } } },
+                        "nft": { "type": "object", "properties": { "sentiment": { "type": "string" }, "news_count": { "type": "integer" } } },
+                        "gaming": { "type": "object", "properties": { "sentiment": { "type": "string" }, "news_count": { "type": "integer" } } },
+                        "layer1": { "type": "object", "properties": { "sentiment": { "type": "string" }, "news_count": { "type": "integer" } } },
+                        "layer2": { "type": "object", "properties": { "sentiment": { "type": "string" }, "news_count": { "type": "integer" } } }
+                      }
+                    },
+                    "tomorrow_outlook": {
+                      "type": "object",
+                      "properties": {
+                        "key_events": { "type": "array", "items": { "type": "string" } },
+                        "watch_list": { "type": "array", "items": { "type": "string" } },
+                        "risk_factors": { "type": "array", "items": { "type": "string" } },
+                        "opportunities": { "type": "array", "items": { "type": "string" } }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

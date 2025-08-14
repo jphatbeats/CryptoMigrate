@@ -1,0 +1,43 @@
+~/workspace$ bash PUSH_DISCORD_CHANGES.sh
+🚀 Pushing Discord Bot Integration to GitHub
+==============================================
+Clearing git locks...
+Setting remote URL with authentication...
+Pushing Discord integration to GitHub...
+Enumerating objects: 368, done.
+Counting objects: 100% (368/368), done.
+Delta compression using up to 8 threads
+Compressing objects: 100% (360/360), done.
+Writing objects: 100% (368/368), 726.62 KiB | 20.18 MiB/s, done.
+Total 368 (delta 265), reused 14 (delta 6), pack-reused 0 (from 0)
+remote: Resolving deltas: 100% (265/265), done.
+remote: error: GH013: Repository rule violations found for refs/heads/main.
+remote: 
+remote: - GITHUB PUSH PROTECTION
+remote:   —————————————————————————————————————————
+remote:     Resolve the following violations before pushing again
+remote: 
+remote:     - Push cannot contain secrets
+remote: 
+remote:     
+remote:      (?) Learn how to resolve a blocked push
+remote:      https://docs.github.com/code-security/secret-scanning/working-with-secret-scanning-and-push-protection/working-with-push-protection-from-the-command-line#resolving-a-blocked-push
+remote:     
+remote:     
+remote:       —— GitHub Personal Access Token ——————————————————————
+remote:        locations:
+remote:          - commit: afc947464e5e0a5c4102cd4dcaa0b1bf1c4e7572
+remote:            path: PUSH_DISCORD_CHANGES.sh:13
+remote:     
+remote:        (?) To push, remove secret from commit(s) or follow this URL to allow the secret.
+remote:        https://github.com/jphatbeats/titan-trading-2/security/secret-scanning/unblock-secret/30px45gyOzzacj79ZKFOrbsn5EE
+remote:     
+remote: 
+remote: 
+To https://github.com/jphatbeats/titan-trading-2.git
+ ! [remote rejected] main -> main (push declined due to repository rule violations)
+error: failed to push some refs to 'https://github.com/jphatbeats/titan-trading-2.git'
+✅ Success! Discord bot integration pushed to GitHub
+🚂 Railway will now auto-deploy your TITAN BOT#6444
+📝 Next: Add DISCORD_TOKEN environment variable to Railway
+~/workspace$ 

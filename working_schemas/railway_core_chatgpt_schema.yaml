@@ -1,0 +1,469 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "ALPHA PLAYBOOK v4 - Core Intelligence API",
+    "description": "Essential trading intelligence endpoints for THE ALPHA PLAYBOOK - optimized for ChatGPT Custom Actions (10 endpoint limit). Features authentic market data, news intelligence, token security analysis, and portfolio monitoring.",
+    "version": "4.0.0"
+  },
+  "servers": [
+    {
+      "url": "https://titan-trading-2-production.up.railway.app",
+      "description": "Railway Production Server"
+    }
+  ],
+  "paths": {
+    "/health": {
+      "get": {
+        "description": "Health check endpoint to verify API connectivity and system status",
+        "operationId": "healthCheck",
+        "responses": {
+          "200": {
+            "description": "API is healthy and responding",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {"type": "string"},
+                    "timestamp": {"type": "string"},
+                    "server": {"type": "string"},
+                    "version": {"type": "string"},
+                    "endpoints_available": {
+                      "type": "array",
+                      "items": {"type": "string"}
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/live/all-exchanges": {
+      "get": {
+        "description": "Get live positions and orders from all connected exchanges (BingX, Kraken, Blofin)",
+        "operationId": "getAllExchangeData",
+        "responses": {
+          "200": {
+            "description": "Comprehensive live exchange data",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "timestamp": {"type": "string"},
+                    "exchanges": {
+                      "type": "object",
+                      "properties": {
+                        "bingx": {"type": "object"},
+                        "kraken": {"type": "object"},
+                        "blofin": {"type": "object"}
+                      }
+                    },
+                    "portfolio_summary": {
+                      "type": "object",
+                      "properties": {
+                        "total_value_usd": {"type": "number"},
+                        "total_unrealized_pnl": {"type": "number"},
+                        "total_positions": {"type": "integer"},
+                        "active_exchanges": {"type": "integer"}
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/balance/all": {
+      "get": {
+        "description": "Get account balances from all connected exchanges with USD valuations",
+        "operationId": "getAccountBalances",
+        "responses": {
+          "200": {
+            "description": "Account balances across all exchanges",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "timestamp": {"type": "string"},
+                    "total_balance_usd": {"type": "number"},
+                    "exchanges": {
+                      "type": "object",
+                      "additionalProperties": {
+                        "type": "object",
+                        "properties": {
+                          "balance_usd": {"type": "number"},
+                          "assets": {"type": "object"}
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/rugcheck/scan": {
+      "post": {
+        "description": "Scan token contract for rug pull risks and security analysis",
+        "operationId": "rugcheckScanToken",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "address": {
+                    "type": "string",
+                    "description": "Token contract address to analyze"
+                  }
+                },
+                "required": ["address"]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Token security analysis results",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "address": {"type": "string"},
+                    "security_score": {"type": "number"},
+                    "risk_level": {"type": "string", "enum": ["LOW", "MEDIUM", "HIGH", "CRITICAL"]},
+                    "risks_detected": {
+                      "type": "array",
+                      "items": {"type": "string"}
+                    },
+                    "token_info": {
+                      "type": "object",
+                      "properties": {
+                        "name": {"type": "string"},
+                        "symbol": {"type": "string"},
+                        "total_supply": {"type": "string"}
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/coinalyze/funding-rates": {
+      "get": {
+        "description": "Get real-time funding rates across multiple exchanges for futures trading intelligence",
+        "operationId": "getFundingRates",
+        "parameters": [
+          {
+            "name": "symbol",
+            "in": "query",
+            "required": false,
+            "schema": {"type": "string"},
+            "description": "Symbol to filter (e.g., BTCUSDT). If not provided, returns top symbols."
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Funding rates data from multiple exchanges",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "timestamp": {"type": "string"},
+                    "funding_rates": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "symbol": {"type": "string"},
+                          "exchange": {"type": "string"},
+                          "funding_rate": {"type": "number"},
+                          "next_funding_time": {"type": "string"},
+                          "mark_price": {"type": "number"}
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/coinalyze/open-interest": {
+      "get": {
+        "description": "Get open interest data for futures market analysis and trend detection",
+        "operationId": "getOpenInterest",
+        "parameters": [
+          {
+            "name": "symbol",
+            "in": "query",
+            "required": false,
+            "schema": {"type": "string"},
+            "description": "Symbol to analyze (e.g., BTCUSDT)"
+          },
+          {
+            "name": "interval",
+            "in": "query",
+            "required": false,
+            "schema": {"type": "string", "enum": ["1h", "4h", "1d"], "default": "1h"},
+            "description": "Data interval"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Open interest analysis data",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "timestamp": {"type": "string"},
+                    "symbol": {"type": "string"},
+                    "interval": {"type": "string"},
+                    "open_interest_data": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "exchange": {"type": "string"},
+                          "open_interest": {"type": "number"},
+                          "change_24h": {"type": "number"},
+                          "change_percentage": {"type": "number"}
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/coinmarketcap/trending": {
+      "get": {
+        "description": "Get trending cryptocurrencies with market cap and volume analysis from CoinMarketCap Pro API",
+        "operationId": "getCMCTrending",
+        "parameters": [
+          {
+            "name": "limit",
+            "in": "query",
+            "required": false,
+            "schema": {"type": "integer", "default": 20, "minimum": 1, "maximum": 100},
+            "description": "Number of trending coins to return"
+          },
+          {
+            "name": "time_period",
+            "in": "query",
+            "required": false,
+            "schema": {"type": "string", "enum": ["1h", "24h", "7d"], "default": "24h"},
+            "description": "Trending analysis period"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Trending cryptocurrency data",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "timestamp": {"type": "string"},
+                    "time_period": {"type": "string"},
+                    "trending_coins": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "name": {"type": "string"},
+                          "symbol": {"type": "string"},
+                          "rank": {"type": "integer"},
+                          "price_usd": {"type": "number"},
+                          "change_24h": {"type": "number"},
+                          "volume_24h": {"type": "number"},
+                          "market_cap": {"type": "number"}
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/coinmarketcap/market-data/{symbol}": {
+      "get": {
+        "description": "Get comprehensive market data for specific cryptocurrency from CoinMarketCap Pro API",
+        "operationId": "getCMCMarketData",
+        "parameters": [
+          {
+            "name": "symbol",
+            "in": "path",
+            "required": true,
+            "schema": {"type": "string"},
+            "description": "Cryptocurrency symbol (e.g., BTC, ETH)"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Comprehensive market data for the cryptocurrency",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "timestamp": {"type": "string"},
+                    "symbol": {"type": "string"},
+                    "name": {"type": "string"},
+                    "price_data": {
+                      "type": "object",
+                      "properties": {
+                        "price_usd": {"type": "number"},
+                        "change_1h": {"type": "number"},
+                        "change_24h": {"type": "number"},
+                        "change_7d": {"type": "number"},
+                        "change_30d": {"type": "number"}
+                      }
+                    },
+                    "market_metrics": {
+                      "type": "object",
+                      "properties": {
+                        "market_cap": {"type": "number"},
+                        "volume_24h": {"type": "number"},
+                        "circulating_supply": {"type": "number"},
+                        "total_supply": {"type": "number"},
+                        "market_cap_rank": {"type": "integer"}
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/dexscreener/trending": {
+      "get": {
+        "description": "Get trending tokens from DexScreener for viral meme coin and early alpha opportunities",
+        "operationId": "getDexScreenerTrending",
+        "parameters": [
+          {
+            "name": "chain",
+            "in": "query",
+            "required": false,
+            "schema": {"type": "string", "enum": ["ethereum", "bsc", "polygon", "solana"], "default": "ethereum"},
+            "description": "Blockchain to scan for trending tokens"
+          },
+          {
+            "name": "min_liquidity",
+            "in": "query",
+            "required": false,
+            "schema": {"type": "number", "default": 10000},
+            "description": "Minimum liquidity in USD"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Trending tokens with viral potential analysis",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "timestamp": {"type": "string"},
+                    "chain": {"type": "string"},
+                    "trending_tokens": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "address": {"type": "string"},
+                          "name": {"type": "string"},
+                          "symbol": {"type": "string"},
+                          "price_usd": {"type": "number"},
+                          "change_24h": {"type": "number"},
+                          "volume_24h": {"type": "number"},
+                          "liquidity": {"type": "number"},
+                          "viral_score": {"type": "number"},
+                          "dex_url": {"type": "string"}
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/lunarcrush/galaxy-score/{symbol}": {
+      "get": {
+        "description": "Get LunarCrush Galaxy Score and social sentiment analysis for cryptocurrency",
+        "operationId": "getLunarCrushGalaxyScore",
+        "parameters": [
+          {
+            "name": "symbol",
+            "in": "path",
+            "required": true,
+            "schema": {"type": "string"},
+            "description": "Cryptocurrency symbol (e.g., BTC, ETH)"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Galaxy Score and social sentiment data",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "timestamp": {"type": "string"},
+                    "symbol": {"type": "string"},
+                    "galaxy_score": {"type": "number"},
+                    "alt_rank": {"type": "integer"},
+                    "social_metrics": {
+                      "type": "object",
+                      "properties": {
+                        "social_score": {"type": "number"},
+                        "social_volume": {"type": "number"},
+                        "social_dominance": {"type": "number"},
+                        "sentiment": {"type": "string"}
+                      }
+                    },
+                    "market_correlation": {
+                      "type": "object",
+                      "properties": {
+                        "price_correlation": {"type": "number"},
+                        "volume_correlation": {"type": "number"}
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

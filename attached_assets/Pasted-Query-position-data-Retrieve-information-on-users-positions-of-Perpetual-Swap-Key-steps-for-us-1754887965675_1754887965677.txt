@@ -1,0 +1,95 @@
+Query position data
+Retrieve information on users' positions of Perpetual Swap.
+
+Key steps for using the API
+
+1. Create Account
+  
+2. Pass KYC/KYB
+  
+3. Create API KEY
+  
+4. Configure API KEY permissions
+  
+5. Understanding signature authentication
+ 6. Run the following example code  
+7. Understand common error codes
+  
+8. Understand rate limitations
+  
+9. Understanding request timestamps
+ 
+10. Understand fee schedule
+ 
+11. Understand trading rules
+request parameters https://open-api.bingx.com
+
+GET /openApi/swap/v2/user/positions
+
+rate limitation by UID: 5/s & rate limitation by IP in group Number: 
+API KEY permission: 
+Read
+Content-Type:  
+  
+RequestResponse
+symbol
+string
+no
+There must be a hyphen/ "-" in...
+timestamp
+int64
+yes
+request timestamp in milliseco...
+recvWindow
+int64
+no
+Request valid time window valu...
+  
+Sample code
+PythonGolangNodejsJavaC#phpShell
+
+import time
+import requests
+import hmac
+from hashlib import sha256
+
+APIURL = "https://open-api.bingx.com"
+APIKEY = ""
+SECRETKEY = ""
+
+def demo():
+    payload = {}
+    path = '/openApi/swap/v2/user/positions'
+    method = "GET"
+    paramsMap = {
+    "symbol": "BNB-USDT"
+}
+    paramsStr = parseParam(paramsMap)
+    return send_request(method, path, paramsStr, payload)
+
+def get_sign(api_secret, payload):
+    signature = hmac.new(api_secret.encode("utf-8"), payload.encode("utf-8"), digestmod=sha256).hexdigest()
+    print("sign=" + signature)
+    return signature
+
+
+def send_request(method, path, urlpa, payload):
+    url = "%s%s?%s&signature=%s" % (APIURL, path, urlpa, get_sign(SECRETKEY, urlpa))
+    print(url)
+    headers = {
+        'X-BX-APIKEY': APIKEY,
+    }
+    response = requests.request(method, url, headers=headers, data=payload)
+    return response.text
+
+def parseParam(paramsMap):
+    sortedKeys = sorted(paramsMap)
+    paramsStr = "&".join(["%s=%s" % (x, paramsMap[x]) for x in sortedKeys])
+    if paramsStr != "": 
+     return paramsStr+"&timestamp="+str(int(time.time() * 1000))
+    else:
+     return paramsStr+"timestamp="+str(int(time.time() * 1000))
+
+
+if __name__ == '__main__':
+    print("demo:", demo())

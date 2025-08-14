@@ -1,0 +1,174 @@
+openapi: 3.1.0
+info:
+  title: TAAPI.io Direct Bulk API
+  description: Technical analysis API providing 208+ indicators for cryptocurrency trading. Supports bulk requests up to 20 indicators per call across multiple exchanges.
+  version: 1.0.0
+servers:
+  - url: https://api.taapi.io
+    description: TAAPI.io Direct API
+components:
+  securitySchemes:
+    ApiKeyAuth:
+      type: apiKey
+      in: query
+      name: secret
+  schemas:
+    BulkIndicator:
+      type: object
+      properties:
+        indicator:
+          type: string
+          description: Indicator name (rsi, macd, bbands, ema, sma, adx, atr, obv, vwap, etc.)
+          example: rsi
+        period:
+          type: integer
+          description: Period for calculation
+          example: 14
+        fast:
+          type: integer
+          description: Fast period for MACD
+        slow:
+          type: integer
+          description: Slow period for MACD
+        signal:
+          type: integer
+          description: Signal period for MACD
+        stddev:
+          type: number
+          description: Standard deviation for Bollinger Bands
+      required:
+        - indicator
+    BulkRequest:
+      type: object
+      properties:
+        construct:
+          type: object
+          properties:
+            exchange:
+              type: string
+              enum: [binance, bybit, kraken, coinbase, kucoin]
+              default: binance
+            symbol:
+              type: string
+              example: BTC/USDT
+            interval:
+              type: string
+              enum: [1m, 3m, 5m, 15m, 30m, 1h, 2h, 4h, 6h, 8h, 12h, 1d, 3d, 1w, 1M]
+              default: 1h
+            indicators:
+              type: array
+              items:
+                $ref: '#/components/schemas/BulkIndicator'
+              maxItems: 20
+          required:
+            - exchange
+            - symbol
+            - interval
+            - indicators
+      required:
+        - construct
+    BulkResponse:
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            type: object
+            properties:
+              indicator:
+                type: string
+              result:
+                oneOf:
+                  - type: number
+                  - type: object
+        requested:
+          type: object
+    RSIResponse:
+      type: object
+      properties:
+        value:
+          type: number
+        timestamp:
+          type: integer
+security:
+  - ApiKeyAuth: []
+paths:
+  /bulk:
+    post:
+      summary: Get multiple indicators in one request
+      description: Fetch up to 20 technical indicators simultaneously for efficient analysis.
+      operationId: getBulkIndicators
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/BulkRequest'
+            examples:
+              btc_analysis:
+                summary: BTC Complete Analysis
+                value:
+                  construct:
+                    exchange: binance
+                    symbol: BTC/USDT
+                    interval: 1h
+                    indicators:
+                      - indicator: rsi
+                        period: 14
+                      - indicator: macd
+                        fast: 12
+                        slow: 26
+                        signal: 9
+                      - indicator: bbands
+                        period: 20
+                        stddev: 2
+                      - indicator: ema
+                        period: 20
+                      - indicator: atr
+                        period: 14
+      responses:
+        '200':
+          description: Indicators calculated successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BulkResponse'
+        '400':
+          description: Bad request
+        '503':
+          description: Service unavailable
+  /rsi:
+    get:
+      summary: Get RSI indicator
+      description: Quick RSI calculation for health checks and single indicator requests.
+      operationId: getRSI
+      parameters:
+        - name: exchange
+          in: query
+          schema:
+            type: string
+            enum: [binance, bybit, kraken, coinbase, kucoin]
+            default: binance
+        - name: symbol
+          in: query
+          required: true
+          schema:
+            type: string
+            example: BTC/USDT
+        - name: interval
+          in: query
+          schema:
+            type: string
+            enum: [1m, 3m, 5m, 15m, 30m, 1h, 2h, 4h, 6h, 8h, 12h, 1d, 3d, 1w, 1M]
+            default: 1h
+      responses:
+        '200':
+          description: RSI value
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RSIResponse'
+        '400':
+          description: Bad request
+        '503':
+          description: Service unavailable

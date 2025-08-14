@@ -1,0 +1,161 @@
+"Perform confluence analysis on ETH/USDT"
+ChatGPT said:
+[debug] Calling HTTP endpoint
+{
+  "domain": "indicators-production.up.railway.app",
+  "method": "get",
+  "path": "/api/taapi/confluence",
+  "operation": "getConfluenceAnalysis",
+  "operation_hash": "396c701c652e010c1aec9cbafd473512c10faf40",
+  "is_consequential": false,
+  "params": {
+    "symbol": "ETH/USDT",
+    "interval": "1h"
+  }
+}
+[debug] Response received
+{
+  "response_data": {
+    "confluence_count": 5,
+    "indicators_requested": 13,
+    "indicators_successful": 5,
+    "interval": "1h",
+    "results": {
+      "adx": {
+        "error": "API error: 429",
+        "indicator": "adx",
+        "interval": "1h",
+        "status": "error",
+        "symbol": "ETH/USDT",
+        "timestamp": "2025-08-09T07:55:56.216681"
+      },
+      "aroon": {
+        "error": "API error: 429",
+        "indicator": "aroon",
+        "interval": "1h",
+        "status": "error",
+        "symbol": "ETH/USDT",
+        "timestamp": "2025-08-09T07:55:56.871686"
+      },
+      "atr": {
+        "error": "API error: 429",
+        "indicator": "atr",
+        "interval": "1h",
+        "status": "error",
+        "symbol": "ETH/USDT",
+        "timestamp": "2025-08-09T07:55:56.105073"
+      },
+      "bbands": {
+        "indicator": "bbands",
+        "interval": "1h",
+        "parameters": {},
+        "result": {
+          "valueLowerBand": 3902.56529201651,
+          "valueMiddleBand": 4040.614000000001,
+          "valueUpperBand": 4178.6627079834925
+        },
+        "source": "taapi.io",
+        "status": "success",
+        "symbol": "ETH/USDT",
+        "timestamp": "2025-08-09T07:55:55.746732"
+      },
+      "cci": {
+        "error": "API error: 429",
+        "indicator": "cci",
+        "interval": "1h",
+        "status": "error",
+        "symbol": "ETH/USDT",
+        "timestamp": "2025-08-09T07:55:56.553532"
+      },
+      "ema": {
+        "indicator": "ema",
+        "interval": "1h",
+        "parameters": {},
+        "result": {
+          "value": 4006.752142250395
+        },
+        "source": "taapi.io",
+        "status": "success",
+        "symbol": "ETH/USDT",
+        "timestamp": "2025-08-09T07:55:55.862687"
+      },
+      "macd": {
+        "indicator": "macd",
+        "interval": "1h",
+        "parameters": {},
+        "result": {
+          "valueMACD": 62.95250924727179,
+          "valueMACDHist": 9.674199428681852,
+          "valueMACDSignal": 53.27830981858994
+        },
+        "source": "taapi.io",
+        "status": "success",
+        "symbol": "ETH/USDT",
+        "timestamp": "2025-08-09T07:55:55.607559"
+      },
+      "mfi": {
+        "error": "API error: 429",
+        "indicator": "mfi",
+        "interval": "1h",
+        "status": "error",
+        "symbol": "ETH/USDT",
+        "timestamp": "2025-08-09T07:55:56.762309"
+      },
+      "obv": {
+        "error": "API error: 429",
+        "indicator": "obv",
+        "interval": "1h",
+        "status": "error",
+        "symbol": "ETH/USDT",
+        "timestamp": "2025-08-09T07:55:56.443385"
+      },
+      "rsi": {
+        "indicator": "rsi",
+        "interval": "1h",
+        "parameters": {},
+        "result": {
+          "value": 74.99242674701286
+        },
+        "source": "taapi.io",
+        "status": "success",
+        "symbol": "ETH/USDT",
+        "timestamp": "2025-08-09T07:55:55.478548"
+      },
+      "sma": {
+        "indicator": "sma",
+        "interval": "1h",
+        "parameters": {},
+        "result": {
+          "value": 3997.0663333333337
+        },
+        "source": "taapi.io",
+        "status": "success",
+        "symbol": "ETH/USDT",
+        "timestamp": "2025-08-09T07:55:55.998699"
+      },
+      "stoch": {
+        "error": "API error: 429",
+        "indicator": "stoch",
+        "interval": "1h",
+        "status": "error",
+        "symbol": "ETH/USDT",
+        "timestamp": "2025-08-09T07:55:56.328756"
+      },
+      "willr": {
+        "error": "API error: 429",
+        "indicator": "willr",
+        "interval": "1h",
+        "status": "error",
+        "symbol": "ETH/USDT",
+        "timestamp": "2025-08-09T07:55:56.658357"
+      }
+    },
+    "source": "taapi.io",
+    "status": "success",
+    "symbol": "ETH-USDT",
+    "timestamp": "2025-08-09T07:55:56.871722"
+  },
+  "status_code": 200,
+  "action_id": "g-c6d7717c0900597de0e22496f5f79b68b1453478"
+}
+Talked to indicators-production.up.railway.app

@@ -1,0 +1,427 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "Complete Trading Intelligence API",
+    "description": "Comprehensive trading portfolio management with live exchange data from BingX & Blofin, advanced crypto news intelligence, opportunity scanning, and AI-optimized analysis",
+    "version": "v2.1.0"
+  },
+  "servers": [
+    {
+      "url": "https://titan-trading-2-production.up.railway.app"
+    }
+  ],
+  "paths": {
+    "/health": {
+      "get": {
+        "description": "Health check endpoint to verify API connectivity",
+        "operationId": "healthCheck",
+        "responses": {
+          "200": {
+            "description": "API is healthy and responding",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {"type": "string"},
+                    "timestamp": {"type": "string"},
+                    "server": {"type": "string"},
+                    "version": {"type": "string"},
+                    "endpoints_available": {
+                      "type": "array",
+                      "items": {"type": "string"}
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/": {
+      "get": {
+        "description": "API documentation and available endpoints",
+        "operationId": "getApiDocumentation",
+        "responses": {
+          "200": {
+            "description": "API documentation with all available endpoints",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {"type": "string"},
+                    "live_endpoints": {"type": "object"},
+                    "bingx_candlestick_endpoints": {"type": "object"},
+                    "chatgpt_endpoints": {"type": "object"},
+                    "crypto_news_intelligence": {"type": "object"}
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/positions/bingx": {
+      "get": {
+        "description": "FIXED: Get live BingX positions in ChatGPT-optimized format. Returns clean array of position objects with current P&L data.",
+        "operationId": "getBingXPositions",
+        "responses": {
+          "200": {
+            "description": "WORKING: Live BingX positions array - verified compatible with ChatGPT parsing",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "description": "Clean array format - empty [] means no positions, populated array means active positions",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "symbol": {"type": "string", "description": "Trading pair", "example": "XRP/USDT:USDT"},
+                      "side": {"type": "string", "description": "Position direction", "example": "long"},
+                      "contracts": {"type": "number", "description": "Position size", "example": 824.0},
+                      "entryPrice": {"type": "number", "description": "Entry price in USDT", "example": 1.6341},
+                      "markPrice": {"type": "number", "description": "Current market price", "example": 3.1956},
+                      "unrealizedPnl": {"type": "number", "description": "LIVE P&L in USDT. Positive=profit, Negative=loss", "example": 1286.60},
+                      "realizedPnl": {"type": "number", "description": "Realized P&L", "example": -155.18},
+                      "leverage": {"type": "number", "description": "Position leverage", "example": 10.0},
+                      "marginMode": {"type": "string", "description": "Margin type", "example": "isolated"},
+                      "liquidationPrice": {"type": "number", "description": "Liquidation price", "example": 1.6654}
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/positions/all": {
+      "get": {
+        "description": "Get positions from all connected exchanges (BingX, Kraken, Blofin)",
+        "operationId": "getAllPositions",
+        "responses": {
+          "200": {
+            "description": "Positions from all exchanges",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "bingx": {"type": "array", "items": {"type": "object"}},
+                    "kraken": {"type": "array", "items": {"type": "object"}},
+                    "blofin": {"type": "array", "items": {"type": "object"}}
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/live/all-exchanges": {
+      "get": {
+        "description": "Get live positions and orders from all exchanges (BingX & Blofin)",
+        "operationId": "getAllExchangeData",
+        "responses": {
+          "200": {
+            "description": "Live exchange data",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "timestamp": {"type": "string"},
+                    "exchanges": {
+                      "type": "object",
+                      "properties": {
+                        "bingx": {
+                          "type": "object",
+                          "properties": {
+                            "status": {"type": "string"},
+                            "positions": {"type": "object"},
+                            "orders": {"type": "object"}
+                          }
+                        },
+                        "blofin": {
+                          "type": "object",
+                          "properties": {
+                            "status": {"type": "string"},
+                            "positions": {"type": "array", "items": {"type": "object"}},
+                            "orders": {"type": "array", "items": {"type": "object"}}
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/crypto/news": {
+      "get": {
+        "description": "Get latest cryptocurrency news with sentiment analysis",
+        "operationId": "getCryptoNews",
+        "parameters": [
+          {"name": "symbol", "in": "query", "schema": {"type": "string"}, "description": "Specific crypto symbol"},
+          {"name": "limit", "in": "query", "schema": {"type": "integer", "default": 10}, "description": "Number of articles"}
+        ],
+        "responses": {
+          "200": {
+            "description": "Latest crypto news articles",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "title": {"type": "string"},
+                      "source": {"type": "string"},
+                      "sentiment": {"type": "string"},
+                      "url": {"type": "string"},
+                      "timestamp": {"type": "string"}
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/crypto/news/symbol/{symbol}": {
+      "get": {
+        "description": "Get crypto news for a specific symbol with enhanced analysis",
+        "operationId": "getCryptoNewsSymbol",
+        "parameters": [
+          {
+            "name": "symbol",
+            "in": "path",
+            "required": true,
+            "schema": {"type": "string"},
+            "description": "Crypto symbol (e.g., BTC, ETH)"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Symbol-specific crypto news",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "symbol": {"type": "string"},
+                    "articles": {"type": "array", "items": {"type": "object"}}
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/market/data": {
+      "get": {
+        "description": "Get comprehensive market data for crypto symbols",
+        "operationId": "getMarketData",
+        "parameters": [
+          {"name": "symbol", "in": "query", "required": true, "schema": {"type": "string"}, "description": "Crypto symbol"}
+        ],
+        "responses": {
+          "200": {
+            "description": "Market data",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "symbol": {"type": "string"},
+                    "price": {"type": "number"},
+                    "change_24h": {"type": "number"},
+                    "volume_24h": {"type": "number"}
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/taapi/confluence": {
+      "get": {
+        "description": "Get technical confluence analysis combining multiple indicators",
+        "operationId": "getConfluenceAnalysis",
+        "parameters": [
+          {"name": "symbol", "in": "query", "required": true, "schema": {"type": "string"}, "description": "Trading pair"},
+          {"name": "interval", "in": "query", "schema": {"type": "string", "default": "4h"}, "description": "Time interval"}
+        ],
+        "responses": {
+          "200": {
+            "description": "Confluence analysis results",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "symbol": {"type": "string"},
+                    "confluence_score": {"type": "number"},
+                    "signals": {"type": "object"},
+                    "recommendation": {"type": "string"}
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/taapi/bulk": {
+      "get": {
+        "description": "Get bulk technical analysis indicators for multiple symbols",
+        "operationId": "getTaapiBulk",
+        "parameters": [
+          {"name": "symbol", "in": "query", "required": true, "schema": {"type": "string"}, "description": "Trading pair"},
+          {"name": "interval", "in": "query", "schema": {"type": "string", "default": "4h"}, "description": "Time interval"},
+          {"name": "indicators", "in": "query", "schema": {"type": "string"}, "description": "Comma-separated indicators"}
+        ],
+        "responses": {
+          "200": {
+            "description": "Bulk technical indicators",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "symbol": {"type": "string"},
+                    "interval": {"type": "string"},
+                    "indicators": {"type": "object"}
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/bingx/klines/{symbol}": {
+      "get": {
+        "description": "Get BingX candlestick/OHLCV data for technical analysis",
+        "operationId": "getBingXKlines",
+        "parameters": [
+          {
+            "name": "symbol",
+            "in": "path",
+            "required": true,
+            "schema": {"type": "string"},
+            "description": "Trading symbol (e.g., BTC-USDT)"
+          },
+          {
+            "name": "interval",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "enum": ["1m", "3m", "5m", "15m", "30m", "1h", "2h", "4h", "6h", "8h", "12h", "1d", "3d", "1w", "1M"],
+              "default": "1h"
+            },
+            "description": "Kline interval"
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "schema": {"type": "integer", "default": 100, "minimum": 1, "maximum": 1000},
+            "description": "Number of candlesticks"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "BingX candlestick data",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "timestamp": {"type": "string"},
+                    "symbol": {"type": "string"},
+                    "interval": {"type": "string"},
+                    "klines": {"type": "object"}
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/sentiment/analyze": {
+      "post": {
+        "description": "Analyze sentiment of crypto-related text using AI",
+        "operationId": "analyzeSentiment",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "text": {"type": "string", "description": "Text to analyze"},
+                  "symbol": {"type": "string", "description": "Optional crypto symbol context"}
+                },
+                "required": ["text"]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Sentiment analysis results",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "sentiment": {"type": "string"},
+                    "confidence": {"type": "number"},
+                    "analysis": {"type": "string"}
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/social/momentum": {
+      "get": {
+        "description": "Get social momentum data for crypto symbols",
+        "operationId": "getSocialMomentum",
+        "parameters": [
+          {"name": "symbol", "in": "query", "required": true, "schema": {"type": "string"}, "description": "Crypto symbol"}
+        ],
+        "responses": {
+          "200": {
+            "description": "Social momentum metrics",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "symbol": {"type": "string"},
+                    "social_score": {"type": "number"},
+                    "momentum": {"type": "string"},
+                    "trending": {"type": "boolean"}
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

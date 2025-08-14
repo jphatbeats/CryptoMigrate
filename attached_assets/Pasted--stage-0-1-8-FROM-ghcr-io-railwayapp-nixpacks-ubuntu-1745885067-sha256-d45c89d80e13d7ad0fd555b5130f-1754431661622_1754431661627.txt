@@ -1,0 +1,106 @@
+[stage-0 1/8] FROM ghcr.io/railwayapp/nixpacks:ubuntu-1745885067@sha256:d45c89d80e13d7ad0fd555b5130f22a866d9dd10e861f589932303ef2314c7de
+
+[internal] load build context  ✔ 0 ms
+
+[internal] load build context
+
+[internal] load build context  ✔ 47 ms
+
+[stage-0 2/8] WORKDIR /app/  ✔ 0 ms – CACHED
+
+[stage-0 3/8] COPY .nixpacks/nixpkgs-ffeebf0acf3ae8b29f8c7049cd911b9636efd7e7.nix .nixpacks/nixpkgs-ffeebf0acf3ae8b29f8c7049cd911b9636efd7e7.nix  ✔ 0 ms – CACHED
+
+[stage-0 4/8] RUN nix-env -if .nixpacks/nixpkgs-ffeebf0acf3ae8b29f8c7049cd911b9636efd7e7.nix && nix-collect-garbage -d  ✔ 0 ms – CACHED
+
+[stage-0 5/8] COPY . /app/.
+
+[stage-0 5/8] COPY . /app/.  ✔ 452 ms
+
+[stage-0 6/8] RUN --mount=type=cache,id=s/fccc94d8-7c62-4936-897a-2d6626d89f05-/root/npm,target=/root/.npm npm ci
+
+npm warn config production Use `--omit=dev` instead.
+
+
+added 1 package, and audited 2 packages in 5s
+
+
+found 0 vulnerabilities
+
+[stage-0 6/8] RUN --mount=type=cache,id=s/fccc94d8-7c62-4936-897a-2d6626d89f05-/root/npm,target=/root/.npm npm ci  ✔ 6 sec
+
+[stage-0 7/8] RUN printf '\nPATH=/app/node_modules/.bin:$PATH' >> /root/.profile
+
+[stage-0 7/8] RUN printf '\nPATH=/app/node_modules/.bin:$PATH' >> /root/.profile  ✔ 540 ms
+
+[stage-0 8/8] COPY . /app
+
+[stage-0 8/8] COPY . /app  ✔ 1 sec
+
+exporting to docker image format
+
+exporting to image
+
+[auth] sharing credentials for production-us-east4-eqdc4a.railway-registry.com
+
+[auth] sharing credentials for production-us-east4-eqdc4a.railway-registry.com  ✔ 0 ms
+
+importing to docker
+
+importing to docker  ✔ 5 sec
+
+=== Successfully Built! ===
+
+Run:
+
+docker run -it production-us-east4-eqdc4a.railway-registry.com/fccc94d8-7c62-4936-897a-2d6626d89f05:3a913d63-debe-47a7-9a56-12ffa53f1af7
+
+Build time: 22.19 seconds
+
+ 
+
+====================
+
+Starting Healthcheck
+
+====================
+
+
+Path: /
+
+Retry window: 5m0s
+
+ 
+
+Attempt #1 failed with service unavailable. Continuing to retry for 4m55s
+
+Attempt #2 failed with service unavailable. Continuing to retry for 4m51s
+
+Attempt #3 failed with service unavailable. Continuing to retry for 4m49s
+
+Attempt #4 failed with service unavailable. Continuing to retry for 4m45s
+
+Attempt #5 failed with service unavailable. Continuing to retry for 4m36s
+
+Attempt #6 failed with service unavailable. Continuing to retry for 4m20s
+
+Attempt #7 failed with service unavailable. Continuing to retry for 3m50s
+
+Attempt #8 failed with service unavailable. Continuing to retry for 3m20s
+
+Attempt #9 failed with service unavailable. Continuing to retry for 2m50s
+
+Attempt #10 failed with service unavailable. Continuing to retry for 2m19s
+
+Attempt #11 failed with service unavailable. Continuing to retry for 1m49s
+
+Attempt #12 failed with service unavailable. Continuing to retry for 1m19s
+
+Attempt #13 failed with service unavailable. Continuing to retry for 49s
+
+Attempt #14 failed with service unavailable. Continuing to retry for 19s
+
+ 
+
+1/1 replicas never became healthy!
+
+Healthcheck failed!

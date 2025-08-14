@@ -1,0 +1,303 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "Titan Trading API",
+    "description": "Comprehensive trading portfolio management with live exchange data from BingX, Kraken, and Blofin.",
+    "version": "2.1.2-FIXED"
+  },
+  "servers": [
+    {
+      "url": "https://titan-trading-2-production.up.railway.app"
+    }
+  ],
+  "paths": {
+    "/health": {
+      "get": {
+        "description": "Health check endpoint to verify API connectivity",
+        "operationId": "healthCheck",
+        "responses": {
+          "200": {
+            "description": "API is healthy and responding",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "available_exchanges": { "type": "array", "items": { "type": "string" } },
+                    "deployment_date": { "type": "string" },
+                    "endpoints_fixed": { "type": "array", "items": { "type": "string" } },
+                    "railway_ready": { "type": "boolean" },
+                    "status": { "type": "string" },
+                    "timestamp": { "type": "string" },
+                    "undefined_vars_fixed": { "type": "boolean" },
+                    "version": { "type": "string" }
+                  },
+                  "example": {
+                    "available_exchanges": ["bingx","kraken","blofin"],
+                    "deployment_date": "2025-08-10T13:07:00Z",
+                    "endpoints_fixed": ["taapi_bulk","crypto_news_symbol","sentiment_analyze","social_momentum","undefined_variables"],
+                    "railway_ready": true,
+                    "status": "healthy",
+                    "timestamp": "2025-08-10T18:18:54.147715",
+                    "undefined_vars_fixed": true,
+                    "version": "2.1.2-FIXED"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/": {
+      "get": {
+        "description": "API documentation and available endpoints",
+        "operationId": "getApiDocumentation",
+        "responses": {
+          "200": {
+            "description": "API documentation with all available endpoints",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "additionalProperties": true,
+                  "example": {
+                    "available_endpoints": 25,
+                    "available_exchanges": ["bingx","kraken","blofin"],
+                    "exchange_specific_endpoints": {
+                      "bingx_balance": "/api/bingx/balance",
+                      "bingx_klines": "/api/bingx/klines/{symbol}",
+                      "blofin_balance": "/api/blofin/balance",
+                      "kraken_balance": "/api/kraken/balance"
+                    },
+                    "generic_endpoints": {
+                      "account": "/api/balance/{exchange}, /api/account-info/{exchange}, /api/transfer (POST)",
+                      "derivatives": "/api/funding-rate/{exchange}/{symbol}, /api/leverage/{exchange}/{symbol} (POST)",
+                      "exchange_status": "/exchanges/status",
+                      "health": "/health",
+                      "portfolio": "/api/positions/{exchange}, /api/positions/{exchange}",
+                      "trading": "/api/order/{exchange} (POST), /api/orders/{exchange}, /api/order/{exchange}/{order_id} (DELETE)"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/positions/bingx": {
+      "get": {
+        "description": "Get live positions from BingX exchange",
+        "operationId": "getBingXPositions",
+        "responses": {
+          "200": {
+            "description": "Live BingX positions",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": { "type": "object", "additionalProperties": true },
+                  "example": [
+                    {
+                      "symbol": "FARTCOIN/USDT:USDT",
+                      "side": "long",
+                      "contracts": 231.093,
+                      "entryPrice": 1.1099,
+                      "markPrice": 1.0925,
+                      "unrealizedPnl": -4.0142,
+                      "realizedPnl": -0.297,
+                      "leverage": 10.0,
+                      "marginMode": "isolated",
+                      "liquidationPrice": 1.0068
+                    }
+                  ]
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/positions/kraken": {
+      "get": {
+        "description": "Get positions from Kraken exchange",
+        "operationId": "getKrakenPositions",
+        "responses": {
+          "200": {
+            "description": "Positions from Kraken",
+            "content": {
+              "application/json": {
+                "schema": { "type": "array", "items": { "type": "object" } },
+                "example": []
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/positions/blofin": {
+      "get": {
+        "description": "Get positions from Blofin exchange",
+        "operationId": "getBlofinPositions",
+        "responses": {
+          "200": {
+            "description": "Positions from Blofin",
+            "content": {
+              "application/json": {
+                "schema": { "type": "array", "items": { "type": "object" } },
+                "example": []
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/positions/all": {
+      "get": {
+        "description": "Get positions from all exchanges",
+        "operationId": "getAllPositions",
+        "responses": {
+          "200": {
+            "description": "Positions from all exchanges",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "bingx": { "type": "array", "items": { "type": "object" } },
+                    "kraken": { "type": "array", "items": { "type": "object" } },
+                    "blofin": { "type": "array", "items": { "type": "object" } },
+                    "error": { "type": "string" },
+                    "exchange": { "type": "string" }
+                  },
+                  "additionalProperties": true,
+                  "example": {
+                    "error": "Exchange all is not available. Available exchanges: ['bingx', 'kraken', 'blofin']",
+                    "exchange": "all"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/live/all-exchanges": {
+      "get": {
+        "description": "Get live positions and orders from all exchanges",
+        "operationId": "getAllExchangeData",
+        "responses": {
+          "200": {
+            "description": "Live exchange data",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "exchanges": {
+                      "type": "object",
+                      "additionalProperties": true
+                    }
+                  },
+                  "example": {
+                    "exchanges": {
+                      "bingx": { "status": "success", "positions": [], "orders": [] },
+                      "blofin": { "status": "success", "positions": [], "orders": [] }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/balance/bingx": {
+      "get": {
+        "description": "Get BingX account balances",
+        "operationId": "getBingXBalance",
+        "responses": {
+          "200": {
+            "description": "BingX balances",
+            "content": {
+              "application/json": {
+                "schema": { "type": "object", "additionalProperties": true },
+                "example": {
+                  "BTC": { "free": 4.1e-07, "total": 4.1e-07, "used": 0.0 },
+                  "ETH": { "free": 5e-09, "total": 5e-09, "used": 0.0 },
+                  "USDT": { "free": 1866.82, "total": 2431.20, "used": 564.38 }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/balance/kraken": {
+      "get": {
+        "description": "Get Kraken account balances",
+        "operationId": "getKrakenBalance",
+        "responses": {
+          "200": {
+            "description": "Kraken balances",
+            "content": {
+              "application/json": {
+                "schema": { "type": "object", "additionalProperties": true },
+                "example": {
+                  "AVAX": { "free": 285.60, "total": 285.60, "used": 0.0 }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/balance/blofin": {
+      "get": {
+        "description": "Get Blofin account balances",
+        "operationId": "getBlofinBalance",
+        "responses": {
+          "200": {
+            "description": "Blofin balances",
+            "content": {
+              "application/json": {
+                "schema": { "type": "object", "additionalProperties": true },
+                "example": {
+                  "USDT": { "free": 0.0028, "total": 0.0028, "used": 0.0 }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/exchanges/status": {
+      "get": {
+        "description": "Get connection status for all exchanges",
+        "operationId": "getExchangeStatus",
+        "responses": {
+          "200": {
+            "description": "Exchange connection statuses",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "additionalProperties": true,
+                  "example": {
+                    "available_exchanges": ["bingx", "kraken", "blofin"],
+                    "detailed_status": {
+                      "bingx": { "error": null, "has_credentials": true, "status": "connected" },
+                      "blofin": { "error": null, "has_credentials": true, "status": "connected" },
+                      "kraken": { "error": null, "has_credentials": false, "status": "public_only" }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

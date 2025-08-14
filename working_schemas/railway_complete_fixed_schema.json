@@ -1,0 +1,291 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "THE ALPHA PLAYBOOK v4 - Complete Trading Intelligence API",
+    "description": "Strategic crypto trading intelligence system designed to grow $20K to $1M using AI-powered confluence-based trading decisions with real-time market data, technical analysis, and automated alerts.",
+    "version": "2.1.2-FIXED"
+  },
+  "servers": [
+    {
+      "url": "https://titan-trading-2-production.up.railway.app",
+      "description": "Production Railway Server"
+    }
+  ],
+  "paths": {
+    "/api/positions/bingx": {
+      "get": {
+        "operationId": "getBingXPositions",
+        "summary": "Get Live BingX Trading Positions",
+        "description": "Get current BingX trading positions with real-time P&L data, entry prices, and leverage details",
+        "responses": {
+          "200": {
+            "description": "Array of active trading positions",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "symbol": {
+                        "type": "string",
+                        "example": "XRP/USDT:USDT"
+                      },
+                      "side": {
+                        "type": "string",
+                        "example": "long"
+                      },
+                      "contracts": {
+                        "type": "number",
+                        "example": 824.0
+                      },
+                      "entryPrice": {
+                        "type": "number",
+                        "example": 1.6341
+                      },
+                      "markPrice": {
+                        "type": "number",
+                        "example": 3.1956
+                      },
+                      "unrealizedPnl": {
+                        "type": "number",
+                        "example": 1286.60
+                      },
+                      "realizedPnl": {
+                        "type": "number",
+                        "example": -155.18
+                      },
+                      "leverage": {
+                        "type": "number",
+                        "example": 10.0
+                      },
+                      "marginMode": {
+                        "type": "string",
+                        "example": "isolated"
+                      },
+                      "liquidationPrice": {
+                        "type": "number",
+                        "example": 1.6654
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/positions/all": {
+      "get": {
+        "operationId": "getAllPositions",
+        "summary": "Get All Exchange Positions",
+        "description": "Get positions from all connected exchanges (BingX, Kraken, Blofin)",
+        "responses": {
+          "200": {
+            "description": "Positions from all exchanges",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "bingx": {
+                      "type": "array",
+                      "items": {"$ref": "#/components/schemas/Position"}
+                    },
+                    "kraken": {
+                      "type": "array",
+                      "items": {"$ref": "#/components/schemas/Position"}
+                    },
+                    "blofin": {
+                      "type": "array",
+                      "items": {"$ref": "#/components/schemas/Position"}
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/crypto/news": {
+      "get": {
+        "operationId": "getCryptoNews",
+        "summary": "Get Latest Crypto News",
+        "description": "Get the latest cryptocurrency news with sentiment analysis and market impact",
+        "parameters": [
+          {
+            "name": "symbol",
+            "in": "query",
+            "schema": {"type": "string"},
+            "description": "Specific crypto symbol to get news for"
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "schema": {"type": "integer", "default": 10},
+            "description": "Number of articles to return"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Latest crypto news articles",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "title": {"type": "string"},
+                      "source": {"type": "string"},
+                      "sentiment": {"type": "string"},
+                      "url": {"type": "string"},
+                      "timestamp": {"type": "string"},
+                      "tickers": {
+                        "type": "array",
+                        "items": {"type": "string"}
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/market/data": {
+      "get": {
+        "operationId": "getMarketData",
+        "summary": "Get Market Data",
+        "description": "Get comprehensive market data for specified crypto symbol",
+        "parameters": [
+          {
+            "name": "symbol",
+            "in": "query",
+            "required": true,
+            "schema": {"type": "string"},
+            "description": "Crypto symbol (e.g. BTC, ETH, XRP)"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Market data for the symbol",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "symbol": {"type": "string"},
+                    "price": {"type": "number"},
+                    "change_24h": {"type": "number"},
+                    "volume_24h": {"type": "number"},
+                    "market_cap": {"type": "number"}
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/taapi/confluence": {
+      "get": {
+        "operationId": "getConfluenceAnalysis",
+        "summary": "Get Technical Confluence Analysis",
+        "description": "Get confluence-based technical analysis combining multiple indicators for trading decisions",
+        "parameters": [
+          {
+            "name": "symbol",
+            "in": "query",
+            "required": true,
+            "schema": {"type": "string"},
+            "description": "Trading pair (e.g. BTC/USDT)"
+          },
+          {
+            "name": "interval",
+            "in": "query",
+            "schema": {"type": "string", "default": "4h"},
+            "description": "Time interval (1h, 4h, 1d)"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Confluence analysis results",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "symbol": {"type": "string"},
+                    "confluence_score": {"type": "number"},
+                    "signals": {
+                      "type": "object",
+                      "properties": {
+                        "rsi": {"type": "object"},
+                        "macd": {"type": "object"},
+                        "bollinger": {"type": "object"},
+                        "ema": {"type": "object"}
+                      }
+                    },
+                    "recommendation": {"type": "string"}
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/health": {
+      "get": {
+        "operationId": "healthCheck",
+        "summary": "API Health Check",
+        "description": "Check API status and available services",
+        "responses": {
+          "200": {
+            "description": "API health status",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {"type": "string"},
+                    "railway_ready": {"type": "boolean"},
+                    "version": {"type": "string"},
+                    "available_exchanges": {
+                      "type": "array",
+                      "items": {"type": "string"}
+                    },
+                    "endpoints_fixed": {
+                      "type": "array",
+                      "items": {"type": "string"}
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "Position": {
+        "type": "object",
+        "properties": {
+          "symbol": {"type": "string"},
+          "side": {"type": "string"},
+          "contracts": {"type": "number"},
+          "entryPrice": {"type": "number"},
+          "markPrice": {"type": "number"},
+          "unrealizedPnl": {"type": "number"},
+          "leverage": {"type": "number"}
+        }
+      }
+    }
+  }
+}

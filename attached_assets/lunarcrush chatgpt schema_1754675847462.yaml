@@ -1,0 +1,479 @@
+{
+  "openapi": "3.1.0",
+  "servers": [
+    {
+      "url": "https://lunarcrush.com/api4"
+    }
+  ],
+  "info": {
+    "title": "LunarCrush Social Intelligence API v4",
+    "version": "4.0.0"
+  },
+  "paths": {
+    "/public/topics/list/v1": {
+      "get": {
+        "summary": "Get all trending social topics",
+        "operationId": "getTrendingTopics",
+        "description": "Get list of all trending social topics ranked by social activity in the last 24 hours.",
+        "responses": {
+          "200": {
+            "description": "List of trending topics with social metrics",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "config": {
+                      "type": "object"
+                    },
+                    "data": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "topic": {
+                            "type": "string"
+                          },
+                          "title": {
+                            "type": "string"
+                          },
+                          "topic_rank": {
+                            "type": "integer"
+                          },
+                          "topic_rank_1h_previous": {
+                            "type": "integer"
+                          },
+                          "topic_rank_24h_previous": {
+                            "type": "integer"
+                          },
+                          "num_contributors": {
+                            "type": "integer"
+                          },
+                          "num_posts": {
+                            "type": "integer"
+                          },
+                          "interactions_24h": {
+                            "type": "integer"
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/public/topic/{topic}/v1": {
+      "get": {
+        "summary": "Get detailed social metrics for specific topic",
+        "operationId": "getTopic",
+        "description": "Get 24-hour social activity summary for a specific topic with platform breakdowns and sentiment analysis.",
+        "parameters": [
+          {
+            "name": "topic",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "example": "bitcoin"
+            },
+            "description": "Topic name (lowercase, letters/numbers/spaces/#/$ only). Examples: bitcoin, ethereum, solana"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Detailed social metrics for the topic",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "config": {
+                      "type": "object",
+                      "properties": {
+                        "topic": {
+                          "type": "string"
+                        },
+                        "name": {
+                          "type": "string"
+                        },
+                        "symbol": {
+                          "type": "string"
+                        }
+                      }
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "topic": {
+                          "type": "string"
+                        },
+                        "title": {
+                          "type": "string"
+                        },
+                        "topic_rank": {
+                          "type": "integer"
+                        },
+                        "related_topics": {
+                          "type": "array",
+                          "items": {
+                            "type": "string"
+                          }
+                        },
+                        "types_count": {
+                          "type": "object"
+                        },
+                        "types_interactions": {
+                          "type": "object"
+                        },
+                        "interactions_24h": {
+                          "type": "integer"
+                        },
+                        "interactions_24h_previous": {
+                          "type": "integer"
+                        },
+                        "interactions_24h_change": {
+                          "type": "number"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/public/topic/{topic}/time-series/v2": {
+      "get": {
+        "summary": "Get historical social data for topic",
+        "operationId": "getTopicTimeSeries",
+        "description": "Track social momentum changes over time to identify trend shifts before price follows.",
+        "parameters": [
+          {
+            "name": "topic",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "example": "bitcoin"
+            },
+            "description": "Topic name (lowercase)"
+          },
+          {
+            "name": "bucket",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "enum": ["hour", "day"],
+              "default": "day",
+              "example": "day"
+            },
+            "description": "Time aggregation - hour or day"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Historical social data time series",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "config": {
+                      "type": "object"
+                    },
+                    "data": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "time": {
+                            "type": "integer"
+                          },
+                          "interactions": {
+                            "type": "integer"
+                          },
+                          "topic_rank": {
+                            "type": "integer"
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/public/topic/{topic}/posts/v1": {
+      "get": {
+        "summary": "Get viral posts about specific topic",
+        "operationId": "getTopicPosts",
+        "description": "Find viral content driving social momentum. Monitor post quality and engagement levels.",
+        "parameters": [
+          {
+            "name": "topic",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "example": "bitcoin"
+            },
+            "description": "Topic name (exact match required)"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "List of viral posts about the topic",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "config": {
+                      "type": "object"
+                    },
+                    "data": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "post_id": {
+                            "type": "string"
+                          },
+                          "text": {
+                            "type": "string"
+                          },
+                          "interactions": {
+                            "type": "integer"
+                          },
+                          "platform": {
+                            "type": "string"
+                          },
+                          "created": {
+                            "type": "integer"
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/public/categories/list/v1": {
+      "get": {
+        "summary": "Get all available category names",
+        "operationId": "getCategoriesList",
+        "description": "Always call this first to get exact category names. Use returned strings exactly.",
+        "responses": {
+          "200": {
+            "description": "List of all available categories",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "config": {
+                      "type": "object"
+                    },
+                    "data": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "category": {
+                            "type": "string"
+                          },
+                          "title": {
+                            "type": "string"
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/public/category/{category}/topics/v1": {
+      "get": {
+        "summary": "Get trending topics within a category",
+        "operationId": "getCategoryTopics",
+        "description": "Sector rotation analysis. When category shows momentum, find individual topics within it.",
+        "parameters": [
+          {
+            "name": "category",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "example": "defi"
+            },
+            "description": "Exact category name from getCategoriesList"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Trending topics within the category",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "config": {
+                      "type": "object"
+                    },
+                    "data": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "topic": {
+                            "type": "string"
+                          },
+                          "title": {
+                            "type": "string"
+                          },
+                          "topic_rank": {
+                            "type": "integer"
+                          },
+                          "interactions_24h": {
+                            "type": "integer"
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/public/creators/list/v1": {
+      "get": {
+        "summary": "Get trending crypto creators and influencers",
+        "operationId": "getCreatorsList",
+        "description": "Track influential voices. When major creators discuss topics, it often precedes price movement.",
+        "responses": {
+          "200": {
+            "description": "List of trending crypto creators",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "config": {
+                      "type": "object"
+                    },
+                    "data": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "creator_id": {
+                            "type": "integer"
+                          },
+                          "username": {
+                            "type": "string"
+                          },
+                          "platform": {
+                            "type": "string"
+                          },
+                          "followers": {
+                            "type": "integer"
+                          },
+                          "interactions_24h": {
+                            "type": "integer"
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/public/creator/{creator_id}/v1": {
+      "get": {
+        "summary": "Get specific creator metrics",
+        "operationId": "getCreator",
+        "description": "Monitor specific influential figures for sentiment shifts and topic mentions.",
+        "parameters": [
+          {
+            "name": "creator_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "example": 12345
+            },
+            "description": "Numeric creator ID from getCreatorsList"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Detailed creator metrics and activity",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "config": {
+                      "type": "object"
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "creator_id": {
+                          "type": "integer"
+                        },
+                        "username": {
+                          "type": "string"
+                        },
+                        "platform": {
+                          "type": "string"
+                        },
+                        "followers": {
+                          "type": "integer"
+                        },
+                        "interactions_24h": {
+                          "type": "integer"
+                        },
+                        "topics_mentioned": {
+                          "type": "array",
+                          "items": {
+                            "type": "string"
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

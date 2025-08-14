@@ -1,0 +1,1188 @@
+Market Data
+USDT-M Perp Futures symbols
+Key steps for using the API
+
+1. Create Account
+  
+2. Pass KYC/KYB
+  
+3. Create API KEY
+  
+4. Configure API KEY permissions
+  
+5. Understanding signature authentication
+ 6. Run the following example code  
+7. Understand common error codes
+  
+8. Understand rate limitations
+  
+9. Understanding request timestamps
+ 
+10. Understand fee schedule
+ 
+11. Understand trading rules
+request parameters https://open-api.bingx.com
+
+GET /openApi/swap/v2/quote/contracts
+
+rate limitation by IP in group Number: 
+API KEY permission: 
+No API KEY signature required
+Content-Type:  
+  
+RequestResponse
+symbol
+string
+no
+trading pair, for example: BTC...
+recvWindow
+int64
+no
+Timestamp of initiating the re...
+timestamp
+int64
+yes
+Request valid time window valu...
+  
+Sample code
+PythonGolangNodejsJavaC#phpShell
+
+import time
+import requests
+import hmac
+from hashlib import sha256
+
+APIURL = "https://open-api.bingx.com"
+APIKEY = ""
+SECRETKEY = ""
+
+def demo():
+    payload = {}
+    path = '/openApi/swap/v2/quote/contracts'
+    method = "GET"
+    paramsMap = {}
+    paramsStr = parseParam(paramsMap)
+    return send_request(method, path, paramsStr, payload)
+
+def get_sign(api_secret, payload):
+    signature = hmac.new(api_secret.encode("utf-8"), payload.encode("utf-8"), digestmod=sha256).hexdigest()
+    print("sign=" + signature)
+    return signature
+
+
+def send_request(method, path, urlpa, payload):
+    url = "%s%s?%s&signature=%s" % (APIURL, path, urlpa, get_sign(SECRETKEY, urlpa))
+    print(url)
+    headers = {
+        'X-BX-APIKEY': APIKEY,
+    }
+    response = requests.request(method, url, headers=headers, data=payload)
+    return response.text
+
+def parseParam(paramsMap):
+    sortedKeys = sorted(paramsMap)
+    paramsStr = "&".join(["%s=%s" % (x, paramsMap[x]) for x in sortedKeys])
+    if paramsStr != "": 
+     return paramsStr+"&timestamp="+str(int(time.time() * 1000))
+    else:
+     return paramsStr+"timestamp="+str(int(time.time() * 1000))
+
+
+if __name__ == '__main__':
+    print("demo:", demo())
+Order Book
+Key steps for using the API
+
+1. Create Account
+  
+2. Pass KYC/KYB
+  
+3. Create API KEY
+  
+4. Configure API KEY permissions
+  
+5. Understanding signature authentication
+ 6. Run the following example code  
+7. Understand common error codes
+  
+8. Understand rate limitations
+  
+9. Understanding request timestamps
+ 
+10. Understand fee schedule
+ 
+11. Understand trading rules
+request parameters https://open-api.bingx.com
+
+GET /openApi/swap/v2/quote/depth
+
+rate limitation by IP in group Number: 
+API KEY permission: 
+No API KEY signature required
+Content-Type:  
+  
+RequestResponse
+symbol
+string
+yes
+Trading pair, for example: BTC...
+limit
+int
+no
+Default 20, optional value:[5,...
+recvWindow
+int64
+no
+Timestamp of initiating the re...
+timestamp
+int64
+yes
+Request valid time window valu...
+  
+Sample code
+PythonGolangNodejsJavaC#phpShell
+
+import time
+import requests
+import hmac
+from hashlib import sha256
+
+APIURL = "https://open-api.bingx.com"
+APIKEY = ""
+SECRETKEY = ""
+
+def demo():
+    payload = {}
+    path = '/openApi/swap/v2/quote/depth'
+    method = "GET"
+    paramsMap = {
+    "symbol": "SHIB-USDT",
+    "limit": "5"
+}
+    paramsStr = parseParam(paramsMap)
+    return send_request(method, path, paramsStr, payload)
+
+def get_sign(api_secret, payload):
+    signature = hmac.new(api_secret.encode("utf-8"), payload.encode("utf-8"), digestmod=sha256).hexdigest()
+    print("sign=" + signature)
+    return signature
+
+
+def send_request(method, path, urlpa, payload):
+    url = "%s%s?%s&signature=%s" % (APIURL, path, urlpa, get_sign(SECRETKEY, urlpa))
+    print(url)
+    headers = {
+        'X-BX-APIKEY': APIKEY,
+    }
+    response = requests.request(method, url, headers=headers, data=payload)
+    return response.text
+
+def parseParam(paramsMap):
+    sortedKeys = sorted(paramsMap)
+    paramsStr = "&".join(["%s=%s" % (x, paramsMap[x]) for x in sortedKeys])
+    if paramsStr != "": 
+     return paramsStr+"&timestamp="+str(int(time.time() * 1000))
+    else:
+     return paramsStr+"timestamp="+str(int(time.time() * 1000))
+
+
+if __name__ == '__main__':
+    print("demo:", demo())
+Recent Trades List
+Key steps for using the API
+
+1. Create Account
+  
+2. Pass KYC/KYB
+  
+3. Create API KEY
+  
+4. Configure API KEY permissions
+  
+5. Understanding signature authentication
+ 6. Run the following example code  
+7. Understand common error codes
+  
+8. Understand rate limitations
+  
+9. Understanding request timestamps
+ 
+10. Understand fee schedule
+ 
+11. Understand trading rules
+request parameters https://open-api.bingx.com
+
+GET /openApi/swap/v2/quote/trades
+
+rate limitation by IP in group Number: 
+API KEY permission: 
+No API KEY signature required
+Content-Type:  
+  
+RequestResponse
+symbol
+string
+yes
+There must be a hyphen/ "-" in...
+limit
+int
+no
+default: 500, maximum 1000
+recvWindow
+int64
+no
+Timestamp of initiating the re...
+timestamp
+int64
+yes
+Request valid time window valu...
+  
+Sample code
+PythonGolangNodejsJavaC#phpShell
+
+import time
+import requests
+import hmac
+from hashlib import sha256
+
+APIURL = "https://open-api.bingx.com"
+APIKEY = ""
+SECRETKEY = ""
+
+def demo():
+    payload = {}
+    path = '/openApi/swap/v2/quote/trades'
+    method = "GET"
+    paramsMap = {
+    "symbol": "BTC-USDT",
+    "limit": 10
+}
+    paramsStr = parseParam(paramsMap)
+    return send_request(method, path, paramsStr, payload)
+
+def get_sign(api_secret, payload):
+    signature = hmac.new(api_secret.encode("utf-8"), payload.encode("utf-8"), digestmod=sha256).hexdigest()
+    print("sign=" + signature)
+    return signature
+
+
+def send_request(method, path, urlpa, payload):
+    url = "%s%s?%s&signature=%s" % (APIURL, path, urlpa, get_sign(SECRETKEY, urlpa))
+    print(url)
+    headers = {
+        'X-BX-APIKEY': APIKEY,
+    }
+    response = requests.request(method, url, headers=headers, data=payload)
+    return response.text
+
+def parseParam(paramsMap):
+    sortedKeys = sorted(paramsMap)
+    paramsStr = "&".join(["%s=%s" % (x, paramsMap[x]) for x in sortedKeys])
+    if paramsStr != "": 
+     return paramsStr+"&timestamp="+str(int(time.time() * 1000))
+    else:
+     return paramsStr+"timestamp="+str(int(time.time() * 1000))
+
+
+if __name__ == '__main__':
+    print("demo:", demo())
+Mark Price and Funding Rate
+Key steps for using the API
+
+1. Create Account
+  
+2. Pass KYC/KYB
+  
+3. Create API KEY
+  
+4. Configure API KEY permissions
+  
+5. Understanding signature authentication
+ 6. Run the following example code  
+7. Understand common error codes
+  
+8. Understand rate limitations
+  
+9. Understanding request timestamps
+ 
+10. Understand fee schedule
+ 
+11. Understand trading rules
+request parameters https://open-api.bingx.com
+
+GET /openApi/swap/v2/quote/premiumIndex
+
+rate limitation by IP in group Number: 
+API KEY permission: 
+No API KEY signature required
+Content-Type:  
+  
+RequestResponse
+symbol
+string
+no
+There must be a hyphen/ "-" in...
+recvWindow
+int64
+no
+Timestamp of initiating the re...
+timestamp
+int64
+yes
+Request valid time window valu...
+  
+Sample code
+PythonGolangNodejsJavaC#phpShell
+
+import time
+import requests
+import hmac
+from hashlib import sha256
+
+APIURL = "https://open-api.bingx.com"
+APIKEY = ""
+SECRETKEY = ""
+
+def demo():
+    payload = {}
+    path = '/openApi/swap/v2/quote/premiumIndex'
+    method = "GET"
+    paramsMap = {
+    "symbol": "BTC-USDT"
+}
+    paramsStr = parseParam(paramsMap)
+    return send_request(method, path, paramsStr, payload)
+
+def get_sign(api_secret, payload):
+    signature = hmac.new(api_secret.encode("utf-8"), payload.encode("utf-8"), digestmod=sha256).hexdigest()
+    print("sign=" + signature)
+    return signature
+
+
+def send_request(method, path, urlpa, payload):
+    url = "%s%s?%s&signature=%s" % (APIURL, path, urlpa, get_sign(SECRETKEY, urlpa))
+    print(url)
+    headers = {
+        'X-BX-APIKEY': APIKEY,
+    }
+    response = requests.request(method, url, headers=headers, data=payload)
+    return response.text
+
+def parseParam(paramsMap):
+    sortedKeys = sorted(paramsMap)
+    paramsStr = "&".join(["%s=%s" % (x, paramsMap[x]) for x in sortedKeys])
+    if paramsStr != "": 
+     return paramsStr+"&timestamp="+str(int(time.time() * 1000))
+    else:
+     return paramsStr+"timestamp="+str(int(time.time() * 1000))
+
+
+if __name__ == '__main__':
+    print("demo:", demo())
+Get Funding Rate History
+Key steps for using the API
+
+If both startTime and endTime are not sent, return the latest limit data.
+
+The returned list is sorted by time from smallest to largest
+
+If the amount of data between startTime and endTime is greater than limit, return the data in the case of startTime + limit.
+
+1. Create Account
+  
+2. Pass KYC/KYB
+  
+3. Create API KEY
+  
+4. Configure API KEY permissions
+  
+5. Understanding signature authentication
+ 6. Run the following example code  
+7. Understand common error codes
+  
+8. Understand rate limitations
+  
+9. Understanding request timestamps
+ 
+10. Understand fee schedule
+ 
+11. Understand trading rules
+request parameters https://open-api.bingx.com
+
+GET /openApi/swap/v2/quote/fundingRate
+
+rate limitation by IP in group Number: 
+API KEY permission: 
+No API KEY signature required
+Content-Type:  
+  
+RequestResponse
+symbol
+string
+no
+There must be a hyphen/ "-" in...
+startTime
+int64
+no
+Start time, unit: millisecond
+endTime
+int64
+no
+End time, unit: millisecond
+limit
+int32
+no
+default: 100 maximum: 1000
+recvWindow
+int64
+no
+Timestamp of initiating the re...
+timestamp
+int64
+yes
+Request valid time window valu...
+  
+Sample code
+PythonGolangNodejsJavaC#phpShell
+
+import time
+import requests
+import hmac
+from hashlib import sha256
+
+APIURL = "https://open-api.bingx.com"
+APIKEY = ""
+SECRETKEY = ""
+
+def demo():
+    payload = {}
+    path = '/openApi/swap/v2/quote/fundingRate'
+    method = "GET"
+    paramsMap = {
+    "symbol": "QNT-USDT",
+    "limit": 2
+}
+    paramsStr = parseParam(paramsMap)
+    return send_request(method, path, paramsStr, payload)
+
+def get_sign(api_secret, payload):
+    signature = hmac.new(api_secret.encode("utf-8"), payload.encode("utf-8"), digestmod=sha256).hexdigest()
+    print("sign=" + signature)
+    return signature
+
+
+def send_request(method, path, urlpa, payload):
+    url = "%s%s?%s&signature=%s" % (APIURL, path, urlpa, get_sign(SECRETKEY, urlpa))
+    print(url)
+    headers = {
+        'X-BX-APIKEY': APIKEY,
+    }
+    response = requests.request(method, url, headers=headers, data=payload)
+    return response.text
+
+def parseParam(paramsMap):
+    sortedKeys = sorted(paramsMap)
+    paramsStr = "&".join(["%s=%s" % (x, paramsMap[x]) for x in sortedKeys])
+    if paramsStr != "": 
+     return paramsStr+"&timestamp="+str(int(time.time() * 1000))
+    else:
+     return paramsStr+"timestamp="+str(int(time.time() * 1000))
+
+
+if __name__ == '__main__':
+    print("demo:", demo())
+Kline/Candlestick Data
+Get the latest Kline Data
+
+Key steps for using the API
+
+1. Create Account
+  
+2. Pass KYC/KYB
+  
+3. Create API KEY
+  
+4. Configure API KEY permissions
+  
+5. Understanding signature authentication
+ 6. Run the following example code  
+7. Understand common error codes
+  
+8. Understand rate limitations
+  
+9. Understanding request timestamps
+ 
+10. Understand fee schedule
+ 
+11. Understand trading rules
+request parameters https://open-api.bingx.com
+
+GET /openApi/swap/v3/quote/klines
+
+rate limitation by UID: 5/s & rate limitation by IP in group Number: 
+API KEY permission: 
+No API KEY signature required
+Content-Type:  
+  
+RequestResponseinterval
+symbol
+string
+yes
+There must be a hyphen/ "-" in...
+interval
+string
+yes
+time interval, refer to field ...
+startTime
+int64
+no
+Start time, unit: millisecond
+endTime
+int64
+no
+End time, unit: millisecond
+limit
+int64
+no
+default: 500 maximum: 1440
+recvWindow
+int64
+no
+Timestamp of initiating the re...
+timestamp
+int64
+yes
+Request valid time window valu...
+  
+Sample code
+PythonGolangNodejsJavaC#phpShell
+
+import time
+import requests
+import hmac
+from hashlib import sha256
+
+APIURL = "https://open-api.bingx.com"
+APIKEY = ""
+SECRETKEY = ""
+
+def demo():
+    payload = {}
+    path = '/openApi/swap/v3/quote/klines'
+    method = "GET"
+    paramsMap = {
+    "symbol": "KNC-USDT",
+    "interval": "1h",
+    "limit": "1000",
+    "startTime": "1702717199998"
+}
+    paramsStr = parseParam(paramsMap)
+    return send_request(method, path, paramsStr, payload)
+
+def get_sign(api_secret, payload):
+    signature = hmac.new(api_secret.encode("utf-8"), payload.encode("utf-8"), digestmod=sha256).hexdigest()
+    print("sign=" + signature)
+    return signature
+
+
+def send_request(method, path, urlpa, payload):
+    url = "%s%s?%s&signature=%s" % (APIURL, path, urlpa, get_sign(SECRETKEY, urlpa))
+    print(url)
+    headers = {
+        'X-BX-APIKEY': APIKEY,
+    }
+    response = requests.request(method, url, headers=headers, data=payload)
+    return response.text
+
+def parseParam(paramsMap):
+    sortedKeys = sorted(paramsMap)
+    paramsStr = "&".join(["%s=%s" % (x, paramsMap[x]) for x in sortedKeys])
+    if paramsStr != "": 
+     return paramsStr+"&timestamp="+str(int(time.time() * 1000))
+    else:
+     return paramsStr+"timestamp="+str(int(time.time() * 1000))
+
+
+if __name__ == '__main__':
+    print("demo:", demo())
+Open Interest Statistics
+Key steps for using the API
+
+1. Create Account
+  
+2. Pass KYC/KYB
+  
+3. Create API KEY
+  
+4. Configure API KEY permissions
+  
+5. Understanding signature authentication
+ 6. Run the following example code  
+7. Understand common error codes
+  
+8. Understand rate limitations
+  
+9. Understanding request timestamps
+ 
+10. Understand fee schedule
+ 
+11. Understand trading rules
+request parameters https://open-api.bingx.com
+
+GET /openApi/swap/v2/quote/openInterest
+
+rate limitation by IP in group Number: 
+API KEY permission: 
+No API KEY signature required
+Content-Type:  
+  
+RequestResponse
+symbol
+string
+yes
+There must be a hyphen/ "-" in...
+recvWindow
+int64
+no
+Timestamp of initiating the re...
+timestamp
+int64
+yes
+Request valid time window valu...
+  
+Sample code
+PythonGolangNodejsJavaC#phpShell
+
+import time
+import requests
+import hmac
+from hashlib import sha256
+
+APIURL = "https://open-api.bingx.com"
+APIKEY = ""
+SECRETKEY = ""
+
+def demo():
+    payload = {}
+    path = '/openApi/swap/v2/quote/openInterest'
+    method = "GET"
+    paramsMap = {
+    "symbol": "EOS-USDT"
+}
+    paramsStr = parseParam(paramsMap)
+    return send_request(method, path, paramsStr, payload)
+
+def get_sign(api_secret, payload):
+    signature = hmac.new(api_secret.encode("utf-8"), payload.encode("utf-8"), digestmod=sha256).hexdigest()
+    print("sign=" + signature)
+    return signature
+
+
+def send_request(method, path, urlpa, payload):
+    url = "%s%s?%s&signature=%s" % (APIURL, path, urlpa, get_sign(SECRETKEY, urlpa))
+    print(url)
+    headers = {
+        'X-BX-APIKEY': APIKEY,
+    }
+    response = requests.request(method, url, headers=headers, data=payload)
+    return response.text
+
+def parseParam(paramsMap):
+    sortedKeys = sorted(paramsMap)
+    paramsStr = "&".join(["%s=%s" % (x, paramsMap[x]) for x in sortedKeys])
+    if paramsStr != "": 
+     return paramsStr+"&timestamp="+str(int(time.time() * 1000))
+    else:
+     return paramsStr+"timestamp="+str(int(time.time() * 1000))
+
+
+if __name__ == '__main__':
+    print("demo:", demo())
+24hr Ticker Price Change Statistics
+Key steps for using the API
+
+If no transaction pair parameters are sent, all transaction pair information will be returned
+
+1. Create Account
+  
+2. Pass KYC/KYB
+  
+3. Create API KEY
+  
+4. Configure API KEY permissions
+  
+5. Understanding signature authentication
+ 6. Run the following example code  
+7. Understand common error codes
+  
+8. Understand rate limitations
+  
+9. Understanding request timestamps
+ 
+10. Understand fee schedule
+ 
+11. Understand trading rules
+request parameters https://open-api.bingx.com
+
+GET /openApi/swap/v2/quote/ticker
+
+rate limitation by IP in group Number: 
+API KEY permission: 
+No API KEY signature required
+Content-Type:  
+  
+RequestResponse
+symbol
+string
+no
+There must be a hyphen/ "-" in...
+recvWindow
+int64
+no
+Timestamp of initiating the re...
+timestamp
+int64
+yes
+Request valid time window valu...
+  
+Sample code
+PythonGolangNodejsJavaC#phpShell
+
+import time
+import requests
+import hmac
+from hashlib import sha256
+
+APIURL = "https://open-api.bingx.com"
+APIKEY = ""
+SECRETKEY = ""
+
+def demo():
+    payload = {}
+    path = '/openApi/swap/v2/quote/ticker'
+    method = "GET"
+    paramsMap = {
+    "symbol": "SFP-USDT",
+    "timestamp": "1702719836770"
+}
+    paramsStr = parseParam(paramsMap)
+    return send_request(method, path, paramsStr, payload)
+
+def get_sign(api_secret, payload):
+    signature = hmac.new(api_secret.encode("utf-8"), payload.encode("utf-8"), digestmod=sha256).hexdigest()
+    print("sign=" + signature)
+    return signature
+
+
+def send_request(method, path, urlpa, payload):
+    url = "%s%s?%s&signature=%s" % (APIURL, path, urlpa, get_sign(SECRETKEY, urlpa))
+    print(url)
+    headers = {
+        'X-BX-APIKEY': APIKEY,
+    }
+    response = requests.request(method, url, headers=headers, data=payload)
+    return response.text
+
+def parseParam(paramsMap):
+    sortedKeys = sorted(paramsMap)
+    paramsStr = "&".join(["%s=%s" % (x, paramsMap[x]) for x in sortedKeys])
+    if paramsStr != "": 
+     return paramsStr+"&timestamp="+str(int(time.time() * 1000))
+    else:
+     return paramsStr+"timestamp="+str(int(time.time() * 1000))
+
+
+if __name__ == '__main__':
+    print("demo:", demo())
+Query historical transaction orders
+Used to query historical transaction data in the market
+
+Key steps for using the API
+
+1. Create Account
+  
+2. Pass KYC/KYB
+  
+3. Create API KEY
+  
+4. Configure API KEY permissions
+  
+5. Understanding signature authentication
+ 6. Run the following example code  
+7. Understand common error codes
+  
+8. Understand rate limitations
+  
+9. Understanding request timestamps
+ 
+10. Understand fee schedule
+ 
+11. Understand trading rules
+request parameters https://open-api.bingx.com
+
+GET /openApi/swap/v1/market/historicalTrades
+
+rate limitation by IP in group Number: 
+API KEY permission: 
+No API KEY signature required
+Content-Type:  
+  
+RequestResponse
+fromId
+int64
+no
+From which transaction ID to s...
+symbol
+string
+no
+There must be a hyphen/ "-" in...
+limit
+int
+no
+The number of returned result ...
+timestamp
+int64
+yes
+request timestamp, unit: milli...
+recvWindow
+int64
+no
+Request valid time window valu...
+  
+Sample code
+PythonGolangNodejsJavaC#phpShell
+
+import time
+import requests
+import hmac
+from hashlib import sha256
+
+APIURL = "https://open-api.bingx.com"
+APIKEY = ""
+SECRETKEY = ""
+
+def demo():
+    payload = {}
+    path = '/openApi/swap/v1/market/historicalTrades'
+    method = "GET"
+    paramsMap = {
+    "fromId": "412551",
+    "limit": "500",
+    "symbol": "ETH-USDT",
+    "timestamp": "1702731995838",
+    "recvWindow": "60000"
+}
+    paramsStr = parseParam(paramsMap)
+    return send_request(method, path, paramsStr, payload)
+
+def get_sign(api_secret, payload):
+    signature = hmac.new(api_secret.encode("utf-8"), payload.encode("utf-8"), digestmod=sha256).hexdigest()
+    print("sign=" + signature)
+    return signature
+
+
+def send_request(method, path, urlpa, payload):
+    url = "%s%s?%s&signature=%s" % (APIURL, path, urlpa, get_sign(SECRETKEY, urlpa))
+    print(url)
+    headers = {
+        'X-BX-APIKEY': APIKEY,
+    }
+    response = requests.request(method, url, headers=headers, data=payload)
+    return response.text
+
+def parseParam(paramsMap):
+    sortedKeys = sorted(paramsMap)
+    paramsStr = "&".join(["%s=%s" % (x, paramsMap[x]) for x in sortedKeys])
+    if paramsStr != "": 
+     return paramsStr+"&timestamp="+str(int(time.time() * 1000))
+    else:
+     return paramsStr+"timestamp="+str(int(time.time() * 1000))
+
+
+if __name__ == '__main__':
+    print("demo:", demo())
+Symbol Order Book Ticker
+Obtain the current optimal order
+
+Key steps for using the API
+
+1. Create Account
+  
+2. Pass KYC/KYB
+  
+3. Create API KEY
+  
+4. Configure API KEY permissions
+  
+5. Understanding signature authentication
+ 6. Run the following example code  
+7. Understand common error codes
+  
+8. Understand rate limitations
+  
+9. Understanding request timestamps
+ 
+10. Understand fee schedule
+ 
+11. Understand trading rules
+request parameters https://open-api.bingx.com
+
+GET /openApi/swap/v2/quote/bookTicker
+
+rate limitation by IP in group Number: 
+API KEY permission: 
+No API KEY signature required
+Content-Type:  
+  
+RequestResponse
+symbol
+string
+yes
+There must be a hyphen/ "-" in...
+recvWindow
+int64
+no
+Timestamp of initiating the re...
+timestamp
+int64
+yes
+Request valid time window valu...
+  
+Sample code
+PythonGolangNodejsJavaC#phpShell
+
+import time
+import requests
+import hmac
+from hashlib import sha256
+
+APIURL = "https://open-api.bingx.com"
+APIKEY = ""
+SECRETKEY = ""
+
+def demo():
+    payload = {}
+    path = '/openApi/swap/v2/quote/bookTicker'
+    method = "GET"
+    paramsMap = {
+    "symbol": "BTC-USDT",
+    "timestamp": "1702719942130"
+}
+    paramsStr = parseParam(paramsMap)
+    return send_request(method, path, paramsStr, payload)
+
+def get_sign(api_secret, payload):
+    signature = hmac.new(api_secret.encode("utf-8"), payload.encode("utf-8"), digestmod=sha256).hexdigest()
+    print("sign=" + signature)
+    return signature
+
+
+def send_request(method, path, urlpa, payload):
+    url = "%s%s?%s&signature=%s" % (APIURL, path, urlpa, get_sign(SECRETKEY, urlpa))
+    print(url)
+    headers = {
+        'X-BX-APIKEY': APIKEY,
+    }
+    response = requests.request(method, url, headers=headers, data=payload)
+    return response.text
+
+def parseParam(paramsMap):
+    sortedKeys = sorted(paramsMap)
+    paramsStr = "&".join(["%s=%s" % (x, paramsMap[x]) for x in sortedKeys])
+    if paramsStr != "": 
+     return paramsStr+"&timestamp="+str(int(time.time() * 1000))
+    else:
+     return paramsStr+"timestamp="+str(int(time.time() * 1000))
+
+
+if __name__ == '__main__':
+    print("demo:", demo())
+Mark Price Kline/Candlestick Data
+Get the latest mark price Kline Data
+
+Key steps for using the API
+
+1. Create Account
+  
+2. Pass KYC/KYB
+  
+3. Create API KEY
+  
+4. Configure API KEY permissions
+  
+5. Understanding signature authentication
+ 6. Run the following example code  
+7. Understand common error codes
+  
+8. Understand rate limitations
+  
+9. Understanding request timestamps
+ 
+10. Understand fee schedule
+ 
+11. Understand trading rules
+request parameters https://open-api.bingx.com
+
+GET /openApi/swap/v1/market/markPriceKlines
+
+rate limitation by IP in group Number: 
+API KEY permission: 
+No API KEY signature required
+Content-Type:  
+  
+RequestResponseinterval
+symbol
+string
+yes
+There must be a hyphen/ "-" in...
+interval
+string
+yes
+time interval, refer to field ...
+startTime
+int64
+no
+Start time, unit: millisecond
+endTime
+int64
+no
+End time, unit: millisecond
+limit
+int64
+no
+default: 500 maximum: 1440
+recvWindow
+int64
+no
+Timestamp of initiating the re...
+timestamp
+int64
+yes
+Request valid time window valu...
+  
+Sample code
+PythonGolangNodejsJavaC#phpShell
+
+import time
+import requests
+import hmac
+from hashlib import sha256
+
+APIURL = "https://open-api.bingx.com"
+APIKEY = ""
+SECRETKEY = ""
+
+def demo():
+    payload = {}
+    path = '/openApi/swap/v1/market/markPriceKlines'
+    method = "GET"
+    paramsMap = {
+    "symbol": "KNC-USDT",
+    "interval": "1h",
+    "limit": "1000",
+    "startTime": "1702717199998"
+}
+    paramsStr = parseParam(paramsMap)
+    return send_request(method, path, paramsStr, payload)
+
+def get_sign(api_secret, payload):
+    signature = hmac.new(api_secret.encode("utf-8"), payload.encode("utf-8"), digestmod=sha256).hexdigest()
+    print("sign=" + signature)
+    return signature
+
+
+def send_request(method, path, urlpa, payload):
+    url = "%s%s?%s&signature=%s" % (APIURL, path, urlpa, get_sign(SECRETKEY, urlpa))
+    print(url)
+    headers = {
+        'X-BX-APIKEY': APIKEY,
+    }
+    response = requests.request(method, url, headers=headers, data=payload)
+    return response.text
+
+def parseParam(paramsMap):
+    sortedKeys = sorted(paramsMap)
+    paramsStr = "&".join(["%s=%s" % (x, paramsMap[x]) for x in sortedKeys])
+    if paramsStr != "": 
+     return paramsStr+"&timestamp="+str(int(time.time() * 1000))
+    else:
+     return paramsStr+"timestamp="+str(int(time.time() * 1000))
+
+
+if __name__ == '__main__':
+    print("demo:", demo())
+Symbol Price Ticker
+Key steps for using the API
+
+1. Create Account
+  
+2. Pass KYC/KYB
+  
+3. Create API KEY
+  
+4. Configure API KEY permissions
+  
+5. Understanding signature authentication
+ 6. Run the following example code  
+7. Understand common error codes
+  
+8. Understand rate limitations
+  
+9. Understanding request timestamps
+ 
+10. Understand fee schedule
+ 
+11. Understand trading rules
+request parameters https://open-api.bingx.com
+
+GET /openApi/swap/v1/ticker/price
+
+rate limitation by IP in group Number: 
+API KEY permission: 
+No API KEY signature required
+Content-Type:  
+  
+RequestResponse
+symbol
+string
+no
+There must be a hyphen/ "-" in...
+recvWindow
+int64
+no
+Timestamp of initiating the re...
+timestamp
+int64
+yes
+Request valid time window valu...
+  
+Sample code
+PythonGolangNodejsJavaC#phpShell
+
+import time
+import requests
+import hmac
+from hashlib import sha256
+
+APIURL = "https://open-api.bingx.com"
+APIKEY = ""
+SECRETKEY = ""
+
+def demo():
+    payload = {}
+    path = '/openApi/swap/v1/ticker/price'
+    method = "GET"
+    paramsMap = {
+    "timestamp": "1702718923479",
+    "symbol": "TIA-USDT"
+}
+    paramsStr = parseParam(paramsMap)
+    return send_request(method, path, paramsStr, payload)
+
+def get_sign(api_secret, payload):
+    signature = hmac.new(api_secret.encode("utf-8"), payload.encode("utf-8"), digestmod=sha256).hexdigest()
+    print("sign=" + signature)
+    return signature
+
+
+def send_request(method, path, urlpa, payload):

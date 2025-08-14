@@ -1,0 +1,490 @@
+{
+  "openapi": "3.1.0",
+  "servers": [
+    {
+      "url": "https://cryptonews-api.com"
+    }
+  ],
+  "info": {
+    "title": "Crypto News API", 
+    "version": "1.0.0"
+  },
+  "paths": {
+    "/api/v1": {
+      "get": {
+        "summary": "Get Crypto Ticker News (regular and advanced)",
+        "operationId": "getCryptoTickerNews",
+        "description": "Retrieve crypto news for tickers using regular or advanced filtering options.",
+        "parameters": [
+          {
+            "name": "tickers",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "example": "BTC,ETH,XRP"
+            },
+            "description": "News about any of these tickers (comma-separated)."
+          },
+          {
+            "name": "items",
+            "in": "query", 
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 100,
+              "example": 3
+            },
+            "description": "Number of news items to return (1-100). This parameter is required."
+          },
+          {
+            "name": "datatype",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "enum": ["json", "csv"],
+              "default": "json",
+              "example": "csv"
+            },
+            "description": "Response format - json or csv file download."
+          },
+          {
+            "name": "token",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "example": "ayimav7nlptgzetysg9dwhqteampvoirtfx5orqk"
+            },
+            "description": "API token"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "List of crypto news items",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "type": "array",
+                      "items": {
+                        "type": "object"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/category": {
+      "get": {
+        "summary": "Get categorized crypto news by section", 
+        "operationId": "getCryptoCategoryNews",
+        "description": "Get curated news articles from specific crypto market sections",
+        "parameters": [
+          {
+            "name": "section",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "enum": ["general", "alltickers"],
+              "example": "general"
+            },
+            "description": "News section"
+          },
+          {
+            "name": "items",
+            "in": "query",
+            "required": true, 
+            "schema": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 100,
+              "default": 10,
+              "example": 3
+            },
+            "description": "Number of news articles to return per page (1-100)"
+          },
+          {
+            "name": "datatype",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "enum": ["json", "csv"],
+              "default": "json",
+              "example": "csv"
+            },
+            "description": "Response format - json or csv file download"
+          },
+          {
+            "name": "token",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "example": "ayimav7nlptgzetysg9dwhqteampvoirtfx5orqk"
+            },
+            "description": "API token"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Categorized crypto news articles",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "type": "array",
+                      "items": {
+                        "type": "object"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/account/tickersdbv2": {
+      "get": {
+        "summary": "Get complete tickers database",
+        "operationId": "getTickersDatabase",
+        "description": "View all available tickers/symbols in the database. Limited to once per day for non-trial accounts. Note - This endpoint returns large datasets.",
+        "parameters": [
+          {
+            "name": "token",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "example": "ayimav7nlptgzetysg9dwhqteampvoirtfx5orqk"
+            },
+            "description": "API authentication token"
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 1000,
+              "default": 100,
+              "example": 100
+            },
+            "description": "Limit number of tickers returned to prevent large responses"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Complete database of supported ticker symbols and cryptocurrencies",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "ticker": {
+                            "type": "string"
+                          },
+                          "name": {
+                            "type": "string"
+                          }
+                        }
+                      }
+                    },
+                    "total_count": {
+                      "type": "integer"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/top-mention": {
+      "get": {
+        "summary": "Get top mentioned crypto tickers",
+        "operationId": "getTopMentionedTickers",
+        "description": "Get the most mentioned cryptocurrency tickers",
+        "parameters": [
+          {
+            "name": "date",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "example": "2025-07-30"
+            },
+            "description": "Date for which to retrieve top mentioned tickers (YYYY-MM-DD)"
+          },
+          {
+            "name": "token",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "example": "ayimav7nlptgzetysg9dwhqteampvoirtfx5orqk"
+            },
+            "description": "API token"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Top mentioned crypto tickers",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "type": "array",
+                      "items": {
+                        "type": "object"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/stat": {
+      "get": {
+        "summary": "Get sentiment analysis",
+        "operationId": "getSentimentAnalysis", 
+        "description": "Get sentiment analysis for crypto news",
+        "parameters": [
+          {
+            "name": "tickers",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "example": "BTC,ETH"
+            },
+            "description": "One or more ticker symbols (comma-separated)"
+          },
+          {
+            "name": "section",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "example": "general"
+            },
+            "description": "News section (general, alltickers, etc.)"
+          },
+          {
+            "name": "token",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "example": "ayimav7nlptgzetysg9dwhqteampvoirtfx5orqk"
+            },
+            "description": "API token"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Sentiment analysis data",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "type": "array",
+                      "items": {
+                        "type": "object"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/events": {
+      "get": {
+        "summary": "Get news events",
+        "operationId": "getEvents",
+        "description": "Get cryptocurrency news events",
+        "parameters": [
+          {
+            "name": "eventid",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "example": "12345"
+            },
+            "description": "Specific event ID to retrieve"
+          },
+          {
+            "name": "tickers",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "example": "BTC,ETH"
+            },
+            "description": "One or more ticker symbols (comma-separated)"
+          },
+          {
+            "name": "token",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "example": "ayimav7nlptgzetysg9dwhqteampvoirtfx5orqk"
+            },
+            "description": "API token"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "List of news events",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "type": "array",
+                      "items": {
+                        "type": "object"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/trending-headlines": {
+      "get": {
+        "summary": "Get trending crypto news headlines",
+        "operationId": "getTrendingHeadlines",
+        "description": "Get trending cryptocurrency news headlines",
+        "parameters": [
+          {
+            "name": "ticker",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "example": "BTC"
+            },
+            "description": "Ticker symbol for which to get trending headlines"
+          },
+          {
+            "name": "token",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "example": "ayimav7nlptgzetysg9dwhqteampvoirtfx5orqk"
+            },
+            "description": "API token"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "List of trending headlines",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "type": "array",
+                      "items": {
+                        "type": "object"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/sundown-digest": {
+      "get": {
+        "summary": "Get Sundown Digest",
+        "operationId": "getSundownDigest",
+        "description": "Get the daily Sundown Digest of crypto news",
+        "parameters": [
+          {
+            "name": "items",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "example": 10
+            },
+            "description": "Number of news items to return"
+          },
+          {
+            "name": "token",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "example": "ayimav7nlptgzetysg9dwhqteampvoirtfx5orqk"
+            },
+            "description": "API token"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Sundown Digest data",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "type": "array",
+                      "items": {
+                        "type": "object"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

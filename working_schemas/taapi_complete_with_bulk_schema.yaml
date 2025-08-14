@@ -1,0 +1,233 @@
+openapi: 3.1.0
+info:
+  title: TAAPI.io Complete Technical Analysis
+  description: Full access to 200+ indicators with both individual calls and bulk queries. Optimized for Basic plan with embedded authentication.
+  version: 1.0.0
+servers:
+  - url: https://api.taapi.io
+paths:
+  /rsi:
+    get:
+      summary: RSI - Individual Call
+      operationId: getRSI
+      parameters:
+        - name: secret
+          in: query
+          required: true
+          schema:
+            type: string
+            default: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJjbHVlIjoiNjg5NDFjMGE4MDZmZjE2NTFlMmM1ZTM0IiwiaWF0IjoxNzU0NTM3NDUxLCJleHAiOjMzMjU5MDAxNDUxfQ.QRqOzRFsTcYKSYUuezVQMFdJcL2A6lHIwWC5L0JOLTU
+        - name: symbol
+          in: query
+          required: true
+          schema:
+            type: string
+            example: BTC/USDT
+        - name: exchange
+          in: query
+          schema:
+            type: string
+            default: binance
+        - name: interval
+          in: query
+          schema:
+            type: string
+            default: 1h
+        - name: period
+          in: query
+          schema:
+            type: integer
+            default: 14
+      responses:
+        '200':
+          description: RSI value
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  value:
+                    type: number
+  /macd:
+    get:
+      summary: MACD - Individual Call
+      operationId: getMACD
+      parameters:
+        - name: secret
+          in: query
+          required: true
+          schema:
+            type: string
+            default: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJjbHVlIjoiNjg5NDFjMGE4MDZmZjE2NTFlMmM1ZTM0IiwiaWF0IjoxNzU0NTM3NDUxLCJleHAiOjMzMjU5MDAxNDUxfQ.QRqOzRFsTcYKSYUuezVQMFdJcL2A6lHIwWC5L0JOLTU
+        - name: symbol
+          in: query
+          required: true
+          schema:
+            type: string
+            example: BTC/USDT
+        - name: exchange
+          in: query
+          schema:
+            type: string
+            default: binance
+        - name: interval
+          in: query
+          schema:
+            type: string
+            default: 1h
+        - name: fast
+          in: query
+          schema:
+            type: integer
+            default: 12
+        - name: slow
+          in: query
+          schema:
+            type: integer
+            default: 26
+        - name: signal
+          in: query
+          schema:
+            type: integer
+            default: 9
+      responses:
+        '200':
+          description: MACD values
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  valueMACD:
+                    type: number
+                  valueMACDSignal:
+                    type: number
+                  valueMACDHist:
+                    type: number
+  /bbands:
+    get:
+      summary: Bollinger Bands - Individual Call
+      operationId: getBollingerBands
+      parameters:
+        - name: secret
+          in: query
+          required: true
+          schema:
+            type: string
+            default: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJjbHVlIjoiNjg5NDFjMGE4MDZmZjE2NTFlMmM1ZTM0IiwiaWF0IjoxNzU0NTM3NDUxLCJleHAiOjMzMjU5MDAxNDUxfQ.QRqOzRFsTcYKSYUuezVQMFdJcL2A6lHIwWC5L0JOLTU
+        - name: symbol
+          in: query
+          required: true
+          schema:
+            type: string
+            example: BTC/USDT
+        - name: exchange
+          in: query
+          schema:
+            type: string
+            default: binance
+        - name: interval
+          in: query
+          schema:
+            type: string
+            default: 1h
+        - name: period
+          in: query
+          schema:
+            type: integer
+            default: 20
+        - name: stddev
+          in: query
+          schema:
+            type: number
+            default: 2
+      responses:
+        '200':
+          description: Bollinger Bands values
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  valueUpperBand:
+                    type: number
+                  valueMiddleBand:
+                    type: number
+                  valueLowerBand:
+                    type: number
+  /ema:
+    get:
+      summary: EMA - Individual Call
+      operationId: getEMA
+      parameters:
+        - name: secret
+          in: query
+          required: true
+          schema:
+            type: string
+            default: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJjbHVlIjoiNjg5NDFjMGE4MDZmZjE2NTFlMmM1ZTM0IiwiaWF0IjoxNzU0NTM3NDUxLCJleHAiOjMzMjU5MDAxNDUxfQ.QRqOzRFsTcYKSYUuezVQMFdJcL2A6lHIwWC5L0JOLTU
+        - name: symbol
+          in: query
+          required: true
+          schema:
+            type: string
+            example: BTC/USDT
+        - name: exchange
+          in: query
+          schema:
+            type: string
+            default: binance
+        - name: interval
+          in: query
+          schema:
+            type: string
+            default: 1h
+        - name: period
+          in: query
+          schema:
+            type: integer
+            default: 20
+      responses:
+        '200':
+          description: EMA value
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  value:
+                    type: number
+  /graphql:
+    post:
+      summary: GraphQL Bulk Query
+      description: Execute multiple indicator calculations in a single GraphQL query
+      operationId: getGraphQLBulk
+      parameters:
+        - name: secret
+          in: query
+          required: true
+          schema:
+            type: string
+            default: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJjbHVlIjoiNjg5NDFjMGE4MDZmZjE2NTFlMmM1ZTM0IiwiaWF0IjoxNzU0NTM3NDUxLCJleHAiOjMzMjU5MDAxNDUxfQ.QRqOzRFsTcYKSYUuezVQMFdJcL2A6lHIwWC5L0JOLTU
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                query:
+                  type: string
+                  example: '{ rsi(exchange: "binance", symbol: "BTC/USDT", interval: "1h", period: 14) macd(exchange: "binance", symbol: "BTC/USDT", interval: "1h", fast: 12, slow: 26, signal: 9) { valueMACD valueMACDSignal valueMACDHist } }'
+              required:
+                - query
+      responses:
+        '200':
+          description: GraphQL response with multiple indicators
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: object

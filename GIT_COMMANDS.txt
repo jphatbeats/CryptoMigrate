@@ -1,0 +1,19 @@
+Git Commands to Push OpenAI Fix to Railway:
+
+git add .
+git commit -m "Fix OpenAI integration and Railway deployment issues
+
+- Fixed critical import bug preventing ChatGPT endpoints from working
+- Changed from 'import trading_ai' to 'import TradingIntelligence' + instantiation  
+- Added proper error handling for OpenAI initialization
+- Fixed Procfile to use 'python3' instead of 'python' for Railway compatibility
+- Local testing confirms OpenAI integration working
+- Railway deployment will now have working ChatGPT endpoints"
+
+git push origin main
+
+Expected Results After Push:
+- Railway will redeploy automatically in 2-3 minutes
+- Deployment will succeed (no more "python: command not found" errors)  
+- OpenAI integration will load successfully
+- ChatGPT endpoints will return real AI analysis instead of HTTP 503 errors

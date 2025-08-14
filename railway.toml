@@ -1,0 +1,24 @@
+[build]
+builder = "DOCKERFILE"
+dockerfilePath = "Dockerfile"
+
+[deploy]
+healthcheckPath = "/health"
+healthcheckTimeout = 300
+restartPolicyType = "ON_FAILURE"
+
+[environment]
+PYTHONPATH = "."
+PORT = "5000"
+
+[variables]
+NODE_ENV = "production"
+DEPLOYMENT_VERSION = "2.1.2-NIXPACKS-FIXED"
+LAST_DEPLOY = "2025-08-10T14:12:00Z"
+FORCE_REBUILD = "true"
+BUILD_CACHE = "false"
+UNDEFINED_VARS_FIXED = "true"
+FINAL_FIX = "true"
+HEALTH_CHECK_IMPROVED = "true"
+MINIMAL_BUILD = "true"
+DOCKERFILE_BUILD = "true"

@@ -1,0 +1,568 @@
+Home – Documentation – Utilities / 3rd party integrations – Client
+
+NPM Client
+With this method, the TAAPI.IO Client does the heavy lifting of fetching candle data from the exchanges, and passing it on to the API. This means that it’s the client talking directly to the exchanges, and therefore, you need to watch your usage and stay under the exchange’s rate-limits. For more information on an exchange’s rate-limits, you need to find their technical documentation on their home page.
+
+
+Pros
+Calculate TA for any crypto asset, for any  market / symbol / time frame on 124 different crypto exchanges.
+Candles are pulled instantly from the exchanges, making TA indicator calculations real time.
+Execute bulk calls very easily.
+Use this client as a wrapper, if you use NodeJS.
+Cons
+You need to watch the rate-limits for the exchange yourself.
+One extra step if you’re not using NodeJS (More info below).
+Why do it like this?
+It’s a tall order to fetch all symbols on all time frames for all the exchanges, and guarantee that this is reliable, and always up-to-date. However, we are working on exactly this, as a second priority to our primary focus (TA). When a stable version of this is ready, we’ll be sure to let you know!
+
+Getting Started
+Our client is NodeJS based (check the NPM Package on npmjs.com), and that can be used either as a wrapper or as a server. Below are some guides based on programming language and operation systems:
+
+NodeJS
+If you’re working with NodeJS, then things are very simple, as you already have NodeJS installed on your platform. Simply install our NPM Package (taapi), and you’re good to go:
+
+Make sure you have your project setup, otherwise, create a new one:
+
+Create a new folder: mkdir myCryptoProject
+Enter that folder: cd myCryptoProject
+Init a new project: npm init
+Install TAAPI.IO npm package: npm i taapi
+Create your entry file: touch index.js
+Boot up your favorite IDE, and paste the below into index.js
+// Require taapi: npm i taapi --save
+const taapi = require("taapi");
+ 
+// Setup client with authentication
+const client = taapi.client("MY_SECRET");
+ 
+// Get the BTC/USDT RSI value on the 1 minute time frame from binance
+client.getIndicator("rsi", "binance", "BTC/USDT", "1m").then(function(result) {
+    console.log("Result: ", result);
+})
+.catch(function(error){
+    console.log(error.message);
+});
+See more info / examples at the NPM Package
+
+Be sure to check out the below required and optional parameters!
+
+Other programming languages
+To get started with anything but NodeJS, you need to install the taapi npm package and run it as a server. Don’t be scared if this is already getting too geeky. It really is fairly simple. Follow these steps (unix commands used):
+
+Visit NodeJS’s download page, download and install.
+Once installed, create a folder for the taapi local server: mkdir taapiServer and cd to this directory: cd taapiServer .
+Init a new NodeJS project: npm init (and follow the init steps)
+Install taapi: npm install taapi
+Create an empty index.js file: touch index.js
+Boot up your favorite editor and paste the below into the index.js file:
+// Require taapi
+const taapi = require("taapi");
+ 
+// Setup server with authentication
+const server = taapi.server("MY_SECRET");
+ 
+// Define port - Optional and defaults to 4101
+// server.setServerPort(3000);
+ 
+// Start the server
+server.start();
+Run the server: node index.js
+If you’re interested in a more in-depth NodeJS guide, then check out: https://www.pluralsight.com/guides/getting-started-with-nodejs
+Your terminal should now display something like:
+
+TAAPI.IO Server API Running on localhost:4101!
+You’re now up and running and can use this server with your favorite programming language.
+
+Hint: Use PM2 (Process Manager for NodeJS). It makes it easy to run the server as a background process.
+
+npm install pm2 -g // Install pm2 globally
+pm2 start index.js –name ‘taapi-server’ // Start the taapi server in the background
+pm2 status // Check the status
+pm2 log taapi-server // Check the log
+pm2 –help
+Usage
+Now that you’re all setup, and have all the candle data you need, you can start using TAAPI.IO. Below are a couple of examples in different languages.
+
+NodeJS
+Check the above example, just below Getting Started for a NodeJS example.
+
+PHP
+// Define query
+$query = http_build_query(array(
+  'indicator' => 'rsi',
+  'exchange' => 'binance',
+  'symbol' => 'BTC/USDT',
+  'interval' => '1h'
+));
+ 
+// Define endpoint. Change the port if you changed it when setting up the server
+$url = "http://localhost:4101/indicator?{$query}";
+ 
+// create curl resource 
+$ch = curl_init(); 
+ 
+// set url 
+curl_setopt($ch, CURLOPT_URL, $url); 
+ 
+//return the transfer as a string 
+curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1); 
+ 
+// $output contains the output string 
+$output = curl_exec($ch); 
+ 
+// close curl resource to free up system resources 
+curl_close($ch);
+ 
+// View result
+print_r(json_decode($output));
+Python
+# Import the requests library 
+import requests 
+  
+# Define endpoint 
+endpoint = 'http://localhost:4101/indicator'
+  
+# Define a parameters dict for the parameters to be sent to the API 
+parameters = {
+    'indicator': 'rsi',
+    'exchange': 'binance',
+    'symbol': 'BTC/USDT',
+    'interval': '1h'
+    } 
+  
+# Send get request and save the response as response object 
+response = requests.get(url = endpoint, params = parameters)
+  
+# Extract data in json format 
+result = response.json() 
+
+# Print result
+print(result)
+Mandatory Parameters
+Using this “Client” method requires at least the below parameters:
+
+Parameter	Type	Description
+indicator	String	The desired Indicator to calculate TA of.
+exchange	String	The exchange you want to calculate TA from: binance, kucoin, …
+symbol	String	Symbol names are always upper-case, with the coin separated by a forward slash and the market: COIN/MARKET. Example: BTC/USDT Bitcoin to Tether, or LTC/BTC Litecoin to Bitcoin.
+interval	String	Interval or time frame: Binance have the following time frames or intervals: [1m, 3m, 5m, 15m, 30m, 1h, 2h, 4h, 6h, 8h, 12h, 1d, 3d, 1w, 1M].
+Depending on the indicator you call, there may or may not be more mandatory parameters. Additionally, there may be several other optional paramters, also depending on the indicator. Please refer to the Indicators page for more information.
+
+Optional Parameters
+Below is a list of optional parameters that all the indicators will take:
+
+Parameter	Type	
+backtrack	Integer	This backtrack parameter, removes candles from the data set, and thus calculates the indicator value, x amount of candles back. So, if you’re fetching the RSI on the hourly, and you want to know what the RSI was 5 hours ago, set backtrack=5. Default here is 0, and a max of 50.
+candlesCount	Integer	Default amount of candles being fetched is 100, use this parameter to override this number. Note, some exchanges do not allow more than 100 candles to be fetched. But most allow at least 200.
+Note on exchanges and limits
+The different exchanges have different limits as to how many candles one can fetch in one go. Therefore, a default of 100 is set here. We’re updating our documentation to reflect each exchange’s individual limits. But for now, it’s best to double check that the amount of candles that you expect are returned (use the /candles endpoint), and check that the last one has the expected timestamp. Candles are always returned with the oldest first and newest last.
+
+You can override how many candles the client should attempt to fetch. See more info / examples at the NPM Package
+
+Bulk Queries
+Often multiple indicators are needed to build a working trading strategy. This TAAPI.IO Client makes it very easy to accomplish this. You can also do this with the GraphQL method, building your own GraphQL queries.
+
+Bulk calls are in principal not limited to any plan, but it is only useful with the Pro & Expert plans, as these are the only plans that allows for more than 1 call / second. The same rate limits apply, as with calling single indicators.
+
+These new features are available as of version v1.2.2 of the NPM Client. If you are an existing user of the Client, just do an update:
+
+npm update taapi
+Getting Started
+Initalize the Client just like above calling a single indicator. But instead of using the “getIndicator” method, you can add bulk calls with: “addBulkQuery” and “executeBulkQueries“. Example:
+
+// Require taapi: npm i taapi --save
+const taapi = require("taapi");
+ 
+// Setup client with authentication
+const client = taapi.client("MY_SECRET");
+
+// Init bulk queries. This resets all previously added queries
+client.initBulkQueries();
+ 
+// Get the BTC/USDT rsi, ao, adx, cmf, macd, atr, rsi 5 hours ago, 50 MA values on the 1 hour time frame from binance
+client.addBulkQuery("rsi", "binance", "BTC/USDT", "1h");
+client.addBulkQuery("ao", "binance", "BTC/USDT", "1h");
+client.addBulkQuery("adx", "binance", "BTC/USDT", "1h");
+client.addBulkQuery("cmf", "binance", "BTC/USDT", "1h");
+client.addBulkQuery("macd", "binance", "BTC/USDT", "1h");
+client.addBulkQuery("atr", "binance", "BTC/USDT", "1h", null, 0, "my_custom_id"); // Override id
+client.addBulkQuery("rsi", "binance", "BTC/USDT", "1h", null, 5); // RSI 5 hours ago
+client.addBulkQuery("ma", "binance", "BTC/USDT", "1h", {optInTimePeriod: 50}); // 50 MA
+
+client.executeBulkQueries().then(result => {
+    console.log(result);
+}).catch(error => {
+    console.log(error);
+});
+The above example will output an array of objects with results, like:
+
+[ { id: 'rsi_binance_BTC/USDT_1h',
+    indicator: 'rsi',
+    result: { value: '47.39194885856546' } },
+  { id: 'ao_binance_BTC/USDT_1h',
+    indicator: 'ao',
+    result: { value: '-85.20858823529852' } },
+  { id: 'adx_binance_BTC/USDT_1h',
+    indicator: 'adx',
+    result: { value: '23.102523989797877' } },
+  { id: 'cmf_binance_BTC/USDT_1h',
+    indicator: 'cmf',
+    result: { value: '-0.10218178589367832' } },
+  { id: 'macd_binance_BTC/USDT_1h',
+    indicator: 'macd',
+    result: 
+     { valueMACD: '-23.075277236113834',
+       valueMACDSignal: '-18.077522747658332',
+       valueMACDHist: '-4.997754488455502' } },
+  { id: 'my_custom_id',
+    indicator: 'atr',
+    result: { value: '107.98685529910053' } },
+  { id: 'rsi_binance_BTC/USDT_1h',
+    indicator: 'rsi',
+    result: { value: '47.499250240679686' } },
+  { id: 'ma_binance_BTC/USDT_1h',
+    indicator: 'ma',
+    result: { value: '10294.615600000003' } } ]
+Return parameters of the result objects:
+
+id: The ID of the call. If no ID is provided, an auto-generated id will be returned.
+indicator: The indicator called.
+result: The result of the calculation. This output will depend on the indicator.
+The addBulkQuery method will take the following parameters in this order:
+
+Parameter	Type	Description
+indicator	String	The indicator to be calculated. See the Indicators page for a list of more than 200 available indicators.
+exchange	String	The exchange to fetch data from. See the below Supported Exchanges.
+symbol	String	The symbol to fetch candles from.
+interval	String	The interval or time frame to fetch candles from.
+params	Object	An object describing extra mandatory / optional indicator parameters. These differ from indicator to indicator.
+backtrack	Integer	This will remove candles from the set, thus backtracking a calculation back in time.
+id	String	Override the auto-generated id.
+candlesCount	Interger	Override the amount of candles that should be attempted to fetch from the exchange. Several exchanges only support fetching 100 candles, which is also this settings default.
+Examples
+The next example with fetch the RSI from 3 different exchanges:
+
+// Require taapi: npm i taapi --save
+const taapi = require("taapi");
+ 
+// Setup client with authentication
+const client = taapi.client("MY_SECRET");
+
+// Init bulk queries. This resets all previously added queries
+client.initBulkQueries();
+ 
+// Get the BTC/USDT rsi from Binance, Kucoin and Kraken
+client.addBulkQuery("rsi", "binance", "BTC/USDT", "1h");
+client.addBulkQuery("rsi", "kucoin", "BTC/USDT", "1h");
+client.addBulkQuery("rsi", "kraken", "BTC/USDT", "1h");
+
+client.executeBulkQueries().then(result => {
+    console.log(result);
+}).catch(error => {
+    console.log(error);
+});
+Result:
+
+[
+    {
+       "id":"rsi_binance_BTC/USDT_1h",
+       "indicator":"rsi",
+       "result":{
+          "value":"45.96327025055071"
+       }
+    },
+    {
+       "id":"rsi_kucoin_BTC/USDT_1h",
+       "indicator":"rsi",
+       "result":{
+          "value":"45.31342328822406"
+       }
+    },
+    {
+       "id":"rsi_kraken_BTC/USDT_1h",
+       "indicator":"rsi",
+       "result":{
+          "value":"47.80078228443461"
+       }
+    }
+ ]
+Submitting your own candles
+While we’re getting the client ready to be able to fetch candles from the Stock market, Forex, etc… , you might possess your own candles.
+
+To calculate indicators based on “raw” candles, use the methods:
+
+client.initRawBulkQueries();
+This initializes and resets all queries.
+
+client.setRawCandles(candles);
+The “raw” candles must be organized the same way as with the Connecting via GraphQL method.
+
+client.addRawBulkQuery("rsi");
+The “addRawBulkQuery” method takes the following parameters:
+
+Parameter	Type	Description
+indicator	String	The indicator to be calculated. See the Indicators page for a list of more than 200 available indicators.
+params	Object	An object describing extra mandatory / optional indicator parameters. These differ from indicator to indicator.
+candles	String	If different candles are needed for this indicator calculation, you can override the default candles set with the setRawCandles method.
+Execute the queries:
+
+client.executeRawBulkQueries().then(result => {
+    console.log(result);
+}).catch(error => {
+    console.log(error);
+});
+Using the ‘Local Server’
+3 endpoints in the local server allows you to execute bulk requests using the ‘local server’. See above for how to start this server up.
+
+/init-bulk-queries: Initiates a new bulk query.
+/add-bulk-query: Add’s a new bulk query, this takes the exact same parameters as querying single indicators.
+/execute-bulk-queries: When all bulk queries are added to the queue, use this to execute the entire queue.
+Example PHP
+Let’s do one example in PHP using the local server with 5 bulk calls:
+
+// Initalize bulk queries
+localServerCall('init-bulk-queries');
+
+// Get the RSI 1h BTC/USDT from Binance
+localServerCall('add-bulk-query', array(
+    'indicator' => 'rsi',
+    'exchange' => 'binance',
+    'symbol' => 'BTC/USDT',
+    'interval' => '1h'
+));
+
+// Get the previous RSI 1h BTC/USDT from Binance
+localServerCall('add-bulk-query', array(
+    'indicator' => 'rsi',
+    'exchange' => 'binance',
+    'symbol' => 'BTC/USDT',
+    'interval' => '1h',
+    'backtrack' => 1,
+    'id' => 'RSI Binance BTC/USDT 1h backtracked 1'
+));
+
+// Get the MACD 1h BTC/USDT from Binance
+localServerCall('add-bulk-query', array(
+    'indicator' => 'MACD',
+    'exchange' => 'binance',
+    'symbol' => 'BTC/USDT',
+    'interval' => '1h'
+));
+
+// Get the RSI 15M BTC/USDT from Binance
+localServerCall('add-bulk-query', array(
+    'indicator' => 'rsi',
+    'exchange' => 'binance',
+    'symbol' => 'BTC/USDT',
+    'interval' => '15m'
+));
+
+// Get the CMF 15m BTC/USDT from Kucoin overriding the period to 20
+localServerCall('add-bulk-query', array(
+    'indicator' => 'cmf',
+    'exchange' => 'kucoin',
+    'symbol' => 'BTC/USDT',
+    'interval' => '15m',
+    'period' => 20
+));
+
+// Execute the calls
+$bulkResult = localServerCall('execute-bulk-queries');
+
+// View final result
+print_r(json_decode($bulkResult));
+
+function localServerCall($endpoint, $queryParameters = array()) {
+
+    $query = http_build_query($queryParameters);
+     
+    // Define endpoint. Change the port if you changed it when setting up the server
+    $url = "http://localhost:4101/{$endpoint}?{$query}";
+    
+    // create curl resource 
+    $ch = curl_init(); 
+    
+    // set url 
+    curl_setopt($ch, CURLOPT_URL, $url); 
+    
+    //return the transfer as a string 
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1); 
+    
+    // $output contains the output string 
+    $output = curl_exec($ch); 
+    
+    // close curl resource to free up system resources 
+    curl_close($ch);
+
+    return $output;
+}
+Response:
+
+Array
+(
+    [0] => stdClass Object
+        (
+            [id] => rsi_binance_BTC/USDT_1h
+            [indicator] => rsi
+            [result] => stdClass Object
+                (
+                    [value] => 73.81722586205977
+                )
+
+        )
+
+    [1] => stdClass Object
+        (
+            [id] => RSI Binance BTC/USDT 1h backtracked 1
+            [indicator] => rsi
+            [result] => stdClass Object
+                (
+                    [value] => 73.32792355301252
+                )
+
+        )
+
+    [2] => stdClass Object
+        (
+            [id] => MACD_binance_BTC/USDT_1h
+            [indicator] => macd
+            [result] => stdClass Object
+                (
+                    [valueMACD] => 27.275057476002075
+                    [valueMACDSignal] => -22.129366020718756
+                    [valueMACDHist] => 49.40442349672083
+                )
+
+        )
+
+    [3] => stdClass Object
+        (
+            [id] => rsi_binance_BTC/USDT_15m
+            [indicator] => rsi
+            [result] => stdClass Object
+                (
+                    [value] => 79.58781974826385
+                )
+
+        )
+
+    [4] => stdClass Object
+        (
+            [id] => cmf_kucoin_BTC/USDT_15m
+            [indicator] => cmf
+            [result] => stdClass Object
+                (
+                    [value] => 0.1291445211649513
+                )
+
+        )
+
+)
+Supported Exchanges
+The CCXT library currently supports the following 104 cryptocurrency exchange markets and trading APIs:
+logo	id	name	Symbol	ver	type	certified	pro
+alpaca	alpaca	Alpaca	View symbols	API Version *	CEX – Centralized EXchange		CCXT Pro
+apex	apex	Apex	View symbols	API Version 3	DEX - Distributed EXchange		CCXT Pro
+ascendex	ascendex	AscendEX	View symbols	API Version 2	CEX – Centralized EXchange		CCXT Pro
+bequant	bequant	Bequant	View symbols	API Version 3	CEX – Centralized EXchange		CCXT Pro
+bigone	bigone	BigONE	View symbols	API Version 3	CEX – Centralized EXchange		
+binance	binance	Binance	View symbols	API Version *	CEX – Centralized EXchange	CCXT Certified	CCXT Pro
+binancecoinm	binancecoinm	Binance COIN-M	View symbols	API Version *	CEX – Centralized EXchange	CCXT Certified	CCXT Pro
+binanceus	binanceus	Binance US	View symbols	API Version *	CEX – Centralized EXchange		CCXT Pro
+binanceusdm	binanceusdm	Binance USDⓈ-M	View symbols	API Version *	CEX – Centralized EXchange	CCXT Certified	CCXT Pro
+bingx	bingx	BingX	View symbols	API Version 1	CEX – Centralized EXchange	CCXT Certified	CCXT Pro
+bit2c	bit2c	Bit2C	View symbols	API Version *	CEX – Centralized EXchange		
+bitbank	bitbank	bitbank	View symbols	API Version 1	CEX – Centralized EXchange		
+bitbns	bitbns	Bitbns	View symbols	API Version 2	CEX – Centralized EXchange		
+bitfinex	bitfinex	Bitfinex	View symbols	API Version 2	CEX – Centralized EXchange		CCXT Pro
+bitflyer	bitflyer	bitFlyer	View symbols	API Version 1	CEX – Centralized EXchange		
+bitget	bitget	Bitget	View symbols	API Version 2	CEX – Centralized EXchange	CCXT Certified	CCXT Pro
+bithumb	bithumb	Bithumb	View symbols	API Version *	CEX – Centralized EXchange		CCXT Pro
+bitmart	bitmart	BitMart	View symbols	API Version 2	CEX – Centralized EXchange	CCXT Certified	CCXT Pro
+bitmex	bitmex	BitMEX	View symbols	API Version 1	CEX – Centralized EXchange	CCXT Certified	CCXT Pro
+bitopro	bitopro	BitoPro	View symbols	API Version 3	CEX – Centralized EXchange		CCXT Pro
+bitrue	bitrue	Bitrue	View symbols	API Version 1	CEX – Centralized EXchange		CCXT Pro
+bitso	bitso	Bitso	View symbols	API Version 3	CEX – Centralized EXchange		
+bitstamp	bitstamp	Bitstamp	View symbols	API Version 2	CEX – Centralized EXchange		CCXT Pro
+bitteam	bitteam	BIT.TEAM	View symbols	API Version 2.0.6	CEX – Centralized EXchange		
+bitvavo	bitvavo	Bitvavo	View symbols	API Version 2	CEX – Centralized EXchange		CCXT Pro
+bl3p	bl3p	BL3P	View symbols	API Version 1	CEX – Centralized EXchange		
+blockchaincom	blockchaincom	Blockchain.com	View symbols	API Version 3	CEX – Centralized EXchange		CCXT Pro
+blofin	blofin	BloFin	View symbols	API Version 1	CEX – Centralized EXchange		CCXT Pro
+btcalpha	btcalpha	BTC-Alpha	View symbols	API Version 1	CEX – Centralized EXchange		
+btcbox	btcbox	BtcBox	View symbols	API Version 1	CEX – Centralized EXchange		
+btcmarkets	btcmarkets	BTC Markets	View symbols	API Version 3	CEX – Centralized EXchange		
+btcturk	btcturk	BTCTurk	View symbols	API Version *	CEX – Centralized EXchange		
+bybit	bybit	Bybit	View symbols	API Version 5	CEX – Centralized EXchange	CCXT Certified	CCXT Pro
+cex	cex	CEX.IO	View symbols	API Version *	CEX – Centralized EXchange		CCXT Pro
+coinbase	coinbase	Coinbase Advanced	View symbols	API Version 2	CEX – Centralized EXchange		CCXT Pro
+coinbaseexchange	coinbaseexchange	Coinbase Exchange	View symbols	API Version *	CEX – Centralized EXchange		CCXT Pro
+coinbaseinternational	coinbaseinternational	Coinbase International	View symbols	API Version 1	CEX – Centralized EXchange		CCXT Pro
+coincatch	coincatch	CoinCatch	View symbols	API Version 1	CEX – Centralized EXchange		CCXT Pro
+coincheck	coincheck	coincheck	View symbols	API Version *	CEX – Centralized EXchange		
+coinex	coinex	CoinEx	View symbols	API Version 2	CEX – Centralized EXchange	CCXT Certified	CCXT Pro
+coinlist	coinlist	Coinlist	View symbols	API Version 1	CEX – Centralized EXchange		
+coinmate	coinmate	CoinMate	View symbols	API Version *	CEX – Centralized EXchange		
+coinmetro	coinmetro	Coinmetro	View symbols	API Version 1	CEX – Centralized EXchange		
+coinone	coinone	CoinOne	View symbols	API Version 2	CEX – Centralized EXchange		
+coinsph	coinsph	Coins.ph	View symbols	API Version 1	CEX – Centralized EXchange		
+coinspot	coinspot	CoinSpot	View symbols	API Version *	CEX – Centralized EXchange		
+cryptocom	cryptocom	Crypto.com	View symbols	API Version 2	CEX – Centralized EXchange	CCXT Certified	CCXT Pro
+cryptomus	cryptomus	Cryptomus	View symbols	API Version 2	CEX – Centralized EXchange		
+defx	defx	Defx X	View symbols	API Version 1	DEX - Distributed EXchange		
+delta	delta	Delta Exchange	View symbols	API Version 2	CEX – Centralized EXchange		
+deribit	deribit	Deribit	View symbols	API Version 2	CEX – Centralized EXchange		CCXT Pro
+derive	derive	derive	View symbols	API Version 1	DEX - Distributed EXchange		CCXT Pro
+digifinex	digifinex	DigiFinex	View symbols	API Version 3	CEX – Centralized EXchange		
+ellipx	ellipx	Ellipx	View symbols	API Version 1	CEX – Centralized EXchange		
+exmo	exmo	EXMO	View symbols	API Version 1.1	CEX – Centralized EXchange		
+fmfwio	fmfwio	FMFW.io	View symbols	API Version 3	CEX – Centralized EXchange		
+gate	gate	Gate.io	View symbols	API Version 4	CEX – Centralized EXchange	CCXT Certified	CCXT Pro
+gemini	gemini	Gemini	View symbols	API Version 1	CEX – Centralized EXchange		CCXT Pro
+hashkey	hashkey	HashKey Global	View symbols	API Version 1	CEX – Centralized EXchange	CCXT Certified	CCXT Pro
+hitbtc	hitbtc	HitBTC	View symbols	API Version 3	CEX – Centralized EXchange		
+hollaex	hollaex	HollaEx	View symbols	API Version 2	CEX – Centralized EXchange		CCXT Pro
+htx	htx	HTX	View symbols	API Version 1	CEX – Centralized EXchange	CCXT Certified	CCXT Pro
+huobijp	huobijp	Huobi Japan	View symbols	API Version 1	CEX – Centralized EXchange		CCXT Pro
+hyperliquid	hyperliquid	Hyperliquid	View symbols	API Version 1	DEX - Distributed EXchange	CCXT Certified	CCXT Pro
+idex	idex	IDEX	View symbols	API Version 3	DEX - Distributed EXchange		CCXT Pro
+independentreserve	independentreserve	Independent Reserve	View symbols	API Version *	CEX – Centralized EXchange		CCXT Pro
+indodax	indodax	INDODAX	View symbols	API Version 2.0	CEX – Centralized EXchange		
+kraken	kraken	Kraken	View symbols	API Version 0	CEX – Centralized EXchange		CCXT Pro
+krakenfutures	krakenfutures	Kraken Futures	View symbols	API Version 3	CEX – Centralized EXchange		CCXT Pro
+kucoin	kucoin	KuCoin	View symbols	API Version 2	CEX – Centralized EXchange	CCXT Certified	CCXT Pro
+kucoinfutures	kucoinfutures	KuCoin Futures	View symbols	API Version 1	CEX – Centralized EXchange	CCXT Certified	CCXT Pro
+kuna	kuna	Kuna	View symbols	API Version 4	CEX – Centralized EXchange		
+latoken	latoken	Latoken	View symbols	API Version 2	CEX – Centralized EXchange		
+lbank	lbank	LBank	View symbols	API Version 2	CEX – Centralized EXchange		CCXT Pro
+luno	luno	luno	View symbols	API Version 1	CEX – Centralized EXchange		CCXT Pro
+mercado	mercado	Mercado Bitcoin	View symbols	API Version 3	CEX – Centralized EXchange		
+mexc	mexc	MEXC Global	View symbols	API Version 3	CEX – Centralized EXchange	CCXT Certified	CCXT Pro
+myokx	myokx	MyOKX (EEA)	View symbols	API Version 5	CEX – Centralized EXchange		CCXT Pro
+ndax	ndax	NDAX	View symbols	API Version *	CEX – Centralized EXchange		CCXT Pro
+novadax	novadax	NovaDAX	View symbols	API Version 1	CEX – Centralized EXchange		
+oceanex	oceanex	OceanEx	View symbols	API Version 1	CEX – Centralized EXchange		
+okcoin	okcoin	OKCoin	View symbols	API Version 5	CEX – Centralized EXchange		CCXT Pro
+okx	okx	OKX	View symbols	API Version 5	CEX – Centralized EXchange	CCXT Certified	CCXT Pro
+onetrading	onetrading	One Trading	View symbols	API Version 1	CEX – Centralized EXchange		CCXT Pro
+oxfun	oxfun	OXFUN	View symbols	API Version 3	CEX – Centralized EXchange		CCXT Pro
+p2b	p2b	p2b	View symbols	API Version 2	CEX – Centralized EXchange		CCXT Pro
+paradex	paradex	Paradex	View symbols	API Version 1	DEX - Distributed EXchange		CCXT Pro
+paymium	paymium	Paymium	View symbols	API Version 1	CEX – Centralized EXchange		
+phemex	phemex	Phemex	View symbols	API Version 1	CEX – Centralized EXchange		CCXT Pro
+poloniex	poloniex	Poloniex	View symbols	API Version *	CEX – Centralized EXchange		CCXT Pro
+probit	probit	ProBit	View symbols	API Version 1	CEX – Centralized EXchange		CCXT Pro
+timex	timex	TimeX	View symbols	API Version 1	CEX – Centralized EXchange		
+tokocrypto	tokocrypto	Tokocrypto	View symbols	API Version 1	CEX – Centralized EXchange		
+tradeogre	tradeogre	tradeogre	View symbols	API Version 2	CEX – Centralized EXchange		CCXT Pro
+upbit	upbit	Upbit	View symbols	API Version 1	CEX – Centralized EXchange		CCXT Pro
+vertex	vertex	Vertex	View symbols	API Version 1	DEX - Distributed EXchange		CCXT Pro
+wavesexchange	wavesexchange	Waves.Exchange	View symbols	API Version *	DEX - Distributed EXchange		
+whitebit	whitebit	WhiteBit	View symbols	API Version 4	CEX – Centralized EXchange		CCXT Pro
+woo	woo	WOO X	View symbols	API Version 1	CEX – Centralized EXchange	CCXT Certified	CCXT Pro
+woofipro	woofipro	WOOFI PRO	View symbols	API Version 1	DEX - Distributed EXchange	CCXT Certified	CCXT Pro
+xt	xt	XT	View symbols	API Version 4	CEX – Centralized EXchange		CCXT Pro
+yobit	yobit	YoBit	View symbols	API Version 3	CEX – Centralized EXchange		
+zaif	zaif	Zaif	View symbols	API Version 1	CEX – Centralized EXchange		
+zonda	zonda	Zonda	View symbols	API Version *	CEX – Centralized EXchange		
+The good folks over at CCXT has done a fantastic job implementing all of these exchanges, for people to query and fetch data in a unified format. Please be sure to shoot them a donation!

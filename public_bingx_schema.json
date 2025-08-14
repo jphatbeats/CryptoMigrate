@@ -1,0 +1,249 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "BingX Public Market Data API",
+    "description": "Direct access to BingX public market data - prices, candlesticks, orderbook, and market information without authentication",
+    "version": "v1.0.0"
+  },
+  "servers": [
+    {
+      "url": "https://open-api.bingx.com"
+    }
+  ],
+  "paths": {
+    "/openApi/swap/v2/quote/ticker": {
+      "get": {
+        "description": "Get real-time ticker price data for any symbol from BingX",
+        "operationId": "getBingXTicker",
+        "parameters": [
+          {
+            "name": "symbol",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "description": "Trading pair symbol (e.g. BTC-USDT, ETH-USDT). If omitted, returns all tickers"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Current ticker price information",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "code": {"type": "integer"},
+                    "msg": {"type": "string"},
+                    "data": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "symbol": {"type": "string"},
+                          "priceChange": {"type": "string"},
+                          "priceChangePercent": {"type": "string"},
+                          "lastPrice": {"type": "string"},
+                          "volume": {"type": "string"},
+                          "quoteVolume": {"type": "string"},
+                          "openPrice": {"type": "string"},
+                          "highPrice": {"type": "string"},
+                          "lowPrice": {"type": "string"}
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/openApi/swap/v3/quote/klines": {
+      "get": {
+        "description": "Get candlestick/OHLCV data for technical analysis",
+        "operationId": "getBingXCandlesticks", 
+        "parameters": [
+          {
+            "name": "symbol",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "Trading pair symbol (e.g. BTC-USDT, ETH-USDT)"
+          },
+          {
+            "name": "interval",
+            "in": "query", 
+            "required": true,
+            "schema": {
+              "type": "string",
+              "enum": ["1m", "3m", "5m", "15m", "30m", "1h", "2h", "4h", "6h", "8h", "12h", "1d", "3d", "1w", "1M"]
+            },
+            "description": "Kline interval timeframe"
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "maximum": 1440,
+              "default": 500
+            },
+            "description": "Number of klines to return (max 1440)"
+          },
+          {
+            "name": "startTime",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer"
+            },
+            "description": "Start timestamp in milliseconds"
+          },
+          {
+            "name": "endTime", 
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer" 
+            },
+            "description": "End timestamp in milliseconds"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Candlestick/OHLCV data array",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "code": {"type": "integer"},
+                    "msg": {"type": "string"},
+                    "data": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "open_time": { "type": "integer" },
+                          "open": { "type": "number" },
+                          "high": { "type": "number" },
+                          "low": { "type": "number" },
+                          "close": { "type": "number" },
+                          "volume": { "type": "number" },
+                          "close_time": { "type": "integer" }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/openApi/swap/v2/quote/depth": {
+      "get": {
+        "description": "Get order book depth for market analysis",
+        "operationId": "getBingXOrderBook",
+        "parameters": [
+          {
+            "name": "symbol",
+            "in": "query", 
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "Trading pair symbol (e.g. BTC-USDT)"
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "enum": [5, 10, 20, 50, 100, 500, 1000],
+              "default": 100
+            },
+            "description": "Order book depth limit"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Order book with bids and asks",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "code": {"type": "integer"},
+                    "msg": {"type": "string"},
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "T": {"type": "number", "description": "Timestamp"},
+                        "bids": {
+                          "type": "array",
+                          "items": { "type": "object" }
+                        },
+                        "asks": {
+                          "type": "array",
+                          "items": { "type": "object" }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/openApi/swap/v2/quote/contracts": {
+      "get": {
+        "description": "Get all available trading contracts and symbols",
+        "operationId": "getBingXContracts",
+        "responses": {
+          "200": {
+            "description": "List of all available trading contracts",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "code": {"type": "integer"},
+                    "msg": {"type": "string"},
+                    "data": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "contractId": {"type": "string"},
+                          "symbol": {"type": "string"},
+                          "size": {"type": "string"},
+                          "quantityPrecision": {"type": "integer"},
+                          "pricePrecision": {"type": "integer"},
+                          "feeRate": {"type": "string"},
+                          "tradeMinLimit": {"type": "string"},
+                          "currency": {"type": "string"},
+                          "asset": {"type": "string"}
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

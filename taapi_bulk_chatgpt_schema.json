@@ -1,0 +1,440 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "Taapi.io Bulk Technical Indicators API",
+    "description": "Efficient bulk POST API for retrieving multiple technical indicators in a single request. Supports up to 20 indicators per call for optimal performance and rate limit management.",
+    "version": "1.0.0"
+  },
+  "servers": [
+    {
+      "url": "https://titan-trading-2-production.up.railway.app",
+      "description": "Production Railway Server"
+    },
+    {
+      "url": "http://localhost:5000",
+      "description": "Local Development Server"
+    }
+  ],
+  "paths": {
+    "/api/indicators/bulk": {
+      "post": {
+        "summary": "Get Multiple Technical Indicators (Bulk Request)",
+        "description": "Efficiently retrieve up to 20 technical indicators in a single POST request. This is the recommended method for getting multiple indicators as it uses only 1 API call instead of multiple individual requests.",
+        "operationId": "getBulkIndicators",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": ["symbol", "indicators"],
+                "properties": {
+                  "symbol": {
+                    "type": "string",
+                    "description": "Trading pair symbol (e.g., ETHUSDT, BTCUSDT, XRPUSDT)",
+                    "example": "ETHUSDT"
+                  },
+                  "interval": {
+                    "type": "string",
+                    "description": "Time interval for the indicators",
+                    "enum": ["1m", "5m", "15m", "30m", "1h", "2h", "4h", "6h", "8h", "12h", "1d"],
+                    "default": "1h",
+                    "example": "1h"
+                  },
+                  "exchange": {
+                    "type": "string",
+                    "description": "Exchange to get data from",
+                    "default": "binance",
+                    "example": "binance"
+                  },
+                  "indicators": {
+                    "type": "array",
+                    "description": "Array of indicator objects (maximum 20)",
+                    "maxItems": 20,
+                    "items": {
+                      "type": "object",
+                      "required": ["indicator"],
+                      "properties": {
+                        "id": {
+                          "type": "string",
+                          "description": "Custom identifier for this indicator request",
+                          "example": "rsi_14"
+                        },
+                        "indicator": {
+                          "type": "string",
+                          "description": "Any of the 208+ indicators supported by taapi.io (e.g., rsi, macd, bbands, stoch, willr, ema, sma, adx, cci, supertrend, ichimoku, parabolic_sar, obv, atr, keltner, donchian, awesome_oscillator, etc.)",
+                          "example": "rsi"
+                        },
+                        "period": {
+                          "type": "integer",
+                          "description": "Period for the indicator (where applicable)",
+                          "minimum": 1,
+                          "maximum": 200,
+                          "example": 14
+                        },
+                        "fast_period": {
+                          "type": "integer",
+                          "description": "Fast period for MACD",
+                          "example": 12
+                        },
+                        "slow_period": {
+                          "type": "integer",
+                          "description": "Slow period for MACD",
+                          "example": 26
+                        },
+                        "signal_period": {
+                          "type": "integer",
+                          "description": "Signal period for MACD",
+                          "example": 9
+                        },
+                        "stddev": {
+                          "type": "number",
+                          "description": "Standard deviation for Bollinger Bands",
+                          "example": 2.0
+                        },
+                        "k_period": {
+                          "type": "integer",
+                          "description": "K period for Stochastic",
+                          "example": 14
+                        },
+                        "d_period": {
+                          "type": "integer",
+                          "description": "D period for Stochastic",
+                          "example": 3
+                        },
+                        "backtrack": {
+                          "type": "integer",
+                          "description": "Number of candles to backtrack (0-50)",
+                          "minimum": 0,
+                          "maximum": 50,
+                          "example": 0
+                        }
+                      }
+                    },
+                    "example": [
+                      {
+                        "id": "rsi_14",
+                        "indicator": "rsi",
+                        "period": 14
+                      },
+                      {
+                        "id": "ema_20",
+                        "indicator": "ema",
+                        "period": 20
+                      },
+                      {
+                        "id": "macd_default",
+                        "indicator": "macd"
+                      }
+                    ]
+                  }
+                }
+              },
+              "examples": {
+                "comprehensive_analysis": {
+                  "summary": "Comprehensive Technical Analysis",
+                  "description": "Get multiple key indicators for comprehensive analysis",
+                  "value": {
+                    "symbol": "ETHUSDT",
+                    "interval": "1h",
+                    "exchange": "binance",
+                    "indicators": [
+                      {"id": "rsi_14", "indicator": "rsi", "period": 14},
+                      {"id": "macd_default", "indicator": "macd"},
+                      {"id": "bb_20", "indicator": "bbands", "period": 20, "stddev": 2.0},
+                      {"id": "ema_20", "indicator": "ema", "period": 20},
+                      {"id": "ema_50", "indicator": "ema", "period": 50}
+                    ]
+                  }
+                },
+                "momentum_analysis": {
+                  "summary": "Momentum Indicators",
+                  "description": "Focus on momentum-based indicators",
+                  "value": {
+                    "symbol": "BTCUSDT",
+                    "interval": "4h",
+                    "indicators": [
+                      {"id": "rsi_14", "indicator": "rsi", "period": 14},
+                      {"id": "stoch_default", "indicator": "stoch"},
+                      {"id": "willr_14", "indicator": "willr", "period": 14},
+                      {"id": "cci_20", "indicator": "cci", "period": 20}
+                    ]
+                  }
+                },
+                "trend_analysis": {
+                  "summary": "Trend Analysis",
+                  "description": "Moving averages and trend indicators",
+                  "value": {
+                    "symbol": "XRPUSDT",
+                    "interval": "1d",
+                    "indicators": [
+                      {"id": "ema_12", "indicator": "ema", "period": 12},
+                      {"id": "ema_26", "indicator": "ema", "period": 26},
+                      {"id": "sma_20", "indicator": "sma", "period": 20},
+                      {"id": "adx_14", "indicator": "adx", "period": 14}
+                    ]
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful bulk indicators response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "id": {
+                            "type": "string",
+                            "description": "The indicator ID from request"
+                          },
+                          "result": {
+                            "type": "object",
+                            "description": "The indicator calculation result"
+                          },
+                          "errors": {
+                            "type": "array",
+                            "description": "Any errors for this specific indicator"
+                          }
+                        }
+                      }
+                    }
+                  }
+                },
+                "examples": {
+                  "successful_bulk_response": {
+                    "summary": "Successful Bulk Response",
+                    "value": {
+                      "data": [
+                        {
+                          "id": "rsi_14",
+                          "result": {
+                            "value": 67.84
+                          },
+                          "errors": []
+                        },
+                        {
+                          "id": "ema_20", 
+                          "result": {
+                            "value": 3245.67
+                          },
+                          "errors": []
+                        },
+                        {
+                          "id": "macd_default",
+                          "result": {
+                            "valueMACD": 21.05,
+                            "valueMACDSignal": 13.56,
+                            "valueMACDHist": 7.49
+                          },
+                          "errors": []
+                        }
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request - Invalid input parameters",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string",
+                      "example": "symbol and indicators are required fields"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "Service Unavailable - Technical indicators not available",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string",
+                      "example": "Technical indicators not available"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/indicators/comprehensive/{symbol}": {
+      "post": {
+        "summary": "Comprehensive Technical Analysis (POST)",
+        "description": "Get comprehensive technical analysis using bulk API internally. Supports custom indicator selection via POST body.",
+        "operationId": "getComprehensiveAnalysisPost",
+        "parameters": [
+          {
+            "name": "symbol",
+            "in": "path",
+            "required": true,
+            "description": "Trading pair symbol",
+            "schema": {
+              "type": "string",
+              "example": "ETHUSDT"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": false,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "interval": {
+                    "type": "string",
+                    "description": "Time interval",
+                    "enum": ["1m", "5m", "15m", "30m", "1h", "2h", "4h", "6h", "8h", "12h", "1d"],
+                    "default": "1h"
+                  },
+                  "indicators": {
+                    "type": "array",
+                    "description": "Custom indicators list (optional)",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "id": {"type": "string"},
+                        "indicator": {"type": "string"},
+                        "period": {"type": "integer"}
+                      }
+                    }
+                  }
+                }
+              },
+              "examples": {
+                "custom_comprehensive": {
+                  "summary": "Custom Comprehensive Analysis",
+                  "value": {
+                    "interval": "4h",
+                    "indicators": [
+                      {"id": "rsi_custom", "indicator": "rsi", "period": 21},
+                      {"id": "bb_custom", "indicator": "bbands", "period": 25}
+                    ]
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Comprehensive analysis with signals and summary",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "symbol": {"type": "string"},
+                    "interval": {"type": "string"},
+                    "timestamp": {"type": "string"},
+                    "indicators": {"type": "object"},
+                    "signals": {"type": "object"},
+                    "summary": {"type": "object"}
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/indicators/status": {
+      "get": {
+        "summary": "Check Technical Indicators Status",
+        "description": "Get the current status of technical indicators integration",
+        "operationId": "getIndicatorsStatus",
+        "responses": {
+          "200": {
+            "description": "Integration status information",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "taapi_available": {
+                      "type": "boolean",
+                      "description": "Whether taapi.io integration is available"
+                    },
+                    "api_key_configured": {
+                      "type": "boolean", 
+                      "description": "Whether API key is configured"
+                    },
+                    "supported_indicators": {
+                      "type": "array",
+                      "items": {"type": "string"},
+                      "description": "List of supported technical indicators"
+                    },
+                    "supported_timeframes": {
+                      "type": "array",
+                      "items": {"type": "string"},
+                      "description": "List of supported timeframes"
+                    },
+                    "default_exchange": {
+                      "type": "string",
+                      "description": "Default exchange for indicator data"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "BulkIndicatorRequest": {
+        "type": "object",
+        "required": ["symbol", "indicators"],
+        "properties": {
+          "symbol": {"type": "string"},
+          "interval": {"type": "string"},
+          "exchange": {"type": "string"},
+          "indicators": {
+            "type": "array",
+            "items": {"$ref": "#/components/schemas/IndicatorSpec"}
+          }
+        }
+      },
+      "IndicatorSpec": {
+        "type": "object",
+        "required": ["indicator"],
+        "properties": {
+          "id": {"type": "string"},
+          "indicator": {"type": "string"},
+          "period": {"type": "integer"},
+          "fast_period": {"type": "integer"},
+          "slow_period": {"type": "integer"},
+          "signal_period": {"type": "integer"},
+          "stddev": {"type": "number"},
+          "k_period": {"type": "integer"},
+          "d_period": {"type": "integer"},
+          "backtrack": {"type": "integer"}
+        }
+      }
+    }
+  }
+}

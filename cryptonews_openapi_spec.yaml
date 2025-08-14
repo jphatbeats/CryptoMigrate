@@ -1,0 +1,456 @@
+openapi: 3.1.0
+info:
+  title: CryptoNews API - Complete Intelligence Guide
+  description: |
+    Professional cryptocurrency news intelligence API with advanced filtering, sentiment analysis, and market intelligence.
+    
+    ## TICKER LOGIC - Choose the Right Parameter:
+    - `tickers=BTC,ETH` - News mentioning ANY of these coins (OR logic)
+    - `tickers-include=BTC,ETH` - News mentioning ALL of these coins (AND logic) 
+    - `tickers-only=BTC` - News ONLY about Bitcoin, no other coins mentioned
+    
+    ## TOPIC CATEGORIES - Use These Exact Values:
+    - NFT, Mining, regulations, Stablecoins, Whales, pricemovement, priceforecast
+    - Tanalysis, Taxes, Upgrade, Institutions, Futures, podcast
+    - Digital+Yuan, Digital+Dollar, Digital+Euro, Digital+Ruble, Diem, Libra
+    
+    ## SENTIMENT ANALYSIS:
+    - positive, negative, neutral
+    
+    ## DATE RANGES - Use These Exact Values:
+    - last5min, last10min, last15min, last30min, last45min, last60min
+    - today, yesterday, last7days, last30days
+    - Custom range: datetimerange=yesterday+160000-today+090000
+    
+    ## ALL AVAILABLE NEWS SOURCES (75+ sources):
+    
+    ### TIER 1 - INSTITUTIONAL/PREMIUM:
+    - Reuters, Forbes, CNBC, CNN, Bloomberg+Technology, Bloomberg+Markets+and+Finance
+    - Business+Insider, Fox+Business, Yahoo+Finance, The+Motley+Fool
+    
+    ### TIER 2 - CRYPTO INDUSTRY LEADERS:
+    - Coindesk, CryptoSlate, The+Block, Decrypt, NewsBTC, The+Daily+Hodl
+    - Bitcoin+Magazine, Blockworks, Crypto+Briefing, Modern+Consensus
+    
+    ### TIER 3 - SPECIALIZED CRYPTO MEDIA:
+    - AMBCrypto, BeInCrypto, Bitcoinist, CryptoPotato, Cryptopolitan
+    - CryptoTicker, CryptoNinjas, UToday, The+Cryptonomist, Finbold
+    - FinanceMagnates, DailyFX, FxEmpire, DCForecasts, Investorplace
+    
+    ### TIER 4 - BROAD CRYPTO COVERAGE:
+    - Bitcoin, Blockchain+News, Blockonomi, Blockgeeks, CoinMarketCap
+    - Coinspeaker, Crypto+Daily, Crypto+Economy, CryptoNews, Crypto+News
+    - Cryptoknowmics, Cryptoverze, Dailycoin, EWN, Inside+Bitcoins
+    - LiveBitcoinNews, Trustnodes, Zycrypto, InvestingCube
+    
+    ### TIER 5 - EMERGING/REGIONAL:
+    - Benzinga, Coingape, Coindoo, Coinfomania, Coin+Idol, Coincu
+    - Coinnounce, Coinquora, Coinspress, Cointribune, CrowdFundInsider
+    - Crypto+Mufasa, CryptoNewsFlash, Crypto+Reporter, BlockchainReporter
+    - Bitcoinworld, TCU, The+Currency+Analytics, TheNewsCrypto
+    - Tokenpost, Vauld, 8BTC, Bitcoinist
+    
+    ## SOURCE FILTERING EXAMPLES:
+    - Premium only: source=Reuters,Forbes,CNBC,Bloomberg+Technology
+    - Crypto leaders: source=Coindesk,CryptoSlate,The+Block,Decrypt
+    - Exclude low quality: sourceexclude=Coingape,Benzinga,Coincu
+    - Video sources: source=CNBC,Bloomberg+Technology,Yahoo+Finance
+    
+    ## SEARCH INTELLIGENCE:
+    Use + for spaces in search terms: Hard+Fork, Elon+Musk, Price+Prediction
+    
+  version: "1.0.0"
+  contact:
+    name: CryptoNews API
+    url: https://cryptonews-api.com
+    
+servers:
+  - url: https://cryptonews-api.com
+    description: CryptoNews API Server
+
+security:
+  - ApiKeyAuth: []
+
+paths:
+  /api/v1:
+    get:
+      summary: Get cryptocurrency news with advanced filtering
+      description: |
+        Primary endpoint for ticker-based news with intelligent filtering.
+        
+        EXAMPLES:
+        - Basic: ?tickers=BTC&items=10
+        - Portfolio news: ?tickers-include=BTC,ETH,SOL&sentiment=positive
+        - Risk alerts: ?tickers=BTC,ETH&sentiment=negative&source=Coindesk,Reuters
+        - Trading signals: ?tickers=BTC&topic=pricemovement&date=today
+      parameters:
+        - name: tickers
+          in: query
+          description: "Coins to include (OR logic): BTC,ETH,SOL"
+          schema:
+            type: string
+            example: "BTC,ETH"
+        - name: tickers-include
+          in: query
+          description: "Coins that must ALL be mentioned (AND logic): BTC,ETH"
+          schema:
+            type: string
+            example: "BTC,ETH"
+        - name: tickers-only
+          in: query
+          description: "ONLY this coin, no others mentioned: BTC"
+          schema:
+            type: string
+            example: "BTC"
+        - name: items
+          in: query
+          description: "Number of articles (1-50)"
+          schema:
+            type: integer
+            minimum: 1
+            maximum: 50
+            default: 10
+        - name: sentiment
+          in: query
+          description: "Filter by sentiment analysis"
+          schema:
+            type: string
+            enum: [positive, negative, neutral]
+        - name: topic
+          in: query
+          description: "Specific topic category"
+          schema:
+            type: string
+            enum: [NFT, Mining, regulations, Stablecoins, Whales, pricemovement, priceforecast, Tanalysis, Taxes, Upgrade, Institutions, Futures, podcast, Digital+Yuan, Digital+Dollar, Digital+Euro, Digital+Ruble, Diem, Libra]
+        - name: date
+          in: query
+          description: "Time period for news"
+          schema:
+            type: string
+            enum: [last5min, last10min, last15min, last30min, last45min, last60min, today, yesterday, last7days, last30days]
+        - name: datetimerange
+          in: query
+          description: "Custom date range: yesterday+160000-today+090000"
+          schema:
+            type: string
+            example: "yesterday+160000-today+090000"
+        - name: source
+          in: query
+          description: |
+            Include only these sources. Choose by quality tier:
+            - Premium: Reuters,Forbes,CNBC,Bloomberg+Technology
+            - Crypto Leaders: Coindesk,CryptoSlate,The+Block,Decrypt
+            - Video: CNBC,Bloomberg+Technology,Yahoo+Finance
+          schema:
+            type: string
+            example: "Coindesk,CryptoSlate,The+Block"
+            enum: ["Reuters", "Forbes", "CNBC", "CNN", "Bloomberg+Technology", "Bloomberg+Markets+and+Finance", "Business+Insider", "Fox+Business", "Yahoo+Finance", "The+Motley+Fool", "Coindesk", "CryptoSlate", "The+Block", "Decrypt", "NewsBTC", "The+Daily+Hodl", "Bitcoin+Magazine", "Blockworks", "Crypto+Briefing", "Modern+Consensus", "AMBCrypto", "BeInCrypto", "Bitcoinist", "CryptoPotato", "Cryptopolitan", "CryptoTicker", "CryptoNinjas", "UToday", "The+Cryptonomist", "Finbold", "FinanceMagnates", "DailyFX", "FxEmpire", "DCForecasts", "Investorplace", "Bitcoin", "Blockchain+News", "Blockonomi", "Blockgeeks", "CoinMarketCap", "Coinspeaker", "Crypto+Daily", "Crypto+Economy", "CryptoNews", "Crypto+News", "Cryptoknowmics", "Cryptoverze", "Dailycoin", "EWN", "Inside+Bitcoins", "LiveBitcoinNews", "Trustnodes", "Zycrypto", "InvestingCube"]
+        - name: sourceexclude
+          in: query
+          description: |
+            Exclude these sources (commonly excluded low-quality sources):
+            - Low quality: Coingape,Benzinga,Coincu,Coindoo
+            - Regional/emerging: 8BTC,Bitcoinworld,Tokenpost
+          schema:
+            type: string
+            example: "Coingape,Benzinga"
+            enum: ["Coingape", "Benzinga", "Coincu", "Coindoo", "Coinfomania", "Coin+Idol", "Coinnounce", "Coinquora", "Coinspress", "Cointribune", "8BTC", "Bitcoinworld", "Tokenpost", "Vauld"]
+        - name: search
+          in: query
+          description: "Search for specific terms (use + for spaces): Elon+Musk"
+          schema:
+            type: string
+            example: "partnership,listing,institutional"
+        - name: type
+          in: query
+          description: "Content type filter"
+          schema:
+            type: string
+            enum: [article, video]
+        - name: sortby
+          in: query
+          description: "Sort results by"
+          schema:
+            type: string
+            enum: [rank, date]
+            default: date
+        - name: token
+          in: query
+          required: true
+          description: "API authentication token"
+          schema:
+            type: string
+            default: "ayimav7nlptgzetysg9dwhqteampvoirtfx5orqk"
+      responses:
+        '200':
+          description: News articles with metadata
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        news_url:
+                          type: string
+                        title:
+                          type: string
+                        text:
+                          type: string
+                        sentiment:
+                          type: string
+                        topics:
+                          type: array
+                          items:
+                            type: string
+                        tickers:
+                          type: array
+                          items:
+                            type: string
+                        source_name:
+                          type: string
+                        date:
+                          type: string
+                        image_url:
+                          type: string
+
+  /api/v1/category:
+    get:
+      summary: Get news by category with topic filtering
+      description: |
+        Category-based news endpoint for general market intelligence.
+        
+        EXAMPLES:
+        - General news: ?section=general&items=15
+        - All coins: ?section=alltickers&topic=pricemovement
+        - NFT intelligence: ?section=general&topic=NFT&sentiment=positive
+        - Regulatory news: ?section=general&topic=regulations&source=CNBC,Reuters
+      parameters:
+        - name: section
+          in: query
+          required: true
+          description: "News section"
+          schema:
+            type: string
+            enum: [general, alltickers]
+        - name: topic
+          in: query
+          description: "Topic category filter"
+          schema:
+            type: string
+            enum: [NFT, Mining, regulations, Stablecoins, Whales, pricemovement, priceforecast, Tanalysis, Taxes, Upgrade, Institutions, Futures, podcast]
+        - name: topicOR
+          in: query
+          description: "Multiple topics with OR logic: NFT,Mining,pricemovement"
+          schema:
+            type: string
+            example: "NFT,Mining,pricemovement"
+        - name: items
+          in: query
+          description: "Number of articles (1-50)"
+          schema:
+            type: integer
+            minimum: 1
+            maximum: 50
+            default: 10
+        - name: sentiment
+          in: query
+          description: "Filter by sentiment"
+          schema:
+            type: string
+            enum: [positive, negative, neutral]
+        - name: date
+          in: query
+          description: "Time period"
+          schema:
+            type: string
+            enum: [today, yesterday, last7days, last30days]
+        - name: search
+          in: query
+          description: "Search terms (use + for spaces): Hard+Fork"
+          schema:
+            type: string
+            example: "Hard+Fork"
+        - name: source
+          in: query
+          description: |
+            Source filter by quality tier:
+            - Premium: Reuters,Forbes,CNBC,Bloomberg+Technology
+            - Leaders: Coindesk,CryptoSlate,The+Block,Decrypt
+          schema:
+            type: string
+            example: "Coindesk,Reuters"
+        - name: sortby
+          in: query
+          description: "Sort by rank or date"
+          schema:
+            type: string
+            enum: [rank, date]
+        - name: token
+          in: query
+          required: true
+          description: "API token"
+          schema:
+            type: string
+            default: "ayimav7nlptgzetysg9dwhqteampvoirtfx5orqk"
+
+  /api/v1/trending-headlines:
+    get:
+      summary: Get trending cryptocurrency headlines
+      description: Most important breaking news ranked by impact
+      parameters:
+        - name: token
+          in: query
+          required: true
+          schema:
+            type: string
+            default: "ayimav7nlptgzetysg9dwhqteampvoirtfx5orqk"
+
+  /api/v1/top-mention:
+    get:
+      summary: Get most mentioned cryptocurrencies
+      description: Trending coins by news volume and social sentiment
+      parameters:
+        - name: date
+          in: query
+          description: "Time period for trending analysis"
+          schema:
+            type: string
+            enum: [today, yesterday, last7days, last30days]
+            default: last7days
+        - name: token
+          in: query
+          required: true
+          schema:
+            type: string
+            default: "ayimav7nlptgzetysg9dwhqteampvoirtfx5orqk"
+
+  /api/v1/events:
+    get:
+      summary: Get cryptocurrency events and announcements
+      description: Scheduled events, launches, and major announcements
+      parameters:
+        - name: eventid
+          in: query
+          description: "Specific event ID filter"
+          schema:
+            type: string
+        - name: token
+          in: query
+          required: true
+          schema:
+            type: string
+            default: "ayimav7nlptgzetysg9dwhqteampvoirtfx5orqk"
+
+  /api/v1/stat:
+    get:
+      summary: Get sentiment statistics for cryptocurrencies
+      description: Sentiment analysis metrics over time periods
+      parameters:
+        - name: tickers
+          in: query
+          required: true
+          description: "Cryptocurrency tickers: BTC,ETH"
+          schema:
+            type: string
+        - name: date
+          in: query
+          description: "Analysis period"
+          schema:
+            type: string
+            enum: [today, yesterday, last7days, last30days]
+            default: last7days
+        - name: token
+          in: query
+          required: true
+          schema:
+            type: string
+            default: "ayimav7nlptgzetysg9dwhqteampvoirtfx5orqk"
+
+  /api/v1/sundown-digest:
+    get:
+      summary: Get daily market digest and summary
+      description: End-of-day comprehensive market intelligence report
+      parameters:
+        - name: token
+          in: query
+          required: true
+          schema:
+            type: string
+            default: "ayimav7nlptgzetysg9dwhqteampvoirtfx5orqk"
+
+components:
+  securitySchemes:
+    ApiKeyAuth:
+      type: apiKey
+      in: query
+      name: token
+      description: "Use: ayimav7nlptgzetysg9dwhqteampvoirtfx5orqk"
+
+# COMPREHENSIVE USAGE EXAMPLES FOR CHATGPT:
+
+## BASIC TICKER QUERIES:
+# "Bitcoin news" → /api/v1?tickers=BTC&items=3&token=API_KEY
+# "News on Bitcoin, Ethereum, or Ripple" → /api/v1?tickers=BTC,ETH,XRP&items=3&token=API_KEY
+
+## ADVANCED TICKER LOGIC:
+# "News mentioning ALL of BTC, ETH, and XRP together" → /api/v1?tickers-include=BTC,ETH,XRP&items=3&token=API_KEY
+# "News ONLY about Bitcoin, no other coins" → /api/v1?tickers-only=BTC&items=3&token=API_KEY
+
+## TOPIC-BASED INTELLIGENCE:
+# "NFT market news" → /api/v1/category?section=general&topic=NFT&items=3&token=API_KEY
+# "Mining news about Bitcoin" → /api/v1?tickers=BTC&topic=mining&items=3&token=API_KEY
+# "Regulation news" → /api/v1/category?section=general&topic=regulations&items=3&token=API_KEY
+# "News about hard forks" → /api/v1/category?section=alltickers&search=Hard+Fork&items=50&token=API_KEY
+
+## SENTIMENT ANALYSIS:
+# "Negative news about Ripple" → /api/v1?tickers=XRP&sentiment=negative&items=3&token=API_KEY
+# "Bullish signals for my portfolio" → /api/v1?tickers-include=BTC,ETH,SOL&sentiment=positive&items=15&token=API_KEY
+
+## SOURCE QUALITY FILTERING:
+# "Bitcoin news from premium sources only" → /api/v1?tickers=BTC&source=Reuters,Forbes,CNBC,Bloomberg+Technology&items=10&token=API_KEY
+# "Crypto news from industry leaders" → /api/v1?tickers=BTC,ETH&source=Coindesk,CryptoSlate,The+Block,Decrypt&items=15&token=API_KEY
+# "Exclude low-quality sources" → /api/v1?tickers=BTC&sourceexclude=Coingape,Benzinga&items=3&token=API_KEY
+
+## TIME-BASED QUERIES:
+# "Bitcoin news from last 7 days" → /api/v1?tickers=BTC&date=last7days&items=10&token=API_KEY
+# "Ultra-fresh news from last 15 minutes" → /api/v1?tickers=BTC&date=last15min&items=5&token=API_KEY
+# "News between yesterday 4PM and today 9AM" → /api/v1?tickers=BTC&datetimerange=yesterday+160000-today+090000&items=3&token=API_KEY
+
+## SPECIALIZED CONTENT:
+# "Video news about Bitcoin" → /api/v1?tickers=BTC&type=video&items=3&token=API_KEY
+# "Download Bitcoin news as CSV" → /api/v1?tickers=BTC&datatype=csv&items=3&token=API_KEY
+
+## SEARCH-BASED INTELLIGENCE:
+# "News about Elon Musk and Dogecoin" → /api/v1?tickers=DOGE&search=Elon+Musk&items=3&token=API_KEY
+# "Lawsuit news about XRP" → /api/v1?tickers=XRP&search=Lawsuit&items=3&token=API_KEY
+
+## MARKET INTELLIGENCE ENDPOINTS:
+# "What's trending right now?" → /api/v1/trending-headlines?token=API_KEY
+# "Most mentioned coins this week" → /api/v1/top-mention?date=last7days&token=API_KEY
+# "Ethereum sentiment statistics" → /api/v1/stat?tickers=ETH&date=last7days&token=API_KEY
+# "Upcoming crypto events" → /api/v1/events?token=API_KEY
+# "Daily market digest" → /api/v1/sundown-digest?token=API_KEY
+
+## COMPLEX PORTFOLIO INTELLIGENCE:
+# "Risk alerts for my entire portfolio from top sources"
+# → /api/v1?tickers-include=BTC,ETH,SOL,ADA,DOT&sentiment=negative&source=Reuters,Coindesk,CryptoSlate&date=today&items=20&token=API_KEY
+
+# "Opportunity scanning with whale activity and price movements"
+# → /api/v1/category?section=general&topicOR=Whales,pricemovement,Institutions&sentiment=positive&date=today&items=25&token=API_KEY
+
+# "Regulatory intelligence affecting major coins"
+# → /api/v1/category?section=general&topic=regulations&search=SEC,CFTC,institutional&source=CNBC,Reuters,Forbes&items=15&token=API_KEY
+
+# "Technical analysis and forecasts from crypto experts"
+# → /api/v1/category?section=general&topicOR=Tanalysis,priceforecast&source=CryptoSlate,The+Block,Crypto+Briefing&date=today&items=20&token=API_KEY
+
+## INSTITUTIONAL-GRADE QUERIES:
+# "Breaking institutional adoption news"
+# → /api/v1/category?section=general&topic=Institutions&sentiment=positive&source=Forbes,Reuters,Business+Insider&date=today&sortby=rank&items=15&token=API_KEY
+
+# "Government CBDC developments"
+# → /api/v1/category?section=general&topicOR=Digital+Yuan,Digital+Dollar,Digital+Euro&source=Reuters,CNBC,Forbes&date=last7days&items=20&token=API_KEY

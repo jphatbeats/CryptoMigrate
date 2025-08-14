@@ -1,0 +1,365 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "Alpha Playbook v4 - Market Indicator Scanning API",
+    "description": "Comprehensive technical indicator scanning for entire crypto market. Find oversold/overbought conditions, MACD crossovers, and multi-indicator confluence across hundreds of cryptocurrencies.",
+    "version": "4.0.0"
+  },
+  "servers": [
+    {
+      "url": "https://titan-trading-2-production.up.railway.app"
+    }
+  ],
+  "paths": {
+    "/api/market/rsi-scan": {
+      "get": {
+        "operationId": "scanMarketRSI",
+        "summary": "Scan entire market for RSI conditions",
+        "description": "Find coins with specific RSI values across the entire cryptocurrency market. Perfect for finding oversold (RSI < 30) or overbought (RSI > 70) opportunities.",
+        "parameters": [
+          {
+            "name": "rsi_min",
+            "in": "query",
+            "description": "Minimum RSI value to find (0-100). Use 70+ for overbought coins.",
+            "schema": {
+              "type": "number",
+              "minimum": 0,
+              "maximum": 100,
+              "default": 0
+            }
+          },
+          {
+            "name": "rsi_max", 
+            "in": "query",
+            "description": "Maximum RSI value to find (0-100). Use 30 or less for oversold coins.",
+            "schema": {
+              "type": "number",
+              "minimum": 0,
+              "maximum": 100,
+              "default": 100
+            }
+          },
+          {
+            "name": "timeframe",
+            "in": "query",
+            "description": "Timeframe for RSI calculation",
+            "schema": {
+              "type": "string",
+              "enum": ["1m", "5m", "15m", "1h", "4h", "1d"],
+              "default": "1h"
+            }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "description": "Maximum number of results to return",
+            "schema": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 100,
+              "default": 50
+            }
+          },
+          {
+            "name": "market_cap_min",
+            "in": "query",
+            "description": "Minimum market cap filter (USD)",
+            "schema": {
+              "type": "number",
+              "default": 10000000
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "RSI scan results",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {"type": "boolean"},
+                    "scan_type": {"type": "string"},
+                    "parameters": {
+                      "type": "object",
+                      "properties": {
+                        "rsi_range": {"type": "string"},
+                        "timeframe": {"type": "string"},
+                        "symbols_scanned": {"type": "integer"},
+                        "results_found": {"type": "integer"}
+                      }
+                    },
+                    "results": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "symbol": {"type": "string"},
+                          "rsi": {"type": "number"},
+                          "timeframe": {"type": "string"},
+                          "price": {"type": "number"},
+                          "change_24h": {"type": "number"},
+                          "volume_24h": {"type": "number"},
+                          "condition": {
+                            "type": "string",
+                            "enum": ["oversold", "overbought", "bearish", "bullish", "neutral"]
+                          },
+                          "timestamp": {"type": "string"}
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "operationId": "scanSpecificCoinsRSI",
+        "summary": "Scan specific coins for RSI conditions",
+        "description": "Scan a specific list of cryptocurrencies for RSI conditions",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "symbols": {
+                    "type": "array",
+                    "items": {"type": "string"},
+                    "description": "List of coin symbols to scan (e.g. [\"BTC\", \"ETH\", \"XRP\"])"
+                  },
+                  "rsi_min": {
+                    "type": "number",
+                    "minimum": 0,
+                    "maximum": 100,
+                    "default": 0
+                  },
+                  "rsi_max": {
+                    "type": "number", 
+                    "minimum": 0,
+                    "maximum": 100,
+                    "default": 100
+                  },
+                  "timeframe": {
+                    "type": "string",
+                    "enum": ["1m", "5m", "15m", "1h", "4h", "1d"],
+                    "default": "1h"
+                  },
+                  "limit": {
+                    "type": "integer",
+                    "minimum": 1,
+                    "maximum": 100,
+                    "default": 50
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "RSI scan results for specific coins",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/paths/~1api~1market~1rsi-scan/get/responses/200/content/application~1json/schema"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/market/macd-scan": {
+      "get": {
+        "operationId": "scanMarketMACD",
+        "summary": "Scan market for MACD crossovers",
+        "description": "Find coins with MACD bullish or bearish crossovers across the entire cryptocurrency market. Ideal for trend change detection.",
+        "parameters": [
+          {
+            "name": "signal",
+            "in": "query", 
+            "description": "Type of MACD signal to find",
+            "schema": {
+              "type": "string",
+              "enum": ["bullish", "bearish", "all"],
+              "default": "bullish"
+            }
+          },
+          {
+            "name": "timeframe",
+            "in": "query",
+            "description": "Timeframe for MACD analysis",
+            "schema": {
+              "type": "string", 
+              "enum": ["1h", "4h", "1d"],
+              "default": "4h"
+            }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "description": "Maximum results to return",
+            "schema": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 100,
+              "default": 30
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "MACD crossover scan results",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {"type": "boolean"},
+                    "scan_type": {"type": "string"},
+                    "signal_filter": {"type": "string"},
+                    "timeframe": {"type": "string"},
+                    "results": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "symbol": {"type": "string"},
+                          "macd": {"type": "number"},
+                          "signal": {"type": "number"}, 
+                          "histogram": {"type": "number"},
+                          "condition": {
+                            "type": "string",
+                            "enum": ["bullish", "bearish"]
+                          },
+                          "timeframe": {"type": "string"},
+                          "timestamp": {"type": "string"}
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/market/multi-indicator-scan": {
+      "post": {
+        "operationId": "multiIndicatorScan",
+        "summary": "Multi-indicator confluence scanning",
+        "description": "Scan for confluence of multiple technical indicators. Combine RSI, MACD, and other indicators for high-probability setups.",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "indicators": {
+                    "type": "object",
+                    "description": "Indicator conditions to check",
+                    "properties": {
+                      "rsi": {
+                        "type": "object",
+                        "properties": {
+                          "min": {"type": "number", "minimum": 0, "maximum": 100},
+                          "max": {"type": "number", "minimum": 0, "maximum": 100}
+                        }
+                      },
+                      "macd": {
+                        "type": "object", 
+                        "properties": {
+                          "signal": {
+                            "type": "string",
+                            "enum": ["bullish", "bearish"]
+                          }
+                        }
+                      }
+                    },
+                    "example": {
+                      "rsi": {"min": 30, "max": 70},
+                      "macd": {"signal": "bullish"}
+                    }
+                  },
+                  "timeframe": {
+                    "type": "string",
+                    "enum": ["1m", "5m", "15m", "1h", "4h", "1d"],
+                    "default": "1h"
+                  },
+                  "limit": {
+                    "type": "integer",
+                    "minimum": 1,
+                    "maximum": 50,
+                    "default": 20
+                  },
+                  "require_all": {
+                    "type": "boolean",
+                    "description": "true = all conditions must match, false = any condition matches",
+                    "default": true
+                  },
+                  "symbols": {
+                    "type": "array",
+                    "items": {"type": "string"},
+                    "description": "Optional: specific symbols to scan"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Multi-indicator confluence results",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {"type": "boolean"},
+                    "scan_type": {"type": "string"},
+                    "parameters": {
+                      "type": "object",
+                      "properties": {
+                        "indicators_checked": {
+                          "type": "array",
+                          "items": {"type": "string"}
+                        },
+                        "require_all_conditions": {"type": "boolean"},
+                        "timeframe": {"type": "string"}
+                      }
+                    },
+                    "results": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "symbol": {"type": "string"},
+                          "matches": {
+                            "type": "array",
+                            "items": {"type": "string"}
+                          },
+                          "indicator_values": {"type": "object"},
+                          "match_score": {
+                            "type": "number",
+                            "description": "Percentage of conditions met (0-1)"
+                          },
+                          "timeframe": {"type": "string"}
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

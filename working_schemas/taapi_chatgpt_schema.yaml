@@ -1,0 +1,425 @@
+openapi: 3.1.0
+info:
+  title: Taapi.io Technical Analysis API (208 Indicators)
+  description: |
+    Comprehensive technical analysis API providing access to 208+ technical indicators
+    including RSI, MACD, Bollinger Bands, moving averages, oscillators, and advanced patterns.
+    
+    **Key Features:**
+    - 208+ technical indicators across multiple categories
+    - Bulk endpoint support (max 20 indicators per request)
+    - Multiple exchanges: Binance, Bybit, Kraken, Coinbase, KuCoin
+    - Real-time and historical data analysis
+    - Support for all major timeframes (1m to 1M)
+    
+    **Popular Indicators Include:**
+    - Momentum: RSI, Stochastic, Williams %R, CCI, ROC
+    - Trend: SMA, EMA, MACD, ADX, Parabolic SAR
+    - Volatility: Bollinger Bands, ATR, Keltner Channels
+    - Volume: OBV, VWAP, Chaikin Money Flow, Volume Oscillator
+    - Support/Resistance: Pivot Points, Fibonacci, Ichimoku
+  version: 1.0.0
+servers:
+  - url: https://titan-trading-2-production.up.railway.app
+    description: Railway Production Server
+
+paths:
+  /api/taapi/test:
+    get:
+      operationId: testTaapiSystem
+      summary: Test Taapi.io technical indicators system
+      description: |
+        Test the technical indicators system with common indicators for BTC/USDT.
+        Returns system health, API key status, and indicator availability.
+      responses:
+        '200':
+          description: Test results
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  test_status:
+                    type: string
+                    enum: ["success", "failed"]
+                    description: Overall test status
+                  symbol_tested:
+                    type: string
+                    description: Symbol used for testing
+                  interval:
+                    type: string
+                    description: Timeframe used for testing
+                  exchange:
+                    type: string
+                    description: Exchange used for testing
+                  indicators_tested:
+                    type: array
+                    items:
+                      type: string
+                    description: List of indicators tested
+                  results:
+                    type: object
+                    additionalProperties:
+                      type: object
+                      properties:
+                        status:
+                          type: string
+                          enum: ["success", "error"]
+                        value:
+                          type: number
+                          description: Indicator value (if successful)
+                        error:
+                          type: string
+                          description: Error message (if failed)
+                        data_available:
+                          type: boolean
+                          description: Whether data is available
+                  api_key_configured:
+                    type: boolean
+                    description: Whether API key is configured
+                  test_timestamp:
+                    type: string
+                    format: date-time
+                    description: When the test was performed
+        '503':
+          description: Technical indicators not available
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  test_status:
+                    type: string
+                    value: "failed"
+                  error:
+                    type: string
+                  api_key_configured:
+                    type: boolean
+
+  /api/taapi/indicators/{symbol}:
+    get:
+      operationId: getSingleTechnicalIndicator
+      summary: Get a single technical indicator for a symbol
+      description: |
+        Fetch a specific technical indicator for a trading pair.
+        
+        **Available Indicators (208+ total):**
+        
+        **Momentum Indicators:**
+        - rsi: Relative Strength Index
+        - stoch: Stochastic Oscillator  
+        - stochrsi: Stochastic RSI
+        - williams: Williams %R
+        - cci: Commodity Channel Index
+        - roc: Rate of Change
+        - mfi: Money Flow Index
+        - tsi: True Strength Index
+        - uo: Ultimate Oscillator
+        - ao: Awesome Oscillator
+        
+        **Trend Indicators:**
+        - sma: Simple Moving Average
+        - ema: Exponential Moving Average
+        - wma: Weighted Moving Average
+        - dema: Double Exponential MA
+        - tema: Triple Exponential MA
+        - macd: MACD
+        - adx: Average Directional Index
+        - aroon: Aroon Indicator
+        - psar: Parabolic SAR
+        - supertrend: SuperTrend
+        
+        **Volatility Indicators:**
+        - bbands: Bollinger Bands
+        - atr: Average True Range
+        - kc: Keltner Channels
+        - dc: Donchian Channels
+        - env: Envelope
+        - stddev: Standard Deviation
+        
+        **Volume Indicators:**
+        - obv: On Balance Volume
+        - vwap: Volume Weighted Average Price
+        - cmf: Chaikin Money Flow
+        - vo: Volume Oscillator
+        - pvi: Positive Volume Index
+        - nvi: Negative Volume Index
+        - vwma: Volume Weighted MA
+        - ad: Accumulation/Distribution
+        
+        **Support/Resistance:**
+        - pivot: Pivot Points
+        - fib: Fibonacci Retracements
+        - ichimoku: Ichimoku Cloud
+        - sr: Support/Resistance Levels
+        
+        **Pattern Recognition:**
+        - cdl: Candlestick Patterns
+        - zigzag: ZigZag Pattern
+        - gann: Gann Angles
+        - elliott: Elliott Wave
+      parameters:
+        - name: symbol
+          in: path
+          required: true
+          schema:
+            type: string
+          description: Trading pair (e.g., "BTC/USDT", "ETH/USDT")
+          example: "BTC/USDT"
+        - name: indicator
+          in: query
+          required: false
+          schema:
+            type: string
+            default: "rsi"
+          description: Technical indicator name
+          example: "rsi"
+        - name: interval
+          in: query
+          required: false
+          schema:
+            type: string
+            default: "1h"
+            enum: ["1m", "3m", "5m", "15m", "30m", "1h", "2h", "4h", "6h", "8h", "12h", "1d", "3d", "1w", "1M"]
+          description: Chart timeframe
+        - name: exchange
+          in: query
+          required: false
+          schema:
+            type: string
+            default: "binance"
+            enum: ["binance", "bybit", "kraken", "coinbase", "kucoin", "bitfinex", "huobi"]
+          description: Exchange to use for data
+      responses:
+        '200':
+          description: Technical indicator data
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  value:
+                    type: number
+                    description: Current indicator value
+                  timestamp:
+                    type: string
+                    format: date-time
+                    description: Data timestamp
+                  symbol:
+                    type: string
+                    description: Trading pair
+                  indicator:
+                    type: string
+                    description: Indicator name
+                  interval:
+                    type: string
+                    description: Timeframe used
+                  exchange:
+                    type: string
+                    description: Exchange used
+        '503':
+          description: Technical indicators not available
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+
+  /api/indicators/bulk:
+    post:
+      operationId: getBulkTechnicalIndicators
+      summary: Get multiple indicators in a single bulk request
+      description: |
+        Fetch multiple technical indicators for a symbol in one request.
+        Maximum 20 indicators per request to comply with API limits.
+        
+        **Bulk Request Benefits:**
+        - Faster analysis with single API call
+        - Comprehensive technical overview
+        - Rate limit efficient
+        - Perfect for trading analysis
+        
+        **Example Use Cases:**
+        - Complete momentum analysis (RSI + Stochastic + Williams %R)
+        - Trend confirmation (SMA + EMA + MACD + ADX)
+        - Volatility assessment (Bollinger Bands + ATR + Keltner Channels)
+        - Volume analysis (OBV + VWAP + CMF)
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: ["symbol", "indicators"]
+              properties:
+                symbol:
+                  type: string
+                  description: Trading pair
+                  example: "BTC/USDT"
+                indicators:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      indicator:
+                        type: string
+                        description: Indicator name
+                      period:
+                        type: integer
+                        description: Period parameter (optional)
+                  maxItems: 20
+                  description: List of indicators to fetch (max 20)
+                  example: [
+                    {"indicator": "rsi", "period": 14},
+                    {"indicator": "macd"},
+                    {"indicator": "bbands", "period": 20},
+                    {"indicator": "sma", "period": 50},
+                    {"indicator": "ema", "period": 200}
+                  ]
+                interval:
+                  type: string
+                  default: "1h"
+                  enum: ["1m", "3m", "5m", "15m", "30m", "1h", "2h", "4h", "6h", "8h", "12h", "1d", "3d", "1w", "1M"]
+                  description: Chart timeframe
+                exchange:
+                  type: string
+                  default: "binance"
+                  enum: ["binance", "bybit", "kraken", "coinbase", "kucoin"]
+                  description: Exchange to use
+      responses:
+        '200':
+          description: Bulk indicators data
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        indicator:
+                          type: string
+                          description: Indicator name
+                        value:
+                          anyOf:
+                            - type: number
+                            - type: object
+                          description: Indicator value (number or object for complex indicators)
+                        timestamp:
+                          type: string
+                          format: date-time
+                          description: Data timestamp
+                        error:
+                          type: string
+                          description: Error message (if any)
+                  symbol:
+                    type: string
+                    description: Trading pair analyzed
+                  exchange:
+                    type: string
+                    description: Exchange used
+                  interval:
+                    type: string
+                    description: Timeframe used
+                  total_indicators:
+                    type: integer
+                    description: Number of indicators requested
+                  successful_indicators:
+                    type: integer
+                    description: Number of successful responses
+        '400':
+          description: Invalid request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+        '503':
+          description: Technical indicators not available
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+
+  /api/taapi/proxy:
+    post:
+      operationId: taapiDirectProxy
+      summary: Direct proxy to Taapi.io bulk API
+      description: |
+        Advanced proxy endpoint for direct access to Taapi.io bulk API.
+        Provides full access to all 208+ indicators with custom parameters.
+        
+        **Advanced Features:**
+        - Custom indicator parameters (period, deviation, etc.)
+        - Complex indicator combinations
+        - Historical data requests
+        - Advanced mathematical indicators
+        - Custom timeframes and exchanges
+        
+        **Direct Taapi.io Format:**
+        This endpoint forwards requests directly to https://api.taapi.io/bulk
+        Use this for advanced technical analysis requiring specific parameters.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              description: Direct Taapi.io bulk request format
+              properties:
+                secret:
+                  type: string
+                  description: Taapi.io API key (automatically added by proxy)
+                construct:
+                  type: object
+                  properties:
+                    exchange:
+                      type: string
+                      description: Exchange name
+                    symbol:
+                      type: string  
+                      description: Trading pair
+                    interval:
+                      type: string
+                      description: Timeframe
+                    indicators:
+                      type: array
+                      items:
+                        type: object
+                      description: Indicator configurations
+              example: {
+                "construct": {
+                  "exchange": "binance",
+                  "symbol": "BTC/USDT", 
+                  "interval": "1h",
+                  "indicators": [
+                    {"indicator": "rsi", "period": 14},
+                    {"indicator": "macd"},
+                    {"indicator": "bbands", "period": 20, "stddev": 2},
+                    {"indicator": "supertrend", "period": 10, "multiplier": 3}
+                  ]
+                }
+              }
+      responses:
+        '200':
+          description: Direct Taapi.io response
+          content:
+            application/json:
+              schema:
+                type: object
+                description: Raw Taapi.io response format
+        '400':
+          description: Invalid request format
+        '429':
+          description: Rate limit exceeded
+        '503':
+          description: Proxy not available

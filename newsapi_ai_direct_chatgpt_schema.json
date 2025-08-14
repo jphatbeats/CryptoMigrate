@@ -1,0 +1,441 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "NewsAPI.ai Direct Access - Crypto News Intelligence",
+    "description": "Direct access to NewsAPI.ai Event Registry platform for comprehensive cryptocurrency news coverage. This schema enables ChatGPT to directly access NewsAPI.ai's crypto news endpoints without going through Railway proxy servers.",
+    "version": "1.0.0",
+    "contact": {
+      "name": "Crypto Trading Intelligence Platform",
+      "url": "https://crypto-trading-platform.railway.app"
+    }
+  },
+  "servers": [
+    {
+      "url": "https://eventregistry.org/api/v1",
+      "description": "NewsAPI.ai Event Registry API - Direct Access"
+    }
+  ],
+  "security": [
+    {
+      "ApiKeyAuth": []
+    }
+  ],
+  "components": {
+    "securitySchemes": {
+      "ApiKeyAuth": {
+        "type": "apiKey",
+        "in": "query",
+        "name": "apiKey",
+        "description": "NewsAPI.ai API Key: 45733984-4543-4869-bc33-590f6ef99bdb"
+      }
+    },
+    "schemas": {
+      "CryptoArticle": {
+        "type": "object",
+        "properties": {
+          "uri": {
+            "type": "string",
+            "description": "Unique identifier for the article"
+          },
+          "title": {
+            "type": "string",
+            "description": "Article headline"
+          },
+          "body": {
+            "type": "string",
+            "description": "Full article content"
+          },
+          "url": {
+            "type": "string",
+            "description": "Article URL"
+          },
+          "dateTime": {
+            "type": "string",
+            "format": "date-time",
+            "description": "Publication date and time"
+          },
+          "source": {
+            "type": "object",
+            "properties": {
+              "title": {
+                "type": "string",
+                "description": "Source publication name"
+              },
+              "uri": {
+                "type": "string",
+                "description": "Source identifier"
+              }
+            }
+          },
+          "image": {
+            "type": "string",
+            "description": "Article image URL"
+          },
+          "sentiment": {
+            "type": "number",
+            "description": "Sentiment score (-1 to 1)"
+          },
+          "relevance": {
+            "type": "number",
+            "description": "Article relevance score"
+          }
+        }
+      },
+      "ArticleSearchResponse": {
+        "type": "object",
+        "properties": {
+          "articles": {
+            "type": "object",
+            "properties": {
+              "results": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/CryptoArticle"
+                }
+              },
+              "totalResults": {
+                "type": "integer",
+                "description": "Total number of articles found"
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "paths": {
+    "/article/getArticles": {
+      "post": {
+        "operationId": "searchCryptoArticles",
+        "summary": "Search cryptocurrency articles",
+        "description": "Search for cryptocurrency-related news articles using NewsAPI.ai Event Registry. This endpoint provides comprehensive crypto news coverage with sentiment analysis, image URLs, and detailed metadata.",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "query": {
+                    "type": "object",
+                    "properties": {
+                      "$query": {
+                        "type": "object",
+                        "properties": {
+                          "$and": {
+                            "type": "array",
+                            "items": {
+                              "type": "object",
+                              "properties": {
+                                "conceptUri": {
+                                  "type": "string",
+                                  "description": "Concept URI for cryptocurrency topics"
+                                },
+                                "keyword": {
+                                  "type": "string",
+                                  "description": "Keyword search terms"
+                                },
+                                "keywordLoc": {
+                                  "type": "string",
+                                  "enum": ["title", "body", "title,body"],
+                                  "description": "Where to search for keywords"
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  },
+                  "resultType": {
+                    "type": "string",
+                    "enum": ["articles"],
+                    "default": "articles",
+                    "description": "Type of results to return"
+                  },
+                  "articlesSortBy": {
+                    "type": "string",
+                    "enum": ["date", "rel", "sourceImportanceRank", "socialScore"],
+                    "default": "date",
+                    "description": "Sort articles by date, relevance, source importance, or social score"
+                  },
+                  "articlesCount": {
+                    "type": "integer",
+                    "minimum": 1,
+                    "maximum": 100,
+                    "default": 20,
+                    "description": "Number of articles to return (1-100)"
+                  },
+                  "articlesIncludeArticleImage": {
+                    "type": "boolean",
+                    "default": true,
+                    "description": "Include article images in response"
+                  },
+                  "articlesIncludeArticleVideos": {
+                    "type": "boolean",
+                    "default": false,
+                    "description": "Include article videos in response"
+                  },
+                  "articlesIncludeArticleSocialScore": {
+                    "type": "boolean",
+                    "default": true,
+                    "description": "Include social media engagement scores"
+                  },
+                  "articlesIncludeArticleSentiment": {
+                    "type": "boolean",
+                    "default": true,
+                    "description": "Include sentiment analysis"
+                  },
+                  "apiKey": {
+                    "type": "string",
+                    "default": "45733984-4543-4869-bc33-590f6ef99bdb",
+                    "description": "NewsAPI.ai API key"
+                  }
+                },
+                "required": ["query", "apiKey"]
+              },
+              "examples": {
+                "bitcoin_news": {
+                  "summary": "Search Bitcoin news",
+                  "value": {
+                    "query": {
+                      "$query": {
+                        "$and": [
+                          {
+                            "keyword": "Bitcoin OR BTC",
+                            "keywordLoc": "title,body"
+                          }
+                        ]
+                      }
+                    },
+                    "resultType": "articles",
+                    "articlesSortBy": "date",
+                    "articlesCount": 20,
+                    "articlesIncludeArticleImage": true,
+                    "articlesIncludeArticleSentiment": true,
+                    "articlesIncludeArticleSocialScore": true,
+                    "apiKey": "45733984-4543-4869-bc33-590f6ef99bdb"
+                  }
+                },
+                "ethereum_news": {
+                  "summary": "Search Ethereum news",
+                  "value": {
+                    "query": {
+                      "$query": {
+                        "$and": [
+                          {
+                            "keyword": "Ethereum OR ETH",
+                            "keywordLoc": "title,body"
+                          }
+                        ]
+                      }
+                    },
+                    "resultType": "articles",
+                    "articlesSortBy": "date",
+                    "articlesCount": 15,
+                    "articlesIncludeArticleImage": true,
+                    "articlesIncludeArticleSentiment": true,
+                    "apiKey": "45733984-4543-4869-bc33-590f6ef99bdb"
+                  }
+                },
+                "crypto_general": {
+                  "summary": "Search general cryptocurrency news",
+                  "value": {
+                    "query": {
+                      "$query": {
+                        "$and": [
+                          {
+                            "keyword": "cryptocurrency OR crypto OR blockchain OR DeFi OR NFT",
+                            "keywordLoc": "title,body"
+                          }
+                        ]
+                      }
+                    },
+                    "resultType": "articles",
+                    "articlesSortBy": "socialScore",
+                    "articlesCount": 25,
+                    "articlesIncludeArticleImage": true,
+                    "articlesIncludeArticleSentiment": true,
+                    "articlesIncludeArticleSocialScore": true,
+                    "apiKey": "45733984-4543-4869-bc33-590f6ef99bdb"
+                  }
+                },
+                "altcoin_news": {
+                  "summary": "Search altcoin and trending crypto news",
+                  "value": {
+                    "query": {
+                      "$query": {
+                        "$and": [
+                          {
+                            "keyword": "altcoin OR XRP OR ADA OR SOL OR DOGE OR MATIC OR LINK OR UNI",
+                            "keywordLoc": "title,body"
+                          }
+                        ]
+                      }
+                    },
+                    "resultType": "articles",
+                    "articlesSortBy": "socialScore",
+                    "articlesCount": 30,
+                    "articlesIncludeArticleImage": true,
+                    "articlesIncludeArticleSentiment": true,
+                    "apiKey": "45733984-4543-4869-bc33-590f6ef99bdb"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successfully retrieved cryptocurrency articles",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ArticleSearchResponse"
+                },
+                "examples": {
+                  "successful_response": {
+                    "summary": "Example crypto news response",
+                    "value": {
+                      "articles": {
+                        "results": [
+                          {
+                            "uri": "2024-123456-crypto-news",
+                            "title": "Bitcoin Reaches New All-Time High as Institutional Adoption Surges",
+                            "body": "Bitcoin has reached a new all-time high of $75,000 as major institutions...",
+                            "url": "https://example-crypto-news.com/bitcoin-ath-2024",
+                            "dateTime": "2024-08-07T12:30:00Z",
+                            "source": {
+                              "title": "CryptoDaily",
+                              "uri": "cryptodaily"
+                            },
+                            "image": "https://example-crypto-news.com/images/bitcoin-chart.jpg",
+                            "sentiment": 0.75,
+                            "relevance": 0.92
+                          }
+                        ],
+                        "totalResults": 1247
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request - Invalid query parameters"
+          },
+          "401": {
+            "description": "Unauthorized - Invalid API key"
+          },
+          "429": {
+            "description": "Too many requests - Rate limit exceeded"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        }
+      }
+    },
+    "/article/getTrendingArticles": {
+      "post": {
+        "operationId": "getTrendingCryptoArticles",
+        "summary": "Get trending cryptocurrency articles",
+        "description": "Retrieve trending cryptocurrency articles based on social engagement and viral metrics from NewsAPI.ai Event Registry platform.",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "query": {
+                    "type": "object",
+                    "properties": {
+                      "$query": {
+                        "type": "object",
+                        "properties": {
+                          "keyword": {
+                            "type": "string",
+                            "default": "cryptocurrency OR crypto OR Bitcoin OR Ethereum",
+                            "description": "Keywords to filter trending articles"
+                          }
+                        }
+                      }
+                    }
+                  },
+                  "resultType": {
+                    "type": "string",
+                    "enum": ["articles"],
+                    "default": "articles"
+                  },
+                  "articlesSortBy": {
+                    "type": "string",
+                    "enum": ["socialScore", "date"],
+                    "default": "socialScore",
+                    "description": "Sort by social engagement or date"
+                  },
+                  "articlesCount": {
+                    "type": "integer",
+                    "minimum": 5,
+                    "maximum": 50,
+                    "default": 15,
+                    "description": "Number of trending articles to return"
+                  },
+                  "articlesIncludeArticleImage": {
+                    "type": "boolean",
+                    "default": true
+                  },
+                  "articlesIncludeArticleSentiment": {
+                    "type": "boolean",
+                    "default": true
+                  },
+                  "articlesIncludeArticleSocialScore": {
+                    "type": "boolean",
+                    "default": true
+                  },
+                  "apiKey": {
+                    "type": "string",
+                    "default": "45733984-4543-4869-bc33-590f6ef99bdb"
+                  }
+                },
+                "required": ["apiKey"]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successfully retrieved trending cryptocurrency articles",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ArticleSearchResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "x-chatgpt-integration": {
+    "description": "This schema enables ChatGPT to directly access NewsAPI.ai Event Registry for comprehensive cryptocurrency news intelligence. Use this for real-time crypto news analysis, sentiment tracking, and market intelligence gathering.",
+    "usage_examples": [
+      "Search for Bitcoin news with sentiment analysis",
+      "Get trending cryptocurrency articles by social engagement", 
+      "Find breaking news about specific altcoins",
+      "Analyze market sentiment through news coverage",
+      "Monitor crypto news for trading opportunities"
+    ],
+    "api_key": "45733984-4543-4869-bc33-590f6ef99bdb",
+    "rate_limits": "1000 requests per day, 100 requests per hour",
+    "best_practices": [
+      "Use specific cryptocurrency keywords in searches",
+      "Include sentiment analysis for market intelligence",
+      "Sort by socialScore for trending/viral content",
+      "Sort by date for breaking news",
+      "Include article images for rich content analysis"
+    ]
+  }
+}

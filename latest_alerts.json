@@ -1,0 +1,48 @@
+{
+  "timestamp": "2025-08-11 11:07 AM CST",
+  "total_alerts": 4,
+  "alert_types": {
+    "overbought": 1,
+    "high_profit": 1,
+    "no_stop_loss": 2
+  },
+  "alerts": [
+    {
+      "type": "overbought",
+      "symbol": "XRP",
+      "platform": "BingX",
+      "rsi": 85,
+      "pnl": 49.245623137417574,
+      "message": "\ud83d\udfe5 **$XRP Overbought Alert** (RSI: 85.0)\n\ud83d\udcc8 Current PnL: **+49.2%** | Size: $135\n\ud83e\udde0 **Analysis**: \ud83d\udfe0 STRONG: Begin profit-taking. Set tight trailing stops.\n\u26a1 **Action**: Exit 50% position, move stop to break-even"
+    },
+    {
+      "type": "high_profit",
+      "symbol": "XRP",
+      "platform": "BingX",
+      "pnl": 49.245623137417574,
+      "profit_amount": 66.31164459006649,
+      "message": "\ud83d\udcb0 **$XRP Profit Alert** (+49.2%)\n\ud83c\udfaf **Unrealized Profit**: $66 | Position: $135\n\ud83e\udde0 **Strategy**: \u2705 GOOD: Protect gains with trailing stops, consider partial profits.\n\u26a1 **Action**: Move stop to break-even, consider 25% profit-taking\n\ud83d\udcca Entry: $1.634100 \u2192 Current: $3.219700"
+    },
+    {
+      "type": "no_stop_loss",
+      "symbol": "ETH",
+      "platform": "BingX",
+      "margin": 356.5782,
+      "risk_level": "MODERATE",
+      "message": "\ud83d\udee1\ufe0f **$ETH Risk Management** ($357)\n\u26a0\ufe0f **No Stop Loss** | Risk Level: **MODERATE**\n\ud83d\udca1 **Action**: Set trailing stop at break-even or +5% to lock profits\n\ud83d\udcca Current PnL: **+17.4%** | LONG @ 10x"
+    },
+    {
+      "type": "no_stop_loss",
+      "symbol": "FARTCOIN",
+      "platform": "BingX",
+      "margin": 203.529,
+      "risk_level": "MODERATE",
+      "message": "\ud83d\udee1\ufe0f **$FARTCOIN Risk Management** ($204)\n\u26a0\ufe0f **No Stop Loss** | Risk Level: **MODERATE**\n\ud83d\udca1 **Action**: Set trailing stop at break-even or +5% to lock profits\n\ud83d\udcca Current PnL: **+1.9%** | LONG @ 10x"
+    }
+  ],
+  "summary_parts": [
+    "\u26a0\ufe0f Overbought: 1",
+    "\ud83d\udea8 No SL: 2",
+    "\ud83d\udcb0 High Profit: 1"
+  ]
+}

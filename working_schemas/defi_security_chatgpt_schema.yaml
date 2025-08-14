@@ -1,0 +1,73 @@
+openapi: 3.1.0
+info:
+  title: De.Fi GraphQL API
+  description: De.Fi security monitoring via GraphQL - all queries go through single endpoint
+  version: 1.0.0
+servers:
+  - url: https://public-api.de.fi
+security:
+  - ApiKeyAuth: []
+components:
+  securitySchemes:
+    ApiKeyAuth:
+      type: apiKey
+      in: header
+      name: X-Api-Key
+      description: De.Fi API key for authentication
+  schemas:
+    GraphQLResponse:
+      type: object
+      properties:
+        data:
+          type: object
+        errors:
+          type: array
+          items:
+            type: object
+paths:
+  /graphql:
+    post:
+      operationId: queryDefiData
+      summary: Query De.Fi API using GraphQL
+      description: Universal GraphQL endpoint for De.Fi security monitoring. Use for exploit detection, contract analysis, holder checks, and chain info.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                query:
+                  type: string
+                  description: GraphQL query string - see examples in endpoint description
+                  example: |
+                    query {
+                      rekts(first: 10, orderBy: date, orderDirection: desc) {
+                        id
+                        title
+                        date
+                        projectName
+                        category
+                      }
+                    }
+                variables:
+                  type: object
+                  description: GraphQL variables (optional, for parameterized queries)
+                  example:
+                    contractAddress: "0x1f9840a85d5af5bf1d1762f925bdaddc4201f984"
+                    chainId: 1
+              required:
+                - query
+      responses:
+        '200':
+          description: GraphQL response with requested data
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GraphQLResponse'
+        '400':
+          description: Invalid GraphQL query or variables
+        '401':
+          description: Invalid API key
+        '429':
+          description: Rate limit exceeded

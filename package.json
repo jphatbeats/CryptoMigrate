@@ -1,0 +1,15 @@
+{
+  "name": "workspace",
+  "version": "1.0.0",
+  "description": "This is a Python-based cryptocurrency trading server that provides a unified API interface for interacting with multiple cryptocurrency exchanges through the CCXT library. Successfully migrated from Replit to Railway with comprehensive error handling to resolve CCXT import errors.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "taapi": "^1.4.8"
+  }
+}

@@ -1,0 +1,41 @@
+2025-08-11 17:39:59,574 - werkzeug - INFO - 100.64.0.2 - - [11/Aug/2025 17:39:59] "POST /api/coordinator/request-access HTTP/1.1" 500 -
+
+2025-08-11 17:40:15,442 - werkzeug - INFO - 100.64.0.2 - - [11/Aug/2025 17:40:15] "GET /api/taapi/multiple?symbol=ZEC/USDT&interval=4h&indicators=rsi,macd,ema,adx HTTP/1.1" 200 -
+
+2025-08-11 17:40:15,731 - __main__ - ERROR - Failed to request access: name 'time' is not defined
+
+2025-08-11 17:40:15,731 - werkzeug - INFO - 100.64.0.2 - - [11/Aug/2025 17:40:15] "POST /api/coordinator/request-access HTTP/1.1" 500 -
+
+2025-08-11 17:40:31,529 - werkzeug - INFO - 100.64.0.2 - - [11/Aug/2025 17:40:31] "GET /api/taapi/multiple?symbol=FLOW/USDT&interval=4h&indicators=rsi,macd,ema,adx HTTP/1.1" 200 -
+
+2025-08-11 17:40:31,816 - __main__ - ERROR - Failed to request access: name 'time' is not defined
+
+2025-08-11 17:40:31,817 - werkzeug - INFO - 100.64.0.2 - - [11/Aug/2025 17:40:31] "POST /api/coordinator/request-access HTTP/1.1" 500 -
+
+2025-08-11 17:40:47,650 - werkzeug - INFO - 100.64.0.2 - - [11/Aug/2025 17:40:47] "GET /api/taapi/multiple?symbol=MANA/USDT&interval=4h&indicators=rsi,macd,ema,adx HTTP/1.1" 200 -
+
+2025-08-11 17:40:47,939 - __main__ - ERROR - Failed to request access: name 'time' is not defined
+
+2025-08-11 17:40:47,940 - werkzeug - INFO - 100.64.0.2 - - [11/Aug/2025 17:40:47] "POST /api/coordinator/request-access HTTP/1.1" 500 -
+
+2025-08-11 17:40:51,677 - taapi_indicators - WARNING - Taapi.io API error 400: {"errors":["Bad request. Check your request parameters and try again!","No candles were found!"]}
+
+2025-08-11 17:40:51,677 - get_indicator_by_name - WARNING - ⚠️ rsi API error: API error: 400
+
+2025-08-11 17:40:55,993 - taapi_indicators - WARNING - Taapi.io API error 400: {"errors":["Bad request. Check your request parameters and try again!","No candles were found!"]}
+
+2025-08-11 17:40:55,993 - get_indicator_by_name - WARNING - ⚠️ macd API error: API error: 400
+
+2025-08-11 17:40:59,733 - taapi_indicators - WARNING - Taapi.io API error 400: {"errors":["Bad request. Check your request parameters and try again!","No candles were found!"]}
+
+2025-08-11 17:40:59,733 - get_indicator_by_name - WARNING - ⚠️ ema API error: API error: 400
+
+2025-08-11 17:41:03,770 - taapi_indicators - WARNING - Taapi.io API error 400: {"errors":["Bad request. Check your request parameters and try again!","No candles were found!"]}
+
+2025-08-11 17:41:03,770 - get_indicator_by_name - WARNING - ⚠️ adx API error: API error: 400
+
+2025-08-11 17:41:03,771 - werkzeug - INFO - 100.64.0.2 - - [11/Aug/2025 17:41:03] "GET /api/taapi/multiple?symbol=BSV/USDT&interval=4h&indicators=rsi,macd,ema,adx HTTP/1.1" 200 -
+
+2025-08-11 17:41:04,061 - __main__ - ERROR - Failed to request access: name 'time' is not defined
+
+2025-08-11 17:41:04,062 - werkzeug - INFO - 100.64.0.2 - - [11/Aug/2025 17:41:04] "POST /api/coordinator/request-access HTTP/1.1" 500 -

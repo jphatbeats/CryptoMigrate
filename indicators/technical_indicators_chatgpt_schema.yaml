@@ -1,0 +1,356 @@
+openapi: 3.1.0
+info:
+  title: "THE ALPHA PLAYBOOK v4 - Technical Indicators Server"
+  description: |
+    Enhanced BingX Intelligence + Taapi.io Technical Indicators
+    
+    **Core Features:**
+    - 208+ authentic technical indicators from Taapi.io
+    - Enhanced BingX market intelligence with AI analysis
+    - Real-time price, volume, and orderbook analysis
+    - Zero synthetic data - all calculations authentic
+    - Optimized for ChatGPT Custom Actions
+    
+    **Technical Analysis Arsenal:**
+    - RSI, MACD, SMA, EMA, Bollinger Bands
+    - Stochastic, Williams %R, ADX, CCI
+    - Volume indicators, momentum oscillators
+    - Pattern recognition and trend analysis
+    
+    **Use Cases:**
+    - Confluence-based trading setups
+    - Multi-timeframe technical analysis
+    - Market intelligence and sentiment
+    - Entry/exit signal confirmation
+    
+  version: "4.0.0"
+servers:
+  - url: "https://your-new-railway-url.up.railway.app"
+    description: "Technical Indicators Server"
+paths:
+  "/health":
+    get:
+      operationId: "healthCheck"
+      summary: "System health check"
+      description: "Verify server connectivity and component status"
+      responses:
+        "200":
+          description: "System health status"
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                  service:
+                    type: string
+                  timestamp:
+                    type: string
+                  components:
+                    type: object
+  "/api/enhanced-intelligence/{symbols}":
+    get:
+      operationId: "getEnhancedIntelligence"
+      summary: "Enhanced BingX market intelligence"
+      description: |
+        Get comprehensive market analysis including:
+        - Real-time price and volume data
+        - Orderbook depth analysis
+        - Price pattern recognition
+        - Volume strength scoring
+        - Trend analysis and momentum
+      parameters:
+        - name: symbols
+          in: path
+          required: true
+          schema:
+            type: string
+          description: "Comma-separated symbols (e.g., BTC-USDT,ETH-USDT)"
+      responses:
+        "200":
+          description: "Enhanced market intelligence data"
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  timestamp:
+                    type: string
+                  analysis_type:
+                    type: string
+                  symbols_analyzed:
+                    type: integer
+                  results:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        symbol:
+                          type: string
+                        market_data:
+                          type: object
+                        orderbook_analysis:
+                          type: object
+                        volume_analysis:
+                          type: object
+                        price_patterns:
+                          type: object
+                        intelligence_summary:
+                          type: object
+  "/api/taapi/indicators/{symbol}":
+    get:
+      operationId: "getSingleIndicator"
+      summary: "Single technical indicator"
+      description: |
+        Get authentic technical indicator calculation for any symbol.
+        Supports 208+ indicators including RSI, MACD, SMA, EMA, Bollinger Bands, etc.
+      parameters:
+        - name: symbol
+          in: path
+          required: true
+          schema:
+            type: string
+          description: "Trading symbol (e.g., BTC/USDT, ETH/USDT)"
+        - name: indicator
+          in: query
+          required: false
+          schema:
+            type: string
+            default: "rsi"
+          description: "Technical indicator (rsi, macd, sma, ema, bbands, etc.)"
+        - name: interval
+          in: query
+          required: false
+          schema:
+            type: string
+            enum: ["1m", "5m", "15m", "30m", "1h", "2h", "4h", "6h", "8h", "12h", "1d", "3d", "1w", "1M"]
+            default: "1h"
+          description: "Time interval for calculation"
+        - name: period
+          in: query
+          required: false
+          schema:
+            type: string
+          description: "Period for calculation (when applicable)"
+      responses:
+        "200":
+          description: "Technical indicator result"
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  symbol:
+                    type: string
+                  indicator:
+                    type: string
+                  interval:
+                    type: string
+                  value:
+                    oneOf:
+                      - type: number
+                      - type: object
+                  timestamp:
+                    type: string
+                  exchange:
+                    type: string
+                  status:
+                    type: string
+  "/api/taapi/bulk":
+    post:
+      operationId: "getBulkIndicators"
+      summary: "Bulk technical indicators"
+      description: |
+        Get multiple technical indicators in a single request (max 20).
+        Efficient way to get comprehensive technical analysis.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                symbol:
+                  type: string
+                  description: "Trading symbol (e.g., BTC/USDT)"
+                indicators:
+                  type: array
+                  maxItems: 20
+                  items:
+                    type: object
+                    properties:
+                      indicator:
+                        type: string
+                      period:
+                        type: integer
+                  description: "List of indicators to calculate (max 20)"
+                interval:
+                  type: string
+                  enum: ["1m", "5m", "15m", "30m", "1h", "2h", "4h", "6h", "8h", "12h", "1d", "3d", "1w", "1M"]
+                  default: "1h"
+              required: ["symbol", "indicators"]
+            example:
+              symbol: "BTC/USDT"
+              indicators: [
+                {"indicator": "rsi"},
+                {"indicator": "macd"},
+                {"indicator": "sma", "period": 20},
+                {"indicator": "sma", "period": 50},
+                {"indicator": "ema", "period": 12},
+                {"indicator": "bbands"}
+              ]
+              interval: "1h"
+      responses:
+        "200":
+          description: "Bulk indicators results"
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  symbol:
+                    type: string
+                  interval:
+                    type: string
+                  timestamp:
+                    type: string
+                  indicators_requested:
+                    type: integer
+                  data:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          type: string
+                        indicator:
+                          type: string
+                        result:
+                          type: object
+                        errors:
+                          type: array
+                  status:
+                    type: string
+  "/api/technical-analysis/{symbol}":
+    get:
+      operationId: "getCompleteAnalysis"
+      summary: "Complete technical analysis"
+      description: |
+        Comprehensive technical analysis combining Enhanced BingX Intelligence
+        with key Taapi.io indicators for confluence-based trading decisions.
+      parameters:
+        - name: symbol
+          in: path
+          required: true
+          schema:
+            type: string
+          description: "Trading symbol (e.g., BTC/USDT)"
+      responses:
+        "200":
+          description: "Complete technical analysis"
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  timestamp:
+                    type: string
+                  symbol:
+                    type: string
+                  analysis_type:
+                    type: string
+                  enhanced_intelligence:
+                    type: object
+                  technical_indicators:
+                    type: object
+                  confluence_signals:
+                    type: object
+  "/api/market-overview":
+    get:
+      operationId: "getMarketOverview"
+      summary: "Market overview"
+      description: |
+        Market overview with key metrics for major cryptocurrencies
+        using Enhanced BingX Intelligence.
+      responses:
+        "200":
+          description: "Market overview data"
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  timestamp:
+                    type: string
+                  market_overview:
+                    type: object
+                  analysis_summary:
+                    type: object
+  "/api/enhanced-intelligence/test":
+    get:
+      operationId: "testEnhancedIntelligence"
+      summary: "Test Enhanced BingX Intelligence"
+      description: "Test Enhanced BingX Intelligence system functionality"
+      responses:
+        "200":
+          description: "System test results"
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  timestamp:
+                    type: string
+                  test_status:
+                    type: string
+                  components_tested:
+                    type: object
+                  system_health:
+                    type: string
+  "/api/taapi/test":
+    get:
+      operationId: "testTaapiIndicators"
+      summary: "Test Taapi.io indicators"
+      description: "Test Taapi.io technical indicators system functionality"
+      responses:
+        "200":
+          description: "Indicators test results"
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  timestamp:
+                    type: string
+                  test_status:
+                    type: string
+                  indicators_tested:
+                    type: array
+                  api_key_configured:
+                    type: boolean
+                  system_status:
+                    type: string
+  "/":
+    get:
+      operationId: "getApiDocumentation"
+      summary: "API documentation"
+      description: "Get API documentation and available endpoints"
+      responses:
+        "200":
+          description: "API documentation"
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  service:
+                    type: string
+                  version:
+                    type: string
+                  description:
+                    type: string
+                  endpoints:
+                    type: object
+                  features:
+                    type: array
