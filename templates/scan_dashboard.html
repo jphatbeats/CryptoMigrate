@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Market Scanner Dashboard</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            color: white;
+            min-height: 100vh;
+        }
+        
+        .header {
+            background: rgba(0, 0, 0, 0.3);
+            padding: 20px;
+            text-align: center;
+            border-bottom: 2px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            background: linear-gradient(45deg, #FFD700, #FFA500);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 30px;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            grid-gap: 30px;
+        }
+        
+        .card {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 15px;
+            padding: 25px;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+        }
+        
+        .card h2 {
+            font-size: 1.5em;
+            margin-bottom: 20px;
+            color: #FFD700;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .status-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+        
+        .status-item {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 15px;
+            border-radius: 10px;
+            text-align: center;
+        }
+        
+        .status-item .label {
+            font-size: 0.9em;
+            opacity: 0.8;
+            margin-bottom: 5px;
+        }
+        
+        .status-item .value {
+            font-size: 1.4em;
+            font-weight: bold;
+            color: #00FF88;
+        }
+        
+        .progress-bar {
+            width: 100%;
+            height: 20px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            overflow: hidden;
+            margin: 15px 0;
+        }
+        
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #00FF88, #00CC66);
+            transition: width 0.5s ease;
+        }
+        
+        .scan-list {
+            max-height: 400px;
+            overflow-y: auto;
+        }
+        
+        .scan-item {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 12px;
+            margin-bottom: 10px;
+            border-radius: 8px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: transform 0.2s ease;
+        }
+        
+        .scan-item:hover {
+            transform: translateX(5px);
+            background: rgba(255, 255, 255, 0.1);
+        }
+        
+        .scan-symbol {
+            font-weight: bold;
+            font-size: 1.1em;
+            color: #FFD700;
+        }
+        
+        .scan-confidence {
+            font-weight: bold;
+            padding: 5px 10px;
+            border-radius: 15px;
+            font-size: 0.9em;
+        }
+        
+        .confidence-high { background: #00FF88; color: #000; }
+        .confidence-medium { background: #FFA500; color: #000; }
+        .confidence-low { background: #FF4444; color: #fff; }
+        
+        .scan-time {
+            font-size: 0.9em;
+            opacity: 0.7;
+        }
+        
+        .alert-item {
+            background: rgba(255, 68, 68, 0.2);
+            border-left: 4px solid #FF4444;
+            padding: 15px;
+            margin-bottom: 10px;
+            border-radius: 8px;
+        }
+        
+        .alert-high {
+            background: rgba(255, 215, 0, 0.2);
+            border-left-color: #FFD700;
+        }
+        
+        .current-scan {
+            background: rgba(0, 255, 136, 0.2);
+            border: 2px solid #00FF88;
+            animation: pulse 2s infinite;
+        }
+        
+        @keyframes pulse {
+            0% { box-shadow: 0 0 0 0 rgba(0, 255, 136, 0.7); }
+            70% { box-shadow: 0 0 0 10px rgba(0, 255, 136, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(0, 255, 136, 0); }
+        }
+        
+        .full-width {
+            grid-column: 1 / -1;
+        }
+        
+        @media (max-width: 768px) {
+            .container {
+                grid-template-columns: 1fr;
+                padding: 15px;
+            }
+            
+            .status-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>🔍 MARKET SCANNER DASHBOARD</h1>
+        <p>Real-time monitoring of THE ALPHA PLAYBOOK v4 comprehensive market scanner</p>
+    </div>
+    
+    <div class="container">
+        <div class="card">
+            <h2>📊 Current Scan Status</h2>
+            <div class="status-grid">
+                <div class="status-item">
+                    <div class="label">Server Status</div>
+                    <div class="value" id="server-status">🔴 Loading...</div>
+                </div>
+                <div class="status-item">
+                    <div class="label">Current Coin</div>
+                    <div class="value" id="current-coin">Loading...</div>
+                </div>
+                <div class="status-item">
+                    <div class="label">Confidence Score</div>
+                    <div class="value" id="confidence-score">0%</div>
+                </div>
+                <div class="status-item">
+                    <div class="label">Batch Progress</div>
+                    <div class="value" id="batch-progress">0/0</div>
+                </div>
+            </div>
+            
+            <div class="progress-bar">
+                <div class="progress-fill" id="rotation-progress" style="width: 0%"></div>
+            </div>
+            <div style="text-align: center; margin-top: 10px;">
+                <span id="progress-text">Rotation Progress: 0%</span>
+            </div>
+        </div>
+        
+        <div class="card">
+            <h2>🎯 Recent Alerts</h2>
+            <div id="alerts-container">
+                <p style="opacity: 0.7;">Loading alerts...</p>
+            </div>
+        </div>
+        
+        <div class="card full-width">
+            <h2>📈 Recent Scans</h2>
+            <div id="scans-container" class="scan-list">
+                <p style="opacity: 0.7;">Loading scan results...</p>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        let updateInterval;
+        
+        function updateDashboard() {
+            // Update scan status
+            fetch('/api/scan-status')
+                .then(response => response.json())
+                .then(data => {
+                    document.getElementById('server-status').textContent = data.server_status;
+                    document.getElementById('current-coin').textContent = `${data.current_symbol} (${data.current_coin}/${data.total_coins})`;
+                    document.getElementById('confidence-score').textContent = `${data.confidence}%`;
+                    document.getElementById('batch-progress').textContent = data.batch_info;
+                    
+                    // Update progress bar
+                    const progressBar = document.getElementById('rotation-progress');
+                    const progressText = document.getElementById('progress-text');
+                    progressBar.style.width = `${data.rotation_progress}%`;
+                    progressText.textContent = `Rotation Progress: ${data.rotation_progress.toFixed(1)}% | Next rotation in ${data.next_rotation}`;
+                })
+                .catch(error => console.error('Error updating status:', error));
+            
+            // Update recent scans
+            fetch('/api/recent-scans')
+                .then(response => response.json())
+                .then(data => {
+                    const container = document.getElementById('scans-container');
+                    container.innerHTML = '';
+                    
+                    data.scans.forEach((scan, index) => {
+                        const item = document.createElement('div');
+                        item.className = `scan-item ${index === 0 ? 'current-scan' : ''}`;
+                        
+                        let confidenceClass = 'confidence-low';
+                        if (scan.confidence >= 75) confidenceClass = 'confidence-high';
+                        else if (scan.confidence >= 50) confidenceClass = 'confidence-medium';
+                        
+                        item.innerHTML = `
+                            <div>
+                                <div class="scan-symbol">${scan.symbol}</div>
+                                <div class="scan-time">${scan.timestamp}</div>
+                            </div>
+                            <div class="scan-confidence ${confidenceClass}">
+                                ${scan.confidence}%
+                            </div>
+                        `;
+                        
+                        container.appendChild(item);
+                    });
+                })
+                .catch(error => console.error('Error updating scans:', error));
+            
+            // Update alerts
+            fetch('/api/alerts')
+                .then(response => response.json())
+                .then(data => {
+                    const container = document.getElementById('alerts-container');
+                    
+                    if (data.alerts.length === 0) {
+                        container.innerHTML = '<p style="opacity: 0.7;">No alerts yet. Waiting for 75%+ confidence signals...</p>';
+                    } else {
+                        container.innerHTML = '';
+                        data.alerts.slice(0, 5).forEach(alert => {
+                            const item = document.createElement('div');
+                            item.className = 'alert-item alert-high';
+                            item.innerHTML = `
+                                <div><strong>${alert.symbol || 'Alert'}</strong></div>
+                                <div style="margin-top: 5px; font-size: 0.9em; opacity: 0.9;">
+                                    ${alert.message || alert.analysis || 'New trading alert'}
+                                </div>
+                            `;
+                            container.appendChild(item);
+                        });
+                    }
+                })
+                .catch(error => console.error('Error updating alerts:', error));
+        }
+        
+        // Initial update
+        updateDashboard();
+        
+        // Update every 5 seconds
+        updateInterval = setInterval(updateDashboard, 5000);
+        
+        // Update title with current status
+        setInterval(() => {
+            const currentCoin = document.getElementById('current-coin').textContent;
+            if (currentCoin !== 'Loading...') {
+                document.title = `Scanning ${currentCoin} | Market Scanner Dashboard`;
+            }
+        }, 1000);
+    </script>
+</body>
+</html>
