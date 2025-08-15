@@ -66,14 +66,14 @@ class ComprehensiveMarketScanner:
             self.openai_client = None
             self.ai_enabled = False
         
-        # Quality thresholds for alerts
+        # EXTREMELY strict thresholds for alerts - STOP THE ALERT SPAM
         self.alert_thresholds = {
-            'min_opportunity_score': 75,      # Raised for quality
-            'min_technical_signals': 3,       # At least 3 bullish TA signals
-            'min_news_sentiment': 0.6,        # Positive news required
-            'min_social_momentum': 0.5,       # Some social buzz required
-            'min_volume_24h': 1000000,        # $1M+ daily volume
-            'confluence_bonus': 10             # Extra points for all 3 layers agreeing
+            'min_opportunity_score': 85,      # ONLY alert on 85%+ (was 75)
+            'min_technical_signals': 4,       # Need 4+ bullish signals (was 3) 
+            'min_news_sentiment': 0.8,        # Need 80% positive news (was 60%)
+            'min_social_momentum': 0.7,       # Need strong social buzz (was 50%)
+            'min_volume_24h': 5000000,        # $5M+ daily volume (was $1M)
+            'confluence_bonus': 2              # Tiny bonus (was 10)
         }
         
         self.is_running = False
@@ -203,14 +203,14 @@ class ComprehensiveMarketScanner:
             macd_signal = 'bullish' if random.random() > 0.5 else 'bearish'
             recommendation = 'buy' if rsi < 35 and macd_signal == 'bullish' else ('sell' if rsi > 65 and macd_signal == 'bearish' else 'neutral')
             
-            # Calculate confluence score based on signals
-            confluence_score = 50
-            if recommendation == 'buy':
-                confluence_score = random.uniform(60, 85)
-            elif recommendation == 'sell':
-                confluence_score = random.uniform(15, 40)
+            # Calculate confluence score - EXTREMELY conservative to stop alert spam
+            confluence_score = 15  # Even lower base score
+            if recommendation == 'buy' and rsi < 30:  # Only if OVERSOLD + bullish
+                confluence_score = random.uniform(25, 45)  # Max 45% even for perfect buy
+            elif recommendation == 'sell' and rsi > 70:  # Only if OVERBOUGHT + bearish  
+                confluence_score = random.uniform(5, 25)
             else:
-                confluence_score = random.uniform(40, 60)
+                confluence_score = random.uniform(15, 35)  # Most coins low confidence
             
             return {
                 'rsi': round(rsi, 1),
@@ -329,11 +329,11 @@ class ComprehensiveMarketScanner:
                 news_signals['positive_sentiment_ratio'] = positive_count / len(articles)
                 news_signals['news_catalyst'] = positive_count >= 2  # At least 2 positive articles
             
-            # Calculate news score (0-30 points)
+            # Calculate news score (0-8 points max) - EXTREMELY conservative  
             if news_signals['news_catalyst']:
-                news_signals['news_score'] = min(30, 
-                    news_signals['positive_sentiment_ratio'] * 30 + 
-                    min(10, news_signals['recent_news_count'] * 2))
+                news_signals['news_score'] = min(8,  # Drastically reduced from 30 to 8
+                    news_signals['positive_sentiment_ratio'] * 5 + 
+                    min(3, news_signals['recent_news_count']))
         
         return news_signals
     
@@ -353,42 +353,46 @@ class ComprehensiveMarketScanner:
             social_signals['sentiment_score'] = momentum.get('sentiment', 0)
             social_signals['viral_potential'] = social_signals['social_momentum'] > 0.7
             
-            # Calculate social score (0-20 points)
-            social_signals['social_score'] = min(20, social_signals['social_momentum'] * 20)
+            # Calculate social score (0-5 points max) - DRASTICALLY reduced
+            social_signals['social_score'] = min(5, social_signals['social_momentum'] * 5)
         
         return social_signals
     
     def _calculate_confluence_score(self, analysis: Dict) -> float:
-        """Calculate confluence score from all 3 layers of analysis"""
+        """Calculate confluence score from all 3 layers of analysis - MUCH more conservative"""
         technical_score = analysis.get('technical', {}).get('technical_score', 0)
-        news_score = analysis.get('news', {}).get('news_score', 0)
+        news_score = analysis.get('news', {}).get('news_score', 0)  
         social_score = analysis.get('social', {}).get('social_score', 0)
         
-        base_score = technical_score + news_score + social_score
+        # DRAMATICALLY reduce base scoring
+        base_score = (technical_score * 0.4) + (news_score * 0.3) + (social_score * 0.2)
         
-        # Confluence bonus: extra points when multiple layers agree
+        # Much higher thresholds for confluence bonus
         layers_positive = sum([
-            technical_score > 15,  # Technical shows strength
-            news_score > 10,       # Positive news catalyst
-            social_score > 5       # Some social momentum
+            technical_score > 35,  # Technical shows STRONG strength (raised from 15)
+            news_score > 20,       # Significant news catalyst (raised from 10)
+            social_score > 15      # Strong social momentum (raised from 5)
         ])
         
         confluence_bonus = 0
-        if layers_positive >= 2:
-            confluence_bonus = self.alert_thresholds['confluence_bonus'] * layers_positive
+        if layers_positive >= 3:  # ALL layers must be strong (raised from 2)
+            confluence_bonus = 5 * layers_positive  # Much smaller bonus
+        elif layers_positive >= 2:
+            confluence_bonus = 2 * layers_positive  # Tiny bonus for 2 layers
         
-        # Apply confidence penalty for missing data (addresses the 95% inflation issue)
+        # Apply confidence penalty for missing data
         successful_layers = sum([
             bool(analysis.get('technical')),
-            bool(analysis.get('news')),
+            bool(analysis.get('news')), 
             bool(analysis.get('social'))
         ])
         
-        confidence_multiplier = successful_layers / 3.0  # Penalty for missing layers
+        confidence_multiplier = successful_layers / 3.0
         
         final_score = (base_score + confluence_bonus) * confidence_multiplier
         
-        return min(95, final_score)  # Cap at 95% to prevent inflation
+        # Cap at 85% max - no coin should easily hit 90%+
+        return min(85, max(15, final_score))
     
     async def _refresh_top_200_coins(self):
         """Refresh the top 200 coins list (excluding stablecoins)"""
