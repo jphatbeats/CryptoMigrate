@@ -38,7 +38,7 @@ class ComprehensiveMarketScanner:
         self.scan_interval = 20  # 20 seconds between coins
         self.batch_size = 18     # 18 coins per 6-minute batch (20s * 18 = 360s = 6min)
         self.cycle_duration = 360  # 6 minutes per batch
-        self.total_coins = 200   # Full top 200 rotation
+        self.total_coins = 190   # Top 190 (excluding stablecoins)
         
         # Current position in the rotation
         self.current_coin_index = 0
@@ -65,7 +65,7 @@ class ComprehensiveMarketScanner:
         print("📊 3-LAYER ANALYSIS: Technical + News + Social Sentiment")
         print(f"⏰ Scanning 1 coin every {self.scan_interval} seconds")
         print(f"📈 {self.batch_size} coins per 6-minute batch")
-        print(f"🔄 Complete top 200 rotation every {(200 * self.scan_interval) // 60:.1f} minutes")
+        print(f"🔄 Complete top 190 rotation every {(190 * self.scan_interval) // 60:.1f} minutes (stablecoins excluded)")
         print("🎯 INSTANT alerts for confluence opportunities (75%+ score)")
         print("=" * 70)
         
@@ -118,7 +118,7 @@ class ComprehensiveMarketScanner:
         
         # Check if we completed a full rotation
         if self.current_coin_index == 0:
-            print(f"\n✅ COMPLETED FULL TOP 200 ROTATION")
+            print(f"\n✅ COMPLETED FULL TOP 190 ROTATION (stablecoins excluded)")
             await self._refresh_top_200_coins()  # Refresh for next cycle
         
         # Check if we need to refresh top 200 (every hour)
@@ -363,12 +363,21 @@ class ComprehensiveMarketScanner:
         return min(95, final_score)  # Cap at 95% to prevent inflation
     
     async def _refresh_top_200_coins(self):
-        """Refresh the top 200 coins list"""
+        """Refresh the top 200 coins list (excluding stablecoins)"""
+        # Comprehensive stablecoin list to exclude
+        STABLECOINS = {
+            'USDT', 'USDC', 'BUSD', 'DAI', 'TUSD', 'USDD', 'FRAX', 'USDE', 'SUSDE',
+            'FDUSD', 'PYUSD', 'GUSD', 'USDP', 'LUSD', 'USDK', 'USDN', 'RSR', 'USTC',
+            'MIM', 'USDC.E', 'BSC-USD', 'USDS', 'CRVUSD', 'DOLA', 'ALUSD', 'AGEUR',
+            'EURO', 'EURS', 'EURT', 'STETH', 'WSTETH', 'WETH', 'WBTC', 'WBETH',
+            'CBBTC', 'WEETH', 'CETH', 'RETH'  # Wrapped/staked versions
+        }
+        
         try:
             async with aiohttp.ClientSession() as session:
                 url = f"{LOCAL_API_URL}/api/market/top-performers"
                 params = {
-                    'limit': 200,
+                    'limit': 300,  # Get more to account for filtering out stablecoins
                     'timeframe': '24h',
                     'min_volume': 500000,
                     'sort_by': 'volume_weighted_performance'
@@ -378,21 +387,29 @@ class ComprehensiveMarketScanner:
                     if response.status == 200:
                         data = await response.json()
                         if data.get('success') and data.get('coins'):
-                            self.top_200_coins = [coin['symbol'] for coin in data['coins']]
+                            # Filter out stablecoins and get top 190 non-stablecoin assets
+                            all_coins = [coin['symbol'] for coin in data['coins']]
+                            filtered_coins = [symbol for symbol in all_coins if symbol.upper() not in STABLECOINS]
+                            self.top_200_coins = filtered_coins[:190]  # Take top 190 after filtering
                             self.last_top_200_refresh = datetime.now()
-                            print(f"✅ Refreshed top 200 coins ({len(self.top_200_coins)} coins)")
+                            
+                            excluded_count = len(all_coins) - len(filtered_coins)
+                            print(f"✅ Refreshed top coins list: {len(self.top_200_coins)} coins (excluded {excluded_count} stablecoins)")
                             return
             
-            # Fallback to major coins if API fails
-            print("⚠️ Using fallback top coins list")
-            self.top_200_coins = [
+            # Fallback to major non-stablecoin coins if API fails
+            print("⚠️ Using fallback top coins list (no stablecoins)")
+            fallback_coins = [
                 'BTC', 'ETH', 'XRP', 'ADA', 'SOL', 'MATIC', 'DOT', 'AVAX', 'LINK', 'UNI',
                 'LTC', 'BCH', 'ALGO', 'VET', 'ICP', 'FIL', 'TRX', 'ETC', 'XLM', 'ATOM',
-                'HBAR', 'NEAR', 'MANA', 'SAND', 'AXS', 'CRV', 'MKR', 'AAVE', 'COMP', 'YFI'
+                'HBAR', 'NEAR', 'MANA', 'SAND', 'AXS', 'CRV', 'MKR', 'AAVE', 'COMP', 'YFI',
+                'DOGE', 'SHIB', 'PEPE', 'LEO', 'TON', 'XMR', 'HYPE', 'TAO', 'SUI', 'MNT'
             ]
+            # Filter fallback list too
+            self.top_200_coins = [symbol for symbol in fallback_coins if symbol not in STABLECOINS]
             
         except Exception as e:
-            print(f"❌ Error refreshing top 200: {e}")
+            print(f"❌ Error refreshing top coins: {e}")
     
     async def _send_alpha_alert(self, symbol: str, analysis: Dict):
         """Send high-quality alpha opportunity alert"""
