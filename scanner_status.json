@@ -1,59 +1,80 @@
 {
-  "current_coin": "ETH",
-  "current_index": 2,
+  "current_coin": "NEAR",
+  "current_index": 15,
   "total_coins": 200,
   "current_batch": "1/11",
-  "confidence": 50.4,
+  "confidence": 53.4,
   "alert_triggered": false,
-  "timestamp": "2025-08-15T03:11:36.526464",
+  "timestamp": "2025-08-15T03:15:56.848552",
   "scanning_active": true,
   "recent_scans": [
     {
-      "symbol": "ETH",
-      "confidence": 50.4,
-      "timestamp": "03:11:36",
+      "symbol": "NEAR",
+      "confidence": 53.4,
+      "timestamp": "03:15:56",
       "alert_triggered": false,
       "status": "completed"
     },
     {
-      "symbol": "BTC",
-      "confidence": 56.1,
-      "timestamp": "03:11:16",
+      "symbol": "BCH",
+      "confidence": 42.0,
+      "timestamp": "03:15:36",
+      "alert_triggered": false,
+      "status": "completed"
+    },
+    {
+      "symbol": "LINK",
+      "confidence": 40.6,
+      "timestamp": "03:15:16",
+      "alert_triggered": false,
+      "status": "completed"
+    },
+    {
+      "symbol": "DOT",
+      "confidence": 52.3,
+      "timestamp": "03:14:56",
+      "alert_triggered": false,
+      "status": "completed"
+    },
+    {
+      "symbol": "SHIB",
+      "confidence": 58.6,
+      "timestamp": "03:14:36",
+      "alert_triggered": false,
+      "status": "completed"
+    },
+    {
+      "symbol": "AVAX",
+      "confidence": 36.3,
+      "timestamp": "03:14:16",
+      "alert_triggered": false,
+      "status": "completed"
+    },
+    {
+      "symbol": "TRX",
+      "confidence": 55.9,
+      "timestamp": "03:13:56",
+      "alert_triggered": false,
+      "status": "completed"
+    },
+    {
+      "symbol": "ADA",
+      "confidence": 50.0,
+      "timestamp": "03:13:36",
       "alert_triggered": false,
       "status": "completed"
     },
     {
       "symbol": "TON",
-      "confidence": 77.0,
-      "timestamp": "03:09:19",
-      "alert_triggered": true,
+      "confidence": 44.9,
+      "timestamp": "03:13:16",
+      "alert_triggered": false,
       "status": "completed"
     },
     {
       "symbol": "DOGE",
-      "confidence": 30.8,
-      "timestamp": "03:08:59",
-      "alert_triggered": false,
-      "status": "completed"
-    },
-    {
-      "symbol": "SOL",
-      "confidence": 45.6,
-      "timestamp": "03:08:39",
-      "alert_triggered": false,
-      "status": "completed"
-    },
-    {
-      "symbol": "BNB",
-      "confidence": 47.4,
-      "timestamp": "03:08:19",
-      "alert_triggered": false,
-      "status": "completed"
-    },
-    {
-      "symbol": "XRP",
-      "confidence": 59.7,
-      "timestamp": "03:07:58",
+      "confidence": 53.8,
+      "timestamp": "03:12:56",
       "alert_triggered": false,
       "status": "completed"
     }
