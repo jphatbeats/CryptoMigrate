@@ -1,13 +1,55 @@
 {
-  "current_coin": "NEAR",
-  "current_index": 15,
+  "current_coin": "ETC",
+  "current_index": 21,
   "total_coins": 200,
-  "current_batch": "1/11",
-  "confidence": 53.4,
+  "current_batch": "2/11",
+  "confidence": 42.9,
   "alert_triggered": false,
-  "timestamp": "2025-08-15T03:15:56.848552",
+  "timestamp": "2025-08-15T03:17:56.994599",
   "scanning_active": true,
   "recent_scans": [
+    {
+      "symbol": "ETC",
+      "confidence": 42.9,
+      "timestamp": "03:17:56",
+      "alert_triggered": false,
+      "status": "completed"
+    },
+    {
+      "symbol": "APT",
+      "confidence": 56.9,
+      "timestamp": "03:17:36",
+      "alert_triggered": false,
+      "status": "completed"
+    },
+    {
+      "symbol": "ICP",
+      "confidence": 59.1,
+      "timestamp": "03:17:16",
+      "alert_triggered": false,
+      "status": "completed"
+    },
+    {
+      "symbol": "LTC",
+      "confidence": 57.3,
+      "timestamp": "03:16:56",
+      "alert_triggered": false,
+      "status": "completed"
+    },
+    {
+      "symbol": "UNI",
+      "confidence": 59.5,
+      "timestamp": "03:16:36",
+      "alert_triggered": false,
+      "status": "completed"
+    },
+    {
+      "symbol": "MATIC",
+      "confidence": 21.5,
+      "timestamp": "03:16:16",
+      "alert_triggered": false,
+      "status": "completed"
+    },
     {
       "symbol": "NEAR",
       "confidence": 53.4,
@@ -33,48 +75,6 @@
       "symbol": "DOT",
       "confidence": 52.3,
       "timestamp": "03:14:56",
-      "alert_triggered": false,
-      "status": "completed"
-    },
-    {
-      "symbol": "SHIB",
-      "confidence": 58.6,
-      "timestamp": "03:14:36",
-      "alert_triggered": false,
-      "status": "completed"
-    },
-    {
-      "symbol": "AVAX",
-      "confidence": 36.3,
-      "timestamp": "03:14:16",
-      "alert_triggered": false,
-      "status": "completed"
-    },
-    {
-      "symbol": "TRX",
-      "confidence": 55.9,
-      "timestamp": "03:13:56",
-      "alert_triggered": false,
-      "status": "completed"
-    },
-    {
-      "symbol": "ADA",
-      "confidence": 50.0,
-      "timestamp": "03:13:36",
-      "alert_triggered": false,
-      "status": "completed"
-    },
-    {
-      "symbol": "TON",
-      "confidence": 44.9,
-      "timestamp": "03:13:16",
-      "alert_triggered": false,
-      "status": "completed"
-    },
-    {
-      "symbol": "DOGE",
-      "confidence": 53.8,
-      "timestamp": "03:12:56",
       "alert_triggered": false,
       "status": "completed"
     }
