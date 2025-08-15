@@ -1,13 +1,29 @@
 {
-  "current_coin": "AAVE",
-  "current_index": 39,
+  "current_coin": "EGLD",
+  "current_index": 41,
   "total_coins": 200,
   "current_batch": "3/11",
   "confidence": 15,
   "alert_triggered": false,
-  "timestamp": "2025-08-15T21:30:08.052613",
+  "timestamp": "2025-08-15T21:31:26.797226",
   "scanning_active": true,
   "recent_scans": [
+    {
+      "symbol": "EGLD",
+      "confidence": 15,
+      "timestamp": "21:31:26",
+      "alert_triggered": false,
+      "status": "completed",
+      "ai_insight": "EGLD's confidence score of 15.0% reflects a lack of significant market movement or interest, as indicated by its neutral technical indicators, absence of news catalysts, and stagnant social momentum. Traders should note the current market indecision and consider waiting for more definitive signals or external catalysts before making trading decisions."
+    },
+    {
+      "symbol": "AXS",
+      "confidence": 15,
+      "timestamp": "21:30:48",
+      "alert_triggered": false,
+      "status": "completed",
+      "ai_insight": "AXS scored 15.0% due to lackluster technical indicators, with a neutral RSI and MACD, combined with negligible news and social momentum, indicating low market interest and engagement. Traders should note the absence of positive sentiment or catalysts, suggesting limited immediate upside potential barring any new developments."
+    },
     {
       "symbol": "AAVE",
       "confidence": 15,
@@ -71,22 +87,6 @@
       "alert_triggered": false,
       "status": "completed",
       "ai_insight": "ARB's confidence score of 15.0% reflects a lack of momentum and positive sentiment across technical, news, and social analyses, with neutral technical indicators like an RSI of 50.0 and MACD signal offering little direction, and no positive sentiment or catalysts in recent news or social media. Traders should be cautious as the absence of strong signals or catalysts suggests limited potential for imminent price movement."
-    },
-    {
-      "symbol": "IMX",
-      "confidence": 15,
-      "timestamp": "21:25:03",
-      "alert_triggered": false,
-      "status": "completed",
-      "ai_insight": "IMX's confidence score of 15.0% reflects a lack of strong market signals, with neutral technical indicators like RSI and MACD, and no supportive news or social momentum to drive interest or sentiment. Traders should be cautious, as the absence of positive catalysts or momentum suggests limited immediate trading opportunities or volatility."
-    },
-    {
-      "symbol": "ALGO",
-      "confidence": 15,
-      "timestamp": "21:24:23",
-      "alert_triggered": false,
-      "status": "completed",
-      "ai_insight": "ALGO's low confidence score of 15.0% is driven by neutral technical indicators and a lack of positive sentiment in both news and social media, indicating a lack of momentum or catalysts to drive price action. Traders should be cautious, as the absence of bullish signals suggests that the coin may remain stagnant unless new developments emerge."
     }
   ]
 }
