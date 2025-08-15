@@ -431,11 +431,14 @@
                 .then(data => {
                     const container = document.getElementById('alerts-container');
                     
-                    if (data.alerts.length === 0) {
+                    // Handle nested alerts structure
+                    const alerts = data.alerts?.alerts || data.alerts || [];
+                    
+                    if (!alerts || alerts.length === 0) {
                         container.innerHTML = '<p style="opacity: 0.7;">No alerts yet. Waiting for 75%+ confidence signals...</p>';
                     } else {
                         container.innerHTML = '';
-                        data.alerts.slice(0, 5).forEach(alert => {
+                        alerts.slice(0, 5).forEach(alert => {
                             const item = document.createElement('div');
                             item.className = 'alert-item alert-high';
                             item.innerHTML = `
@@ -448,7 +451,12 @@
                         });
                     }
                 })
-                .catch(error => console.error('Error updating alerts:', error));
+                .catch(error => {
+                    console.log('Alert update info:', error);
+                    // Don't show error to user, just use fallback
+                    const container = document.getElementById('alerts-container');
+                    container.innerHTML = '<p style="opacity: 0.7;">Alpha scanner running - waiting for 75%+ signals...</p>';
+                });
         }
         
         // Initial update

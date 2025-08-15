@@ -1,92 +1,92 @@
 {
-  "current_coin": "BNB",
-  "current_index": 4,
+  "current_coin": "LINK",
+  "current_index": 13,
   "total_coins": 200,
   "current_batch": "1/11",
-  "confidence": 94.0,
+  "confidence": 95,
   "alert_triggered": true,
-  "timestamp": "2025-08-15T04:01:03.837615",
+  "timestamp": "2025-08-15T04:05:28.235907",
   "scanning_active": true,
   "recent_scans": [
     {
-      "symbol": "BNB",
-      "confidence": 94.0,
-      "timestamp": "04:01:03",
-      "alert_triggered": true,
-      "status": "completed",
-      "ai_insight": "BNB's high confidence score of 94.0% is driven primarily by strong positive news sentiment and a significant news catalyst, which contribute to a perfect news score of 30/30, despite the technical analysis indicating a bearish outlook with an oversold RSI of 26.1 and a neutral recommendation. Traders should be cautious of the lack of social momentum and sentiment, suggesting limited viral potential, and consider the mixed signals between the bullish news environment and bearish technical indicators."
-    },
-    {
-      "symbol": "LTC",
+      "symbol": "LINK",
       "confidence": 95,
-      "timestamp": "04:01:03",
+      "timestamp": "04:05:28",
       "alert_triggered": true,
       "status": "completed",
-      "ai_insight": "LTC's high confidence score of 95.0% is primarily driven by strong technical indicators, particularly the oversold RSI of 28.1 and a bullish MACD signal, combined with positive news sentiment and a significant news catalyst. However, traders should note the lack of social momentum, which could limit immediate viral potential despite the positive technical and news signals."
+      "ai_insight": "LINK's high confidence score of 95.0% is primarily driven by strong positive news sentiment and a perfect technical score, despite neutral technical indicators such as an RSI of 52.1 and bearish MACD signal. Traders should note that while the news is exceptionally favorable, the lack of social momentum and neutral technical recommendations suggest cautious optimism, as the market sentiment has not yet fully aligned with the positive news."
     },
     {
-      "symbol": "UNI",
-      "confidence": 44.8,
-      "timestamp": "04:00:41",
-      "alert_triggered": false,
-      "status": "completed",
-      "ai_insight": "UNI's score of 44.8% reflects strong technical indicators, such as a bullish MACD signal and a relatively high RSI of 60.6, suggesting potential upward momentum, yet it is offset by lackluster news and social sentiment, which contribute nothing to its score. Traders should note the absence of positive news catalysts and social momentum, which could limit significant price movement despite the technical bullish signals."
-    },
-    {
-      "symbol": "XRP",
-      "confidence": 76.4,
-      "timestamp": "04:00:39",
+      "symbol": "ALGO",
+      "confidence": 93.0,
+      "timestamp": "04:05:27",
       "alert_triggered": true,
       "status": "completed",
-      "ai_insight": "XRP's confidence score of 76.4% is primarily driven by strong positive news sentiment and the presence of a news catalyst, accounting for a perfect news score of 30/30, despite weak technical signals and lackluster social momentum. Traders should be cautious due to the bearish MACD signal and high RSI, indicating potential overvaluation, and consider the sell recommendation in the context of prevailing positive news developments."
+      "ai_insight": "ALGO's high confidence score of 93.0% is primarily driven by strong technical indicators, including a bullish MACD signal and a near-maximum technical score, supported by positive news sentiment and a significant news catalyst. However, traders should note the lack of social momentum and sentiment, which may limit short-term viral potential and broader market engagement."
     },
     {
-      "symbol": "MATIC",
-      "confidence": 72.3,
-      "timestamp": "04:00:19",
+      "symbol": "VET",
+      "confidence": 43.5,
+      "timestamp": "04:05:05",
       "alert_triggered": false,
       "status": "completed",
-      "ai_insight": "MATIC's 72.3% confidence score is primarily driven by strong positive news sentiment and a significant news catalyst, contributing significantly to the overall score despite weak technical indicators and stagnant social momentum. Traders should be cautious as the high RSI and bearish MACD signal suggest overbought conditions and potential short-term downside, aligning with the sell recommendation."
+      "ai_insight": "VET's score of 43.5% is primarily driven by its technical analysis, where a relatively strong RSI of 62.6 suggests some buying interest, but the bearish MACD signal and lack of positive news or social momentum limit its attractiveness. Traders should note the absence of significant news catalysts and social buzz, which could hinder any short-term price movement, warranting a neutral stance."
     },
     {
-      "symbol": "ETH",
-      "confidence": 94.9,
-      "timestamp": "04:00:16",
-      "alert_triggered": true,
-      "status": "completed",
-      "ai_insight": "ETH's high confidence score of 94.9% is primarily driven by strong technical indicators, with a bullish MACD signal and an RSI of 60.6, alongside overwhelmingly positive news sentiment that includes impactful catalysts. However, traders should be aware that the absence of social momentum could suggest limited immediate retail investor engagement, which might temper short-term price surges."
-    },
-    {
-      "symbol": "NEAR",
-      "confidence": 45.6,
-      "timestamp": "03:59:57",
-      "alert_triggered": false,
-      "status": "completed",
-      "ai_insight": "NEAR's score of 45.6% is largely driven by technical indicators, with an oversold RSI of 28.2 suggesting potential undervaluation, although the bearish MACD and neutral recommendation temper optimism. The lack of significant news catalysts and stagnant social momentum further keeps the confidence score subdued, indicating a cautious approach for traders."
-    },
-    {
-      "symbol": "BTC",
+      "symbol": "DOT",
       "confidence": 95,
-      "timestamp": "03:59:54",
+      "timestamp": "04:05:02",
       "alert_triggered": true,
       "status": "completed",
-      "ai_insight": "Bitcoin's high confidence score of 95.0% is driven primarily by strong positive news sentiment and a perfect news catalyst score, indicating significant bullish developments in recent media coverage. However, the market's technical indicators present mixed signals, with a neutral recommendation and bearish MACD, suggesting traders should remain cautious and monitor for potential shifts in market sentiment."
+      "ai_insight": "The DOT score of 95.0% is primarily driven by strong news sentiment, with 60% of recent articles being positive and a significant news catalyst boosting its news score. However, technical indicators and social momentum remain weak, with a bearish MACD signal and stagnant social engagement, suggesting traders should stay cautious and monitor for shifts in these areas before making decisive moves."
     },
     {
-      "symbol": "BNT",
-      "confidence": 94.7,
-      "timestamp": "03:59:50",
-      "alert_triggered": true,
-      "status": "completed",
-      "ai_insight": "BNT's high confidence score of 94.7% is largely driven by its strong technical foundation, evidenced by a near-perfect technical score, despite a bearish MACD signal that tempers immediate bullish enthusiasm. However, stagnant social momentum and neutral sentiment in news analysis suggest traders should remain cautious and monitor for further catalysts before taking decisive action."
-    },
-    {
-      "symbol": "BCH",
-      "confidence": 48.1,
-      "timestamp": "03:59:35",
+      "symbol": "HBAR",
+      "confidence": 46.8,
+      "timestamp": "04:04:41",
       "alert_triggered": false,
       "status": "completed",
-      "ai_insight": "BCH's score of 48.1% reflects a neutral technical outlook with a slightly bearish trend indicated by an RSI of 44.1 and a bearish MACD signal, while lacking any significant news catalysts or social momentum to drive positive sentiment. Traders should be cautious, given the absence of strong drivers for upward movement and the overall neutral recommendation, suggesting limited immediate opportunities for bullish action."
+      "ai_insight": "HBAR's confidence score of 46.8% is primarily driven by mixed technical indicators, with a relatively strong RSI of 64.9 suggesting potential overbought conditions, countered by a bearish MACD signal indicating possible downward momentum. The lack of positive sentiment and catalysts from news and social channels further dampens confidence, suggesting traders should approach this asset cautiously until clearer signals emerge."
+    },
+    {
+      "symbol": "SHIB",
+      "confidence": 95,
+      "timestamp": "04:04:38",
+      "alert_triggered": true,
+      "status": "completed",
+      "ai_insight": "SHIB's high confidence score of 95.0% is driven by strong technical indicators, with a bullish MACD signal and an RSI close to overbought territory, coupled with a perfect news sentiment score indicating positive market catalysts. However, the lack of social momentum and viral potential suggests limited retail engagement, warranting a cautious approach despite the strong technical and news support."
+    },
+    {
+      "symbol": "FIL",
+      "confidence": 95,
+      "timestamp": "04:04:20",
+      "alert_triggered": true,
+      "status": "completed",
+      "ai_insight": "Filecoin (FIL) has achieved a high confidence score of 95.0% due to strong technical indicators, such as a bullish MACD signal and a favorable RSI of 61.3, coupled with overwhelmingly positive sentiment from recent news, which has created a compelling narrative. However, the neutral recommendation and stagnant social momentum suggest traders should remain cautious and monitor for increased social engagement before considering significant moves."
+    },
+    {
+      "symbol": "ATOM",
+      "confidence": 90.8,
+      "timestamp": "04:03:59",
+      "alert_triggered": true,
+      "status": "completed",
+      "ai_insight": "ATOM's high confidence score of 90.8% is driven by strong technical and news indicators, with a particularly bullish sentiment in recent news articles (80% positive) and a perfect news score of 30/30, suggesting potential catalysts for price movement. However, traders should note the oversold RSI at 26.9 and bearish MACD signal, indicating potential for a technical rebound despite current market neutrality and lack of social momentum."
+    },
+    {
+      "symbol": "XMR",
+      "confidence": 40.6,
+      "timestamp": "04:03:36",
+      "alert_triggered": false,
+      "status": "completed",
+      "ai_insight": "XMR's score of 40.6% is primarily driven by its technical indicators, with a bullish MACD signal and a moderate RSI of 56.2, suggesting a potential for upward movement, albeit with caution. However, the absence of significant news catalysts and social momentum significantly limits broader market enthusiasm, resulting in a neutral trading recommendation."
+    },
+    {
+      "symbol": "AVAX",
+      "confidence": 95,
+      "timestamp": "04:03:30",
+      "alert_triggered": true,
+      "status": "completed",
+      "ai_insight": "AVAX's high confidence score of 95.0% is primarily driven by overwhelmingly positive news sentiment and a bullish MACD signal, despite a neutral overall recommendation and a lack of social momentum. Traders should note that while the technical indicators suggest a cautious stance, the strong news catalyst could potentially drive positive price action in the short term."
     }
   ]
 }
