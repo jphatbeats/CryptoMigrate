@@ -39,7 +39,7 @@ DISCORD_CHANNELS = {
     'alpha_scans': 1399790636990857277,   # Trading opportunities
     'degen_memes': 1401971493096915067    # Degen memes, viral plays, airdrops, early gems
 }
-DISCORD_WEBHOOK_ALPHA_SCANS = os.getenv('DISCORD_WEBHOOK_ALPHA_SCANS')
+DISCORD_WEBHOOK_ALPHA_SCANS = "https://discord.com/api/webhooks/1403928100202352731/kLY9j4wApDDSvjXbi8SDFEcytiNJIlUZhLgoZkMIqVI2RhFm6AFunl46gDOjqssqRh7w"
 DISCORD_WEBHOOK_URL = DISCORD_WEBHOOK_ALPHA_SCANS  # Backward compatibility
 
 class ComprehensiveMarketScanner:
@@ -636,8 +636,9 @@ Provide a concise 2-sentence analysis explaining why this coin scored {confidenc
                 "embeds": [embed]
             }
             
-            async with aiohttp.ClientSession() as session:
-                async with session.post(DISCORD_WEBHOOK_ALPHA_SCANS, json=webhook_data, timeout=10) as response:
+            timeout = aiohttp.ClientTimeout(total=10)
+            async with aiohttp.ClientSession(timeout=timeout) as session:
+                async with session.post(DISCORD_WEBHOOK_ALPHA_SCANS, json=webhook_data) as response:
                     if response.status == 204:
                         print(f"✅ Alpha alert sent to Discord: {symbol} ({score:.1f}%)")
                     else:
@@ -733,9 +734,10 @@ Provide a concise 2-sentence analysis explaining why this coin scored {confidenc
     async def _get_current_price(self, symbol: str) -> Optional[float]:
         """Get current price from local API"""
         try:
-            async with aiohttp.ClientSession() as session:
+            timeout = aiohttp.ClientTimeout(total=5)
+            async with aiohttp.ClientSession(timeout=timeout) as session:
                 url = f"{LOCAL_API_URL}/api/crypto/price/{symbol}"
-                async with session.get(url, timeout=5) as response:
+                async with session.get(url) as response:
                     if response.status == 200:
                         data = await response.json()
                         return float(data.get('price', 0))
