@@ -106,7 +106,7 @@ except Exception as e:
 # Discord Bot Configuration (using Discord.py instead of webhooks)
 DISCORD_TOKEN = os.getenv('DISCORD_TOKEN')
 DISCORD_CHANNELS = {
-    'news': 1398000506068009032,          # News channel (renamed from alerts)
+    'news': 1398000506068009032,          # News and social stuff channel
     'portfolio': 1399451217372905584,     # Portfolio analysis  
     # 'alpha_scans': 1399790636990857277,   # DISABLED - Trading opportunities (alerts were useless)
     'degen_memes': 1401971493096915067    # Degen memes, viral plays, airdrops, early gems

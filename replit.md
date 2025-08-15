@@ -4,7 +4,7 @@ This project is a comprehensive cryptocurrency trading automation system, THE AL
 
 ## Recent Critical Updates (Aug 15, 2025)
 - **ALPHA SCANS CHANNEL DISABLED**: Removed useless alpha_scans channel (1399790636990857277) - alerts were not providing value
-- **STREAMLINED DISCORD ARCHITECTURE**: Now using 3 focused channels: #news (breaking news/digest), #portfolio (analysis), #degen-memes (viral plays)
+- **STREAMLINED DISCORD ARCHITECTURE**: Now using 3 focused channels: #news-and-social-stuff (breaking news/digest/social), #portfolio (analysis), #degen-memes (viral plays)
 - **DISCORD SYSTEM CONSISTENCY FIX**: Resolved critical async/await compatibility issue in analyze_trading_conditions function
 - **UNIFIED MCP ARCHITECTURE**: All remaining Discord alert channels use consistent Lumif-ai TradingView integration
 - **ENHANCED AI INTEGRATION**: All active alert channels now provide GPT-4o powered insights with unified technical analysis pipeline
@@ -52,7 +52,7 @@ Preferred communication style: Simple, everyday language.
 
 ## System Features
 - **Discord Slash Commands & Interactive Dashboard**: Functional Discord commands for market analysis and an interactive crypto dashboard with animated widgets and market snapshots.
-- **Enhanced Discord Intelligence (TITAN BOT#6444)**: Employs a streamlined 3-channel strategy for targeted information delivery: #news (breaking news/digest), #portfolio (analysis), #degen-memes (viral plays), with intelligent routing and full slash command integration.
+- **Enhanced Discord Intelligence (TITAN BOT#6444)**: Employs a streamlined 3-channel strategy for targeted information delivery: #news-and-social-stuff (breaking news/digest/social), #portfolio (analysis), #degen-memes (viral plays), with intelligent routing and full slash command integration.
 - **BingX Conditional Orders Detection V4.1**: Direct API integration for detecting and monitoring active stop losses and take profits with accurate symbol matching and real-time updates.
 - **ChatGPT Market-Wide Indicator Scanning**: Endpoints for ChatGPT Custom Actions to scan entire crypto markets for specific technical conditions (RSI, MACD, multi-indicator confluence) across various timeframes with filtering.
 
