@@ -367,23 +367,56 @@ class ComprehensiveMarketScanner:
         return news_signals
     
     def _process_social_data(self, data: Dict) -> Dict:
-        """Process social sentiment data"""
+        """Process social sentiment data with AI enhancement"""
         social_signals = {
             'social_momentum': 0,
             'sentiment_score': 0,
             'viral_potential': False,
-            'social_score': 0
+            'social_score': 0,
+            'ai_social_grade': 0,
+            'community_strength': 0
         }
         
         if data.get('success'):
-            # Process social momentum indicators
+            # Process raw LunarCrush data
             momentum = data.get('momentum', {})
-            social_signals['social_momentum'] = momentum.get('score', 0)
-            social_signals['sentiment_score'] = momentum.get('sentiment', 0)
-            social_signals['viral_potential'] = social_signals['social_momentum'] > 0.7
+            raw_momentum = momentum.get('score', 0)
+            raw_sentiment = momentum.get('sentiment', 0)
             
-            # Calculate social score (0-5 points max) - DRASTICALLY reduced
-            social_signals['social_score'] = min(5, social_signals['social_momentum'] * 5)
+            social_signals['social_momentum'] = raw_momentum
+            social_signals['sentiment_score'] = raw_sentiment
+            social_signals['viral_potential'] = raw_momentum > 0.7
+            
+            # Use AI to grade social sentiment quality if available
+            if self.ai_enabled and (raw_momentum > 0.1 or raw_sentiment != 0):
+                try:
+                    # Extract social context for AI analysis
+                    symbol = data.get('symbol', 'UNKNOWN')
+                    social_context = {
+                        'momentum_score': raw_momentum,
+                        'sentiment_score': raw_sentiment,
+                        'social_posts': momentum.get('posts', 0),
+                        'engagement_rate': momentum.get('engagement', 0)
+                    }
+                    
+                    ai_grade = self._analyze_social_with_ai(social_context, symbol)
+                    if ai_grade:
+                        social_signals['ai_social_grade'] = ai_grade.get('quality_score', 0)
+                        social_signals['community_strength'] = ai_grade.get('community_strength', 0)
+                        
+                        # AI-enhanced social score (0-10 points max)
+                        social_signals['social_score'] = min(10,
+                            social_signals['ai_social_grade'] * 0.7 +     # 70% AI quality weight
+                            social_signals['community_strength'] * 0.3    # 30% community weight
+                        )
+                        return social_signals
+                        
+                except Exception as e:
+                    print(f"⚠️ AI social analysis failed: {e}")
+                    # Fall through to traditional analysis
+            
+            # Fallback to traditional conservative scoring
+            social_signals['social_score'] = min(5, raw_momentum * 5)
         
         return social_signals
     
@@ -426,6 +459,44 @@ Respond in JSON format: {"sentiment_score": number, "market_impact": number, "is
             print(f"⚠️ AI news analysis error: {e}")
             return None
     
+    def _analyze_social_with_ai(self, social_context: Dict, symbol: str) -> Optional[Dict]:
+        """Use AI to grade social sentiment quality and community strength"""
+        try:
+            # the newest OpenAI model is "gpt-4o" which was released May 13, 2024. 
+            # do not change this unless explicitly requested by the user
+            response = self.openai_client.chat.completions.create(
+                model="gpt-4o",
+                messages=[
+                    {
+                        "role": "system",
+                        "content": """You are a crypto social sentiment analyst. Grade social activity for:
+1. Quality Score (0-10): How genuine/organic the social buzz is (not bots/spam)
+2. Community Strength (0-10): Strength of the underlying community and engagement
+
+Consider: engagement quality, organic growth, community loyalty, influencer involvement, spam detection.
+Higher scores for genuine community-driven momentum vs artificial pump signals.
+Respond in JSON format: {"quality_score": number, "community_strength": number}"""
+                    },
+                    {
+                        "role": "user", 
+                        "content": f"Analyze {symbol} social sentiment:\nMomentum: {social_context['momentum_score']}\nSentiment: {social_context['sentiment_score']}\nPosts: {social_context.get('social_posts', 0)}\nEngagement: {social_context.get('engagement_rate', 0)}"
+                    }
+                ],
+                response_format={"type": "json_object"},
+                max_tokens=100,
+                temperature=0.2
+            )
+            
+            result = json.loads(response.choices[0].message.content)
+            return {
+                'quality_score': max(0, min(10, result.get('quality_score', 5))),
+                'community_strength': max(0, min(10, result.get('community_strength', 5)))
+            }
+            
+        except Exception as e:
+            print(f"⚠️ AI social analysis error: {e}")
+            return None
+    
     def _calculate_confluence_score(self, analysis: Dict) -> float:
         """Calculate confluence score from all 3 layers of analysis - MUCH more conservative"""
         technical_score = analysis.get('technical', {}).get('technical_score', 0)
@@ -435,11 +506,11 @@ Respond in JSON format: {"sentiment_score": number, "market_impact": number, "is
         # DRAMATICALLY reduce base scoring
         base_score = (technical_score * 0.4) + (news_score * 0.3) + (social_score * 0.2)
         
-        # Much higher thresholds for confluence bonus
+        # Much higher thresholds for confluence bonus (updated for AI-enhanced scoring)
         layers_positive = sum([
-            technical_score > 35,  # Technical shows STRONG strength (raised from 15)
-            news_score > 20,       # Significant news catalyst (raised from 10)
-            social_score > 15      # Strong social momentum (raised from 5)
+            technical_score > 35,  # Technical shows STRONG strength
+            news_score > 12,       # AI-graded significant news catalyst  
+            social_score > 8       # AI-graded strong social momentum
         ])
         
         confluence_bonus = 0

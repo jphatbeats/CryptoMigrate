@@ -1,92 +1,92 @@
 {
-  "current_coin": "THETA",
-  "current_index": 37,
+  "current_coin": "SHIB",
+  "current_index": 11,
   "total_coins": 200,
-  "current_batch": "3/11",
-  "confidence": 41.8,
+  "current_batch": "1/11",
+  "confidence": 15,
   "alert_triggered": false,
-  "timestamp": "2025-08-15T04:14:44.294061",
+  "timestamp": "2025-08-15T04:16:38.919980",
   "scanning_active": true,
   "recent_scans": [
     {
-      "symbol": "THETA",
-      "confidence": 41.8,
-      "timestamp": "04:14:44",
-      "alert_triggered": false,
-      "status": "completed",
-      "ai_insight": "THETA has a confidence score of 41.8%, primarily driven by its neutral technical analysis, indicated by an RSI of 58.5 and a bearish MACD signal, which suggests indecisiveness in market momentum. The lack of positive news sentiment and social momentum further contributes to the subdued score, indicating limited external catalysts to drive significant price movement in the near term."
-    },
-    {
-      "symbol": "SOL",
+      "symbol": "SHIB",
       "confidence": 15,
-      "timestamp": "04:14:28",
+      "timestamp": "04:16:38",
       "alert_triggered": false,
       "status": "completed",
-      "ai_insight": "SOL's low confidence score of 15.0% is primarily driven by bearish technical indicators, such as an RSI of 36.0 and a negative MACD signal, coupled with a lack of social momentum and sentiment support at 0.0%. Despite some positive sentiment in recent news, which offers a slight positive catalyst, the overall market sentiment remains cautious, justifying a neutral trading recommendation."
+      "ai_insight": "SHIB's low confidence score of 15.0% is primarily driven by the absence of positive catalysts across technical, news, and social dimensions, with indicators like a bearish MACD and a neutral recommendation reflecting tepid technical momentum. Traders should note the lack of news and social engagement, indicating minimal immediate interest or potential for price movement, suggesting a cautious approach in the short term."
     },
     {
-      "symbol": "SAND",
-      "confidence": 42.8,
-      "timestamp": "04:14:22",
+      "symbol": "FTM",
+      "confidence": 55.4,
+      "timestamp": "04:16:37",
       "alert_triggered": false,
       "status": "completed",
-      "ai_insight": "SAND's score of 42.8% is primarily driven by its technical indicators, with a moderately bullish MACD and an RSI nearing overbought conditions, suggesting potential short-term price strength, though the absence of significant news catalysts or social momentum limits broader market enthusiasm. Traders should note that despite positive technical signals, the lack of supportive news and social engagement implies caution, as these factors could impact sustained upward movement."
+      "ai_insight": "FTM's score of 55.4% is primarily driven by a moderately bullish technical setup, indicated by an RSI of 69.1 and a bullish MACD signal, yet tempered by a neutral overall recommendation. The absence of positive news or social momentum suggests limited external catalysts to drive significant price changes, urging traders to remain cautious and closely monitor technical indicators for potential shifts."
     },
     {
-      "symbol": "BNB",
+      "symbol": "AVAX",
       "confidence": 15,
-      "timestamp": "04:14:06",
+      "timestamp": "04:16:16",
       "alert_triggered": false,
       "status": "completed",
-      "ai_insight": "BNB's low confidence score of 15.0% is primarily driven by a lack of strong technical indicators and minimal impact from news and social sentiment, with a neutral technical recommendation and bearish MACD signal pointing to uncertainty in price movement. Traders should be cautious and monitor for any emerging catalysts or changes in sentiment that could influence momentum."
+      "ai_insight": "AVAX's low confidence score of 15.0% is driven primarily by bearish technical indicators, including a high RSI of 66.2 and a bearish MACD signal, alongside a weak social momentum and sentiment that fail to provide support for a positive outlook. Despite some positive sentiment in recent news, the lack of viral potential and inadequate social engagement suggest limited immediate upside, reinforcing the sell recommendation."
     },
     {
-      "symbol": "MANA",
-      "confidence": 45.4,
-      "timestamp": "04:14:01",
+      "symbol": "EGLD",
+      "confidence": 48.9,
+      "timestamp": "04:16:15",
       "alert_triggered": false,
       "status": "completed",
-      "ai_insight": "MANA's confidence score of 45.4% reflects a market with limited momentum and mixed technical indicators, as evidenced by the neutral RSI of 49.9 and a bearish MACD signal, suggesting caution. The absence of positive news catalysts and social momentum further contributes to the subdued sentiment, indicating that traders should remain cautious and consider waiting for clearer signals before making significant moves."
+      "ai_insight": "EGLD's confidence score of 48.9% reflects a strong technical foundation with a high technical score of 48.9/50, despite bearish indicators like an RSI of 36.5 and a bearish MACD signal, counterbalanced by the absence of supportive news or social momentum. Traders should note the lack of positive sentiment and catalytic news, as these factors significantly dampen the overall outlook, suggesting caution despite the technical resilience."
     },
     {
-      "symbol": "XRP",
+      "symbol": "TRX",
       "confidence": 15,
-      "timestamp": "04:13:44",
+      "timestamp": "04:15:54",
       "alert_triggered": false,
       "status": "completed",
-      "ai_insight": "XRP's low confidence score of 15.0% is primarily driven by weak social momentum and sentiment, with a complete lack of viral potential, as well as moderate technical indicators that show a bearish RSI but a bullish MACD signal. Despite some positive news catalysts, the overall news sentiment is only 40%, suggesting uncertain market enthusiasm, making it advisable for traders to remain cautious and look for stronger confirmations before making buy decisions."
+      "ai_insight": "TRX's low confidence score of 15.0% is primarily driven by weak news and social sentiment scores, indicating limited market enthusiasm and engagement. Despite a bullish MACD signal, other technical indicators and sentiment factors suggest a neutral outlook, warranting cautious trading approaches."
     },
     {
-      "symbol": "INJ",
-      "confidence": 50.2,
-      "timestamp": "04:13:39",
+      "symbol": "AXS",
+      "confidence": 59.0,
+      "timestamp": "04:15:52",
       "alert_triggered": false,
       "status": "completed",
-      "ai_insight": "INJ's confidence score of 50.2% reflects a technically neutral stance, primarily due to the bearish MACD signal and an oversold RSI of 28.1, suggesting potential for a price rebound. However, the lack of significant news catalysts and social momentum indicates limited immediate external influence, urging traders to watch for technical developments or emerging news that could sway market sentiment."
+      "ai_insight": "AXS currently has a confidence score of 59.0% largely due to its technical analysis, which reveals a bearish MACD signal and an RSI of 35.2, indicating potential oversold conditions amidst a neutral recommendation. The lack of positive news and negligible social momentum further contribute to the subdued sentiment, suggesting traders should remain cautious and look for more definitive signals before taking action."
     },
     {
-      "symbol": "ETH",
+      "symbol": "ADA",
       "confidence": 15,
-      "timestamp": "04:13:22",
+      "timestamp": "04:15:33",
       "alert_triggered": false,
       "status": "completed",
-      "ai_insight": "Ethereum currently has a low confidence score of 15.0%, primarily driven by bearish technical indicators such as an RSI below 50 and a bearish MACD signal, coupled with neutral recommendations and a weak technical score of 19.7 out of 50. While news sentiment shows a slightly positive tilt with a news catalyst present, the lack of social momentum and sentiment (both at 0%) further contributes to the low score, suggesting traders should remain cautious as the market lacks strong positive catalysts."
+      "ai_insight": "ADA's low confidence score of 15.0% is primarily driven by weak technical indicators, with a bearish MACD signal and an RSI of 33.7 suggesting potential oversold conditions, while the lack of social momentum and neutral market sentiment further dampen optimism. Despite some positive news sentiment, its limited impact is insufficient to counteract the prevailing technical and social analysis weaknesses, advising traders to approach with caution."
     },
     {
-      "symbol": "OP",
-      "confidence": 54.0,
-      "timestamp": "04:13:18",
+      "symbol": "AAVE",
+      "confidence": 25.3,
+      "timestamp": "04:15:29",
       "alert_triggered": false,
       "status": "completed",
-      "ai_insight": "The OP token's overall score of 54.0% is primarily influenced by its technical analysis, where a bullish MACD signal offers a slight positive outlook despite a low RSI of 38.8, suggesting oversold conditions. However, the absence of impactful news and social momentum keeps the sentiment neutral, indicating traders should exercise caution and monitor for any shifts in market dynamics or emerging news catalysts."
+      "ai_insight": "AAVE's score of 25.3% is driven by bearish technical indicators, notably a high RSI of 66.0 suggesting potential overbought conditions and a bearish MACD signal, alongside negligible news and social momentum, indicating a lack of positive catalysts or investor interest. Traders should be cautious as the sell recommendation reflects current bearish sentiment without any counteracting positive news or social engagement to suggest a reversal."
     },
     {
-      "symbol": "BTC",
-      "confidence": 15.400000000000002,
-      "timestamp": "04:13:01",
+      "symbol": "TON",
+      "confidence": 15,
+      "timestamp": "04:15:11",
       "alert_triggered": false,
       "status": "completed",
-      "ai_insight": "The low confidence score of 15.4% for BTC is primarily driven by weak social momentum and sentiment, with a complete lack of viral potential contributing zero to the social score, alongside a modest news impact despite a positive sentiment of 60%. While the technical indicators show some strength, particularly a bullish MACD and a reasonable RSI, the neutral recommendation and limited news catalyst suggest a cautious market stance, advising traders to monitor for clearer directional signals."
+      "ai_insight": "TON's low confidence score of 15.0% is primarily driven by its bearish technical indicators, including an RSI of 44.9 and a bearish MACD signal, coupled with negligible social momentum and sentiment. Despite some positive news sentiment, the overall lack of strong catalysts and social engagement suggests traders should approach with caution and remain neutral."
+    },
+    {
+      "symbol": "FLOW",
+      "confidence": 78.7,
+      "timestamp": "04:15:06",
+      "alert_triggered": true,
+      "status": "completed",
+      "ai_insight": "FLOW's score of 78.7% is primarily driven by strong technical indicators, with a bullish MACD signal and an oversold RSI of 28.2 suggesting a potential price reversal, supporting the buy recommendation. However, the absence of significant news catalysts and stagnant social momentum indicate a lack of broader market interest, which traders should consider when evaluating potential entry points."
     }
   ]
 }
