@@ -108,7 +108,7 @@ DISCORD_TOKEN = os.getenv('DISCORD_TOKEN')
 DISCORD_CHANNELS = {
     'alerts': 1398000506068009032,        # Breaking news, risks
     'portfolio': 1399451217372905584,     # Portfolio analysis  
-    'alpha_scans': 1399790636990857277,   # Trading opportunities
+    # 'alpha_scans': 1399790636990857277,   # DISABLED - Trading opportunities (alerts were useless)
     'degen_memes': 1401971493096915067    # Degen memes, viral plays, airdrops, early gems
 }
 
@@ -1372,7 +1372,7 @@ async def run_alpha_analysis():
             
             if early_opportunities:
                 early_message = format_early_alpha_for_discord(early_opportunities)
-                await send_discord_alert(early_message, 'alpha_scans')
+                # await send_discord_alert(early_message, 'alpha_scans')  # DISABLED - channel killed
                 print("✅ Early alpha opportunities sent to Discord #alpha-scans")
             
         except Exception as e:
@@ -1385,7 +1385,7 @@ async def run_alpha_analysis():
             
             if established_news:
                 news_message = format_established_news_for_discord(established_news)
-                await send_discord_alert(news_message, 'alpha_scans')
+                # await send_discord_alert(news_message, 'alpha_scans')  # DISABLED - channel killed
                 print("✅ Established coin news sent to Discord #alpha-scans")
             
         except Exception as e:
@@ -1401,7 +1401,7 @@ async def run_alpha_analysis():
                 "• **Established Coins**: Topping signals, distribution patterns\n\n"
                 "🎯 **Strategy**: Wait for clear setups - don't chase pumps!"
             )
-            await send_discord_alert(no_opportunities_message, 'alpha_scans')
+            # await send_discord_alert(no_opportunities_message, 'alpha_scans')  # DISABLED - channel killed
             print("✅ No-opportunities status sent to #alpha-scans")
         
         return
@@ -1415,7 +1415,7 @@ async def run_alpha_analysis():
             "🔄 Please wait for next analysis cycle.\n\n"
             "📊 **Hourly Trade Scanner** is still active and monitoring for instant alerts."
         )
-        await send_discord_alert(error_message, 'alpha_scans')
+        # await send_discord_alert(error_message, 'alpha_scans')  # DISABLED - channel killed
         print("⚠️ Alpha system error message sent")
         return
         
@@ -1625,7 +1625,7 @@ async def run_alpha_analysis():
         next_scan = "09:00 UTC" if datetime.now().hour >= 21 or datetime.now().hour < 9 else "21:00 UTC"
         alpha_message += f"⏰ Next AI Alpha Scan: {next_scan}"
         
-        await send_discord_alert(alpha_message, 'alpha_scans')
+        # await send_discord_alert(alpha_message, 'alpha_scans')  # DISABLED - channel killed
         print("✅ AI-enhanced alpha analysis sent to Discord")
         
     except Exception as e:
@@ -2342,7 +2342,7 @@ async def run_trading_analysis():
                         opp_message += f" | {sentiment_emoji} {sentiment.title()}"
                     opp_message += f"\n\n"
                 
-                await send_discord_alert(opp_message, 'alpha_scans')
+                # await send_discord_alert(opp_message, 'alpha_scans')  # DISABLED - channel killed
                 
             print("📰 Enhanced alerts sent to appropriate Discord channels")
             

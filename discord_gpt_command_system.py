@@ -47,7 +47,7 @@ RAILWAY_BASE_URL = "https://titan-trading-2-production.up.railway.app"
 DISCORD_CHANNELS = {
     'alerts': 1398000506068009032,
     'portfolio': 1399451217372905584,
-    'alpha_scans': 1399790636990857277,
+    # 'alpha_scans': 1399790636990857277,   # DISABLED - Trading opportunities (alerts were useless)
     'degen_memes': 1401971493096915067
 }
 

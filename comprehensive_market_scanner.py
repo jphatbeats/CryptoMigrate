@@ -42,7 +42,7 @@ LOCAL_API_URL = "http://localhost:5000"
 DISCORD_CHANNELS = {
     'alerts': 1398000506068009032,        # Breaking news, risks
     'portfolio': 1399451217372905584,     # Portfolio analysis  
-    'alpha_scans': 1399790636990857277,   # Trading opportunities
+    # 'alpha_scans': 1399790636990857277,   # DISABLED - Trading opportunities (alerts were useless)
     'degen_memes': 1401971493096915067    # Degen memes, viral plays, airdrops, early gems
 }
 DISCORD_WEBHOOK_ALPHA_SCANS = "https://discord.com/api/webhooks/1403928100202352731/kLY9j4wApDDSvjXbi8SDFEcytiNJIlUZhLgoZkMIqVI2RhFm6AFunl46gDOjqssqRh7w"
