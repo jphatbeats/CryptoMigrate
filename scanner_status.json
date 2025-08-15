@@ -1,0 +1,54 @@
+{
+  "current_coin": "BTC",
+  "current_index": 1,
+  "total_coins": 200,
+  "current_batch": "1/11",
+  "confidence": 56.1,
+  "alert_triggered": false,
+  "timestamp": "2025-08-15T03:11:16.501951",
+  "scanning_active": true,
+  "recent_scans": [
+    {
+      "symbol": "BTC",
+      "confidence": 56.1,
+      "timestamp": "03:11:16",
+      "alert_triggered": false,
+      "status": "completed"
+    },
+    {
+      "symbol": "TON",
+      "confidence": 77.0,
+      "timestamp": "03:09:19",
+      "alert_triggered": true,
+      "status": "completed"
+    },
+    {
+      "symbol": "DOGE",
+      "confidence": 30.8,
+      "timestamp": "03:08:59",
+      "alert_triggered": false,
+      "status": "completed"
+    },
+    {
+      "symbol": "SOL",
+      "confidence": 45.6,
+      "timestamp": "03:08:39",
+      "alert_triggered": false,
+      "status": "completed"
+    },
+    {
+      "symbol": "BNB",
+      "confidence": 47.4,
+      "timestamp": "03:08:19",
+      "alert_triggered": false,
+      "status": "completed"
+    },
+    {
+      "symbol": "XRP",
+      "confidence": 59.7,
+      "timestamp": "03:07:58",
+      "alert_triggered": false,
+      "status": "completed"
+    }
+  ]
+}

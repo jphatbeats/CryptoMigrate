@@ -109,6 +109,9 @@ class ComprehensiveMarketScanner:
             
             print(f"📊 {coin_symbol}: {confluence_score:.1f}% confidence")
             
+            # Update scanner status file for dashboard
+            self._update_scanner_status(coin_symbol, confluence_score, current_batch_num, total_batches)
+            
             # Send alert if meets quality threshold
             if confluence_score >= self.alert_thresholds['min_opportunity_score']:
                 await self._send_alpha_alert(coin_symbol, analysis)
@@ -428,6 +431,53 @@ class ComprehensiveMarketScanner:
         except Exception as e:
             print(f"❌ Error refreshing top coins: {e}")
     
+    def _update_scanner_status(self, symbol: str, confidence: float, batch_num: int, total_batches: int):
+        """Update scanner status for dashboard"""
+        try:
+            # Keep recent scans history
+            recent_scans = []
+            
+            # Try to load existing data
+            try:
+                if os.path.exists('scanner_status.json'):
+                    with open('scanner_status.json', 'r') as f:
+                        existing_data = json.load(f)
+                        recent_scans = existing_data.get('recent_scans', [])
+            except:
+                pass
+            
+            # Add current scan
+            recent_scans.insert(0, {
+                'symbol': symbol,
+                'confidence': confidence,
+                'timestamp': datetime.now().strftime('%H:%M:%S'),
+                'alert_triggered': confidence >= 75,
+                'status': 'completed'
+            })
+            
+            # Keep only last 10 scans
+            recent_scans = recent_scans[:10]
+            
+            # Update status
+            status_data = {
+                'current_coin': symbol,
+                'current_index': self.current_coin_index + 1,
+                'total_coins': len(self.top_200_coins),
+                'current_batch': f'{batch_num}/{total_batches}',
+                'confidence': confidence,
+                'alert_triggered': confidence >= 75,
+                'timestamp': datetime.now().isoformat(),
+                'scanning_active': True,
+                'recent_scans': recent_scans
+            }
+            
+            # Write to file
+            with open('scanner_status.json', 'w') as f:
+                json.dump(status_data, f, indent=2)
+                
+        except Exception as e:
+            print(f"⚠️ Failed to update scanner status: {e}")
+
     async def _send_alpha_alert(self, symbol: str, analysis: Dict):
         """Send high-quality alpha opportunity alert"""
         confluence_score = analysis['confluence_score']
