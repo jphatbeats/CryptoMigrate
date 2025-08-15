@@ -1,5 +1,5 @@
 {
-  "timestamp": "2025-08-15 03:29 PM CST",
+  "timestamp": "2025-08-15 04:15 PM CST",
   "total_alerts": 3,
   "alert_types": {
     "high_profit": 2,
@@ -10,26 +10,26 @@
       "type": "high_profit",
       "symbol": "XRP",
       "platform": "BingX",
-      "pnl": 46.60282293162232,
-      "profit_amount": 62.75298461575311,
-      "message": "\ud83d\udcb0 **$XRP Profit Alert** (+46.6%)\n\ud83c\udfaf **Unrealized Profit**: $63 | Position: $135\n\ud83e\udde0 **Strategy**: \u2705 GOOD: Protect gains with trailing stops, consider partial profits.\n\u26a1 **Action**: Move stop to break-even, consider 25% profit-taking\n\ud83d\udcca Entry: $1.634100 \u2192 Current: $3.060400"
+      "pnl": 46.85706072272693,
+      "profit_amount": 63.09532825912722,
+      "message": "\ud83d\udcb0 **$XRP Profit Alert** (+46.9%)\n\ud83c\udfaf **Unrealized Profit**: $63 | Position: $135\n\ud83e\udde0 **Strategy**: \u2705 GOOD: Protect gains with trailing stops, consider partial profits.\n\u26a1 **Action**: Move stop to break-even, consider 25% profit-taking\n\ud83d\udcca Entry: $1.634100 \u2192 Current: $3.075000"
     },
     {
       "type": "losing_trade",
       "symbol": "SOL:USDT",
       "platform": "Blofin",
-      "pnl": -31.062122049904684,
+      "pnl": -27.375888100441454,
       "margin": 0.0,
       "severity": "CRITICAL",
-      "message": "\ud83d\udea8 **$SOL:USDT Loss Analysis** ($0)\n\ud83d\udcc9 Down **-31.1%** | Severity: **CRITICAL**\n\ud83d\udca1 **Strategy**: \ud83d\udea8 IMMEDIATE ACTION: Consider cutting loss at -25% max. Risk/reward heavily skewed. Small position ($0) - could hold for reversal.\n\ud83c\udfaf **Entry**: $189.895000 | **Current**: $183.996458"
+      "message": "\ud83d\udea8 **$SOL:USDT Loss Analysis** ($0)\n\ud83d\udcc9 Down **-27.4%** | Severity: **CRITICAL**\n\ud83d\udca1 **Strategy**: \ud83d\udea8 IMMEDIATE ACTION: Consider cutting loss at -25% max. Risk/reward heavily skewed. Small position ($0) - could hold for reversal.\n\ud83c\udfaf **Entry**: $189.895000 | **Current**: $184.696456"
     },
     {
       "type": "high_profit",
       "symbol": "SOON:USDT",
       "platform": "Blofin",
-      "pnl": 276.06693566376305,
+      "pnl": 270.55998719957825,
       "profit_amount": 0.0,
-      "message": "\ud83d\udcb0 **$SOON:USDT Profit Alert** (+276.1%)\n\ud83c\udfaf **Unrealized Profit**: $0 | Position: $0\n\ud83e\udde0 **Strategy**: \ud83d\ude80 MASSIVE GAINS: Secure majority of profits, let small portion run.\n\u26a1 **Action**: Take 80% profits, trail stop at +75% on remainder\n\ud83d\udcca Entry: $0.442694 \u2192 Current: $0.320481"
+      "message": "\ud83d\udcb0 **$SOON:USDT Profit Alert** (+270.6%)\n\ud83c\udfaf **Unrealized Profit**: $0 | Position: $0\n\ud83e\udde0 **Strategy**: \ud83d\ude80 MASSIVE GAINS: Secure majority of profits, let small portion run.\n\u26a1 **Action**: Take 80% profits, trail stop at +75% on remainder\n\ud83d\udcca Entry: $0.442694 \u2192 Current: $0.322919"
     }
   ],
   "summary_parts": [

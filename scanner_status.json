@@ -1,92 +1,92 @@
 {
-  "current_coin": "XRP",
-  "current_index": 3,
+  "current_coin": "AAVE",
+  "current_index": 39,
   "total_coins": 200,
-  "current_batch": "1/11",
+  "current_batch": "3/11",
   "confidence": 15,
   "alert_triggered": false,
-  "timestamp": "2025-08-15T21:06:55.745781",
+  "timestamp": "2025-08-15T21:30:08.052613",
   "scanning_active": true,
   "recent_scans": [
     {
-      "symbol": "XRP",
+      "symbol": "AAVE",
       "confidence": 15,
-      "timestamp": "21:06:55",
+      "timestamp": "21:30:08",
       "alert_triggered": false,
       "status": "completed",
-      "ai_insight": "XRP's low confidence score of 15.0% is primarily driven by neutral technical indicators, with an RSI of 50.0 and a lack of momentum or clear directional signals from the MACD, combined with a complete absence of positive sentiment or impactful news catalysts. Traders should remain cautious as the current market sentiment and social engagement provide no supportive factors, suggesting limited immediate upside potential."
+      "ai_insight": "AAVE's low confidence score of 15.0% is primarily driven by its neutral technical indicators, such as an RSI of 50.0 and a neutral MACD signal, combined with the absence of positive sentiment or catalysts in recent news and social media. Traders should note the lack of momentum and positive sentiment across all analysis metrics, suggesting a cautious approach until a clearer trend or catalyst emerges."
     },
     {
-      "symbol": "ETH",
+      "symbol": "FLOW",
       "confidence": 15,
-      "timestamp": "21:06:15",
+      "timestamp": "21:29:29",
       "alert_triggered": false,
       "status": "completed",
-      "ai_insight": "ETH's low confidence score of 15.0% is primarily attributed to neutral technical indicators and a lack of positive sentiment from both news and social media analyses, reflecting a stagnant market outlook. Traders should be cautious as the absence of catalysts and positive sentiment suggests limited momentum for upward price movement in the near term."
+      "ai_insight": "FLOW's low confidence score of 15.0% is primarily due to a lack of positive sentiment across technical, news, and social analyses, with all indicators remaining neutral and sentiment showing no enthusiasm or momentum. Traders should note the absence of catalysts and social buzz, suggesting limited immediate upside potential and a cautious approach may be warranted."
     },
     {
-      "symbol": "BTC",
+      "symbol": "THETA",
       "confidence": 15,
-      "timestamp": "21:05:37",
+      "timestamp": "21:28:51",
       "alert_triggered": false,
       "status": "completed",
-      "ai_insight": "The low confidence score of 15.0% for BTC is primarily driven by neutral technical indicators, a lack of positive sentiment in recent news, and negligible social momentum, indicating limited trader enthusiasm or market catalysts. Traders should be cautious, as the absence of significant directional signals or positive sentiment suggests potential volatility or sideways trading in the short term."
+      "ai_insight": "THETA currently exhibits a low confidence score of 15.0% due to a combination of neutral technical indicators and a lack of positive news or social momentum. With RSI at 50.0 and no significant catalysts or sentiment shifts, traders should exercise caution as the market lacks clear directional signals."
     },
     {
-      "symbol": "1INCH",
+      "symbol": "SAND",
       "confidence": 15,
-      "timestamp": "20:59:50",
+      "timestamp": "21:28:12",
       "alert_triggered": false,
       "status": "completed",
-      "ai_insight": "1INCH has a low confidence score of 15.0% due to its neutral technical indicators, lack of positive sentiment in recent news, and no social momentum, signaling limited trader interest or catalysts for upward movement. Traders should remain cautious as the absence of strong technical or fundamental drivers suggests a period of stagnation or potential downside risk."
+      "ai_insight": "SAND's low confidence score of 15.0% is primarily driven by a lack of positive sentiment across news and social media, coupled with neutral technical indicators such as the RSI and MACD. Traders should note that without strong momentum or sentiment catalysts, SAND may continue to trade sideways in the near term."
     },
     {
-      "symbol": "REEF",
+      "symbol": "MANA",
       "confidence": 15,
-      "timestamp": "20:58:59",
+      "timestamp": "21:27:34",
       "alert_triggered": false,
       "status": "completed",
-      "ai_insight": "REEF's low confidence score of 15.0% is driven by its neutral technical indicators, lack of news or social media buzz, and absence of any significant market catalysts, as reflected in its overall technical, news, and social scores. Traders should exercise caution as the stagnant sentiment and neutral technicals suggest limited immediate upside potential without fresh catalysts."
+      "ai_insight": "MANA's low confidence score of 15.0% is primarily driven by a lackluster technical and news analysis, with neutral technical indicators like RSI and MACD, and no positive sentiment or catalysts in recent news articles. Additionally, the absence of social momentum and viral potential further underscores the current stagnation, suggesting traders should exercise caution and await stronger signals before making significant moves."
     },
     {
-      "symbol": "ALPHA",
+      "symbol": "INJ",
       "confidence": 15,
-      "timestamp": "20:58:21",
+      "timestamp": "21:26:57",
       "alert_triggered": false,
       "status": "completed",
-      "ai_insight": "ALPHA's low confidence score of 15.0% reflects its lack of momentum across technical, news, and social analyses, with neutral technical indicators and no positive sentiment or catalyst-driven news contributing to its poor performance. Traders should be cautious as the absence of social or news-driven interest suggests limited immediate upside potential, warranting a wait-and-see approach."
+      "ai_insight": "INJ's low confidence score of 15.0% is primarily driven by its stagnant technical indicators, including a neutral RSI and MACD, coupled with a lack of positive sentiment or catalysts in recent news and social media activity. Traders should note the absence of momentum and market enthusiasm, suggesting a cautious approach until stronger signals or developments emerge."
     },
     {
-      "symbol": "BADGER",
+      "symbol": "OP",
       "confidence": 15,
-      "timestamp": "20:57:43",
+      "timestamp": "21:26:19",
       "alert_triggered": false,
       "status": "completed",
-      "ai_insight": "BADGER's low confidence score of 15.0% is driven by its neutral technical indicators, lack of positive news sentiment, and no social momentum, reflecting minimal current interest or catalysts for price movement. Traders should note the absence of significant buying signals or news-driven opportunities, indicating a cautious approach until more favorable conditions emerge."
+      "ai_insight": "The low confidence score of 15.0% for OP is primarily driven by a lack of positive sentiment across technical, news, and social analyses, with neutral technical indicators and no supportive news or social momentum. Traders should note the absence of any strong catalysts or positive sentiment, suggesting a cautious approach as the market currently lacks clear directional signals for OP."
     },
     {
-      "symbol": "UMA",
+      "symbol": "ARB",
       "confidence": 15,
-      "timestamp": "20:57:05",
+      "timestamp": "21:25:41",
       "alert_triggered": false,
       "status": "completed",
-      "ai_insight": "UMA currently has a low confidence score of 15.0% due to a lack of significant technical or social momentum, as indicated by its neutral RSI and MACD, and absence of news or social media activity. Traders should note that the neutral technical indicators and the lack of any recent catalysts suggest a period of consolidation, with no clear directional bias at this time."
+      "ai_insight": "ARB's confidence score of 15.0% reflects a lack of momentum and positive sentiment across technical, news, and social analyses, with neutral technical indicators like an RSI of 50.0 and MACD signal offering little direction, and no positive sentiment or catalysts in recent news or social media. Traders should be cautious as the absence of strong signals or catalysts suggests limited potential for imminent price movement."
     },
     {
-      "symbol": "LRC",
+      "symbol": "IMX",
       "confidence": 15,
-      "timestamp": "20:56:28",
+      "timestamp": "21:25:03",
       "alert_triggered": false,
       "status": "completed",
-      "ai_insight": "Loopring (LRC) has scored a low confidence score of 15.0% primarily due to a lack of positive sentiment and momentum across technical, news, and social analyses, with neutral technical indicators and no significant news catalysts or social engagement to drive interest. Traders should be cautious and consider waiting for clearer signals or catalysts before making any decisions, as current indicators do not suggest strong movement in either direction."
+      "ai_insight": "IMX's confidence score of 15.0% reflects a lack of strong market signals, with neutral technical indicators like RSI and MACD, and no supportive news or social momentum to drive interest or sentiment. Traders should be cautious, as the absence of positive catalysts or momentum suggests limited immediate trading opportunities or volatility."
     },
     {
-      "symbol": "BNT",
+      "symbol": "ALGO",
       "confidence": 15,
-      "timestamp": "20:55:49",
+      "timestamp": "21:24:23",
       "alert_triggered": false,
       "status": "completed",
-      "ai_insight": "BNT's low confidence score of 15.0% is primarily driven by a lack of positive sentiment across technical, news, and social analysis, with neutral technical indicators such as an RSI of 50 and a MACD signal offering no clear direction. Traders should note the absence of market catalysts and social momentum, suggesting limited immediate opportunities for significant price movement."
+      "ai_insight": "ALGO's low confidence score of 15.0% is driven by neutral technical indicators and a lack of positive sentiment in both news and social media, indicating a lack of momentum or catalysts to drive price action. Traders should be cautious, as the absence of bullish signals suggests that the coin may remain stagnant unless new developments emerge."
     }
   ]
 }
