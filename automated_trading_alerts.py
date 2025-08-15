@@ -30,18 +30,34 @@ except ImportError as e:
     crypto_news_available = True
     print(f"⚠️ Crypto news wrapper not available, using direct API calls: {e}")
 
-# Import technical indicators module
+# Import MCP-powered technical analysis (upgraded from legacy taapi.io)
 try:
-    # Use Railway TAAPI indicators server instead of local class
+    import sys
+    sys.path.append('mcp_servers')
+    from lumifai_tradingview_integration import LumifTradingViewClient
+    lumif_client = LumifTradingViewClient()
+    mcp_analysis_available = True
+    print("✅ MCP Lumif-ai TradingView Enhanced Analysis configured for Discord alerts")
+except ImportError as e:
+    mcp_analysis_available = False
+    lumif_client = None
+    print(f"❌ MCP Enhanced Analysis not available, falling back to local analysis: {e}")
+except Exception as e:
+    mcp_analysis_available = False
+    lumif_client = None
+    print(f"❌ MCP initialization error: {e}")
+
+# Legacy TAAPI backup (will be phased out)
+try:
     RAILWAY_TAAPI_URL = "https://indicators-production.up.railway.app"
     taapi_available = True
-    print("✅ Railway TAAPI indicators server configured successfully")
+    print("✅ Legacy TAAPI backup available")
 except ImportError as e:
     taapi_available = False
-    print(f"❌ Taapi.io indicators not available: {e}")
+    print(f"❌ Legacy TAAPI backup not available: {e}")
 except Exception as e:
     taapi_available = False
-    print(f"❌ Taapi.io initialization error: {e}")
+    print(f"❌ Legacy TAAPI initialization error: {e}")
 
 # Import OpenAI trading intelligence
 trading_ai = None
@@ -255,8 +271,100 @@ async def fetch_live_positions():
         return []
 
 
+async def get_enhanced_technical_analysis(symbol):
+    """Get enhanced technical analysis using MCP integrations"""
+    try:
+        # First try MCP Lumif-ai TradingView integration
+        if mcp_analysis_available and lumif_client:
+            try:
+                # Format symbol for TradingView (e.g., ETH -> ETHUSDT)
+                if not symbol.endswith('USDT'):
+                    tv_symbol = f"{symbol}USDT"
+                else:
+                    tv_symbol = symbol
+                
+                # Get enhanced analysis from Lumif-ai TradingView
+                analysis = await lumif_client.get_enhanced_analysis(tv_symbol)
+                if analysis and 'indicators' in analysis:
+                    indicators = analysis['indicators']
+                    rsi = indicators.get('RSI', {}).get('value', 50.0)
+                    macd = indicators.get('MACD', {}).get('value', 0.0)
+                    macd_signal = indicators.get('MACD_Signal', {}).get('value', 0.0)
+                    
+                    # Calculate confluence score from multiple indicators
+                    confluence_signals = 0
+                    total_signals = 0
+                    
+                    # RSI signals
+                    if rsi:
+                        total_signals += 1
+                        if rsi < 30:  # Oversold
+                            confluence_signals += 1
+                        elif rsi > 70:  # Overbought
+                            confluence_signals -= 1
+                    
+                    # MACD signals
+                    if macd is not None and macd_signal is not None:
+                        total_signals += 1
+                        if macd > macd_signal:  # Bullish crossover
+                            confluence_signals += 1
+                        else:  # Bearish
+                            confluence_signals -= 1
+                    
+                    confluence_score = (confluence_signals / max(total_signals, 1)) * 100 if total_signals > 0 else 0
+                    
+                    return {
+                        'status': 'success',
+                        'source': 'MCP_Lumif_TradingView',
+                        'rsi': rsi,
+                        'macd': macd,
+                        'macd_signal': macd_signal,
+                        'confluence_score': confluence_score,
+                        'signals_count': confluence_signals,
+                        'total_indicators': total_signals
+                    }
+            except Exception as e:
+                print(f"⚠️ MCP Lumif analysis error for {symbol}: {e}")
+        
+        # Fallback to local API analysis
+        try:
+            import aiohttp
+            async with aiohttp.ClientSession() as session:
+                # Get direct technical analysis from local server
+                async with session.get(f"{LOCAL_API_URL}/api/direct-analysis/{symbol}") as response:
+                    if response.status == 200:
+                        data = await response.json()
+                        return {
+                            'status': 'success',
+                            'source': 'Local_Direct_Analysis',
+                            'rsi': data.get('rsi', 50.0),
+                            'macd': data.get('macd', 0.0),
+                            'confluence_score': data.get('confluence_score', 0.0)
+                        }
+        except Exception as e:
+            print(f"⚠️ Local analysis error for {symbol}: {e}")
+        
+        # Final fallback - return neutral values
+        return {
+            'status': 'fallback',
+            'source': 'Neutral_Fallback',
+            'rsi': 50.0,
+            'macd': 0.0,
+            'confluence_score': 0.0
+        }
+        
+    except Exception as e:
+        print(f"❌ Enhanced analysis error for {symbol}: {e}")
+        return {
+            'status': 'error',
+            'source': 'Error_Fallback',
+            'rsi': 50.0,
+            'macd': 0.0,
+            'confluence_score': 0.0
+        }
+
 def calculate_simulated_rsi(pnl_percentage):
-    """Calculate simulated RSI based on PnL percentage"""
+    """Calculate simulated RSI based on PnL percentage - Legacy fallback only"""
     try:
         pnl = float(pnl_percentage)
 
@@ -272,8 +380,8 @@ def calculate_simulated_rsi(pnl_percentage):
         return 50  # Neutral RSI if calculation fails
 
 
-def analyze_trading_conditions(positions):
-    """Analyze positions for trading alerts"""
+async def analyze_trading_conditions(positions):
+    """Analyze positions for trading alerts using enhanced MCP-powered analysis"""
     alerts = []
 
     if not positions:
@@ -297,45 +405,45 @@ def analyze_trading_conditions(positions):
             if not symbol:
                 continue
 
-            # Get real technical indicators if available
-            real_indicators = None
-            if taapi_available:
-                try:
-                    # Convert symbol format for taapi (e.g., ETH/USDT -> ETHUSDT)
-                    taapi_symbol = symbol.replace('/', '')
-                    # Try to get real RSI first
-                    # Use Railway TAAPI server instead of local class
-                    rsi_url = f"{RAILWAY_TAAPI_URL}/api/taapi/indicator/rsi"
-                    rsi_params = {"symbol": symbol, "interval": "1h", "period": 14}
+            # Get enhanced technical analysis using MCP integrations
+            try:
+                analysis = await get_enhanced_technical_analysis(symbol)
+                rsi = analysis.get('rsi', 50.0)
+                macd = analysis.get('macd', 0.0)
+                confluence_score = analysis.get('confluence_score', 0.0)
+                source = analysis.get('source', 'Unknown')
+                
+                print(f"📊 {symbol}: Got {source} analysis - RSI {rsi:.1f}, MACD {macd:.3f}, Confluence {confluence_score:.1f}%")
+                
+            except Exception as e:
+                print(f"⚠️ Enhanced analysis error for {symbol}: {e}")
+                # Fallback to legacy method
+                if taapi_available:
                     try:
+                        rsi_url = f"{RAILWAY_TAAPI_URL}/api/taapi/indicator/rsi"
+                        rsi_params = {"symbol": symbol, "interval": "1h", "period": 14}
                         import requests
                         response = requests.get(rsi_url, params=rsi_params, timeout=5)
                         if response.status_code == 200:
                             rsi_data = response.json()
-                            rsi_result = {"status": "success", "value": rsi_data.get("value", 50.0)}
+                            rsi = rsi_data.get("value", 50.0)
+                            print(f"📊 {symbol}: Got legacy RSI {rsi:.1f} from taapi.io")
                         else:
-                            rsi_result = {"status": "error", "value": 50.0}
+                            rsi = calculate_simulated_rsi(pnl_pct)
+                            print(f"📊 {symbol}: Using simulated RSI {rsi:.1f}")
                     except:
-                        rsi_result = {"status": "error", "value": 50.0}
-                    if rsi_result and 'value' in rsi_result and 'error' not in rsi_result:
-                        rsi = rsi_result['value']
-                        print(f"📊 {symbol}: Got real RSI {rsi:.1f} from taapi.io")
-                    elif 'rate_limited' in rsi_result or 'forbidden' in rsi_result:
-                        rsi = calculate_simulated_rsi(pnl_pct)
-                        print(f"📊 {symbol}: API limit reached, using simulated RSI {rsi:.1f}")
-                    else:
                         rsi = calculate_simulated_rsi(pnl_pct)
                         print(f"📊 {symbol}: Using simulated RSI {rsi:.1f}")
-                except Exception as e:
-                    print(f"⚠️ Taapi.io error for {symbol}: {e}")
+                else:
                     rsi = calculate_simulated_rsi(pnl_pct)
-            else:
-                # Calculate simulated RSI
-                rsi = calculate_simulated_rsi(pnl_pct)
+                    print(f"📊 {symbol}: Using simulated RSI {rsi:.1f}")
+                
+                confluence_score = 0.0
+                macd = 0.0
 
-            print(f"📊 {symbol}: PnL {pnl_pct:.1f}%, RSI {rsi:.1f}")
+            print(f"📊 {symbol}: PnL {pnl_pct:.1f}%, RSI {rsi:.1f}, Confluence {confluence_score:.1f}%")
 
-            # Enhanced RSI Overbought Analysis with specific trading suggestions
+            # Enhanced RSI Overbought Analysis with AI-powered insights
             if rsi > 72:
                 # Determine overbought severity and strategy
                 if rsi > 85:
@@ -348,16 +456,32 @@ def analyze_trading_conditions(positions):
                     strategy = "🟡 MODERATE: Monitor closely. Prepare for potential pullback."
                     action = "Tighten stops, consider partial profit-taking"
                 
+                # Add AI-powered market intelligence if available
+                ai_insight = ""
+                if 'openai_client' in globals() and globals()['openai_client']:
+                    try:
+                        ai_prompt = f"Analyze {symbol} with RSI {rsi:.1f} and {pnl_pct:+.1f}% PnL. Provide a brief professional trading insight in 1-2 sentences."
+                        ai_response = globals()['openai_client'].chat.completions.create(
+                            model="gpt-4o",
+                            messages=[{"role": "user", "content": ai_prompt}],
+                            max_tokens=100
+                        )
+                        ai_insight = f"\n🧠 **AI Insight**: {ai_response.choices[0].message.content.strip()}"
+                    except Exception as e:
+                        print(f"⚠️ AI insight error for {symbol}: {e}")
+                
                 alerts.append({
                     'type': 'overbought',
                     'symbol': symbol,
                     'platform': platform,
                     'rsi': round(rsi, 1),
                     'pnl': pnl_pct,
+                    'confluence_score': confluence_score,
                     'message': f"🟥 **${symbol} Overbought Alert** (RSI: {rsi:.1f})\n" +
                               f"📈 Current PnL: **{pnl_pct:+.1f}%** | Size: ${margin_size:.0f}\n" +
+                              f"🎯 **Confluence Score**: {confluence_score:.1f}%\n" +
                               f"🧠 **Analysis**: {strategy}\n" +
-                              f"⚡ **Action**: {action}"
+                              f"⚡ **Action**: {action}{ai_insight}"
                 })
 
             # Enhanced RSI Oversold Analysis with entry strategies
@@ -1128,7 +1252,7 @@ async def run_portfolio_analysis():
         alerts = []
         
         # Traditional trading analysis (RSI, PnL, etc.)
-        rsi_alerts = analyze_trading_conditions(positions)
+        rsi_alerts = await analyze_trading_conditions(positions)
         alerts.extend(rsi_alerts)
         
         # Get AI-powered portfolio analysis if available
@@ -1992,7 +2116,7 @@ async def run_trading_analysis_async():
 
         # Step 2: Analyze trading conditions
         print("\n🔍 Step 2: Analyzing trading conditions...")
-        alerts = analyze_trading_conditions(positions)
+        alerts = await analyze_trading_conditions(positions)
 
         # Step 3: Process alerts for Discord bot
         print("\n📤 Step 3: Processing alerts...")
@@ -2084,7 +2208,7 @@ async def run_trading_analysis():
 
         # Step 2: Analyze trading conditions
         print("\n🔍 Step 2: Analyzing trading conditions...")
-        alerts = analyze_trading_conditions(positions)
+        alerts = await analyze_trading_conditions(positions)
 
         # Step 3: Process alerts for Discord bot and send to channels
         print("\n📤 Step 3: Processing alerts...")
