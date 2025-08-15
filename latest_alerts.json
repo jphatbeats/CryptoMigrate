@@ -1,19 +1,19 @@
 {
-  "timestamp": "2025-08-15 09:54 AM CST",
-  "total_alerts": 6,
+  "timestamp": "2025-08-15 10:34 AM CST",
+  "total_alerts": 16,
   "alert_types": {
-    "high_profit": 2,
-    "no_stop_loss": 2,
-    "losing_trade": 2
+    "high_profit": 3,
+    "no_stop_loss": 10,
+    "losing_trade": 3
   },
   "alerts": [
     {
       "type": "high_profit",
       "symbol": "XRP",
       "platform": "BingX",
-      "pnl": 46.83884117741903,
-      "profit_amount": 63.070794748612414,
-      "message": "\ud83d\udcb0 **$XRP Profit Alert** (+46.8%)\n\ud83c\udfaf **Unrealized Profit**: $63 | Position: $135\n\ud83e\udde0 **Strategy**: \u2705 GOOD: Protect gains with trailing stops, consider partial profits.\n\u26a1 **Action**: Move stop to break-even, consider 25% profit-taking\n\ud83d\udcca Entry: $1.634100 \u2192 Current: $3.074000"
+      "pnl": 46.44616420256472,
+      "profit_amount": 62.54203596079932,
+      "message": "\ud83d\udcb0 **$XRP Profit Alert** (+46.4%)\n\ud83c\udfaf **Unrealized Profit**: $63 | Position: $135\n\ud83e\udde0 **Strategy**: \u2705 GOOD: Protect gains with trailing stops, consider partial profits.\n\u26a1 **Action**: Move stop to break-even, consider 25% profit-taking\n\ud83d\udcca Entry: $1.634100 \u2192 Current: $3.051400"
     },
     {
       "type": "no_stop_loss",
@@ -21,7 +21,7 @@
       "platform": "BingX",
       "margin": 356.5782,
       "risk_level": "MODERATE",
-      "message": "\ud83d\udee1\ufe0f **$ETH Risk Management** ($357)\n\u26a0\ufe0f **No Stop Loss** | Risk Level: **MODERATE**\n\ud83d\udca1 **Action**: Set trailing stop at break-even or +5% to lock profits\n\ud83d\udcca Current PnL: **+20.5%** | LONG @ 10x"
+      "message": "\ud83d\udee1\ufe0f **$ETH Risk Management** ($357)\n\u26a0\ufe0f **No Stop Loss** | Risk Level: **MODERATE**\n\ud83d\udca1 **Action**: Set trailing stop at break-even or +5% to lock profits\n\ud83d\udcca Current PnL: **+19.6%** | LONG @ 10x"
     },
     {
       "type": "no_stop_loss",
@@ -29,38 +29,119 @@
       "platform": "BingX",
       "margin": 193.061,
       "risk_level": "MODERATE",
-      "message": "\ud83d\udee1\ufe0f **$SOL Risk Management** ($193)\n\u26a0\ufe0f **No Stop Loss** | Risk Level: **MODERATE**\n\ud83d\udca1 **Action**: Set stop at -8% to limit downside risk\n\ud83d\udcca Current PnL: **-2.2%** | LONG @ 10x"
+      "message": "\ud83d\udee1\ufe0f **$SOL Risk Management** ($193)\n\u26a0\ufe0f **No Stop Loss** | Risk Level: **MODERATE**\n\ud83d\udca1 **Action**: Set stop at -8% to limit downside risk\n\ud83d\udcca Current PnL: **-3.2%** | LONG @ 10x"
+    },
+    {
+      "type": "no_stop_loss",
+      "symbol": "AVAX",
+      "platform": "Kraken",
+      "margin": 28560.726011000002,
+      "risk_level": "HIGH",
+      "message": "\ud83d\udee1\ufe0f **$AVAX Risk Management** ($28561)\n\u26a0\ufe0f **No Stop Loss** | Risk Level: **HIGH**\n\ud83d\udca1 **Action**: Set stop at -8% to limit downside risk\n\ud83d\udcca Current PnL: **+0.0%** | HODL @ 1x"
+    },
+    {
+      "type": "no_stop_loss",
+      "symbol": "BERA",
+      "platform": "Kraken",
+      "margin": 14687.369,
+      "risk_level": "HIGH",
+      "message": "\ud83d\udee1\ufe0f **$BERA Risk Management** ($14687)\n\u26a0\ufe0f **No Stop Loss** | Risk Level: **HIGH**\n\ud83d\udca1 **Action**: Set stop at -8% to limit downside risk\n\ud83d\udcca Current PnL: **+0.0%** | HODL @ 1x"
+    },
+    {
+      "type": "no_stop_loss",
+      "symbol": "FORTH",
+      "platform": "Kraken",
+      "margin": 62036.680619000006,
+      "risk_level": "HIGH",
+      "message": "\ud83d\udee1\ufe0f **$FORTH Risk Management** ($62037)\n\u26a0\ufe0f **No Stop Loss** | Risk Level: **HIGH**\n\ud83d\udca1 **Action**: Set stop at -8% to limit downside risk\n\ud83d\udcca Current PnL: **+0.0%** | HODL @ 1x"
+    },
+    {
+      "type": "no_stop_loss",
+      "symbol": "JUP",
+      "platform": "Kraken",
+      "margin": 105709.205,
+      "risk_level": "HIGH",
+      "message": "\ud83d\udee1\ufe0f **$JUP Risk Management** ($105709)\n\u26a0\ufe0f **No Stop Loss** | Risk Level: **HIGH**\n\ud83d\udca1 **Action**: Set stop at -8% to limit downside risk\n\ud83d\udcca Current PnL: **+0.0%** | HODL @ 1x"
+    },
+    {
+      "type": "no_stop_loss",
+      "symbol": "SC",
+      "platform": "Kraken",
+      "margin": 12204.510999999999,
+      "risk_level": "HIGH",
+      "message": "\ud83d\udee1\ufe0f **$SC Risk Management** ($12205)\n\u26a0\ufe0f **No Stop Loss** | Risk Level: **HIGH**\n\ud83d\udca1 **Action**: Set stop at -8% to limit downside risk\n\ud83d\udcca Current PnL: **+0.0%** | HODL @ 1x"
+    },
+    {
+      "type": "no_stop_loss",
+      "symbol": "SOL.F",
+      "platform": "Kraken",
+      "margin": 3946.25891105,
+      "risk_level": "HIGH",
+      "message": "\ud83d\udee1\ufe0f **$SOL.F Risk Management** ($3946)\n\u26a0\ufe0f **No Stop Loss** | Risk Level: **HIGH**\n\ud83d\udca1 **Action**: Set stop at -8% to limit downside risk\n\ud83d\udcca Current PnL: **+0.0%** | HODL @ 1x"
+    },
+    {
+      "type": "no_stop_loss",
+      "symbol": "STX",
+      "platform": "Kraken",
+      "margin": 463679.226,
+      "risk_level": "HIGH",
+      "message": "\ud83d\udee1\ufe0f **$STX Risk Management** ($463679)\n\u26a0\ufe0f **No Stop Loss** | Risk Level: **HIGH**\n\ud83d\udca1 **Action**: Set stop at -8% to limit downside risk\n\ud83d\udcca Current PnL: **+0.0%** | HODL @ 1x"
+    },
+    {
+      "type": "no_stop_loss",
+      "symbol": "SUPER",
+      "platform": "Kraken",
+      "margin": 36379.235664,
+      "risk_level": "HIGH",
+      "message": "\ud83d\udee1\ufe0f **$SUPER Risk Management** ($36379)\n\u26a0\ufe0f **No Stop Loss** | Risk Level: **HIGH**\n\ud83d\udca1 **Action**: Set stop at -8% to limit downside risk\n\ud83d\udcca Current PnL: **+0.0%** | HODL @ 1x"
+    },
+    {
+      "type": "losing_trade",
+      "symbol": "SOL:USDT",
+      "platform": "Blofin",
+      "pnl": -13.929131191798941,
+      "margin": 0.0,
+      "severity": "MODERATE",
+      "message": "\ud83d\udea8 **$SOL:USDT Loss Analysis** ($0)\n\ud83d\udcc9 Down **-13.9%** | Severity: **MODERATE**\n\ud83d\udca1 **Strategy**: \ud83d\udcca ANALYSIS: Set stop at -12%. If strong support here, consider adding small position. Small position ($0) - could hold for reversal.\n\ud83c\udfaf **Entry**: $189.895000 | **Current**: $187.249928"
     },
     {
       "type": "high_profit",
       "symbol": "SOON:USDT",
       "platform": "Blofin",
-      "pnl": 272.92055738306675,
+      "pnl": 285.9330541711962,
       "profit_amount": 0.0,
-      "message": "\ud83d\udcb0 **$SOON:USDT Profit Alert** (+272.9%)\n\ud83c\udfaf **Unrealized Profit**: $0 | Position: $0\n\ud83e\udde0 **Strategy**: \ud83d\ude80 MASSIVE GAINS: Secure majority of profits, let small portion run.\n\u26a1 **Action**: Take 80% profits, trail stop at +75% on remainder\n\ud83d\udcca Entry: $0.442694 \u2192 Current: $0.321874"
+      "message": "\ud83d\udcb0 **$SOON:USDT Profit Alert** (+285.9%)\n\ud83c\udfaf **Unrealized Profit**: $0 | Position: $0\n\ud83e\udde0 **Strategy**: \ud83d\ude80 MASSIVE GAINS: Secure majority of profits, let small portion run.\n\u26a1 **Action**: Take 80% profits, trail stop at +75% on remainder\n\ud83d\udcca Entry: $0.442694 \u2192 Current: $0.316113"
     },
     {
       "type": "losing_trade",
       "symbol": "OBOL:USDT",
       "platform": "Blofin",
-      "pnl": -54.66677915000521,
+      "pnl": -63.89764096794638,
       "margin": 0.0,
       "severity": "CRITICAL",
-      "message": "\ud83d\udea8 **$OBOL:USDT Loss Analysis** ($0)\n\ud83d\udcc9 Down **-54.7%** | Severity: **CRITICAL**\n\ud83d\udca1 **Strategy**: \ud83d\udea8 IMMEDIATE ACTION: Consider cutting loss at -25% max. Risk/reward heavily skewed. Small position ($0) - could hold for reversal.\n\ud83c\udfaf **Entry**: $0.128460 | **Current**: $0.121437"
+      "message": "\ud83d\udea8 **$OBOL:USDT Loss Analysis** ($0)\n\ud83d\udcc9 Down **-63.9%** | Severity: **CRITICAL**\n\ud83d\udca1 **Strategy**: \ud83d\udea8 IMMEDIATE ACTION: Consider cutting loss at -25% max. Risk/reward heavily skewed. Small position ($0) - could hold for reversal.\n\ud83c\udfaf **Entry**: $0.128460 | **Current**: $0.120252"
     },
     {
       "type": "losing_trade",
       "symbol": "LINK:USDT",
       "platform": "Blofin",
-      "pnl": -66.40807285071276,
+      "pnl": -83.00285759001038,
       "margin": 0.0,
       "severity": "CRITICAL",
-      "message": "\ud83d\udea8 **$LINK:USDT Loss Analysis** ($0)\n\ud83d\udcc9 Down **-66.4%** | Severity: **CRITICAL**\n\ud83d\udca1 **Strategy**: \ud83d\udea8 IMMEDIATE ACTION: Consider cutting loss at -25% max. Risk/reward heavily skewed. Small position ($0) - could hold for reversal.\n\ud83c\udfaf **Entry**: $23.721494 | **Current**: $22.146196"
+      "message": "\ud83d\udea8 **$LINK:USDT Loss Analysis** ($0)\n\ud83d\udcc9 Down **-83.0%** | Severity: **CRITICAL**\n\ud83d\udca1 **Strategy**: \ud83d\udea8 IMMEDIATE ACTION: Consider cutting loss at -25% max. Risk/reward heavily skewed. Small position ($0) - could hold for reversal.\n\ud83c\udfaf **Entry**: $23.721494 | **Current**: $21.752543"
+    },
+    {
+      "type": "high_profit",
+      "symbol": "XNY:USDT",
+      "platform": "Blofin",
+      "pnl": 39.397138574000266,
+      "profit_amount": 0.0,
+      "message": "\ud83d\udcb0 **$XNY:USDT Profit Alert** (+39.4%)\n\ud83c\udfaf **Unrealized Profit**: $0 | Position: $0\n\ud83e\udde0 **Strategy**: \u2705 GOOD: Protect gains with trailing stops, consider partial profits.\n\u26a1 **Action**: Move stop to break-even, consider 25% profit-taking\n\ud83d\udcca Entry: $0.020281 \u2192 Current: $0.019482"
     }
   ],
   "summary_parts": [
-    "\u2757Losing: 2",
-    "\ud83d\udea8 No SL: 2",
-    "\ud83d\udcb0 High Profit: 2"
+    "\u2757Losing: 3",
+    "\ud83d\udea8 No SL: 10",
+    "\ud83d\udcb0 High Profit: 3"
   ]
 }
