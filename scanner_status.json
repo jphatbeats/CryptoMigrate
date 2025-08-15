@@ -1,13 +1,21 @@
 {
-  "current_coin": "EGLD",
-  "current_index": 41,
+  "current_coin": "FTM",
+  "current_index": 42,
   "total_coins": 200,
   "current_batch": "3/11",
   "confidence": 15,
   "alert_triggered": false,
-  "timestamp": "2025-08-15T21:31:26.797226",
+  "timestamp": "2025-08-15T21:32:06.079743",
   "scanning_active": true,
   "recent_scans": [
+    {
+      "symbol": "FTM",
+      "confidence": 15,
+      "timestamp": "21:32:06",
+      "alert_triggered": false,
+      "status": "completed",
+      "ai_insight": "The FTM coin's low confidence score of 15.0% is primarily driven by a lack of positive sentiment across technical, news, and social analyses, with neutral technical indicators and no significant news catalysts or social momentum contributing to its stagnant outlook. Traders should be cautious, as the absence of bullish signals suggests limited short-term price movement potential."
+    },
     {
       "symbol": "EGLD",
       "confidence": 15,
@@ -79,14 +87,6 @@
       "alert_triggered": false,
       "status": "completed",
       "ai_insight": "The low confidence score of 15.0% for OP is primarily driven by a lack of positive sentiment across technical, news, and social analyses, with neutral technical indicators and no supportive news or social momentum. Traders should note the absence of any strong catalysts or positive sentiment, suggesting a cautious approach as the market currently lacks clear directional signals for OP."
-    },
-    {
-      "symbol": "ARB",
-      "confidence": 15,
-      "timestamp": "21:25:41",
-      "alert_triggered": false,
-      "status": "completed",
-      "ai_insight": "ARB's confidence score of 15.0% reflects a lack of momentum and positive sentiment across technical, news, and social analyses, with neutral technical indicators like an RSI of 50.0 and MACD signal offering little direction, and no positive sentiment or catalysts in recent news or social media. Traders should be cautious as the absence of strong signals or catalysts suggests limited potential for imminent price movement."
     }
   ]
 }
