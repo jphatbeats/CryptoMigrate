@@ -1,85 +1,92 @@
 {
-  "current_coin": "XRP",
-  "current_index": 3,
+  "current_coin": "BTC",
+  "current_index": 1,
   "total_coins": 200,
   "current_batch": "1/11",
-  "confidence": 74.6,
+  "confidence": 42.0,
   "alert_triggered": false,
-  "timestamp": "2025-08-15T03:27:31.598323",
+  "timestamp": "2025-08-15T03:38:02.483522",
   "scanning_active": true,
   "recent_scans": [
     {
-      "symbol": "XRP",
-      "confidence": 74.6,
-      "timestamp": "03:27:31",
+      "symbol": "BTC",
+      "confidence": 42.0,
+      "timestamp": "03:38:02",
       "alert_triggered": false,
       "status": "completed",
-      "ai_insight": "The 74.6% confidence score for XRP is primarily driven by strong technical indicators, notably the bullish MACD signal and a low RSI of 34.4 suggesting potential for a price rebound, which supports the buy recommendation. However, the lack of recent news and social momentum indicates that these technical signals are not currently supported by external catalysts or market sentiment, which traders should consider as potential limitations to this bullish outlook."
+      "ai_insight": "BTC's confidence score of 42.0% reflects a technically neutral outlook with a bearish MACD signal and low RSI suggesting limited momentum, while the absence of news and social activity contributes to a lack of market catalysts. Traders should be cautious, as the lack of positive sentiment and engagement could imply limited short-term price movement without new developments."
+    },
+    {
+      "symbol": "SOL",
+      "confidence": 47.5,
+      "timestamp": "03:37:51",
+      "alert_triggered": false,
+      "status": "completed",
+      "ai_insight": "SOL's confidence score of 47.5% is primarily driven by a neutral technical analysis with an RSI of 47.7 and a bearish MACD signal, suggesting indecision in the market. The absence of recent news and social momentum indicates a lack of external catalysts to influence price movements, reinforcing the neutral stance for traders."
+    },
+    {
+      "symbol": "IMX",
+      "confidence": 41.9,
+      "timestamp": "03:37:50",
+      "alert_triggered": false,
+      "status": "completed",
+      "ai_insight": "The IMX coin has a confidence score of 41.9% largely due to a neutral technical outlook, where the RSI of 43.1 and a bearish MACD signal suggest limited trading momentum and caution in the market. The absence of impactful news and social media engagement further contributes to the low score, indicating a lack of catalysts to drive significant price movement, thus warranting a cautious approach from traders."
+    },
+    {
+      "symbol": "BNB",
+      "confidence": 57.0,
+      "timestamp": "03:37:30",
+      "alert_triggered": false,
+      "status": "completed",
+      "ai_insight": "BNB's confidence score of 57.0% is primarily driven by a moderately positive technical analysis, indicated by a bullish MACD signal despite a low RSI of 41.0, suggesting potential upward momentum. However, the absence of news and social momentum keeps overall sentiment neutral, warranting cautious observation by traders."
+    },
+    {
+      "symbol": "ALGO",
+      "confidence": 46.8,
+      "timestamp": "03:37:29",
+      "alert_triggered": false,
+      "status": "completed",
+      "ai_insight": "Algorand (ALGO) has a confidence score of 46.8% primarily due to its strong technical indicators, with a high RSI suggesting it's nearing overbought territory and a bullish MACD signal, but lacks any supportive news or social momentum to bolster market sentiment. Traders should be cautious, as the absence of positive news and social engagement may limit upside potential despite the favorable technical setup."
+    },
+    {
+      "symbol": "XRP",
+      "confidence": 41.8,
+      "timestamp": "03:37:08",
+      "alert_triggered": false,
+      "status": "completed",
+      "ai_insight": "XRP's confidence score of 41.8% is primarily driven by technical indicators, with an RSI of 53.0 suggesting neutral momentum and a bearish MACD signal indicating potential downward pressure, while a lack of news and social engagement has resulted in zero scores for both categories. Traders should be cautious, as the absence of positive catalysts and social momentum coupled with bearish technical signals suggest limited immediate upside potential."
+    },
+    {
+      "symbol": "VET",
+      "confidence": 17.4,
+      "timestamp": "03:37:07",
+      "alert_triggered": false,
+      "status": "completed",
+      "ai_insight": "VET's low confidence score of 17.4% is primarily driven by bearish technical indicators, including a high RSI of 67.3 suggesting potential overbought conditions, and a bearish MACD signal, coupled with an absence of positive news or social momentum. Traders should be cautious, as the current lack of positive sentiment and catalysts suggests limited upside potential in the near term."
+    },
+    {
+      "symbol": "HBAR",
+      "confidence": 53.5,
+      "timestamp": "03:36:46",
+      "alert_triggered": false,
+      "status": "completed",
+      "ai_insight": "HBAR's score of 53.5% is primarily driven by technical indicators, with a neutral recommendation despite a bullish MACD signal and an RSI of 44.6, which suggests the asset is neither overbought nor oversold. The absence of recent news or social momentum indicates a lack of external catalysts, highlighting that traders should rely more on technical trends while remaining cautious due to the low confidence score."
     },
     {
       "symbol": "ETH",
-      "confidence": 55.3,
-      "timestamp": "03:27:10",
+      "confidence": 41.6,
+      "timestamp": "03:36:45",
       "alert_triggered": false,
       "status": "completed",
-      "ai_insight": "Ethereum's confidence score of 55.3% is primarily driven by technical indicators, with a bullish MACD signal and an RSI of 66.7 suggesting potential overbought conditions, which contributes to a neutral recommendation. The lack of influence from news and social sentiment, reflected by their scores of zero, indicates that current market movements are largely technical rather than sentiment-driven, advising traders to proceed with caution."
+      "ai_insight": "Ethereum's score of 41.6% primarily reflects a strong technical foundation with a bullish MACD signal, despite being tempered by a low RSI indicating potential oversold conditions. However, the absence of news catalysts and social momentum suggests a lack of external drivers, making traders cautious and supporting a neutral recommendation."
     },
     {
       "symbol": "BTC",
-      "confidence": 49.8,
-      "timestamp": "03:26:47",
+      "confidence": 43.6,
+      "timestamp": "03:36:23",
       "alert_triggered": false,
       "status": "completed",
-      "ai_insight": "Bitcoin's score of 49.8% reflects a neutral technical stance, with indicators like RSI and MACD suggesting caution amidst a lack of momentum and sentiment from both news and social media. Traders should be aware that the absence of significant news or social catalysts implies limited immediate directional bias, urging a watchful approach until clearer signals emerge."
-    },
-    {
-      "symbol": "DASH",
-      "confidence": 32.6,
-      "timestamp": "03:26:37",
-      "alert_triggered": false,
-      "status": "completed"
-    },
-    {
-      "symbol": "ZEC",
-      "confidence": 58.7,
-      "timestamp": "03:26:17",
-      "alert_triggered": false,
-      "status": "completed"
-    },
-    {
-      "symbol": "RUNE",
-      "confidence": 42.5,
-      "timestamp": "03:25:57",
-      "alert_triggered": false,
-      "status": "completed"
-    },
-    {
-      "symbol": "KAVA",
-      "confidence": 30.7,
-      "timestamp": "03:25:37",
-      "alert_triggered": false,
-      "status": "completed"
-    },
-    {
-      "symbol": "XTZ",
-      "confidence": 9.666666666666666,
-      "timestamp": "03:25:17",
-      "alert_triggered": false,
-      "status": "completed"
-    },
-    {
-      "symbol": "FTM",
-      "confidence": 41.7,
-      "timestamp": "03:24:57",
-      "alert_triggered": false,
-      "status": "completed"
-    },
-    {
-      "symbol": "EGLD",
-      "confidence": 43.9,
-      "timestamp": "03:24:37",
-      "alert_triggered": false,
-      "status": "completed"
+      "ai_insight": "BTC's score of 43.6% is primarily driven by technical indicators, with a bearish MACD signal and an RSI of 32.2 suggesting it is approaching oversold territory, yet the lack of significant news or social momentum has resulted in a neutral recommendation. Traders should be cautious as the absence of positive market catalysts or social interest limits upward potential in the short term."
     }
   ]
 }

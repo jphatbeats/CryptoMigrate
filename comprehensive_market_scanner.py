@@ -31,7 +31,16 @@ except ImportError:
 
 # Local API configuration
 LOCAL_API_URL = "http://localhost:5000"
-DISCORD_WEBHOOK_URL = os.getenv('DISCORD_WEBHOOK_ALPHA_SCANS')
+
+# Discord Configuration (from automated_trading_alerts.py)
+DISCORD_CHANNELS = {
+    'alerts': 1398000506068009032,        # Breaking news, risks
+    'portfolio': 1399451217372905584,     # Portfolio analysis  
+    'alpha_scans': 1399790636990857277,   # Trading opportunities
+    'degen_memes': 1401971493096915067    # Degen memes, viral plays, airdrops, early gems
+}
+DISCORD_WEBHOOK_ALPHA_SCANS = os.getenv('DISCORD_WEBHOOK_ALPHA_SCANS')
+DISCORD_WEBHOOK_URL = DISCORD_WEBHOOK_ALPHA_SCANS  # Backward compatibility
 
 class ComprehensiveMarketScanner:
     def __init__(self):
@@ -569,8 +578,179 @@ Provide a concise 2-sentence analysis explaining why this coin scored {confidenc
         if ai_insight:
             print(f"🧠 AI Analysis: {ai_insight}")
         
-        # Here you would send to Discord webhook
-        # await self._send_discord_alert(alert_data)
+        # Send to Discord webhook
+        await self._send_discord_alpha_alert(alert_data)
+    
+    async def _send_discord_alpha_alert(self, alert_data: Dict):
+        """Send alpha alert to Discord using webhook"""
+        if not DISCORD_WEBHOOK_ALPHA_SCANS:
+            print("⚠️ Discord webhook URL not configured for alpha scans")
+            return
+        
+        try:
+            symbol = alert_data['symbol']
+            score = alert_data['score']
+            technical = alert_data.get('technical', {})
+            ai_insight = alert_data.get('ai_insight', '')
+            timestamp = alert_data['timestamp']
+            
+            # Create rich Discord embed
+            embed = {
+                "title": f"🚨 ALPHA ALERT: {symbol}",
+                "description": f"**{score:.1f}% Confluence Score**\n\n🎯 High-confidence trading opportunity detected!",
+                "color": 0x00FF00 if score >= 80 else 0xFF9900,  # Green for 80%+, Orange for 75-79%
+                "fields": [],
+                "footer": {"text": f"The Alpha Playbook v4 • {timestamp}"},
+                "thumbnail": {"url": f"https://cryptoicons.org/api/white/{symbol.lower()}/64"}
+            }
+            
+            # Add technical analysis
+            if technical.get('recommendation'):
+                embed["fields"].append({
+                    "name": "📊 Technical Analysis",
+                    "value": f"**Recommendation**: {technical['recommendation']}\n**RSI**: {technical.get('rsi', 'N/A')}\n**MACD**: {technical.get('macd_signal', 'N/A')}",
+                    "inline": True
+                })
+            
+            # Add AI insight if available
+            if ai_insight:
+                # Truncate if too long for Discord
+                insight_text = ai_insight[:200] + "..." if len(ai_insight) > 200 else ai_insight
+                embed["fields"].append({
+                    "name": "🧠 AI Market Analysis",
+                    "value": insight_text,
+                    "inline": False
+                })
+            
+            # Generate trade recommendation based on confluence score and technical data
+            trade_setup = await self._generate_trade_setup(symbol, score, technical)
+            embed["fields"].append({
+                "name": "💰 TRADE SETUP",
+                "value": trade_setup,
+                "inline": False
+            })
+            
+            # Send webhook
+            webhook_data = {
+                "content": f"<@&1399790636990857277> Alpha opportunity detected!",  # Optional role mention
+                "embeds": [embed]
+            }
+            
+            async with aiohttp.ClientSession() as session:
+                async with session.post(DISCORD_WEBHOOK_ALPHA_SCANS, json=webhook_data, timeout=10) as response:
+                    if response.status == 204:
+                        print(f"✅ Alpha alert sent to Discord: {symbol} ({score:.1f}%)")
+                    else:
+                        print(f"❌ Discord webhook failed: {response.status}")
+                        
+        except Exception as e:
+            print(f"❌ Discord alert error: {e}")
+    
+    async def _generate_trade_setup(self, symbol: str, confidence: float, technical: Dict) -> str:
+        """Generate complete trade setup with entry, TP, SL, and position sizing"""
+        try:
+            # Get current price from local API
+            current_price = await self._get_current_price(symbol)
+            if not current_price:
+                return "⚠️ Unable to fetch current price for trade setup"
+            
+            # Calculate position size based on confidence score
+            if confidence >= 85:
+                position_size = "3-5%"  # High conviction
+                risk_level = "HIGH CONVICTION"
+            elif confidence >= 80:
+                position_size = "2-3%"  # Strong signal
+                risk_level = "STRONG SIGNAL"
+            else:  # 75-79%
+                position_size = "1-2%"  # Conservative
+                risk_level = "CONSERVATIVE"
+            
+            # Determine trade direction from technical analysis
+            recommendation = technical.get('recommendation', 'neutral').lower()
+            rsi = technical.get('rsi', 50)
+            macd_signal = technical.get('macd_signal', 'neutral').lower()
+            
+            if 'buy' in recommendation or 'bullish' in macd_signal:
+                # LONG setup
+                entry_zone = f"${current_price * 0.995:.4f} - ${current_price * 1.005:.4f}"
+                stop_loss = f"${current_price * 0.92:.4f}"  # 8% stop loss
+                
+                # Multiple TP levels based on confidence
+                if confidence >= 85:
+                    tp1 = f"${current_price * 1.10:.4f} (10%)"
+                    tp2 = f"${current_price * 1.18:.4f} (18%)"
+                    tp3 = f"${current_price * 1.25:.4f} (25%)"
+                elif confidence >= 80:
+                    tp1 = f"${current_price * 1.08:.4f} (8%)"
+                    tp2 = f"${current_price * 1.15:.4f} (15%)"
+                    tp3 = f"${current_price * 1.22:.4f} (22%)"
+                else:
+                    tp1 = f"${current_price * 1.05:.4f} (5%)"
+                    tp2 = f"${current_price * 1.12:.4f} (12%)"
+                    tp3 = f"${current_price * 1.18:.4f} (18%)"
+                
+                trade_type = "LONG 📈"
+                
+            else:
+                # SHORT setup (or wait for better entry)
+                entry_zone = f"${current_price * 0.995:.4f} - ${current_price * 1.005:.4f}"
+                stop_loss = f"${current_price * 1.08:.4f}"  # 8% stop loss
+                
+                if confidence >= 85:
+                    tp1 = f"${current_price * 0.90:.4f} (-10%)"
+                    tp2 = f"${current_price * 0.82:.4f} (-18%)"
+                    tp3 = f"${current_price * 0.75:.4f} (-25%)"
+                elif confidence >= 80:
+                    tp1 = f"${current_price * 0.92:.4f} (-8%)"
+                    tp2 = f"${current_price * 0.85:.4f} (-15%)"
+                    tp3 = f"${current_price * 0.78:.4f} (-22%)"
+                else:
+                    tp1 = f"${current_price * 0.95:.4f} (-5%)"
+                    tp2 = f"${current_price * 0.88:.4f} (-12%)"
+                    tp3 = f"${current_price * 0.82:.4f} (-18%)"
+                
+                trade_type = "SHORT 📉"
+            
+            # Format the trade setup
+            setup = f"""**{trade_type} • {risk_level}**
+**Entry Zone**: {entry_zone}
+**Stop Loss**: {stop_loss} (-8%)
+**Take Profits**:
+• TP1: {tp1} (33% close)
+• TP2: {tp2} (33% close)  
+• TP3: {tp3} (34% close)
+
+**Position Size**: {position_size} of account
+**R:R Ratio**: 1:2.5 minimum
+**Current Price**: ${current_price:.4f}"""
+            
+            return setup
+            
+        except Exception as e:
+            print(f"❌ Trade setup generation error: {e}")
+            return f"⚠️ Trade setup unavailable - manual analysis required"
+    
+    async def _get_current_price(self, symbol: str) -> Optional[float]:
+        """Get current price from local API"""
+        try:
+            async with aiohttp.ClientSession() as session:
+                url = f"{LOCAL_API_URL}/api/crypto/price/{symbol}"
+                async with session.get(url, timeout=5) as response:
+                    if response.status == 200:
+                        data = await response.json()
+                        return float(data.get('price', 0))
+            return None
+        except:
+            # Fallback to estimate based on market cap (very rough)
+            try:
+                if symbol == 'BTC':
+                    return 67500.0  # Approximate BTC price
+                elif symbol == 'ETH':
+                    return 3200.0   # Approximate ETH price
+                else:
+                    return 1.0      # Generic fallback
+            except:
+                return None
 
 # Global scanner instance
 scanner = None
