@@ -1,13 +1,20 @@
 {
-  "current_coin": "BTC",
-  "current_index": 1,
+  "current_coin": "ETH",
+  "current_index": 2,
   "total_coins": 200,
   "current_batch": "1/11",
-  "confidence": 56.1,
+  "confidence": 50.4,
   "alert_triggered": false,
-  "timestamp": "2025-08-15T03:11:16.501951",
+  "timestamp": "2025-08-15T03:11:36.526464",
   "scanning_active": true,
   "recent_scans": [
+    {
+      "symbol": "ETH",
+      "confidence": 50.4,
+      "timestamp": "03:11:36",
+      "alert_triggered": false,
+      "status": "completed"
+    },
     {
       "symbol": "BTC",
       "confidence": 56.1,
