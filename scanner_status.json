@@ -1,13 +1,53 @@
 {
-  "current_coin": "MATIC",
-  "current_index": 16,
+  "current_coin": "BTC",
+  "current_index": 1,
   "total_coins": 200,
-  "current_batch": "1/11",
+  "current_batch": "1/16",
   "confidence": 15,
   "alert_triggered": false,
-  "timestamp": "2025-08-15T21:50:27.204888",
+  "timestamp": "2025-08-15T21:53:39.029574",
   "scanning_active": true,
   "recent_scans": [
+    {
+      "symbol": "BTC",
+      "confidence": 15,
+      "timestamp": "21:53:39",
+      "alert_triggered": false,
+      "status": "completed",
+      "ai_insight": "BTC's low confidence score of 15.0% is primarily driven by neutral technical indicators, lack of positive sentiment in recent news, and stagnant social momentum, indicating limited enthusiasm or catalysts for price movement. Traders should note the absence of catalysts and engagement suggests limited short-term movement potential."
+    },
+    {
+      "symbol": "BTC",
+      "confidence": 15,
+      "timestamp": "21:53:14",
+      "alert_triggered": false,
+      "status": "completed",
+      "ai_insight": "BTC's low confidence score of 15.0% is primarily driven by neutral technical indicators, lack of positive sentiment in recent news, and stagnant social momentum, indicating limited enthusiasm or catalysts for price movement. Traders should note the absence of catalysts and engagement suggests limited short-term movement potential."
+    },
+    {
+      "symbol": "XRP",
+      "confidence": 15,
+      "timestamp": "21:53:04",
+      "alert_triggered": false,
+      "status": "completed",
+      "ai_insight": "XRP's low confidence score of 15.0% is primarily driven by neutral technical indicators, lack of positive sentiment in recent news, and stagnant social momentum, indicating limited enthusiasm or catalysts for price movement. Traders should note the absence of catalysts and engagement suggests limited short-term movement potential."
+    },
+    {
+      "symbol": "ETH",
+      "confidence": 15,
+      "timestamp": "21:52:17",
+      "alert_triggered": false,
+      "status": "completed",
+      "ai_insight": "ETH's low confidence score of 15.0% is primarily driven by neutral technical indicators, lack of positive sentiment in recent news, and stagnant social momentum, indicating limited enthusiasm or catalysts for price movement. Traders should note the absence of catalysts and engagement suggests limited short-term movement potential."
+    },
+    {
+      "symbol": "BTC",
+      "confidence": 15,
+      "timestamp": "21:51:30",
+      "alert_triggered": false,
+      "status": "completed",
+      "ai_insight": "BTC's low confidence score of 15.0% is primarily driven by neutral technical indicators, lack of positive sentiment in recent news, and stagnant social momentum, indicating limited enthusiasm or catalysts for price movement. Traders should note the absence of catalysts and engagement suggests limited short-term movement potential."
+    },
     {
       "symbol": "MATIC",
       "confidence": 15,
@@ -47,46 +87,6 @@
       "alert_triggered": false,
       "status": "completed",
       "ai_insight": "DOT's low confidence score of 15.0% is primarily driven by neutral technical indicators, lack of positive sentiment in recent news, and stagnant social momentum, indicating limited enthusiasm or catalysts for price movement. Traders should note the absence of catalysts and engagement suggests limited short-term movement potential."
-    },
-    {
-      "symbol": "SHIB",
-      "confidence": 15,
-      "timestamp": "21:47:27",
-      "alert_triggered": false,
-      "status": "completed",
-      "ai_insight": "SHIB's low confidence score of 15.0% is primarily driven by neutral technical indicators, lack of positive sentiment in recent news, and stagnant social momentum, indicating limited enthusiasm or catalysts for price movement. Traders should note the absence of catalysts and engagement suggests limited short-term movement potential."
-    },
-    {
-      "symbol": "AVAX",
-      "confidence": 15,
-      "timestamp": "21:46:50",
-      "alert_triggered": false,
-      "status": "completed",
-      "ai_insight": "AVAX's low confidence score of 15.0% is primarily driven by neutral technical indicators, lack of positive sentiment in recent news, and stagnant social momentum, indicating limited enthusiasm or catalysts for price movement. Traders should note the absence of catalysts and engagement suggests limited short-term movement potential."
-    },
-    {
-      "symbol": "TRX",
-      "confidence": 15,
-      "timestamp": "21:46:13",
-      "alert_triggered": false,
-      "status": "completed",
-      "ai_insight": "TRX's low confidence score of 15.0% is primarily driven by neutral technical indicators, lack of positive sentiment in recent news, and stagnant social momentum, indicating limited enthusiasm or catalysts for price movement. Traders should note the absence of catalysts and engagement suggests limited short-term movement potential."
-    },
-    {
-      "symbol": "ADA",
-      "confidence": 15,
-      "timestamp": "21:45:37",
-      "alert_triggered": false,
-      "status": "completed",
-      "ai_insight": "ADA's low confidence score of 15.0% is primarily driven by neutral technical indicators, lack of positive sentiment in recent news, and stagnant social momentum, indicating limited enthusiasm or catalysts for price movement. Traders should note the absence of catalysts and engagement suggests limited short-term movement potential."
-    },
-    {
-      "symbol": "TON",
-      "confidence": 15,
-      "timestamp": "21:45:01",
-      "alert_triggered": false,
-      "status": "completed",
-      "ai_insight": "TON's low confidence score of 15.0% is primarily driven by neutral technical indicators, lack of positive sentiment in recent news, and stagnant social momentum, indicating limited enthusiasm or catalysts for price movement. Traders should note the absence of catalysts and engagement suggests limited short-term movement potential."
     }
   ]
 }
