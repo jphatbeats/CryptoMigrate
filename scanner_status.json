@@ -1,92 +1,92 @@
 {
-  "current_coin": "SHIB",
-  "current_index": 11,
+  "current_coin": "REEF",
+  "current_index": 65,
   "total_coins": 200,
-  "current_batch": "1/11",
+  "current_batch": "4/11",
   "confidence": 15,
   "alert_triggered": false,
-  "timestamp": "2025-08-15T04:16:38.919980",
+  "timestamp": "2025-08-15T04:37:09.675530",
   "scanning_active": true,
   "recent_scans": [
     {
-      "symbol": "SHIB",
+      "symbol": "REEF",
       "confidence": 15,
-      "timestamp": "04:16:38",
+      "timestamp": "04:37:09",
       "alert_triggered": false,
       "status": "completed",
-      "ai_insight": "SHIB's low confidence score of 15.0% is primarily driven by the absence of positive catalysts across technical, news, and social dimensions, with indicators like a bearish MACD and a neutral recommendation reflecting tepid technical momentum. Traders should note the lack of news and social engagement, indicating minimal immediate interest or potential for price movement, suggesting a cautious approach in the short term."
+      "ai_insight": "REEF's low confidence score of 15.0% is primarily driven by weak news and social analysis, with no positive sentiment or momentum observed, indicating a lack of market interest and catalysts. Despite the technical indicators showing some bullish signals, the overall neutral recommendation suggests traders should remain cautious and wait for clearer trends or developments."
     },
     {
-      "symbol": "FTM",
-      "confidence": 55.4,
-      "timestamp": "04:16:37",
-      "alert_triggered": false,
-      "status": "completed",
-      "ai_insight": "FTM's score of 55.4% is primarily driven by a moderately bullish technical setup, indicated by an RSI of 69.1 and a bullish MACD signal, yet tempered by a neutral overall recommendation. The absence of positive news or social momentum suggests limited external catalysts to drive significant price changes, urging traders to remain cautious and closely monitor technical indicators for potential shifts."
-    },
-    {
-      "symbol": "AVAX",
-      "confidence": 15,
-      "timestamp": "04:16:16",
-      "alert_triggered": false,
-      "status": "completed",
-      "ai_insight": "AVAX's low confidence score of 15.0% is driven primarily by bearish technical indicators, including a high RSI of 66.2 and a bearish MACD signal, alongside a weak social momentum and sentiment that fail to provide support for a positive outlook. Despite some positive sentiment in recent news, the lack of viral potential and inadequate social engagement suggest limited immediate upside, reinforcing the sell recommendation."
-    },
-    {
-      "symbol": "EGLD",
-      "confidence": 48.9,
-      "timestamp": "04:16:15",
-      "alert_triggered": false,
-      "status": "completed",
-      "ai_insight": "EGLD's confidence score of 48.9% reflects a strong technical foundation with a high technical score of 48.9/50, despite bearish indicators like an RSI of 36.5 and a bearish MACD signal, counterbalanced by the absence of supportive news or social momentum. Traders should note the lack of positive sentiment and catalytic news, as these factors significantly dampen the overall outlook, suggesting caution despite the technical resilience."
-    },
-    {
-      "symbol": "TRX",
-      "confidence": 15,
-      "timestamp": "04:15:54",
-      "alert_triggered": false,
-      "status": "completed",
-      "ai_insight": "TRX's low confidence score of 15.0% is primarily driven by weak news and social sentiment scores, indicating limited market enthusiasm and engagement. Despite a bullish MACD signal, other technical indicators and sentiment factors suggest a neutral outlook, warranting cautious trading approaches."
-    },
-    {
-      "symbol": "AXS",
+      "symbol": "COPE",
       "confidence": 59.0,
-      "timestamp": "04:15:52",
+      "timestamp": "04:36:54",
       "alert_triggered": false,
       "status": "completed",
-      "ai_insight": "AXS currently has a confidence score of 59.0% largely due to its technical analysis, which reveals a bearish MACD signal and an RSI of 35.2, indicating potential oversold conditions amidst a neutral recommendation. The lack of positive news and negligible social momentum further contribute to the subdued sentiment, suggesting traders should remain cautious and look for more definitive signals before taking action."
+      "ai_insight": "The COPE token's overall score of 59.0% is primarily driven by its technical analysis, with an RSI indicating it is edging towards being oversold and a bearish MACD signal suggesting potential downward momentum, despite the neutral recommendation. The absence of positive sentiment or catalysts in recent news and social media contributes to its lackluster performance in those areas, underscoring a cautious approach for traders given the current market sentiment and technical indicators."
     },
     {
-      "symbol": "ADA",
+      "symbol": "ALPHA",
       "confidence": 15,
-      "timestamp": "04:15:33",
+      "timestamp": "04:36:48",
       "alert_triggered": false,
       "status": "completed",
-      "ai_insight": "ADA's low confidence score of 15.0% is primarily driven by weak technical indicators, with a bearish MACD signal and an RSI of 33.7 suggesting potential oversold conditions, while the lack of social momentum and neutral market sentiment further dampen optimism. Despite some positive news sentiment, its limited impact is insufficient to counteract the prevailing technical and social analysis weaknesses, advising traders to approach with caution."
+      "ai_insight": "ALPHA's confidence score of 15.0% is primarily driven by weak news and social analysis, with both sentiment and momentum showing negligible activity, indicating a lack of engagement and interest. Despite a neutral technical recommendation, the bearish MACD signal suggests caution, as traders should be wary of potential downside risks due to limited positive catalysts."
     },
     {
-      "symbol": "AAVE",
-      "confidence": 25.3,
-      "timestamp": "04:15:29",
-      "alert_triggered": false,
-      "status": "completed",
-      "ai_insight": "AAVE's score of 25.3% is driven by bearish technical indicators, notably a high RSI of 66.0 suggesting potential overbought conditions and a bearish MACD signal, alongside negligible news and social momentum, indicating a lack of positive catalysts or investor interest. Traders should be cautious as the sell recommendation reflects current bearish sentiment without any counteracting positive news or social engagement to suggest a reversal."
-    },
-    {
-      "symbol": "TON",
-      "confidence": 15,
-      "timestamp": "04:15:11",
-      "alert_triggered": false,
-      "status": "completed",
-      "ai_insight": "TON's low confidence score of 15.0% is primarily driven by its bearish technical indicators, including an RSI of 44.9 and a bearish MACD signal, coupled with negligible social momentum and sentiment. Despite some positive news sentiment, the overall lack of strong catalysts and social engagement suggests traders should approach with caution and remain neutral."
-    },
-    {
-      "symbol": "FLOW",
-      "confidence": 78.7,
-      "timestamp": "04:15:06",
+      "symbol": "FIDA",
+      "confidence": 95,
+      "timestamp": "04:36:29",
       "alert_triggered": true,
       "status": "completed",
-      "ai_insight": "FLOW's score of 78.7% is primarily driven by strong technical indicators, with a bullish MACD signal and an oversold RSI of 28.2 suggesting a potential price reversal, supporting the buy recommendation. However, the absence of significant news catalysts and stagnant social momentum indicate a lack of broader market interest, which traders should consider when evaluating potential entry points."
+      "ai_insight": "FIDA scored a high confidence score of 95.0% primarily due to strong technical and news analysis, as indicated by a bullish MACD signal and a positive sentiment in recent news, which suggests potential upward movement. However, traders should be cautious of the lack of social momentum and sentiment, which may limit immediate viral potential or widespread retail interest."
+    },
+    {
+      "symbol": "BADGER",
+      "confidence": 15,
+      "timestamp": "04:36:26",
+      "alert_triggered": false,
+      "status": "completed",
+      "ai_insight": "BADGER's confidence score of 15.0% reflects a lack of positive momentum across technical, news, and social indicators, with a bearish MACD signal and an RSI of 40.6 suggesting weak market conditions. The absence of positive sentiment in recent news and negligible social engagement further underscores the coin's current lack of appeal, advising traders to adopt a cautious and neutral stance."
+    },
+    {
+      "symbol": "SRM",
+      "confidence": 95,
+      "timestamp": "04:36:05",
+      "alert_triggered": true,
+      "status": "completed",
+      "ai_insight": "The high confidence score of 95.0% for SRM is primarily driven by strong news sentiment with a perfect news score of 30/30, indicating recent positive developments and catalysts despite a lack of social momentum and mixed technical signals. Traders should note that while the technical indicators suggest a neutral stance with a bearish MACD, the positive news could potentially influence market perception, albeit with limited viral impact."
+    },
+    {
+      "symbol": "UMA",
+      "confidence": 15,
+      "timestamp": "04:36:04",
+      "alert_triggered": false,
+      "status": "completed",
+      "ai_insight": "UMA's confidence score of 15.0% is primarily driven by a lack of external catalysts, as evidenced by the absence of recent news and social media engagement, which results in low news and social scores. Despite a bullish MACD signal and a high RSI suggesting overbought conditions, the neutral recommendation highlights uncertainty in price direction, advising traders to remain cautious until clearer market signals emerge."
+    },
+    {
+      "symbol": "RAY",
+      "confidence": 16.0,
+      "timestamp": "04:35:43",
+      "alert_triggered": false,
+      "status": "completed",
+      "ai_insight": "RAY's low confidence score of 16.0% is driven by technical indicators such as an RSI nearing overbought levels at 69.0 and a bearish MACD signal, alongside a weak technical score of 16.0/50, suggesting downward pressure. Additionally, the absence of positive news catalysts and stagnant social momentum further contribute to the lack of bullish sentiment, aligning with the sell recommendation."
+    },
+    {
+      "symbol": "LRC",
+      "confidence": 15,
+      "timestamp": "04:35:41",
+      "alert_triggered": false,
+      "status": "completed",
+      "ai_insight": "LRC's low confidence score of 15.0% is driven by the absence of significant news catalysts and social momentum, coupled with bearish technical indicators, such as an RSI of 42.7 and a bearish MACD signal, which collectively suggest limited market interest and potential downward pressure. Traders should remain cautious and consider a neutral stance until stronger technical signals or news catalysts emerge to influence market direction."
+    },
+    {
+      "symbol": "PERP",
+      "confidence": 53.3,
+      "timestamp": "04:35:20",
+      "alert_triggered": false,
+      "status": "completed",
+      "ai_insight": "PERP's confidence score of 53.3% is primarily driven by its technical indicators, with a neutral recommendation reflecting a balanced RSI of 52.6 and a bearish MACD signal. The absence of recent news and social momentum suggests a lack of external catalysts, reinforcing a cautious stance for traders awaiting clearer market direction."
     }
   ]
 }
