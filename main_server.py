@@ -2916,6 +2916,30 @@ def monitor_portfolio_risks():
         logger.error(f"Error monitoring portfolio risks: {str(e)}")
         return jsonify({'error': 'Failed to monitor portfolio risks'}), 500
 
+@app.route('/api/portfolio/manual-alert', methods=['POST'])
+def trigger_manual_portfolio_alert():
+    """Manually trigger a portfolio alert to Discord"""
+    try:
+        import asyncio
+        from automated_trading_alerts import run_automated_analysis
+        
+        # Run the portfolio analysis in the background
+        def run_analysis():
+            asyncio.run(run_automated_analysis())
+        
+        import threading
+        analysis_thread = threading.Thread(target=run_analysis)
+        analysis_thread.start()
+        
+        return jsonify({
+            'status': 'success',
+            'message': 'Portfolio analysis triggered manually',
+            'timestamp': datetime.now().isoformat()
+        })
+    except Exception as e:
+        logger.error(f"Error triggering manual portfolio alert: {str(e)}")
+        return jsonify({'error': 'Failed to trigger portfolio alert'}), 500
+
 @app.route('/api/portfolio/correlation-plays', methods=['GET'])
 def find_correlation_plays():
     """Find news affecting multiple correlated assets"""
