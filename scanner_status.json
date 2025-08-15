@@ -1,13 +1,69 @@
 {
-  "current_coin": "SLIM",
-  "current_index": 111,
+  "current_coin": "POPCAT",
+  "current_index": 118,
   "total_coins": 200,
   "current_batch": "7/11",
   "confidence": 15,
   "alert_triggered": false,
-  "timestamp": "2025-08-15T17:16:00.359218",
+  "timestamp": "2025-08-15T17:20:32.441833",
   "scanning_active": true,
   "recent_scans": [
+    {
+      "symbol": "POPCAT",
+      "confidence": 15,
+      "timestamp": "17:20:32",
+      "alert_triggered": false,
+      "status": "completed",
+      "ai_insight": "POPCAT scored a low 15.0% confidence due to neutral technical indicators, lack of positive news sentiment, and absence of social momentum, suggesting minimal current interest and engagement with the asset. Traders should be cautious as there are no strong signals or catalysts driving momentum, indicating that POPCAT might remain stagnant unless new developments arise."
+    },
+    {
+      "symbol": "MEW",
+      "confidence": 15,
+      "timestamp": "17:19:52",
+      "alert_triggered": false,
+      "status": "completed",
+      "ai_insight": "The MEW coin's confidence score of 15.0% reflects a lack of significant momentum across technical, news, and social fronts, with neutral technical indicators and negligible news and social engagement. Traders should note the absence of catalysts or sentiment that could drive price movement, making MEW currently a low-priority option in the market."
+    },
+    {
+      "symbol": "SLERF",
+      "confidence": 15,
+      "timestamp": "17:19:15",
+      "alert_triggered": false,
+      "status": "completed",
+      "ai_insight": "SLERF scored a low confidence rating of 15.0% due to its lackluster technical indicators, neutral MACD signal, and stagnant RSI at 50, reflecting indecision in market momentum. The absence of positive news sentiment and social engagement further highlights a lack of interest and potential catalysts, suggesting traders should proceed cautiously or consider other opportunities with stronger momentum and sentiment."
+    },
+    {
+      "symbol": "BOME",
+      "confidence": 15,
+      "timestamp": "17:18:35",
+      "alert_triggered": false,
+      "status": "completed",
+      "ai_insight": "BOME's low confidence score of 15.0% is driven by its neutral technical indicators, lack of positive news catalysts, and absence of social media momentum, all indicating limited market interest and engagement. Traders should note the lack of both technical and sentiment-driven signals, suggesting that BOME currently lacks the momentum for significant price movements."
+    },
+    {
+      "symbol": "WIF",
+      "confidence": 15,
+      "timestamp": "17:17:57",
+      "alert_triggered": false,
+      "status": "completed",
+      "ai_insight": "WIF's low confidence score of 15.0% is primarily driven by a lack of positive sentiment and momentum across technical, news, and social analyses, with neutral technical indicators and negligible media and social engagement contributing to the weak outlook. Traders should note the absence of any significant catalysts or viral potential, suggesting limited immediate interest or movement in the market."
+    },
+    {
+      "symbol": "BONK",
+      "confidence": 15,
+      "timestamp": "17:17:18",
+      "alert_triggered": false,
+      "status": "completed",
+      "ai_insight": "BONK's low confidence score of 15.0% is primarily driven by its lack of positive sentiment across technical, news, and social analyses, with a neutral technical stance and no significant news or social buzz to create momentum. Traders should be cautious, as the absence of any catalysts or positive sentiment suggests limited immediate upside potential."
+    },
+    {
+      "symbol": "CHEEMS",
+      "confidence": 15,
+      "timestamp": "17:16:39",
+      "alert_triggered": false,
+      "status": "completed",
+      "ai_insight": "The CHEEMS coin scored a low confidence score of 15.0% due to a lack of significant technical momentum, indicated by a neutral RSI and MACD, and minimal positive news or social sentiment, with no recent catalysts driving interest or engagement. Traders should note the absence of strong market signals or community buzz, suggesting limited near-term movement and potential for growth."
+    },
     {
       "symbol": "SLIM",
       "confidence": 15,
@@ -31,62 +87,6 @@
       "alert_triggered": false,
       "status": "completed",
       "ai_insight": "POLIS has a low confidence score of 15.0% due to neutral technical indicators, a lack of positive news sentiment, and no social momentum, suggesting limited market interest and engagement. Traders should note the absence of catalysts or viral potential, indicating that there are no immediate factors likely to drive significant price movement."
-    },
-    {
-      "symbol": "ATLAS",
-      "confidence": 15,
-      "timestamp": "17:14:03",
-      "alert_triggered": false,
-      "status": "completed",
-      "ai_insight": "ATLAS's low confidence score of 15.0% is primarily driven by its neutral technical indicators, lack of positive news catalysts, and negligible social momentum, suggesting limited market interest and engagement at this time. Traders should be cautious, as the absence of strong technical or sentiment signals indicates potential stagnation or sideways movement in the short term."
-    },
-    {
-      "symbol": "NINJA",
-      "confidence": 15,
-      "timestamp": "17:13:25",
-      "alert_triggered": false,
-      "status": "completed",
-      "ai_insight": "The NINJA coin has a low confidence score of 15.0% primarily due to a lack of positive sentiment and momentum across technical, news, and social analyses, with all indicators showing neutral or negative factors. Traders should note that the absence of any catalysts or positive social engagement suggests limited interest and potential for price movement in the short term."
-    },
-    {
-      "symbol": "SAMO",
-      "confidence": 15,
-      "timestamp": "17:12:47",
-      "alert_triggered": false,
-      "status": "completed",
-      "ai_insight": "SAMO's low confidence score of 15.0% reflects a combination of neutral technical indicators, such as an RSI of 50 and a neutral MACD signal, alongside weak social and news sentiment, with no positive news or social momentum to drive interest. Traders should note the lack of catalysts and sentiment, suggesting limited immediate trading opportunities and the need for further developments to enhance its market appeal."
-    },
-    {
-      "symbol": "SUNNY",
-      "confidence": 15,
-      "timestamp": "17:12:06",
-      "alert_triggered": false,
-      "status": "completed",
-      "ai_insight": "SUNNY's low confidence score of 15.0% is primarily driven by a lack of strong technical indicators, as evidenced by a neutral RSI and MACD, alongside minimal news impact and zero social momentum or sentiment. Traders should note the absence of positive catalysts and limited market engagement, suggesting a wait-and-see approach until clearer signals emerge."
-    },
-    {
-      "symbol": "MNGO",
-      "confidence": 15,
-      "timestamp": "17:11:28",
-      "alert_triggered": false,
-      "status": "completed",
-      "ai_insight": "MNGO's low confidence score of 15.0% is primarily due to the absence of news and social engagement, as well as neutral technical indicators like an RSI of 50.0 and a neutral MACD signal, resulting in a lack of market momentum or sentiment to drive trading decisions. Traders should note the coin's current lack of catalysts and consider waiting for more definitive technical signals or news developments before taking positions."
-    },
-    {
-      "symbol": "PORT",
-      "confidence": 15,
-      "timestamp": "17:10:50",
-      "alert_triggered": false,
-      "status": "completed",
-      "ai_insight": "The coin PORT has a low confidence score of 15.0% due to a lack of decisive technical indicators, with both the RSI and MACD showing neutral positions, and an absence of impactful news or social media activity. Traders should note the current stagnation in sentiment and momentum, indicating limited short-term catalysts for price movement."
-    },
-    {
-      "symbol": "ORCA",
-      "confidence": 15,
-      "timestamp": "17:10:12",
-      "alert_triggered": false,
-      "status": "completed",
-      "ai_insight": "The ORCA coin's low confidence score of 15.0% is primarily driven by neutral technical indicators, including an RSI of 50.0 and a lack of clear momentum from both MACD and market news, coupled with a complete absence of positive sentiment or social traction. Traders should note the coin's current lack of catalysts or investor interest, suggesting minimal expected price movement in the near term."
     }
   ]
 }
