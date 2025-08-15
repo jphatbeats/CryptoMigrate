@@ -121,6 +121,7 @@
         .scan-item:hover {
             transform: translateX(5px);
             background: rgba(255, 255, 255, 0.1);
+            cursor: pointer;
         }
         
         .scan-symbol {
@@ -174,6 +175,121 @@
             grid-column: 1 / -1;
         }
         
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(5px);
+        }
+        
+        .modal-content {
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            margin: 5% auto;
+            padding: 0;
+            border-radius: 15px;
+            width: 90%;
+            max-width: 800px;
+            max-height: 80vh;
+            overflow-y: auto;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        
+        .modal-header {
+            background: rgba(0, 0, 0, 0.3);
+            padding: 20px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .modal-header h2 {
+            margin: 0;
+            color: #FFD700;
+            font-size: 1.8em;
+        }
+        
+        .close {
+            color: #aaa;
+            font-size: 28px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: color 0.3s ease;
+        }
+        
+        .close:hover {
+            color: #fff;
+        }
+        
+        .modal-body {
+            padding: 25px;
+        }
+        
+        .analysis-section {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 20px;
+            border-left: 4px solid #FFD700;
+        }
+        
+        .analysis-section h3 {
+            color: #FFD700;
+            margin-bottom: 15px;
+            font-size: 1.3em;
+        }
+        
+        .indicator-item {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 12px;
+            margin-bottom: 8px;
+            border-radius: 8px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .indicator-name {
+            font-weight: bold;
+            color: #00FF88;
+        }
+        
+        .indicator-signal {
+            font-size: 0.9em;
+            opacity: 0.9;
+        }
+        
+        .indicator-weight {
+            padding: 4px 8px;
+            border-radius: 12px;
+            font-size: 0.8em;
+            font-weight: bold;
+        }
+        
+        .weight-positive { background: #00FF88; color: #000; }
+        .weight-negative { background: #FF4444; color: #fff; }
+        .weight-neutral { background: #FFA500; color: #000; }
+        
+        .recommendation-box {
+            background: linear-gradient(135deg, #FFD700, #FFA500);
+            color: #000;
+            padding: 20px;
+            border-radius: 10px;
+            margin-top: 20px;
+            font-weight: bold;
+        }
+        
+        .recommendation-box h3 {
+            color: #000;
+            margin-bottom: 10px;
+        }
+        
         @media (max-width: 768px) {
             .container {
                 grid-template-columns: 1fr;
@@ -182,6 +298,11 @@
             
             .status-grid {
                 grid-template-columns: 1fr;
+            }
+            
+            .modal-content {
+                width: 95%;
+                margin: 10% auto;
             }
         }
     </style>
@@ -237,6 +358,19 @@
         </div>
     </div>
     
+    <!-- Modal for coin details -->
+    <div id="coinModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 id="modalTitle">Coin Analysis</h2>
+                <span class="close">&times;</span>
+            </div>
+            <div class="modal-body" id="modalBody">
+                <p>Loading analysis...</p>
+            </div>
+        </div>
+    </div>
+    
     <script>
         let updateInterval;
         
@@ -268,14 +402,17 @@
                     data.scans.forEach((scan, index) => {
                         const item = document.createElement('div');
                         item.className = `scan-item ${index === 0 ? 'current-scan' : ''}`;
+                        item.onclick = () => showCoinDetails(scan.symbol);
                         
                         let confidenceClass = 'confidence-low';
                         if (scan.confidence >= 75) confidenceClass = 'confidence-high';
                         else if (scan.confidence >= 50) confidenceClass = 'confidence-medium';
                         
+                        const alertBadge = scan.alert_triggered ? '<span style="color: #FFD700; font-size: 0.8em;">🚨 ALERT</span>' : '';
+                        
                         item.innerHTML = `
                             <div>
-                                <div class="scan-symbol">${scan.symbol}</div>
+                                <div class="scan-symbol">${scan.symbol} ${alertBadge}</div>
                                 <div class="scan-time">${scan.timestamp}</div>
                             </div>
                             <div class="scan-confidence ${confidenceClass}">
@@ -327,6 +464,109 @@
                 document.title = `Scanning ${currentCoin} | Market Scanner Dashboard`;
             }
         }, 1000);
+        
+        // Modal functionality
+        const modal = document.getElementById('coinModal');
+        const modalTitle = document.getElementById('modalTitle');
+        const modalBody = document.getElementById('modalBody');
+        const closeModal = document.getElementsByClassName('close')[0];
+        
+        function showCoinDetails(symbol) {
+            modal.style.display = 'block';
+            modalTitle.textContent = `${symbol} - Detailed Analysis`;
+            modalBody.innerHTML = '<p>Loading detailed analysis...</p>';
+            
+            fetch(`/api/coin-details/${symbol}`)
+                .then(response => response.json())
+                .then(data => {
+                    if (data.error) {
+                        modalBody.innerHTML = `
+                            <div class="analysis-section">
+                                <h3>⚠️ Analysis Not Available</h3>
+                                <p>${data.message}</p>
+                            </div>
+                        `;
+                        return;
+                    }
+                    
+                    const analysis = data;
+                    modalBody.innerHTML = `
+                        <div class="analysis-section">
+                            <h3>📊 Technical Analysis (Score: ${analysis.technical_analysis.score}/100)</h3>
+                            <p><strong>Summary:</strong> ${analysis.technical_analysis.summary}</p>
+                            ${Object.entries(analysis.technical_analysis.indicators).map(([name, details]) => `
+                                <div class="indicator-item">
+                                    <div>
+                                        <div class="indicator-name">${name}</div>
+                                        <div class="indicator-signal">${details.signal || details.value || 'N/A'}</div>
+                                    </div>
+                                    <div class="indicator-weight weight-${details.weight.toLowerCase().includes('positive') ? 'positive' : details.weight.toLowerCase().includes('negative') ? 'negative' : 'neutral'}">
+                                        ${details.weight}
+                                    </div>
+                                </div>
+                            `).join('')}
+                        </div>
+                        
+                        <div class="analysis-section">
+                            <h3>📰 News Analysis (Score: ${analysis.news_analysis.score}/100)</h3>
+                            <p><strong>Sentiment:</strong> ${analysis.news_analysis.sentiment}</p>
+                            <p><strong>Summary:</strong> ${analysis.news_analysis.summary}</p>
+                            <div style="margin-top: 10px;">
+                                <strong>Recent Articles:</strong>
+                                ${analysis.news_analysis.recent_articles.map(article => `
+                                    <div class="indicator-item">
+                                        <div>
+                                            <div class="indicator-name">${article.title}</div>
+                                        </div>
+                                        <div class="indicator-weight weight-${article.sentiment.toLowerCase().includes('positive') ? 'positive' : article.sentiment.toLowerCase().includes('negative') ? 'negative' : 'neutral'}">
+                                            ${article.sentiment}
+                                        </div>
+                                    </div>
+                                `).join('')}
+                            </div>
+                        </div>
+                        
+                        <div class="analysis-section">
+                            <h3>🗣️ Social Analysis (Score: ${analysis.social_analysis.score}/100)</h3>
+                            <p><strong>Momentum:</strong> ${analysis.social_analysis.momentum}</p>
+                            <p><strong>Summary:</strong> ${analysis.social_analysis.summary}</p>
+                            <div class="indicator-item">
+                                <div class="indicator-name">Social Mentions</div>
+                                <div class="indicator-signal">${analysis.social_analysis.metrics.mentions}</div>
+                            </div>
+                            <div class="indicator-item">
+                                <div class="indicator-name">Sentiment Trend</div>
+                                <div class="indicator-signal">${analysis.social_analysis.metrics.sentiment_trend}</div>
+                            </div>
+                            <div class="indicator-item">
+                                <div class="indicator-name">Community Activity</div>
+                                <div class="indicator-signal">${analysis.social_analysis.metrics.community_activity}</div>
+                            </div>
+                        </div>
+                        
+                        <div class="recommendation-box">
+                            <h3>🎯 AI Recommendation: ${analysis.recommendation.action}</h3>
+                            <p><strong>Risk Level:</strong> ${analysis.recommendation.risk_level}</p>
+                            <p><strong>Key Levels:</strong> Support: ${analysis.recommendation.key_levels.support} | Resistance: ${analysis.recommendation.key_levels.resistance}</p>
+                            <p><strong>Reasoning:</strong> ${analysis.recommendation.reasoning}</p>
+                        </div>
+                    `;
+                })
+                .catch(error => {
+                    modalBody.innerHTML = '<div class="analysis-section"><h3>❌ Error Loading Analysis</h3><p>Unable to fetch detailed analysis. Please try again.</p></div>';
+                    console.error('Error loading coin details:', error);
+                });
+        }
+        
+        closeModal.onclick = function() {
+            modal.style.display = 'none';
+        }
+        
+        window.onclick = function(event) {
+            if (event.target == modal) {
+                modal.style.display = 'none';
+            }
+        }
     </script>
 </body>
 </html>
