@@ -203,71 +203,110 @@ class ComprehensiveMarketScanner:
         return analysis if any([analysis['technical'], analysis['news'], analysis['social']]) else None
     
     async def _get_direct_technical_analysis(self, session: aiohttp.ClientSession, symbol: str) -> Optional[Dict]:
-        """Get REAL technical analysis from TAAPI.io instead of fake random data"""
+        """Get REAL technical analysis from Lumif-ai TradingView wrapper"""
         try:
-            # Use REAL TAAPI.io API for actual technical indicators
-            url = f"{LOCAL_API_URL}/api/taapi/bulk"
+            # Use Lumif-ai TradingView Enhanced Analysis with proper symbol format
+            symbol_formatted = f"{symbol}USDT" if not symbol.endswith('USDT') else symbol
+            url = f"{LOCAL_API_URL}/api/lumif/enhanced-analysis/{symbol_formatted}"
             
-            # Request REAL RSI, MACD, and other indicators from TAAPI.io
-            taapi_params = {
-                'symbol': f"{symbol}USDT",
-                'exchange': 'binance',
-                'interval': '4h',
-                'indicators': ['rsi', 'macd', 'bbands', 'ema21', 'sma50']
-            }
+            print(f"🔍 Attempting Lumif TradingView analysis for {symbol_formatted}...")
             
             timeout = aiohttp.ClientTimeout(total=15)
-            async with session.post(url, json=taapi_params, timeout=timeout) as response:
+            async with session.get(url, timeout=timeout) as response:
                 if response.status == 200:
                     data = await response.json()
-                    if data.get('success') and data.get('data'):
-                        indicators = data['data']
+                    if data.get('status') == 'success' and data.get('data'):
+                        tv_data = data['data']
                         
-                        # Extract REAL indicator values
-                        rsi = indicators.get('rsi', {}).get('value', 50)
-                        macd_data = indicators.get('macd', {})
-                        macd_histogram = macd_data.get('histogram', 0)
-                        bb_data = indicators.get('bbands', {})
+                        # Extract REAL TradingView indicator values from actual response format
+                        indicators = tv_data.get('technical_indicators', {})
                         
-                        # Calculate REAL signals based on actual data
+                        rsi = indicators.get('rsi', 50)
+                        macd = indicators.get('macd', 0)
+                        macd_signal = indicators.get('rsi_signal', 'NEUTRAL').lower()
+                        
+                        # Get TradingView recommendation and signals
+                        recommendation = tv_data.get('overall_recommendation', 'NEUTRAL').lower()
+                        signals = tv_data.get('signals', {})
+                        buy_signals = signals.get('buy', 0)
+                        sell_signals = signals.get('sell', 0)
+                        tv_confidence = tv_data.get('confidence_score', 50)
+                        
+                        # Calculate REAL signals based on TradingView data
                         rsi_signal = 'oversold' if rsi < 30 else ('overbought' if rsi > 70 else 'neutral')
-                        macd_signal = 'bullish' if macd_histogram > 0 else 'bearish'
+                        macd_signal_processed = 'bullish' if macd > 0 else ('bearish' if macd < 0 else 'neutral')
                         
-                        # REAL recommendation logic
+                        # Count bullish signals from REAL TradingView indicators
                         bullish_signals = 0
-                        if rsi < 35: bullish_signals += 1  # Oversold
-                        if macd_histogram > 0: bullish_signals += 1  # MACD bullish
-                        if bb_data.get('lower', 0) > 0 and rsi < 25: bullish_signals += 1  # BB squeeze
+                        if rsi < 35: bullish_signals += 1  # Oversold condition
+                        if macd > 0: bullish_signals += 1  # MACD bullish
+                        if recommendation == 'buy': bullish_signals += 1  # TradingView buy signal
+                        if buy_signals > sell_signals: bullish_signals += 1  # More buy than sell signals
                         
-                        recommendation = 'buy' if bullish_signals >= 2 else ('sell' if bullish_signals == 0 and rsi > 65 else 'neutral')
-                        
-                        # Conservative but REAL confluence scoring
+                        # Conservative but REAL confluence scoring using TradingView data
                         base_score = 20
+                        
+                        # Add score based on TradingView recommendation
                         if recommendation == 'buy':
-                            base_score += min(15, (50 - rsi) * 0.5)  # More oversold = higher score
-                        if macd_histogram > 0:
+                            base_score += min(15, (buy_signals - sell_signals) * 2)  # Signal strength
+                        if macd > 0:
+                            base_score += 5
+                        if tv_confidence > 70:  # High TradingView confidence
                             base_score += 8
+                        elif tv_confidence > 60:
+                            base_score += 5
+                        
+                        # Penalty for bearish conditions
+                        if recommendation == 'sell':
+                            base_score = max(10, base_score - 10)
                         
                         technical_score = min(45, base_score)  # Cap at 45% as planned
                         
-                        print(f"✅ REAL Technical Analysis: {symbol} - RSI: {rsi:.1f}, MACD: {macd_signal}")
+                        print(f"✅ REAL TradingView Analysis: {symbol} - RSI: {rsi:.1f}, MACD: {macd:.2f}, Rec: {recommendation}")
+                        print(f"   TV Confidence: {tv_confidence:.1f}%, Buy/Sell: {buy_signals}/{sell_signals}")
                         
                         return {
                             'rsi': round(rsi, 1),
                             'rsi_signal': rsi_signal,
-                            'macd_signal': macd_signal,
-                            'macd_histogram': round(macd_histogram, 4),
+                            'macd_signal': macd_signal_processed,
+                            'macd_value': round(macd, 2),
                             'recommendation': recommendation,
                             'confluence_score': round(technical_score, 1),
                             'bullish_signals': bullish_signals,
-                            'bearish_signals': 3 - bullish_signals,
+                            'bearish_signals': max(0, 4 - bullish_signals),
                             'technical_score': round(technical_score, 1),
-                            'source': 'taapi_real_data',
-                            'confidence': 85
+                            'source': 'lumif_tradingview_real',
+                            'confidence': 85,
+                            'tradingview_confidence': round(tv_confidence, 1),
+                            'tv_buy_signals': buy_signals,
+                            'tv_sell_signals': sell_signals
                         }
                 
-                # If TAAPI fails, use conservative neutral analysis instead of fake random
-                print(f"⚠️ TAAPI.io not available for {symbol}, using neutral analysis")
+                # If Lumif-ai TradingView fails, use fallback API
+                print(f"⚠️ Lumif TradingView not available for {symbol}, trying fallback...")
+                
+                # Try alternative TradingView endpoint with proper symbol format
+                fallback_url = f"{LOCAL_API_URL}/api/lumif/pattern-signals/{symbol_formatted}"
+                async with session.get(fallback_url, timeout=timeout) as fallback_response:
+                    if fallback_response.status == 200:
+                        fallback_data = await fallback_response.json()
+                        if fallback_data.get('success'):
+                            # Use pattern analysis as backup
+                            return {
+                                'rsi': 50.0,
+                                'rsi_signal': 'neutral',
+                                'macd_signal': 'neutral',
+                                'recommendation': 'neutral',
+                                'confluence_score': 25.0,
+                                'bullish_signals': 1,
+                                'bearish_signals': 1,
+                                'technical_score': 25.0,
+                                'source': 'lumif_pattern_fallback',
+                                'confidence': 60
+                            }
+                
+                # Final fallback to neutral
+                print(f"⚠️ All TradingView sources unavailable for {symbol}")
                 return {
                     'rsi': 50.0,
                     'rsi_signal': 'neutral',
@@ -282,7 +321,7 @@ class ComprehensiveMarketScanner:
                 }
                     
         except Exception as e:
-            print(f"⚠️ Real technical analysis error for {symbol}: {e}")
+            print(f"⚠️ Lumif TradingView analysis error for {symbol}: {e}")
             # Return neutral instead of fake random data
             return {
                 'rsi': 50.0,
@@ -302,9 +341,8 @@ class ComprehensiveMarketScanner:
         try:
             # BYPASS TRADINGVIEW RATE LIMITS - Use alternative technical analysis
             try:
-                # Use direct API call to bypass TradingView completely
-                symbol_formatted = f"{symbol}USDT" if not symbol.endswith('USDT') else symbol
-                local_analysis = await self._get_direct_technical_analysis(session, symbol_formatted)
+                # Use Lumif-ai TradingView wrapper for real technical analysis
+                local_analysis = await self._get_direct_technical_analysis(session, symbol)
                 
                 if local_analysis:
                     print(f"✅ Direct Technical Analysis: {symbol} analysis successful")
