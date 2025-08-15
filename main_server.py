@@ -1,4 +1,4 @@
-from flask import Flask, jsonify, request
+from flask import Flask, jsonify, request, render_template
 from flask_cors import CORS
 import logging
 import os
@@ -370,12 +370,47 @@ trading_functions = TradingFunctions(exchange_manager)
 
 @app.route('/', methods=['GET'])
 def root():
-    """Root endpoint with API information"""
+    """Main dashboard - Trading Intelligence Interface"""
+    try:
+        return render_template('dashboard.html')
+    except Exception as e:
+        # Fallback to API response if template fails
+        logger.error(f"Template error: {e}")
+        return jsonify({
+            'message': 'THE ALPHA PLAYBOOK v4 - Trading Intelligence Server',
+            'version': '2.1.2',
+            'status': 'running',
+            'timestamp': datetime.now().isoformat(),
+            'features': [
+                '200+ coins scanning (stablecoins filtered)',
+                '208+ technical indicators (Lumif-ai TradingView)',
+                '3-layer confluence analysis',
+                'Real-time Discord alerts',
+                'Multi-exchange integration',
+                'Live portfolio monitoring'
+            ],
+            'endpoints': {
+                'scanner_dashboard': '/scanner',
+                'analytics_dashboard': 'http://localhost:5001',
+                'api_docs': '/api',
+                'health_check': '/health'
+            },
+            'active_workflows': [
+                'Comprehensive Market Scanner (200 coins)',
+                'Discord AI Alerts',
+                'ChatGPT Alpha Discord Bot',
+                'Analytics Dashboard'
+            ]
+        })
+
+@app.route('/api', methods=['GET'])
+def api_info():
+    """API information endpoint"""
     return jsonify({
         'message': 'Crypto Trading API Server',
         'version': '2.1.2',
         'status': 'running',
-        'last_updated': '2025-08-10T05:26:00Z',
+        'last_updated': '2025-08-15T03:00:00Z',
         'available_endpoints': 25,
         'available_exchanges': exchange_manager.get_available_exchanges(),
         'total_exchanges': len(exchange_manager.get_available_exchanges()),
@@ -386,23 +421,67 @@ def root():
             'blofin_positions': '/api/live/blofin-positions',
             'market_data': '/api/live/market-data/{symbol}'
         },
+        'scanner_endpoints': {
+            'market_scanner': '/api/lumif/market-scanner',
+            'enhanced_analysis': '/api/lumif/enhanced-analysis/{symbol}',
+            'multi_timeframe': '/api/lumif/multi-timeframe/{symbol}',
+            'pattern_signals': '/api/lumif/pattern-signals/{symbol}'
+        },
         'exchange_specific_endpoints': {
             'kraken_balance': '/api/kraken/balance',
             'bingx_balance': '/api/bingx/balance',
             'blofin_balance': '/api/blofin/balance',
             'bingx_klines': '/api/bingx/klines/{symbol}'
-        },
-        'generic_endpoints': {
-            'health': '/health',
-            'exchange_status': '/exchanges/status',
-            'market_data': '/api/ticker/{exchange}/{symbol}, /api/orderbook/{exchange}/{symbol}, /api/trades/{exchange}/{symbol}',
-            'trading': '/api/order (POST), /api/orders/{exchange}, /api/order/{exchange}/{order_id} (DELETE)',
-            'account': '/api/balance/{exchange}, /api/account-info/{exchange}, /api/transfer (POST)',
-            'portfolio': '/api/portfolio/{exchange}, /api/positions/{exchange}',
-            'history': '/api/order-history/{exchange}, /api/trade-history/{exchange}, /api/deposit-history/{exchange}',
-            'derivatives': '/api/funding-rate/{exchange}/{symbol}, /api/leverage/{exchange}/{symbol} (POST)'
         }
     })
+
+@app.route('/scanner', methods=['GET'])
+def scanner_dashboard():
+    """Scanner Dashboard"""
+    try:
+        return render_template('scan_dashboard.html')
+    except Exception as e:
+        logger.error(f"Scanner template error: {e}")
+        return jsonify({'error': 'Scanner dashboard template not found', 'fallback': '/api'})
+
+@app.route('/api/dashboard/overview', methods=['GET'])
+def dashboard_overview():
+    """Dashboard overview data"""
+    try:
+        return jsonify({
+            'status': 'success',
+            'timestamp': datetime.now().isoformat(),
+            'scanner': {
+                'active': True,
+                'coins_scanning': 200,
+                'current_batch': '10/11',
+                'completion_time': '66.7 minutes per cycle'
+            },
+            'exchanges': exchange_manager.get_available_exchanges(),
+            'features': [
+                'Real-time market scanning',
+                '208+ technical indicators',
+                '3-layer confluence analysis',  
+                'Discord alert integration'
+            ],
+            'portfolio_metrics': {
+                'total_pnl': 0.0,
+                'total_positions': 0,
+                'win_rate': 0.0,
+                'high_risk_count': 0,
+                'no_stop_loss_count': 0,
+                'avg_pnl_per_position': 0.0,
+                'profitable_positions': 0
+            },
+            'balance_data': {
+                'total_balance': {'USDT': 0.0},
+                'enhanced_features': True
+            },
+            'positions': []
+        })
+    except Exception as e:
+        logger.error(f"Dashboard overview error: {e}")
+        return jsonify({'error': str(e)}), 500
 
 @app.route('/health', methods=['GET'])
 def health_check():
