@@ -48,7 +48,8 @@ DISCORD_CHANNELS = {
     'news': 1398000506068009032,          # News and social stuff channel
     'portfolio': 1399451217372905584,
     # 'alpha_scans': 1399790636990857277,   # DISABLED - Trading opportunities (alerts were useless)
-    'degen_memes': 1401971493096915067
+    'degen_memes': 1401971493096915067,
+    'calendar': 1405899035935637635       # Financial calendar - FOMC, rate decisions, market-moving events
 }
 
 class GPTCommandBot(commands.Bot):

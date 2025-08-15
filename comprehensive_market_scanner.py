@@ -43,7 +43,8 @@ DISCORD_CHANNELS = {
     'news': 1398000506068009032,          # News and social stuff channel
     'portfolio': 1399451217372905584,     # Portfolio analysis  
     # 'alpha_scans': 1399790636990857277,   # DISABLED - Trading opportunities (alerts were useless)
-    'degen_memes': 1401971493096915067    # Degen memes, viral plays, airdrops, early gems
+    'degen_memes': 1401971493096915067,   # Degen memes, viral plays, airdrops, early gems
+    'calendar': 1405899035935637635       # Financial calendar - FOMC, rate decisions, market-moving events
 }
 DISCORD_WEBHOOK_ALPHA_SCANS = "https://discord.com/api/webhooks/1403928100202352731/kLY9j4wApDDSvjXbi8SDFEcytiNJIlUZhLgoZkMIqVI2RhFm6AFunl46gDOjqssqRh7w"
 DISCORD_WEBHOOK_URL = DISCORD_WEBHOOK_ALPHA_SCANS  # Backward compatibility

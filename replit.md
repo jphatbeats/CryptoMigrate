@@ -3,12 +3,13 @@
 This project is a comprehensive cryptocurrency trading automation system, THE ALPHA PLAYBOOK v4, designed for significant capital growth through AI-powered trading intelligence. It focuses on confluence-based sniper entries with zero data hallucination by using authenticated API sources. The system features real-time market intelligence, automated portfolio monitoring, and multi-channel Discord alerting with enhanced visual content. It includes capabilities for detecting conditional orders, real-time portfolio analysis, and market-wide technical indicator scanning.
 
 ## Recent Critical Updates (Aug 15, 2025)
+- **FINANCIAL CALENDAR SYSTEM ADDED**: New calendar channel (1405899035935637635) tracks FOMC meetings, rate decisions, and guaranteed market volatility events with advance warnings for stop loss preparation
 - **ALPHA SCANS CHANNEL DISABLED**: Removed useless alpha_scans channel (1399790636990857277) - alerts were not providing value
-- **STREAMLINED DISCORD ARCHITECTURE**: Now using 3 focused channels: #news-and-social-stuff (breaking news/digest/social), #portfolio (analysis), #degen-memes (viral plays)
+- **STREAMLINED DISCORD ARCHITECTURE**: Now using 4 focused channels: #news-and-social-stuff (breaking news/digest/social), #portfolio (analysis), #degen-memes (viral plays), #calendar (FOMC/rate decisions/market events)
 - **DISCORD SYSTEM CONSISTENCY FIX**: Resolved critical async/await compatibility issue in analyze_trading_conditions function
 - **UNIFIED MCP ARCHITECTURE**: All remaining Discord alert channels use consistent Lumif-ai TradingView integration
 - **ENHANCED AI INTEGRATION**: All active alert channels now provide GPT-4o powered insights with unified technical analysis pipeline
-- **SYSTEM STABILITY**: All 8 workflows running continuously with streamlined alert routing
+- **SYSTEM STABILITY**: All 9 workflows running continuously with streamlined alert routing
 - **AI-POWERED MARKET INTELLIGENCE**: Integrated OpenAI GPT-4o for natural language market analysis
 - **Intelligent Explanations**: Each coin scan now includes professional AI insights explaining confidence scores
 - **Enhanced Scanner Dashboard**: Live AI-powered explanations alongside technical data for actionable intelligence
@@ -52,7 +53,7 @@ Preferred communication style: Simple, everyday language.
 
 ## System Features
 - **Discord Slash Commands & Interactive Dashboard**: Functional Discord commands for market analysis and an interactive crypto dashboard with animated widgets and market snapshots.
-- **Enhanced Discord Intelligence (TITAN BOT#6444)**: Employs a streamlined 3-channel strategy for targeted information delivery: #news-and-social-stuff (breaking news/digest/social), #portfolio (analysis), #degen-memes (viral plays), with intelligent routing and full slash command integration.
+- **Enhanced Discord Intelligence (TITAN BOT#6444)**: Employs a streamlined 4-channel strategy for targeted information delivery: #news-and-social-stuff (breaking news/digest/social), #portfolio (analysis), #degen-memes (viral plays), #calendar (FOMC/rate decisions/financial events), with intelligent routing and full slash command integration.
 - **BingX Conditional Orders Detection V4.1**: Direct API integration for detecting and monitoring active stop losses and take profits with accurate symbol matching and real-time updates.
 - **ChatGPT Market-Wide Indicator Scanning**: Endpoints for ChatGPT Custom Actions to scan entire crypto markets for specific technical conditions (RSI, MACD, multi-indicator confluence) across various timeframes with filtering.
 
