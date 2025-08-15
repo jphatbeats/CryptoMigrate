@@ -2410,21 +2410,28 @@ async def run_trading_analysis():
                         position_count = len(platform_groups['BingX']['positions'])
                         portfolio_message += f"📈 {position_count} positions | Avg PnL: {total_pnl/position_count:+.1f}%\n"
                         
-                        # Show top positions with details
-                        for pos in sorted(platform_groups['BingX']['positions'], key=lambda x: abs(float(x.get('Unrealized PnL %', 0))), reverse=True)[:3]:
+                        # Show ALL positions with details
+                        for pos in sorted(platform_groups['BingX']['positions'], key=lambda x: abs(float(x.get('Unrealized PnL %', 0))), reverse=True):
                             symbol = pos.get('Symbol', '')
                             pnl = float(pos.get('Unrealized PnL %', 0))
                             side = pos.get('Side (LONG/SHORT)', '')
                             entry = pos.get('Entry Price', 0)
                             current = pos.get('Mark Price', 0)
                             leverage = pos.get('Leverage', 1)
+                            value = float(pos.get('Margin Size ($)', 0))
                             
-                            if pnl > 35:
-                                portfolio_message += f"🚀 ${symbol}: +{pnl:.1f}% | {side} {leverage}x | Entry: ${entry:.3f}\n"
+                            if pnl > 100:
+                                portfolio_message += f"🚀 **${symbol}**: +{pnl:.0f}% | {side} {leverage}x | ${value:,.0f} | **MASSIVE GAINS**\n"
+                            elif pnl > 35:
+                                portfolio_message += f"🔥 **${symbol}**: +{pnl:.1f}% | {side} {leverage}x | ${value:,.0f} | Major gains\n"
+                            elif pnl > 15:
+                                portfolio_message += f"📈 **${symbol}**: +{pnl:.1f}% | {side} {leverage}x | ${value:,.0f} | Strong\n"
+                            elif pnl < -15:
+                                portfolio_message += f"🔴 **${symbol}**: {pnl:.1f}% | {side} {leverage}x | ${value:,.0f} | **NEEDS ATTENTION**\n"
                             elif pnl < -8:
-                                portfolio_message += f"🔴 ${symbol}: {pnl:.1f}% | {side} {leverage}x | Set stop loss!\n"
-                            elif abs(pnl) > 5:
-                                portfolio_message += f"📊 ${symbol}: {pnl:+.1f}% | {side} {leverage}x | Entry: ${entry:.3f}\n"
+                                portfolio_message += f"⚠️ **${symbol}**: {pnl:.1f}% | {side} {leverage}x | ${value:,.0f} | Set stop loss\n"
+                            else:
+                                portfolio_message += f"📊 **${symbol}**: {pnl:+.1f}% | {side} {leverage}x | ${value:,.0f} | Neutral\n"
                     
                     portfolio_message += "\n"
                 
@@ -2437,8 +2444,8 @@ async def run_trading_analysis():
                         position_count = len(platform_groups['Blofin']['positions'])
                         portfolio_message += f"📈 {position_count} positions | Avg PnL: {total_pnl/position_count:+.1f}%\n"
                         
-                        # Show top copy trading positions 
-                        for pos in sorted(platform_groups['Blofin']['positions'], key=lambda x: abs(float(x.get('Unrealized PnL %', 0))), reverse=True)[:3]:
+                        # Show ALL copy trading positions 
+                        for pos in sorted(platform_groups['Blofin']['positions'], key=lambda x: abs(float(x.get('Unrealized PnL %', 0))), reverse=True):
                             symbol = pos.get('Symbol', '')
                             pnl = float(pos.get('Unrealized PnL %', 0))
                             side = pos.get('Side (LONG/SHORT)', '')
@@ -2462,8 +2469,8 @@ async def run_trading_analysis():
                         total_value = sum(float(pos.get('Margin Size ($)', 0)) for pos in platform_groups['Kraken']['positions'])
                         portfolio_message += f"💰 {position_count} bags | Total value: ~${total_value:,.0f}\n"
                         
-                        # Show big bags by size
-                        for pos in sorted(platform_groups['Kraken']['positions'], key=lambda x: float(x.get('Margin Size ($)', 0)), reverse=True)[:4]:
+                        # Show ALL big bags by size
+                        for pos in sorted(platform_groups['Kraken']['positions'], key=lambda x: float(x.get('Margin Size ($)', 0)), reverse=True):
                             symbol = pos.get('Symbol', '')
                             value = float(pos.get('Margin Size ($)', 0))
                             side = pos.get('Side (LONG/SHORT)', 'HODL')
