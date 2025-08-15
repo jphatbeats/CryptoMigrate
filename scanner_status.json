@@ -1,13 +1,21 @@
 {
-  "current_coin": "BTC",
-  "current_index": 1,
+  "current_coin": "ETH",
+  "current_index": 2,
   "total_coins": 200,
   "current_batch": "1/11",
   "confidence": 15,
   "alert_triggered": false,
-  "timestamp": "2025-08-15T21:41:22.165306",
+  "timestamp": "2025-08-15T21:41:59.197147",
   "scanning_active": true,
   "recent_scans": [
+    {
+      "symbol": "ETH",
+      "confidence": 15,
+      "timestamp": "21:41:59",
+      "alert_triggered": false,
+      "status": "completed",
+      "ai_insight": "ETH's low confidence score of 15.0% is primarily driven by neutral technical indicators, lack of positive sentiment in recent news, and stagnant social momentum, indicating limited enthusiasm or catalysts for price movement. Traders should note the absence of catalysts and engagement suggests limited short-term movement potential."
+    },
     {
       "symbol": "BTC",
       "confidence": 15,
@@ -79,14 +87,6 @@
       "alert_triggered": false,
       "status": "completed",
       "ai_insight": "IOTA's low confidence score of 15.0% is primarily driven by neutral technical indicators and a lack of positive sentiment in both news and social media, indicating limited investor interest and momentum. Traders should note the absence of any compelling catalysts or positive sentiment, suggesting that IOTA may remain stagnant until more significant developments or market interest arise."
-    },
-    {
-      "symbol": "NEO",
-      "confidence": 15,
-      "timestamp": "21:35:54",
-      "alert_triggered": false,
-      "status": "completed",
-      "ai_insight": "NEO's score of 15.0% reflects a lack of momentum across technical, news, and social metrics, indicating a stagnant market position with no clear catalysts for movement. Traders should note the neutral technical indicators and absence of news or social buzz, suggesting limited immediate opportunities for significant price action."
     }
   ]
 }

@@ -1,9 +1,9 @@
 # COST OPTIMIZATION IMPLEMENTATION
 
 ## PROBLEM IDENTIFIED:
-- OpenAI GPT-4o was being called EVERY 20 seconds for ALL 200 coins
-- This created ~4,320 API calls per day (200 coins × 3 rotations × 24 hours ÷ 66 min cycle)
-- Cost: ~$200/month in AI credits alone
+- $200 cost was from Replit AI Agent usage during development (not external OpenAI)
+- Only $5 spent on external ChatGPT API usage
+- Need to optimize Replit AI Agent interactions for future development
 
 ## SOLUTION IMPLEMENTED:
 
