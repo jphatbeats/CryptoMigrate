@@ -3,6 +3,8 @@
 This project is a comprehensive cryptocurrency trading automation system, THE ALPHA PLAYBOOK v4, designed for significant capital growth through AI-powered trading intelligence. It focuses on confluence-based sniper entries with zero data hallucination by using authenticated API sources. The system features real-time market intelligence, automated portfolio monitoring, and multi-channel Discord alerting with enhanced visual content. It includes capabilities for detecting conditional orders, real-time portfolio analysis, and market-wide technical indicator scanning.
 
 ## Recent Critical Updates (Aug 15, 2025)
+- **PORTFOLIO ANALYSIS BY EXCHANGE**: Portfolio channel now groups analysis by platform - BingX (leveraged trading), Blofin (copy trading), Kraken (big bags/HODL)
+- **BLOFIN API CREDENTIALS FIXED**: Corrected environment variable names (BLOFIN_SECRET → BLOFIN_API_SECRET) - all exchange integrations now working
 - **FINANCIAL CALENDAR SYSTEM ADDED**: New calendar channel (1405899035935637635) tracks FOMC meetings, rate decisions, and guaranteed market volatility events with advance warnings for stop loss preparation
 - **ALPHA SCANS CHANNEL DISABLED**: Removed useless alpha_scans channel (1399790636990857277) - alerts were not providing value
 - **STREAMLINED DISCORD ARCHITECTURE**: Now using 4 focused channels: #news-and-social-stuff (breaking news/digest/social), #portfolio (analysis), #degen-memes (viral plays), #calendar (FOMC/rate decisions/market events)

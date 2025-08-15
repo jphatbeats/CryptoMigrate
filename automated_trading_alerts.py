@@ -2263,35 +2263,120 @@ async def run_trading_analysis():
             else:
                 print("❌ Failed to save alerts")
             
-            # Send portfolio alerts to #portfolio channel
+            # Send portfolio alerts to #portfolio channel grouped by exchange
             try:
-                portfolio_message = f"📊 **PORTFOLIO ANALYSIS** 📊\n"
+                # Group positions and alerts by platform
+                platform_groups = {
+                    'BingX': {'positions': [], 'alerts': []},
+                    'Blofin': {'positions': [], 'alerts': []},
+                    'Kraken': {'positions': [], 'alerts': []}
+                }
+                
+                # Group positions by platform
+                for position in positions:
+                    platform = position.get('Platform', '').upper()
+                    if 'BINGX' in platform or 'BING' in platform:
+                        platform_groups['BingX']['positions'].append(position)
+                    elif 'BLOFIN' in platform or 'BLO' in platform:
+                        platform_groups['Blofin']['positions'].append(position)
+                    elif 'KRAKEN' in platform or 'KRA' in platform:
+                        platform_groups['Kraken']['positions'].append(position)
+                
+                # Group alerts by platform
+                for alert in alerts:
+                    platform = alert.get('platform', '').upper()
+                    if 'BINGX' in platform or 'BING' in platform:
+                        platform_groups['BingX']['alerts'].append(alert)
+                    elif 'BLOFIN' in platform or 'BLO' in platform:
+                        platform_groups['Blofin']['alerts'].append(alert)
+                    elif 'KRAKEN' in platform or 'KRA' in platform:
+                        platform_groups['Kraken']['alerts'].append(alert)
+                
+                portfolio_message = f"📊 **PORTFOLIO ANALYSIS BY EXCHANGE** 📊\n"
                 portfolio_message += f"⏰ {datetime.now().strftime('%Y-%m-%d %H:%M UTC')}\n\n"
                 
-                for alert in alerts[:3]:  # Limit to top 3 alerts
-                    symbol = alert.get('symbol', 'Unknown')
-                    alert_type = alert.get('type', 'Unknown')
-                    pnl = alert.get('pnl', 0)
+                # BingX Section - Leveraged Trading
+                if platform_groups['BingX']['positions'] or platform_groups['BingX']['alerts']:
+                    portfolio_message += f"⚡ **BINGX - LEVERAGED TRADING** ⚡\n"
                     
-                    if alert_type == 'overbought':
-                        portfolio_message += f"🔴 **{symbol}** - Overbought Signal\n"
-                        portfolio_message += f"💰 PnL: {pnl:+.1f}%\n"
-                        portfolio_message += f"📈 Consider taking profits\n\n"
-                    elif alert_type == 'oversold':
-                        portfolio_message += f"🟢 **{symbol}** - Oversold Signal\n"
-                        portfolio_message += f"💰 PnL: {pnl:+.1f}%\n"
-                        portfolio_message += f"📉 Potential buy opportunity\n\n"
-                    elif alert_type == 'high_profit':
-                        portfolio_message += f"🚀 **{symbol}** - High Profit Alert\n"
-                        portfolio_message += f"💰 PnL: {pnl:+.1f}%\n"
-                        portfolio_message += f"🎯 Strong performance\n\n"
-                    elif alert_type == 'stop_loss':
-                        portfolio_message += f"⚠️ **{symbol}** - Stop Loss Warning\n"
-                        portfolio_message += f"💰 PnL: {pnl:+.1f}%\n"
-                        portfolio_message += f"🛡️ Consider setting stop loss\n\n"
+                    if platform_groups['BingX']['positions']:
+                        total_pnl = sum(float(pos.get('PnL %', 0)) for pos in platform_groups['BingX']['positions'])
+                        position_count = len(platform_groups['BingX']['positions'])
+                        portfolio_message += f"📈 {position_count} positions | Avg PnL: {total_pnl/position_count:+.1f}%\n"
+                    
+                    for alert in platform_groups['BingX']['alerts'][:2]:  # Top 2 alerts per platform
+                        symbol = alert.get('symbol', 'Unknown')
+                        alert_type = alert.get('type', 'Unknown')
+                        pnl = alert.get('pnl', 0)
+                        
+                        if alert_type == 'high_profit':
+                            portfolio_message += f"🚀 {symbol}: +{pnl:.1f}% - Take profits\n"
+                        elif alert_type == 'stop_loss':
+                            portfolio_message += f"⚠️ {symbol}: {pnl:+.1f}% - Set stop loss\n"
+                        elif alert_type == 'overbought':
+                            portfolio_message += f"🔴 {symbol}: {pnl:+.1f}% - Overbought\n"
+                        elif alert_type == 'oversold':
+                            portfolio_message += f"🟢 {symbol}: {pnl:+.1f}% - Oversold\n"
+                    
+                    portfolio_message += "\n"
+                
+                # Blofin Section - Copy Trading
+                if platform_groups['Blofin']['positions'] or platform_groups['Blofin']['alerts']:
+                    portfolio_message += f"🤖 **BLOFIN - COPY TRADING** 🤖\n"
+                    
+                    if platform_groups['Blofin']['positions']:
+                        total_pnl = sum(float(pos.get('PnL %', 0)) for pos in platform_groups['Blofin']['positions'])
+                        position_count = len(platform_groups['Blofin']['positions'])
+                        portfolio_message += f"📈 {position_count} positions | Avg PnL: {total_pnl/position_count:+.1f}%\n"
+                    
+                    for alert in platform_groups['Blofin']['alerts'][:2]:
+                        symbol = alert.get('symbol', 'Unknown')
+                        alert_type = alert.get('type', 'Unknown')
+                        pnl = alert.get('pnl', 0)
+                        
+                        if alert_type == 'high_profit':
+                            portfolio_message += f"🚀 {symbol}: +{pnl:.1f}% - Strong copy\n"
+                        elif alert_type == 'stop_loss':
+                            portfolio_message += f"⚠️ {symbol}: {pnl:+.1f}% - Monitor trader\n"
+                        elif alert_type == 'overbought':
+                            portfolio_message += f"🔴 {symbol}: {pnl:+.1f}% - Overbought\n"
+                        elif alert_type == 'oversold':
+                            portfolio_message += f"🟢 {symbol}: {pnl:+.1f}% - Oversold\n"
+                    
+                    portfolio_message += "\n"
+                
+                # Kraken Section - Big Bags
+                if platform_groups['Kraken']['positions'] or platform_groups['Kraken']['alerts']:
+                    portfolio_message += f"💎 **KRAKEN - BIG BAGS** 💎\n"
+                    
+                    if platform_groups['Kraken']['positions']:
+                        total_pnl = sum(float(pos.get('PnL %', 0)) for pos in platform_groups['Kraken']['positions'])
+                        position_count = len(platform_groups['Kraken']['positions'])
+                        portfolio_message += f"📈 {position_count} positions | Avg PnL: {total_pnl/position_count:+.1f}%\n"
+                    
+                    for alert in platform_groups['Kraken']['alerts'][:2]:
+                        symbol = alert.get('symbol', 'Unknown')
+                        alert_type = alert.get('type', 'Unknown')
+                        pnl = alert.get('pnl', 0)
+                        
+                        if alert_type == 'high_profit':
+                            portfolio_message += f"🚀 {symbol}: +{pnl:.1f}% - HODL strong\n"
+                        elif alert_type == 'stop_loss':
+                            portfolio_message += f"⚠️ {symbol}: {pnl:+.1f}% - Long-term hold\n"
+                        elif alert_type == 'overbought':
+                            portfolio_message += f"🔴 {symbol}: {pnl:+.1f}% - Overbought\n"
+                        elif alert_type == 'oversold':
+                            portfolio_message += f"🟢 {symbol}: {pnl:+.1f}% - Accumulate?\n"
+                    
+                    portfolio_message += "\n"
+                
+                # Add overall summary
+                total_positions = len(positions)
+                total_alerts = len(alerts)
+                portfolio_message += f"📊 **SUMMARY**: {total_positions} total positions, {total_alerts} alerts"
                 
                 await send_discord_alert(portfolio_message, 'portfolio')
-                print(f"✅ Portfolio analysis sent to #portfolio channel")
+                print(f"✅ Portfolio analysis sent to #portfolio channel (grouped by exchange)")
             except Exception as e:
                 print(f"❌ Error sending portfolio alerts: {e}")
                 
