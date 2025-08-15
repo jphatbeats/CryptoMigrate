@@ -14,7 +14,13 @@ import pytz
 from typing import List, Dict, Optional
 import logging
 import os
-from openai import OpenAI
+try:
+    from openai import OpenAI
+    OPENAI_AVAILABLE = True
+except ImportError:
+    print("⚠️ OpenAI not available - AI analysis disabled")
+    OpenAI = None
+    OPENAI_AVAILABLE = False
 
 # Lumif-ai TradingView Enhanced Integration
 try:
@@ -58,9 +64,13 @@ class ComprehensiveMarketScanner:
         
         # Initialize OpenAI client for AI-powered analysis
         try:
-            self.openai_client = OpenAI(api_key=os.getenv('OPENAI_API_KEY'))
-            self.ai_enabled = True
-            print("🧠 AI-powered analysis enabled with OpenAI GPT-4o")
+            api_key = os.getenv('OPENAI_API_KEY')
+            if api_key and OPENAI_AVAILABLE:
+                self.openai_client = OpenAI(api_key=api_key)
+                self.ai_enabled = True
+                print("🧠 AI-powered analysis enabled with OpenAI GPT-4o")
+            else:
+                raise Exception("OpenAI API key not found or OpenAI not installed")
         except Exception as e:
             print(f"⚠️ OpenAI not available: {e}")
             self.openai_client = None
@@ -193,41 +203,99 @@ class ComprehensiveMarketScanner:
         return analysis if any([analysis['technical'], analysis['news'], analysis['social']]) else None
     
     async def _get_direct_technical_analysis(self, session: aiohttp.ClientSession, symbol: str) -> Optional[Dict]:
-        """Direct technical analysis bypassing TradingView rate limits"""
+        """Get REAL technical analysis from TAAPI.io instead of fake random data"""
         try:
-            # Use local computation or alternative API that doesn't rate limit
-            import random
+            # Use REAL TAAPI.io API for actual technical indicators
+            url = f"{LOCAL_API_URL}/api/taapi/bulk"
             
-            # Simulate technical analysis with realistic ranges
-            rsi = random.uniform(25, 75)
-            macd_signal = 'bullish' if random.random() > 0.5 else 'bearish'
-            recommendation = 'buy' if rsi < 35 and macd_signal == 'bullish' else ('sell' if rsi > 65 and macd_signal == 'bearish' else 'neutral')
-            
-            # Calculate confluence score - EXTREMELY conservative to stop alert spam
-            confluence_score = 15  # Even lower base score
-            if recommendation == 'buy' and rsi < 30:  # Only if OVERSOLD + bullish
-                confluence_score = random.uniform(25, 45)  # Max 45% even for perfect buy
-            elif recommendation == 'sell' and rsi > 70:  # Only if OVERBOUGHT + bearish  
-                confluence_score = random.uniform(5, 25)
-            else:
-                confluence_score = random.uniform(15, 35)  # Most coins low confidence
-            
-            return {
-                'rsi': round(rsi, 1),
-                'rsi_signal': 'oversold' if rsi < 30 else ('overbought' if rsi > 70 else 'neutral'),
-                'macd_signal': macd_signal,
-                'recommendation': recommendation,
-                'confluence_score': round(confluence_score, 1),
-                'bullish_signals': 2 if recommendation == 'buy' else 1,
-                'bearish_signals': 2 if recommendation == 'sell' else 1,
-                'technical_score': round(confluence_score, 1),
-                'source': 'direct_analysis',
-                'confidence': 75
+            # Request REAL RSI, MACD, and other indicators from TAAPI.io
+            taapi_params = {
+                'symbol': f"{symbol}USDT",
+                'exchange': 'binance',
+                'interval': '4h',
+                'indicators': ['rsi', 'macd', 'bbands', 'ema21', 'sma50']
             }
             
+            timeout = aiohttp.ClientTimeout(total=15)
+            async with session.post(url, json=taapi_params, timeout=timeout) as response:
+                if response.status == 200:
+                    data = await response.json()
+                    if data.get('success') and data.get('data'):
+                        indicators = data['data']
+                        
+                        # Extract REAL indicator values
+                        rsi = indicators.get('rsi', {}).get('value', 50)
+                        macd_data = indicators.get('macd', {})
+                        macd_histogram = macd_data.get('histogram', 0)
+                        bb_data = indicators.get('bbands', {})
+                        
+                        # Calculate REAL signals based on actual data
+                        rsi_signal = 'oversold' if rsi < 30 else ('overbought' if rsi > 70 else 'neutral')
+                        macd_signal = 'bullish' if macd_histogram > 0 else 'bearish'
+                        
+                        # REAL recommendation logic
+                        bullish_signals = 0
+                        if rsi < 35: bullish_signals += 1  # Oversold
+                        if macd_histogram > 0: bullish_signals += 1  # MACD bullish
+                        if bb_data.get('lower', 0) > 0 and rsi < 25: bullish_signals += 1  # BB squeeze
+                        
+                        recommendation = 'buy' if bullish_signals >= 2 else ('sell' if bullish_signals == 0 and rsi > 65 else 'neutral')
+                        
+                        # Conservative but REAL confluence scoring
+                        base_score = 20
+                        if recommendation == 'buy':
+                            base_score += min(15, (50 - rsi) * 0.5)  # More oversold = higher score
+                        if macd_histogram > 0:
+                            base_score += 8
+                        
+                        technical_score = min(45, base_score)  # Cap at 45% as planned
+                        
+                        print(f"✅ REAL Technical Analysis: {symbol} - RSI: {rsi:.1f}, MACD: {macd_signal}")
+                        
+                        return {
+                            'rsi': round(rsi, 1),
+                            'rsi_signal': rsi_signal,
+                            'macd_signal': macd_signal,
+                            'macd_histogram': round(macd_histogram, 4),
+                            'recommendation': recommendation,
+                            'confluence_score': round(technical_score, 1),
+                            'bullish_signals': bullish_signals,
+                            'bearish_signals': 3 - bullish_signals,
+                            'technical_score': round(technical_score, 1),
+                            'source': 'taapi_real_data',
+                            'confidence': 85
+                        }
+                
+                # If TAAPI fails, use conservative neutral analysis instead of fake random
+                print(f"⚠️ TAAPI.io not available for {symbol}, using neutral analysis")
+                return {
+                    'rsi': 50.0,
+                    'rsi_signal': 'neutral',
+                    'macd_signal': 'neutral',
+                    'recommendation': 'neutral',
+                    'confluence_score': 20.0,
+                    'bullish_signals': 1,
+                    'bearish_signals': 1,
+                    'technical_score': 20.0,
+                    'source': 'neutral_fallback',
+                    'confidence': 50
+                }
+                    
         except Exception as e:
-            print(f"⚠️ Direct technical analysis error for {symbol}: {e}")
-            return None
+            print(f"⚠️ Real technical analysis error for {symbol}: {e}")
+            # Return neutral instead of fake random data
+            return {
+                'rsi': 50.0,
+                'rsi_signal': 'neutral', 
+                'macd_signal': 'neutral',
+                'recommendation': 'neutral',
+                'confluence_score': 20.0,
+                'bullish_signals': 1,
+                'bearish_signals': 1,
+                'technical_score': 20.0,
+                'source': 'error_fallback',
+                'confidence': 25
+            }
     
     async def _get_technical_analysis(self, session: aiohttp.ClientSession, symbol: str) -> Optional[Dict]:
         """Enhanced technical analysis using Lumif-ai TradingView + fallback to local"""
@@ -423,6 +491,9 @@ class ComprehensiveMarketScanner:
     def _analyze_news_with_ai(self, news_text: str, symbol: str) -> Optional[Dict]:
         """Use AI to analyze news sentiment and market impact"""
         try:
+            if not self.openai_client:
+                return None
+                
             # the newest OpenAI model is "gpt-4o" which was released May 13, 2024. 
             # do not change this unless explicitly requested by the user
             response = self.openai_client.chat.completions.create(
@@ -462,6 +533,9 @@ Respond in JSON format: {"sentiment_score": number, "market_impact": number, "is
     def _analyze_social_with_ai(self, social_context: Dict, symbol: str) -> Optional[Dict]:
         """Use AI to grade social sentiment quality and community strength"""
         try:
+            if not self.openai_client:
+                return None
+                
             # the newest OpenAI model is "gpt-4o" which was released May 13, 2024. 
             # do not change this unless explicitly requested by the user
             response = self.openai_client.chat.completions.create(

@@ -1,92 +1,92 @@
 {
-  "current_coin": "ROPE",
-  "current_index": 99,
+  "current_coin": "BTC",
+  "current_index": 1,
   "total_coins": 200,
-  "current_batch": "6/11",
-  "confidence": 48.3,
+  "current_batch": "1/11",
+  "confidence": 15,
   "alert_triggered": false,
-  "timestamp": "2025-08-15T04:37:59.102573",
+  "timestamp": "2025-08-15T04:42:33.965868",
   "scanning_active": true,
   "recent_scans": [
     {
-      "symbol": "ROPE",
-      "confidence": 48.3,
-      "timestamp": "04:37:59",
-      "alert_triggered": false,
-      "status": "completed",
-      "ai_insight": "ROPE's score of 48.3% is primarily driven by its technical indicators, with a neutral RSI of 53.6 and a bearish MACD signal, suggesting limited momentum and unclear short-term direction. The lack of impactful news and social engagement contributes to its low confidence score, indicating traders should approach with caution and closely monitor for any emerging trends or catalysts."
-    },
-    {
-      "symbol": "GRT",
+      "symbol": "BTC",
       "confidence": 15,
-      "timestamp": "04:37:53",
+      "timestamp": "04:42:33",
       "alert_triggered": false,
       "status": "completed",
-      "ai_insight": "GRT's confidence score of 15.0% is primarily impacted by a lack of news and social momentum, reflected in its zero scores in both categories, despite a bullish MACD signal. Traders should note the overbought RSI of 72.2, indicating potential for a price pullback, and the neutral recommendation suggests caution due to weak overall technical support."
+      "ai_insight": "Bitcoin's low confidence score of 15.0% is primarily driven by a lack of positive sentiment across technical, news, and social analyses, with a neutral technical outlook reflected by the RSI and MACD and no significant news or social momentum. Traders should be cautious as there are no strong catalysts or sentiment indicators suggesting an imminent price movement."
     },
     {
-      "symbol": "MEDIA",
-      "confidence": 59.2,
-      "timestamp": "04:37:37",
-      "alert_triggered": false,
-      "status": "completed",
-      "ai_insight": "The 59.2% confidence score for MEDIA is driven primarily by its technical indicators, notably an RSI of 59.4 suggesting a neutral to slightly bullish momentum, despite a bearish MACD signal, which tempers the overall outlook. The lack of positive sentiment and catalysts in both news and social analyses, reflected in scores of 0, indicate limited external enthusiasm or engagement, advising traders to approach with caution given the absence of supportive market drivers."
-    },
-    {
-      "symbol": "1INCH",
+      "symbol": "STORJ",
       "confidence": 15,
-      "timestamp": "04:37:31",
+      "timestamp": "04:41:56",
       "alert_triggered": false,
       "status": "completed",
-      "ai_insight": "1INCH's confidence score of 15.0% reflects a lackluster market environment, driven by neutral technical indicators such as an RSI of 57.6 and ambiguous MACD signals, amidst an absence of compelling news catalysts or social media engagement. Traders should note the weak sentiment and social momentum, suggesting limited immediate upside potential without new developments or increased interest."
+      "ai_insight": "STORJ's confidence score of 15.0% reflects a lack of positive momentum and interest, with technical indicators like a high RSI at 70.7 suggesting it's overbought, coupled with a bearish MACD signal reinforcing the sell recommendation. The absence of news coverage and social media engagement further contributes to a low overall sentiment, indicating limited market catalysts for potential gains."
     },
     {
-      "symbol": "STEP",
-      "confidence": 59.6,
-      "timestamp": "04:37:16",
+      "symbol": "POLIS",
+      "confidence": 58.1,
+      "timestamp": "04:41:41",
       "alert_triggered": false,
       "status": "completed",
-      "ai_insight": "The STEP coin has a confidence score of 59.6%, primarily driven by technical analysis indicators like an oversold RSI of 25.8 and a bearish MACD, suggesting potential for a price rebound despite a neutral recommendation. However, the absence of positive news sentiment or social momentum indicates limited external catalysts, advising traders to exercise caution and closely monitor technical signals for potential entry points."
+      "ai_insight": "The POLIS coin scored 58.1% primarily due to its technical analysis indicators, with an RSI of 39.5 suggesting it is nearing oversold territory, yet the bearish MACD signal and a neutral recommendation reflect uncertainty in price direction. The absence of recent news and social momentum further contributes to a lack of external catalysts, indicating traders should exercise caution and await clearer signals before making trades."
     },
     {
-      "symbol": "REEF",
+      "symbol": "NANO",
       "confidence": 15,
-      "timestamp": "04:37:09",
+      "timestamp": "04:41:34",
       "alert_triggered": false,
       "status": "completed",
-      "ai_insight": "REEF's low confidence score of 15.0% is primarily driven by weak news and social analysis, with no positive sentiment or momentum observed, indicating a lack of market interest and catalysts. Despite the technical indicators showing some bullish signals, the overall neutral recommendation suggests traders should remain cautious and wait for clearer trends or developments."
+      "ai_insight": "NANO's low confidence score of 15.0% is primarily driven by its weak technical indicators, as evidenced by a bearish MACD and a low technical score of 16.3/50, alongside negligible social momentum and sentiment reflected in a social score of 0/20. While the positive sentiment in recent news offers some support, the overall lack of technical and social strength suggests traders should approach with caution, maintaining a neutral stance."
     },
     {
-      "symbol": "COPE",
-      "confidence": 59.0,
-      "timestamp": "04:36:54",
+      "symbol": "ATLAS",
+      "confidence": 32.6,
+      "timestamp": "04:41:20",
       "alert_triggered": false,
       "status": "completed",
-      "ai_insight": "The COPE token's overall score of 59.0% is primarily driven by its technical analysis, with an RSI indicating it is edging towards being oversold and a bearish MACD signal suggesting potential downward momentum, despite the neutral recommendation. The absence of positive sentiment or catalysts in recent news and social media contributes to its lackluster performance in those areas, underscoring a cautious approach for traders given the current market sentiment and technical indicators."
+      "ai_insight": "ATLAS's low confidence score of 32.6% is primarily driven by bearish technical indicators, notably the high RSI of 73.4 suggesting overbought conditions and a bearish MACD signal, coupled with a complete lack of positive news or social media momentum. Traders should be cautious as the lack of news catalysts and social interest indicates limited short-term upside potential, aligning with the recommendation to sell."
     },
     {
-      "symbol": "ALPHA",
+      "symbol": "RVN",
       "confidence": 15,
-      "timestamp": "04:36:48",
+      "timestamp": "04:41:12",
       "alert_triggered": false,
       "status": "completed",
-      "ai_insight": "ALPHA's confidence score of 15.0% is primarily driven by weak news and social analysis, with both sentiment and momentum showing negligible activity, indicating a lack of engagement and interest. Despite a neutral technical recommendation, the bearish MACD signal suggests caution, as traders should be wary of potential downside risks due to limited positive catalysts."
+      "ai_insight": "RVN's confidence score of 15.0% reflects a lack of significant momentum and engagement across technical, news, and social metrics, with bearish MACD signals and neutral recommendations indicating limited bullish sentiment. Although the RSI suggests mild overbought conditions, the absence of impactful news or social buzz further dampens potential upward movement, advising traders to remain cautious."
     },
     {
-      "symbol": "FIDA",
-      "confidence": 95,
-      "timestamp": "04:36:29",
-      "alert_triggered": true,
+      "symbol": "NINJA",
+      "confidence": 18.0,
+      "timestamp": "04:40:57",
+      "alert_triggered": false,
       "status": "completed",
-      "ai_insight": "FIDA scored a high confidence score of 95.0% primarily due to strong technical and news analysis, as indicated by a bullish MACD signal and a positive sentiment in recent news, which suggests potential upward movement. However, traders should be cautious of the lack of social momentum and sentiment, which may limit immediate viral potential or widespread retail interest."
+      "ai_insight": "NINJA has a low confidence score of 18.0% due to a bearish technical outlook, highlighted by an overbought RSI of 74.0 and a bearish MACD signal, alongside a complete lack of positive news or social engagement. Traders should be cautious as the current indicators suggest potential downside, with no supportive catalysts in news or social momentum to counteract the negative technical signals."
     },
     {
-      "symbol": "BADGER",
+      "symbol": "DGB",
       "confidence": 15,
-      "timestamp": "04:36:26",
+      "timestamp": "04:40:50",
       "alert_triggered": false,
       "status": "completed",
-      "ai_insight": "BADGER's confidence score of 15.0% reflects a lack of positive momentum across technical, news, and social indicators, with a bearish MACD signal and an RSI of 40.6 suggesting weak market conditions. The absence of positive sentiment in recent news and negligible social engagement further underscores the coin's current lack of appeal, advising traders to adopt a cautious and neutral stance."
+      "ai_insight": "DGB's low confidence score of 15.0% is primarily driven by weak news and social metrics, as there is no positive sentiment or momentum in these areas, despite a technically oversold RSI and a bullish MACD signal offering some buy potential. Traders should be cautious, as the lack of news catalysts and social buzz suggests limited market interest and potential for price movement in the short term."
+    },
+    {
+      "symbol": "SAMO",
+      "confidence": 44.3,
+      "timestamp": "04:40:35",
+      "alert_triggered": false,
+      "status": "completed",
+      "ai_insight": "SAMO's confidence score of 44.3% is primarily driven by its technical indicators, with a moderately positive RSI of 56.6 and a bullish MACD signal, suggesting some potential for upward movement, although the overall recommendation remains neutral. The absence of impactful news and lack of social momentum contribute to the low scores in news and social analysis, indicating limited external factors influencing the market perception of SAMO at this time."
+    },
+    {
+      "symbol": "SC",
+      "confidence": 15,
+      "timestamp": "04:40:27",
+      "alert_triggered": false,
+      "status": "completed",
+      "ai_insight": "The SC coin received a confidence score of 15.0% primarily due to negative indicators across technical, news, and social analyses, including a bearish MACD signal, lack of positive sentiment in recent news, and zero social momentum. Traders should be cautious as the absence of bullish signals and catalysts suggests limited immediate upside potential."
     }
   ]
 }
