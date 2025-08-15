@@ -1,13 +1,21 @@
 {
-  "current_coin": "KNC",
-  "current_index": 59,
+  "current_coin": "BTC",
+  "current_index": 1,
   "total_coins": 200,
-  "current_batch": "4/11",
+  "current_batch": "1/11",
   "confidence": 15,
   "alert_triggered": false,
-  "timestamp": "2025-08-15T13:34:31.025231",
+  "timestamp": "2025-08-15T13:56:49.850431",
   "scanning_active": true,
   "recent_scans": [
+    {
+      "symbol": "BTC",
+      "confidence": 15,
+      "timestamp": "13:56:49",
+      "alert_triggered": false,
+      "status": "completed",
+      "ai_insight": "Bitcoin's confidence score of 15.0% reflects a predominantly bearish outlook, driven by weak technical indicators such as a low RSI of 41.1 and a bearish MACD signal, alongside a recommendation to sell, resulting in a poor technical score of 10/50. Additionally, the absence of positive sentiment in recent news and social discussions further undermines market confidence, contributing to low news and social scores, suggesting traders should approach BTC with caution in the short term."
+    },
     {
       "symbol": "KNC",
       "confidence": 15,
@@ -79,14 +87,6 @@
       "alert_triggered": false,
       "status": "completed",
       "ai_insight": "CRV's low confidence score of 15.0% is driven by a lackluster technical outlook, with a neutral RSI and MACD signal, coupled with no positive sentiment or catalysts in recent news and social discussions. Traders should be cautious as the absence of momentum and positive sentiment suggests limited immediate upside potential."
-    },
-    {
-      "symbol": "WAVES",
-      "confidence": 15,
-      "timestamp": "13:28:45",
-      "alert_triggered": false,
-      "status": "completed",
-      "ai_insight": "WAVES scored a low confidence score of 15.0% due to a lack of significant technical, news, and social momentum, with neutral RSI and MACD readings indicating indecision and minimal market movement. The absence of positive sentiment or impactful news, combined with negligible social engagement, suggests limited investor interest and potential volatility, making it advisable for traders to exercise caution."
     }
   ]
 }

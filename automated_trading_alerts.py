@@ -38,6 +38,7 @@ try:
     lumif_client = LumifTradingViewClient()
     mcp_analysis_available = True
     print("✅ MCP Lumif-ai TradingView Enhanced Analysis configured for Discord alerts")
+    LOCAL_API_URL = "http://localhost:5000"
 except ImportError as e:
     mcp_analysis_available = False
     lumif_client = None
@@ -291,7 +292,8 @@ async def get_enhanced_technical_analysis(symbol):
                     tv_symbol = symbol
                 
                 # Get enhanced analysis from Lumif-ai TradingView
-                analysis = await lumif_client.get_enhanced_analysis(tv_symbol)
+                # Use the correct method from LumifTradingViewClient
+                analysis = lumif_client.get_comprehensive_analysis(tv_symbol, interval='4h')
                 if analysis and 'indicators' in analysis:
                     indicators = analysis['indicators']
                     rsi = indicators.get('RSI', {}).get('value', 50.0)
@@ -2263,10 +2265,33 @@ async def run_trading_analysis():
             
             # Send portfolio alerts to #portfolio channel
             try:
-                alert_data = prepare_alert_data(alerts)
-                if alert_data and alert_data.get('message'):
-                    portfolio_message = f"💼 **PORTFOLIO ANALYSIS** 💼\n{alert_data['message']}"
-                    await send_discord_alert(portfolio_message, 'portfolio')
+                portfolio_message = f"📊 **PORTFOLIO ANALYSIS** 📊\n"
+                portfolio_message += f"⏰ {datetime.now().strftime('%Y-%m-%d %H:%M UTC')}\n\n"
+                
+                for alert in alerts[:3]:  # Limit to top 3 alerts
+                    symbol = alert.get('symbol', 'Unknown')
+                    alert_type = alert.get('type', 'Unknown')
+                    pnl = alert.get('pnl', 0)
+                    
+                    if alert_type == 'overbought':
+                        portfolio_message += f"🔴 **{symbol}** - Overbought Signal\n"
+                        portfolio_message += f"💰 PnL: {pnl:+.1f}%\n"
+                        portfolio_message += f"📈 Consider taking profits\n\n"
+                    elif alert_type == 'oversold':
+                        portfolio_message += f"🟢 **{symbol}** - Oversold Signal\n"
+                        portfolio_message += f"💰 PnL: {pnl:+.1f}%\n"
+                        portfolio_message += f"📉 Potential buy opportunity\n\n"
+                    elif alert_type == 'high_profit':
+                        portfolio_message += f"🚀 **{symbol}** - High Profit Alert\n"
+                        portfolio_message += f"💰 PnL: {pnl:+.1f}%\n"
+                        portfolio_message += f"🎯 Strong performance\n\n"
+                    elif alert_type == 'stop_loss':
+                        portfolio_message += f"⚠️ **{symbol}** - Stop Loss Warning\n"
+                        portfolio_message += f"💰 PnL: {pnl:+.1f}%\n"
+                        portfolio_message += f"🛡️ Consider setting stop loss\n\n"
+                
+                await send_discord_alert(portfolio_message, 'portfolio')
+                print(f"✅ Portfolio analysis sent to #portfolio channel")
             except Exception as e:
                 print(f"❌ Error sending portfolio alerts: {e}")
                 

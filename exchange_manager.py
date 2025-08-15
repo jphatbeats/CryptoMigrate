@@ -31,7 +31,7 @@ class ExchangeManager:
             },
             'blofin': {
                 'apiKey': os.getenv('BLOFIN_API_KEY', ''),
-                'secret': os.getenv('BLOFIN_SECRET', ''),
+                'secret': os.getenv('BLOFIN_API_SECRET', ''),
                 'password': os.getenv('BLOFIN_PASSPHRASE', ''),
                 'sandbox': os.getenv('BLOFIN_SANDBOX', 'false').lower() == 'true',
                 'enableRateLimit': True,
