@@ -57,9 +57,9 @@ DISCORD_WEBHOOK_URL = DISCORD_WEBHOOK_ALPHA_SCANS  # Backward compatibility
 
 class ComprehensiveMarketScanner:
     def __init__(self):
-        # PROPER TIMING: 20 seconds per coin, 18 coins per 6-minute batch
-        self.scan_interval = 20  # 20 seconds between coins
-        self.batch_size = 18     # 18 coins per 6-minute batch (20s * 18 = 360s = 6min)
+        # RATE LIMIT OPTIMIZED TIMING: 30 seconds per coin, 12 coins per 6-minute batch
+        self.scan_interval = 30  # 30 seconds between coins (reduced TradingView rate limits)
+        self.batch_size = 12     # 12 coins per 6-minute batch (30s * 12 = 360s = 6min)
         self.cycle_duration = 360  # 6 minutes per batch
         self.total_coins = 200   # Top 200 legitimate coins (after filtering stablecoins)
         
@@ -175,8 +175,8 @@ class ComprehensiveMarketScanner:
             datetime.now() - self.last_top_200_refresh > timedelta(hours=1)):
             await self._refresh_top_200_coins()
         
-        # Wait 20 seconds before next coin
-        await asyncio.sleep(self.scan_interval)
+        # Wait 30 seconds before next coin (increased to reduce TradingView rate limits)
+        await asyncio.sleep(30)
     
     async def _comprehensive_analysis(self, symbol: str) -> Optional[Dict]:
         """Perform comprehensive 3-layer analysis: Technical + News + Social"""

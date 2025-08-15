@@ -56,8 +56,8 @@ class LumifTradingViewClient:
                                  exchange: str = 'BINANCE', interval: str = '4h') -> Optional[Dict[str, Any]]:
         """Get comprehensive TradingView technical analysis - Enhanced by Lumif-ai"""
         try:
-            # Aggressive rate limiting to prevent 429 errors
-            time.sleep(3.0)  # 3 second delay between requests
+            # Enhanced rate limiting to prevent 429 errors
+            time.sleep(8.0)  # 8 second delay between requests to avoid rate limits
             
             # Convert interval to TradingView format
             tv_interval = self.interval_map.get(interval, Interval.INTERVAL_4_HOURS)

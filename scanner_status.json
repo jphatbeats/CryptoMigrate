@@ -1,13 +1,29 @@
 {
-  "current_coin": "BCH",
-  "current_index": 14,
+  "current_coin": "MATIC",
+  "current_index": 16,
   "total_coins": 200,
   "current_batch": "1/11",
   "confidence": 15,
   "alert_triggered": false,
-  "timestamp": "2025-08-15T21:49:14.905690",
+  "timestamp": "2025-08-15T21:50:27.204888",
   "scanning_active": true,
   "recent_scans": [
+    {
+      "symbol": "MATIC",
+      "confidence": 15,
+      "timestamp": "21:50:27",
+      "alert_triggered": false,
+      "status": "completed",
+      "ai_insight": "MATIC's low confidence score of 15.0% is primarily driven by neutral technical indicators, lack of positive sentiment in recent news, and stagnant social momentum, indicating limited enthusiasm or catalysts for price movement. Traders should note the absence of catalysts and engagement suggests limited short-term movement potential."
+    },
+    {
+      "symbol": "NEAR",
+      "confidence": 15,
+      "timestamp": "21:49:50",
+      "alert_triggered": false,
+      "status": "completed",
+      "ai_insight": "NEAR's low confidence score of 15.0% is primarily driven by neutral technical indicators, lack of positive sentiment in recent news, and stagnant social momentum, indicating limited enthusiasm or catalysts for price movement. Traders should note the absence of catalysts and engagement suggests limited short-term movement potential."
+    },
     {
       "symbol": "BCH",
       "confidence": 15,
@@ -71,22 +87,6 @@
       "alert_triggered": false,
       "status": "completed",
       "ai_insight": "TON's low confidence score of 15.0% is primarily driven by neutral technical indicators, lack of positive sentiment in recent news, and stagnant social momentum, indicating limited enthusiasm or catalysts for price movement. Traders should note the absence of catalysts and engagement suggests limited short-term movement potential."
-    },
-    {
-      "symbol": "DOGE",
-      "confidence": 15,
-      "timestamp": "21:44:24",
-      "alert_triggered": false,
-      "status": "completed",
-      "ai_insight": "DOGE's low confidence score of 15.0% is primarily driven by neutral technical indicators, lack of positive sentiment in recent news, and stagnant social momentum, indicating limited enthusiasm or catalysts for price movement. Traders should note the absence of catalysts and engagement suggests limited short-term movement potential."
-    },
-    {
-      "symbol": "SOL",
-      "confidence": 15,
-      "timestamp": "21:43:48",
-      "alert_triggered": false,
-      "status": "completed",
-      "ai_insight": "SOL's low confidence score of 15.0% is primarily driven by neutral technical indicators, lack of positive sentiment in recent news, and stagnant social momentum, indicating limited enthusiasm or catalysts for price movement. Traders should note the absence of catalysts and engagement suggests limited short-term movement potential."
     }
   ]
 }
