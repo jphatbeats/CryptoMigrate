@@ -1,13 +1,37 @@
 {
-  "current_coin": "NKN",
-  "current_index": 84,
+  "current_coin": "CTC",
+  "current_index": 87,
   "total_coins": 200,
   "current_batch": "5/11",
   "confidence": 15,
   "alert_triggered": false,
-  "timestamp": "2025-08-15T16:58:38.686190",
+  "timestamp": "2025-08-15T17:00:36.629253",
   "scanning_active": true,
   "recent_scans": [
+    {
+      "symbol": "CTC",
+      "confidence": 15,
+      "timestamp": "17:00:36",
+      "alert_triggered": false,
+      "status": "completed",
+      "ai_insight": "CTC's low confidence score of 15.0% is primarily due to a lack of positive sentiment and momentum across technical, news, and social analyses, reflected in neutral technical indicators like RSI and MACD, and absence of any news catalyst. Traders should note the stagnant social and news sentiment, suggesting limited current interest or potential for immediate price movement."
+    },
+    {
+      "symbol": "SKL",
+      "confidence": 15,
+      "timestamp": "16:59:57",
+      "alert_triggered": false,
+      "status": "completed",
+      "ai_insight": "SKL's low confidence score of 15.0% reflects weak technical indicators, with an RSI at 50.0 and a neutral MACD, combined with an absence of positive news and social sentiment. Traders should note the lack of significant momentum or catalysts, suggesting limited short-term potential and a neutral stance on trading activity."
+    },
+    {
+      "symbol": "CELR",
+      "confidence": 15,
+      "timestamp": "16:59:18",
+      "alert_triggered": false,
+      "status": "completed",
+      "ai_insight": "CELR's low confidence score of 15.0% is primarily driven by its neutral technical indicators, such as an RSI of 50 and a neutral MACD signal, coupled with a lack of positive sentiment or momentum from recent news and social media. Traders should note the absence of catalysts or viral potential, suggesting a flat outlook with no immediate signs of significant price movement."
+    },
     {
       "symbol": "NKN",
       "confidence": 15,
@@ -63,30 +87,6 @@
       "alert_triggered": false,
       "status": "completed",
       "ai_insight": "STORJ scored a low confidence score of 15.0% primarily due to the absence of positive news or social momentum, reflected in its zero scores in news and social analysis, which suggests a lack of market interest or catalysts. Additionally, technical indicators such as a neutral RSI and MACD, along with a low technical score, indicate indecision in market trends, suggesting traders should remain cautious and consider waiting for clearer signals before making any moves."
-    },
-    {
-      "symbol": "NANO",
-      "confidence": 15,
-      "timestamp": "16:54:07",
-      "alert_triggered": false,
-      "status": "completed",
-      "ai_insight": "NANO's low confidence score of 15.0% is primarily driven by a lack of positive sentiment across technical, news, and social analyses, with neutral technical indicators such as an RSI of 50 and no significant news or social momentum to drive interest. Traders should note the absence of catalysts and sentiment, suggesting limited immediate potential for upward movement without new developments or shifts in market dynamics."
-    },
-    {
-      "symbol": "RVN",
-      "confidence": 15,
-      "timestamp": "16:53:26",
-      "alert_triggered": false,
-      "status": "completed",
-      "ai_insight": "Ravencoin (RVN) has a low confidence score of 15.0% due to a lack of positive sentiment and momentum across technical, news, and social analyses. With a neutral technical outlook and no supportive news catalysts or social engagement, traders should approach RVN with caution, as there are currently no strong indicators for upward movement."
-    },
-    {
-      "symbol": "DGB",
-      "confidence": 15,
-      "timestamp": "16:52:47",
-      "alert_triggered": false,
-      "status": "completed",
-      "ai_insight": "DigiByte (DGB) currently scores a low 15.0% confidence due to weak technical indicators, with a neutral RSI and MACD, and negligible social and news momentum, indicating a lack of positive sentiment or catalysts to drive price movement. Traders should note the absence of any significant market interest or news-driven catalysts, suggesting that potential price action is likely to remain flat unless new factors emerge."
     }
   ]
 }
