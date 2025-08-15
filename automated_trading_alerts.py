@@ -230,7 +230,7 @@ async def fetch_live_positions():
         except Exception as e:
             print(f"⚠️ BingX positions error: {e}")
         
-        # Fetch Kraken positions
+        # Fetch Kraken positions - Try Railway first, fallback to direct API
         try:
             kraken_data = await fetch_railway_api("/api/kraken/positions")
             if kraken_data and kraken_data.get('positions'):
@@ -248,10 +248,46 @@ async def fetch_live_positions():
                             'SL Set?': '❌'
                         })
                 print(f"✅ Fetched {len([p for p in kraken_data['positions'].values() if float(p.get('size', 0)) != 0])} Kraken positions")
+            else:
+                print("🔄 Railway Kraken failed, trying direct API...")
+                # Direct Kraken API fallback (if credentials available)
+                try:
+                    if hasattr(exchange_manager, 'exchanges') and 'kraken' in exchange_manager.exchanges:
+                        kraken_exchange = exchange_manager.exchanges['kraken']
+                        balance = await asyncio.get_event_loop().run_in_executor(None, kraken_exchange.fetch_balance)
+                        
+                        # Convert spot balances to position format for big bags
+                        for currency, amount in balance['total'].items():
+                            if amount > 0 and currency != 'USD':  # Skip small amounts and USD
+                                # Get current price for PnL calculation (simplified)
+                                try:
+                                    ticker = await asyncio.get_event_loop().run_in_executor(None, 
+                                        lambda: kraken_exchange.fetch_ticker(f"{currency}/USD"))
+                                    current_price = ticker['last']
+                                    # Assume entry price for now (could be improved with order history)
+                                    entry_price = current_price * 0.9  # Rough estimate
+                                    pnl_percent = ((current_price - entry_price) / entry_price) * 100
+                                    
+                                    all_positions.append({
+                                        'Symbol': currency,
+                                        'Platform': 'Kraken',
+                                        'Entry Price': entry_price,
+                                        'Mark Price': current_price,
+                                        'Unrealized PnL %': pnl_percent,
+                                        'Side (LONG/SHORT)': 'LONG',
+                                        'Margin Size ($)': amount * current_price,
+                                        'Leverage': 1,
+                                        'SL Set?': '❌'
+                                    })
+                                except Exception:
+                                    continue  # Skip if can't get ticker
+                        print(f"✅ Direct API fetched Kraken spot positions as big bags")
+                except Exception as direct_error:
+                    print(f"⚠️ Direct Kraken API failed: {direct_error}")
         except Exception as e:
             print(f"⚠️ Kraken positions error: {e}")
             
-        # Fetch Blofin positions  
+        # Fetch Blofin positions - Try Railway first, fallback to direct API  
         try:
             blofin_data = await fetch_railway_api("/api/live/blofin-positions")
             if blofin_data and blofin_data.get('positions'):
@@ -268,8 +304,33 @@ async def fetch_live_positions():
                         'SL Set?': '❌'
                     })
                 print(f"✅ Fetched {len(blofin_data['positions'])} Blofin positions")
+            else:
+                # Fallback to direct Blofin API
+                print("🔄 Railway Blofin failed, trying direct API...")
+                try:
+                    import ccxt
+                    if hasattr(exchange_manager, 'exchanges') and 'blofin' in exchange_manager.exchanges:
+                        blofin_exchange = exchange_manager.exchanges['blofin']
+                        positions = await asyncio.get_event_loop().run_in_executor(None, blofin_exchange.fetch_positions)
+                        
+                        for pos in positions:
+                            if pos['contracts'] != 0:  # Only active positions
+                                all_positions.append({
+                                    'Symbol': pos['symbol'].replace('/USDT', ''),
+                                    'Platform': 'Blofin',
+                                    'Entry Price': pos['entryPrice'] or 0,
+                                    'Mark Price': pos['markPrice'] or 0,
+                                    'Unrealized PnL %': pos['percentage'] or 0,
+                                    'Side (LONG/SHORT)': pos['side'].upper() if pos['side'] else 'UNKNOWN',
+                                    'Margin Size ($)': pos['initialMargin'] or 0,
+                                    'Leverage': pos['leverage'] or 1,
+                                    'SL Set?': '❌'
+                                })
+                        print(f"✅ Direct API fetched {len([p for p in positions if p['contracts'] != 0])} Blofin positions")
+                except Exception as direct_error:
+                    print(f"❌ Direct Blofin API also failed: {direct_error}")
         except Exception as e:
-            print(f"⚠️ Blofin positions error: {e}")
+            print(f"❌ Railway API error 500 for /api/live/blofin-positions")
         
         print(f"📊 Total live positions fetched: {len(all_positions)}")
         return all_positions
