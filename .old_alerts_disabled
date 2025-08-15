@@ -1,0 +1,5 @@
+{
+  "disabled_at": "2025-08-15T21:06:42.430467",
+  "reason": "Replaced by enhanced alert system with TP/SL, color coding, and AI analysis",
+  "enhanced_system": "automated_trading_alerts.py run_trading_analysis()"
+}
