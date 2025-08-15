@@ -310,28 +310,57 @@ class ComprehensiveMarketScanner:
         }
     
     def _process_news_data(self, data: Dict) -> Dict:
-        """Process news data into sentiment signals"""
+        """Process news data with AI-powered sentiment analysis"""
         news_signals = {
             'recent_news_count': 0,
             'positive_sentiment_ratio': 0,
             'news_catalyst': False,
-            'news_score': 0
+            'news_score': 0,
+            'ai_sentiment_score': 0,
+            'market_impact_score': 0
         }
         
         if data.get('success') and data.get('articles'):
             articles = data['articles']
             news_signals['recent_news_count'] = len(articles)
             
+            # Use AI to grade news quality and market impact
+            if self.ai_enabled and articles:
+                try:
+                    # Combine all article titles/descriptions for AI analysis
+                    news_text = ". ".join([
+                        f"{article.get('title', '')}: {article.get('description', '')[:200]}"
+                        for article in articles[:3]  # Analyze top 3 articles
+                    ])
+                    
+                    ai_analysis = self._analyze_news_with_ai(news_text, data.get('symbol', 'UNKNOWN'))
+                    if ai_analysis:
+                        news_signals['ai_sentiment_score'] = ai_analysis.get('sentiment_score', 0)
+                        news_signals['market_impact_score'] = ai_analysis.get('market_impact', 0)
+                        news_signals['news_catalyst'] = ai_analysis.get('is_catalyst', False)
+                        
+                        # AI-powered news score (0-15 points max)
+                        news_signals['news_score'] = min(15, 
+                            news_signals['ai_sentiment_score'] * 0.6 +  # 60% sentiment weight
+                            news_signals['market_impact_score'] * 0.4    # 40% impact weight
+                        )
+                        return news_signals
+                        
+                except Exception as e:
+                    print(f"⚠️ AI news analysis failed: {e}")
+                    # Fall through to traditional analysis
+            
+            # Fallback to traditional sentiment counting
             positive_count = sum(1 for article in articles 
                                if article.get('sentiment', '').lower() == 'positive')
             
             if len(articles) > 0:
                 news_signals['positive_sentiment_ratio'] = positive_count / len(articles)
-                news_signals['news_catalyst'] = positive_count >= 2  # At least 2 positive articles
+                news_signals['news_catalyst'] = positive_count >= 2
             
-            # Calculate news score (0-8 points max) - EXTREMELY conservative  
+            # Traditional conservative scoring
             if news_signals['news_catalyst']:
-                news_signals['news_score'] = min(8,  # Drastically reduced from 30 to 8
+                news_signals['news_score'] = min(8,
                     news_signals['positive_sentiment_ratio'] * 5 + 
                     min(3, news_signals['recent_news_count']))
         
@@ -357,6 +386,45 @@ class ComprehensiveMarketScanner:
             social_signals['social_score'] = min(5, social_signals['social_momentum'] * 5)
         
         return social_signals
+    
+    def _analyze_news_with_ai(self, news_text: str, symbol: str) -> Optional[Dict]:
+        """Use AI to analyze news sentiment and market impact"""
+        try:
+            # the newest OpenAI model is "gpt-4o" which was released May 13, 2024. 
+            # do not change this unless explicitly requested by the user
+            response = self.openai_client.chat.completions.create(
+                model="gpt-4o",
+                messages=[
+                    {
+                        "role": "system",
+                        "content": """You are a professional crypto news analyst. Analyze news for:
+1. Sentiment Score (0-10): How positive/negative for price
+2. Market Impact (0-10): Likelihood to move markets significantly  
+3. Is Catalyst (true/false): Major news that could trigger price movement
+
+Consider: partnerships, regulations, tech developments, institutional adoption, market trends.
+Respond in JSON format: {"sentiment_score": number, "market_impact": number, "is_catalyst": boolean}"""
+                    },
+                    {
+                        "role": "user", 
+                        "content": f"Analyze these {symbol} news articles for market impact:\n\n{news_text}"
+                    }
+                ],
+                response_format={"type": "json_object"},
+                max_tokens=150,
+                temperature=0.3
+            )
+            
+            result = json.loads(response.choices[0].message.content)
+            return {
+                'sentiment_score': max(0, min(10, result.get('sentiment_score', 5))),
+                'market_impact': max(0, min(10, result.get('market_impact', 5))),  
+                'is_catalyst': result.get('is_catalyst', False)
+            }
+            
+        except Exception as e:
+            print(f"⚠️ AI news analysis error: {e}")
+            return None
     
     def _calculate_confluence_score(self, analysis: Dict) -> float:
         """Calculate confluence score from all 3 layers of analysis - MUCH more conservative"""

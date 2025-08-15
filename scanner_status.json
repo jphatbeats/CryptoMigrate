@@ -1,13 +1,61 @@
 {
-  "current_coin": "INJ",
-  "current_index": 34,
+  "current_coin": "THETA",
+  "current_index": 37,
   "total_coins": 200,
-  "current_batch": "2/11",
-  "confidence": 50.2,
+  "current_batch": "3/11",
+  "confidence": 41.8,
   "alert_triggered": false,
-  "timestamp": "2025-08-15T04:13:39.470805",
+  "timestamp": "2025-08-15T04:14:44.294061",
   "scanning_active": true,
   "recent_scans": [
+    {
+      "symbol": "THETA",
+      "confidence": 41.8,
+      "timestamp": "04:14:44",
+      "alert_triggered": false,
+      "status": "completed",
+      "ai_insight": "THETA has a confidence score of 41.8%, primarily driven by its neutral technical analysis, indicated by an RSI of 58.5 and a bearish MACD signal, which suggests indecisiveness in market momentum. The lack of positive news sentiment and social momentum further contributes to the subdued score, indicating limited external catalysts to drive significant price movement in the near term."
+    },
+    {
+      "symbol": "SOL",
+      "confidence": 15,
+      "timestamp": "04:14:28",
+      "alert_triggered": false,
+      "status": "completed",
+      "ai_insight": "SOL's low confidence score of 15.0% is primarily driven by bearish technical indicators, such as an RSI of 36.0 and a negative MACD signal, coupled with a lack of social momentum and sentiment support at 0.0%. Despite some positive sentiment in recent news, which offers a slight positive catalyst, the overall market sentiment remains cautious, justifying a neutral trading recommendation."
+    },
+    {
+      "symbol": "SAND",
+      "confidence": 42.8,
+      "timestamp": "04:14:22",
+      "alert_triggered": false,
+      "status": "completed",
+      "ai_insight": "SAND's score of 42.8% is primarily driven by its technical indicators, with a moderately bullish MACD and an RSI nearing overbought conditions, suggesting potential short-term price strength, though the absence of significant news catalysts or social momentum limits broader market enthusiasm. Traders should note that despite positive technical signals, the lack of supportive news and social engagement implies caution, as these factors could impact sustained upward movement."
+    },
+    {
+      "symbol": "BNB",
+      "confidence": 15,
+      "timestamp": "04:14:06",
+      "alert_triggered": false,
+      "status": "completed",
+      "ai_insight": "BNB's low confidence score of 15.0% is primarily driven by a lack of strong technical indicators and minimal impact from news and social sentiment, with a neutral technical recommendation and bearish MACD signal pointing to uncertainty in price movement. Traders should be cautious and monitor for any emerging catalysts or changes in sentiment that could influence momentum."
+    },
+    {
+      "symbol": "MANA",
+      "confidence": 45.4,
+      "timestamp": "04:14:01",
+      "alert_triggered": false,
+      "status": "completed",
+      "ai_insight": "MANA's confidence score of 45.4% reflects a market with limited momentum and mixed technical indicators, as evidenced by the neutral RSI of 49.9 and a bearish MACD signal, suggesting caution. The absence of positive news catalysts and social momentum further contributes to the subdued sentiment, indicating that traders should remain cautious and consider waiting for clearer signals before making significant moves."
+    },
+    {
+      "symbol": "XRP",
+      "confidence": 15,
+      "timestamp": "04:13:44",
+      "alert_triggered": false,
+      "status": "completed",
+      "ai_insight": "XRP's low confidence score of 15.0% is primarily driven by weak social momentum and sentiment, with a complete lack of viral potential, as well as moderate technical indicators that show a bearish RSI but a bullish MACD signal. Despite some positive news catalysts, the overall news sentiment is only 40%, suggesting uncertain market enthusiasm, making it advisable for traders to remain cautious and look for stronger confirmations before making buy decisions."
+    },
     {
       "symbol": "INJ",
       "confidence": 50.2,
@@ -39,54 +87,6 @@
       "alert_triggered": false,
       "status": "completed",
       "ai_insight": "The low confidence score of 15.4% for BTC is primarily driven by weak social momentum and sentiment, with a complete lack of viral potential contributing zero to the social score, alongside a modest news impact despite a positive sentiment of 60%. While the technical indicators show some strength, particularly a bullish MACD and a reasonable RSI, the neutral recommendation and limited news catalyst suggest a cautious market stance, advising traders to monitor for clearer directional signals."
-    },
-    {
-      "symbol": "ARB",
-      "confidence": 52.8,
-      "timestamp": "04:12:56",
-      "alert_triggered": false,
-      "status": "completed",
-      "ai_insight": "ARB's confidence score of 52.8% is primarily driven by its technical indicators, with a moderately bullish MACD signal and a neutral recommendation, despite a low RSI of 40.2 indicating potential undervaluation. The lack of news and social momentum further contributes to the neutral stance, suggesting traders should remain cautious and monitor technical trends for potential shifts."
-    },
-    {
-      "symbol": "WAVES",
-      "confidence": 15.2,
-      "timestamp": "04:12:50",
-      "alert_triggered": false,
-      "status": "completed",
-      "ai_insight": "WAVES has a low confidence score of 15.2%, primarily driven by weak technical indicators, including a bearish MACD signal and an RSI of 66.7 suggesting overbought conditions. The absence of recent news and social momentum further dampens market sentiment, reinforcing the sell recommendation for cautious traders."
-    },
-    {
-      "symbol": "IMX",
-      "confidence": 95,
-      "timestamp": "04:12:32",
-      "alert_triggered": true,
-      "status": "completed",
-      "ai_insight": "The high confidence score of 95.0% for IMX is driven primarily by strong news sentiment and a perfect news catalyst score, suggesting recent positive developments that could influence market perception. However, traders should be cautious as technical indicators, such as a low RSI and bearish MACD, indicate potential downside risk, and the absence of social momentum implies limited community-driven price action."
-    },
-    {
-      "symbol": "IOTA",
-      "confidence": 81.9,
-      "timestamp": "04:12:28",
-      "alert_triggered": true,
-      "status": "completed",
-      "ai_insight": "IOTA's high confidence score of 81.9% is primarily driven by strong technical indicators, with the RSI suggesting it's in oversold territory and the MACD signaling a bullish trend, supporting a buy recommendation. However, traders should be cautious as the lack of positive news sentiment and social momentum might limit immediate upward movement."
-    },
-    {
-      "symbol": "ALGO",
-      "confidence": 95,
-      "timestamp": "04:12:07",
-      "alert_triggered": true,
-      "status": "completed",
-      "ai_insight": "The high confidence score of 95.0% for ALGO is primarily driven by strong positive sentiment in recent news, with an 80.0% positivity rate, and a perfect news score, indicating a significant news catalyst that could impact market perception. However, traders should be cautious as technical indicators like the RSI and bearish MACD signal suggest a neutral stance, coupled with a lack of social momentum, indicating potential volatility or consolidation in the short term."
-    },
-    {
-      "symbol": "NEO",
-      "confidence": 46.4,
-      "timestamp": "04:12:07",
-      "alert_triggered": false,
-      "status": "completed",
-      "ai_insight": "NEO's score of 46.4% reflects strong technical indicators, with an RSI of 70.6 suggesting potential overbought conditions, and a bullish MACD signal, though it is offset by a lack of impactful news and social momentum. Traders should be cautious, as the neutral recommendation and absence of a news catalyst or social buzz indicate limited external drivers to sustain a substantial upward move."
     }
   ]
 }
