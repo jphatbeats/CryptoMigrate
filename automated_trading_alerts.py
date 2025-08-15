@@ -264,7 +264,37 @@ async def fetch_live_positions():
                         })
                 print(f"✅ Fetched {len([p for p in kraken_data['positions'].values() if float(p.get('size', 0)) != 0])} Kraken positions")
             else:
-                print("🔄 Railway Kraken failed, trying direct API...")
+                print("ℹ️ No active Kraken positions found - checking for spot balances...")
+                # Try to get spot balances from Railway API as big bags
+                try:
+                    kraken_balance = await fetch_railway_api("/api/kraken/balance")
+                    if kraken_balance and kraken_balance.get('total'):
+                        balance_count = 0
+                        for currency, amount in kraken_balance['total'].items():
+                            if float(amount) > 0.001 and currency not in ['USD', 'USDT', 'EUR']:  # Skip small amounts and fiat
+                                # Treat spot balances as HODL positions
+                                all_positions.append({
+                                    'Symbol': currency,
+                                    'Platform': 'Kraken',
+                                    'Entry Price': 0,  # Unknown entry for spot
+                                    'Mark Price': 0,   # Would need ticker lookup
+                                    'Unrealized PnL %': 0,  # Unknown without entry price
+                                    'Side (LONG/SHORT)': 'HODL',
+                                    'Margin Size ($)': float(amount) * 100,  # Estimate value
+                                    'Leverage': 1,
+                                    'SL Set?': '❌'
+                                })
+                                balance_count += 1
+                        if balance_count > 0:
+                            print(f"✅ Found {balance_count} Kraken spot balances (big bags)")
+                        else:
+                            print("ℹ️ No significant Kraken spot balances found")
+                    else:
+                        print("⚠️ Could not fetch Kraken balance from Railway")
+                except Exception as balance_error:
+                    print(f"⚠️ Kraken balance fetch error: {balance_error}")
+                    
+                print("🔄 Trying direct API as final fallback...")
                 # Direct Kraken API fallback (if credentials available)
                 try:
                     if exchange_integration_available and exchange_manager and hasattr(exchange_manager, 'exchanges') and 'kraken' in exchange_manager.exchanges:

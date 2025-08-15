@@ -1,18 +1,19 @@
 {
-  "timestamp": "2025-08-15 09:05 AM CST",
-  "total_alerts": 3,
+  "timestamp": "2025-08-15 09:54 AM CST",
+  "total_alerts": 6,
   "alert_types": {
-    "high_profit": 1,
-    "no_stop_loss": 2
+    "high_profit": 2,
+    "no_stop_loss": 2,
+    "losing_trade": 2
   },
   "alerts": [
     {
       "type": "high_profit",
       "symbol": "XRP",
       "platform": "BingX",
-      "pnl": 46.981165558102475,
-      "profit_amount": 63.262441501097335,
-      "message": "\ud83d\udcb0 **$XRP Profit Alert** (+47.0%)\n\ud83c\udfaf **Unrealized Profit**: $63 | Position: $135\n\ud83e\udde0 **Strategy**: \u2705 GOOD: Protect gains with trailing stops, consider partial profits.\n\u26a1 **Action**: Move stop to break-even, consider 25% profit-taking\n\ud83d\udcca Entry: $1.634100 \u2192 Current: $3.082200"
+      "pnl": 46.83884117741903,
+      "profit_amount": 63.070794748612414,
+      "message": "\ud83d\udcb0 **$XRP Profit Alert** (+46.8%)\n\ud83c\udfaf **Unrealized Profit**: $63 | Position: $135\n\ud83e\udde0 **Strategy**: \u2705 GOOD: Protect gains with trailing stops, consider partial profits.\n\u26a1 **Action**: Move stop to break-even, consider 25% profit-taking\n\ud83d\udcca Entry: $1.634100 \u2192 Current: $3.074000"
     },
     {
       "type": "no_stop_loss",
@@ -20,7 +21,7 @@
       "platform": "BingX",
       "margin": 356.5782,
       "risk_level": "MODERATE",
-      "message": "\ud83d\udee1\ufe0f **$ETH Risk Management** ($357)\n\u26a0\ufe0f **No Stop Loss** | Risk Level: **MODERATE**\n\ud83d\udca1 **Action**: Set trailing stop at break-even or +5% to lock profits\n\ud83d\udcca Current PnL: **+20.6%** | LONG @ 10x"
+      "message": "\ud83d\udee1\ufe0f **$ETH Risk Management** ($357)\n\u26a0\ufe0f **No Stop Loss** | Risk Level: **MODERATE**\n\ud83d\udca1 **Action**: Set trailing stop at break-even or +5% to lock profits\n\ud83d\udcca Current PnL: **+20.5%** | LONG @ 10x"
     },
     {
       "type": "no_stop_loss",
@@ -28,11 +29,38 @@
       "platform": "BingX",
       "margin": 193.061,
       "risk_level": "MODERATE",
-      "message": "\ud83d\udee1\ufe0f **$SOL Risk Management** ($193)\n\u26a0\ufe0f **No Stop Loss** | Risk Level: **MODERATE**\n\ud83d\udca1 **Action**: Set stop at -8% to limit downside risk\n\ud83d\udcca Current PnL: **-1.4%** | LONG @ 10x"
+      "message": "\ud83d\udee1\ufe0f **$SOL Risk Management** ($193)\n\u26a0\ufe0f **No Stop Loss** | Risk Level: **MODERATE**\n\ud83d\udca1 **Action**: Set stop at -8% to limit downside risk\n\ud83d\udcca Current PnL: **-2.2%** | LONG @ 10x"
+    },
+    {
+      "type": "high_profit",
+      "symbol": "SOON:USDT",
+      "platform": "Blofin",
+      "pnl": 272.92055738306675,
+      "profit_amount": 0.0,
+      "message": "\ud83d\udcb0 **$SOON:USDT Profit Alert** (+272.9%)\n\ud83c\udfaf **Unrealized Profit**: $0 | Position: $0\n\ud83e\udde0 **Strategy**: \ud83d\ude80 MASSIVE GAINS: Secure majority of profits, let small portion run.\n\u26a1 **Action**: Take 80% profits, trail stop at +75% on remainder\n\ud83d\udcca Entry: $0.442694 \u2192 Current: $0.321874"
+    },
+    {
+      "type": "losing_trade",
+      "symbol": "OBOL:USDT",
+      "platform": "Blofin",
+      "pnl": -54.66677915000521,
+      "margin": 0.0,
+      "severity": "CRITICAL",
+      "message": "\ud83d\udea8 **$OBOL:USDT Loss Analysis** ($0)\n\ud83d\udcc9 Down **-54.7%** | Severity: **CRITICAL**\n\ud83d\udca1 **Strategy**: \ud83d\udea8 IMMEDIATE ACTION: Consider cutting loss at -25% max. Risk/reward heavily skewed. Small position ($0) - could hold for reversal.\n\ud83c\udfaf **Entry**: $0.128460 | **Current**: $0.121437"
+    },
+    {
+      "type": "losing_trade",
+      "symbol": "LINK:USDT",
+      "platform": "Blofin",
+      "pnl": -66.40807285071276,
+      "margin": 0.0,
+      "severity": "CRITICAL",
+      "message": "\ud83d\udea8 **$LINK:USDT Loss Analysis** ($0)\n\ud83d\udcc9 Down **-66.4%** | Severity: **CRITICAL**\n\ud83d\udca1 **Strategy**: \ud83d\udea8 IMMEDIATE ACTION: Consider cutting loss at -25% max. Risk/reward heavily skewed. Small position ($0) - could hold for reversal.\n\ud83c\udfaf **Entry**: $23.721494 | **Current**: $22.146196"
     }
   ],
   "summary_parts": [
+    "\u2757Losing: 2",
     "\ud83d\udea8 No SL: 2",
-    "\ud83d\udcb0 High Profit: 1"
+    "\ud83d\udcb0 High Profit: 2"
   ]
 }

@@ -1,92 +1,92 @@
 {
-  "current_coin": "DGB",
-  "current_index": 75,
+  "current_coin": "WEN",
+  "current_index": 124,
   "total_coins": 200,
-  "current_batch": "5/11",
+  "current_batch": "7/11",
   "confidence": 15,
   "alert_triggered": false,
-  "timestamp": "2025-08-15T14:43:20.793753",
+  "timestamp": "2025-08-15T15:15:21.232151",
   "scanning_active": true,
   "recent_scans": [
     {
-      "symbol": "DGB",
+      "symbol": "WEN",
       "confidence": 15,
-      "timestamp": "14:43:20",
+      "timestamp": "15:15:21",
       "alert_triggered": false,
       "status": "completed",
-      "ai_insight": "DigiByte (DGB) has a low confidence score of 15.0% primarily due to its neutral technical indicators, lack of news catalysts, and nonexistent social momentum, which collectively suggest minimal current interest or movement in the market. Traders should note the absence of positive sentiment and market catalysts, indicating limited short-term trading opportunities and a need for caution until more definitive market signals emerge."
+      "ai_insight": "The WEN coin scored a low confidence of 15.0% primarily due to a lack of positive sentiment and catalysts across technical, news, and social analyses, with a neutral RSI and MACD indicating no clear momentum or direction. Traders should be cautious as the absence of social and news engagement suggests limited market interest and potential volatility, making it essential to wait for stronger signals or catalysts before considering positions."
     },
     {
-      "symbol": "SC",
+      "symbol": "JUP",
       "confidence": 15,
-      "timestamp": "14:42:42",
+      "timestamp": "15:14:42",
       "alert_triggered": false,
       "status": "completed",
-      "ai_insight": "The coin scored 15.0% due to a combination of neutral technical indicators, lack of positive news sentiment, and negligible social momentum, resulting in low confidence among traders. With no significant catalysts or viral potential, traders should be cautious and consider this lack of enthusiasm and direction before making investment decisions."
+      "ai_insight": "JUP's low confidence score of 15.0% is driven by a neutral technical outlook, indicated by an RSI of 50 and a lack of momentum in MACD signals, coupled with negligible positive sentiment and social media engagement. Traders should note the absence of recent news catalysts and weak social momentum, suggesting limited current interest or activity in the market for this coin."
     },
     {
-      "symbol": "ZIL",
+      "symbol": "W",
       "confidence": 15,
-      "timestamp": "14:42:04",
+      "timestamp": "15:14:04",
       "alert_triggered": false,
       "status": "completed",
-      "ai_insight": "ZIL's low confidence score of 15.0% is primarily driven by a lack of strong technical indicators and minimal engagement in news and social media, as evidenced by a neutral RSI and MACD, coupled with a complete absence of positive sentiment or social momentum. Traders should exercise caution, given the lack of any significant catalysts or community interest that could drive price movement."
+      "ai_insight": "The cryptocurrency W scored a low confidence score of 15.0% primarily due to lackluster technical indicators, with a neutral RSI and MACD, resulting in a mediocre technical score of 20.0/50. Additionally, the absence of positive news catalysts and social momentum further dampens its outlook, highlighting that traders should exercise caution and possibly wait for clearer signals before making investment decisions."
     },
     {
-      "symbol": "QTUM",
+      "symbol": "PYTH",
       "confidence": 15,
-      "timestamp": "14:41:26",
+      "timestamp": "15:13:25",
       "alert_triggered": false,
       "status": "completed",
-      "ai_insight": "QTUM's low confidence score of 15.0% is primarily driven by its neutral technical indicators, lack of positive news sentiment, and minimal social engagement, suggesting limited current interest and momentum in the market. Traders should be cautious, as the absence of catalysts and weak sentiment across news and social platforms indicate that QTUM may not experience significant price movements in the near term."
+      "ai_insight": "PYTH's low confidence score of 15.0% is primarily driven by its neutral technical indicators, lack of positive news sentiment, and absence of social media momentum, reflecting a stagnant market interest. Traders should note the overall neutrality in both technical and sentiment analyses, suggesting limited immediate catalysts for significant price movements."
     },
     {
-      "symbol": "DENT",
+      "symbol": "JTO",
       "confidence": 15,
-      "timestamp": "14:40:48",
+      "timestamp": "15:12:47",
       "alert_triggered": false,
       "status": "completed",
-      "ai_insight": "DENT's low confidence score of 15.0% is primarily driven by the absence of positive news, social momentum, and a neutral technical setup, as indicated by its RSI of 50 and neutral MACD signal, resulting in a weak technical score of 20.0/50. Traders should be cautious as there is no significant news catalyst or social traction to suggest an imminent price movement, making it prudent to monitor for any changes in market sentiment or technical indicators before taking action."
+      "ai_insight": "JTO's low confidence score of 15.0% is primarily due to its neutral technical indicators and lack of positive sentiment or catalysts in recent news and social media, indicating minimal market engagement and weak momentum. Traders should be cautious, as the absence of significant drivers suggests limited immediate upside potential."
     },
     {
-      "symbol": "HOT",
+      "symbol": "MYRO",
       "confidence": 15,
-      "timestamp": "14:40:10",
+      "timestamp": "15:12:09",
       "alert_triggered": false,
       "status": "completed",
-      "ai_insight": "The HOT coin has a confidence score of 15.0% primarily due to a lack of market catalysts and engagement, as evidenced by neutral technical indicators, absence of news coverage, and stagnant social sentiment. Traders should note the current lack of momentum and external interest, suggesting limited immediate trading opportunities unless market conditions change."
+      "ai_insight": "MYRO's low confidence score of 15.0% is driven by weak technical indicators and a lack of positive sentiment, as evidenced by a neutral RSI and MACD, alongside no positive sentiment or viral potential in recent news and social discussions. Traders should be cautious, as the absence of bullish catalysts or social momentum suggests limited immediate upside potential."
     },
     {
-      "symbol": "CHZ",
+      "symbol": "POPCAT",
       "confidence": 15,
-      "timestamp": "14:39:33",
+      "timestamp": "15:11:31",
       "alert_triggered": false,
       "status": "completed",
-      "ai_insight": "CHZ's low confidence score of 15.0% is primarily driven by neutral technical indicators, such as an RSI of 50 and a neutral MACD signal, alongside a lack of positive news sentiment or social momentum. Traders should be cautious, as the absence of strong catalysts or positive sentiment suggests limited short-term movement potential."
+      "ai_insight": "POPCAT's low confidence score of 15.0% is driven by a lack of positive news coverage and social media engagement, as indicated by its 0% sentiment and social scores. The neutral technical indicators, such as an RSI of 50 and a lack of clear direction from the MACD, suggest limited trading opportunities, advising traders to maintain a cautious, neutral stance until more definitive signals emerge."
     },
     {
-      "symbol": "ENJ",
+      "symbol": "MEW",
       "confidence": 15,
-      "timestamp": "14:38:56",
+      "timestamp": "15:10:49",
       "alert_triggered": false,
       "status": "completed",
-      "ai_insight": "ENJ's low confidence score of 15.0% is primarily driven by weak technical indicators and a lack of positive sentiment or momentum in both news and social media analyses, with neutral RSI and MACD readings offering little directional guidance. Traders should note the absence of catalysts and social engagement, suggesting limited immediate upside or downside potential."
+      "ai_insight": "MEW's low confidence score of 15.0% is primarily driven by a lack of significant market signals and engagement, as evidenced by its neutral technical indicators (RSI at 50 and MACD neutral), absence of news articles, and minimal social media activity. Traders should note the current neutrality in both technical and sentiment indicators, suggesting a wait-and-see approach until clearer trends or catalysts emerge."
     },
     {
-      "symbol": "GRT",
+      "symbol": "SLERF",
       "confidence": 15,
-      "timestamp": "14:38:18",
+      "timestamp": "15:10:10",
       "alert_triggered": false,
       "status": "completed",
-      "ai_insight": "GRT's low confidence score of 15.0% reflects a lack of clear market direction, characterized by neutral technical indicators such as an RSI at 50.0 and a stagnant MACD, combined with an absence of influential news or social media activity. Traders should note this indicates minimal momentum or catalysts, suggesting a hold or cautious approach until more decisive signals emerge."
+      "ai_insight": "SLERF scored a low confidence score of 15.0% due to a lack of news coverage and social media activity, resulting in a News Score and Social Score of 0, which indicates limited public interest and sentiment. The neutral technical indicators, including an RSI of 50.0 and a neutral MACD, suggest no clear market momentum or direction, advising traders to adopt a cautious approach."
     },
     {
-      "symbol": "1INCH",
+      "symbol": "BOME",
       "confidence": 15,
-      "timestamp": "14:37:41",
+      "timestamp": "15:08:56",
       "alert_triggered": false,
       "status": "completed",
-      "ai_insight": "1INCH's confidence score of 15.0% reflects a lack of strong market signals, characterized by neutral technical indicators and absent positive sentiment in both news and social media. Traders should note the current absence of catalysts or momentum, suggesting a cautious approach until more definitive market movements or sentiment changes occur."
+      "ai_insight": "BOME's low confidence score of 15.0% is primarily driven by the lack of positive sentiment and momentum across technical, news, and social analyses, with neutral technical indicators and no significant news catalysts or social buzz. Traders should be cautious as the absence of strong signals or enthusiasm suggests limited potential for short-term price movement or volatility."
     }
   ]
 }
