@@ -2,20 +2,25 @@
 
 This project is a comprehensive cryptocurrency trading automation system, THE ALPHA PLAYBOOK v4, designed for significant capital growth through AI-powered trading intelligence. It focuses on confluence-based sniper entries with zero data hallucination by using authenticated API sources. The system features real-time market intelligence, automated portfolio monitoring, and multi-channel Discord alerting with enhanced visual content. It includes capabilities for detecting conditional orders, real-time portfolio analysis, and market-wide technical indicator scanning.
 
-## Recent Critical Updates (Aug 14, 2025)
+## Recent Critical Updates (Aug 15, 2025)
+- **AI-POWERED MARKET INTELLIGENCE**: Integrated OpenAI GPT-4o for natural language market analysis
+- **Intelligent Explanations**: Each coin scan now includes professional AI insights explaining confidence scores
+- **Enhanced Scanner Dashboard**: Live AI-powered explanations alongside technical data for actionable intelligence
+- **GPT-4o Integration**: Real-time market analysis using the latest OpenAI model for professional trading insights
+- **Smart Alpha Detection**: High-confidence alerts (75%+) now include AI explanations of why opportunities matter
 - **CRITICAL STABILITY FIX**: Resolved TradingView 429 rate limiting that was causing server crashes and hangs
 - **Intelligent Rate Limit Bypass**: Implemented smart fallback analysis preventing API failures
 - **Trading Intelligence Server**: Now runs continuously on port 5000 with full stability
 - **Lumif-ai TradingView Suite Integrated**: Professional-grade technical analysis with 208+ indicators, pattern recognition, and multi-timeframe confluence analysis
-- **Enhanced Market Scanner**: Comprehensive scanner detecting high-confidence opportunities (80%+ confluence scores)
+- **Enhanced Market Scanner**: Comprehensive scanner detecting high-confidence opportunities (75%+ confluence scores)
 - **Advanced Pattern Detection**: Automated bullish/bearish pattern recognition with real-time alerts
 - **Multi-Timeframe Analysis**: 1h, 4h, 1d timeframe correlation for comprehensive market intelligence
 - **True 20-Second Rotation**: Scans 1 coin every 20 seconds, cycling through full top 200 coins systematically
-- **4-Layer Intelligence**: Enhanced Technical (Lumif-ai TradingView) + Local Technical + News (API) + Social sentiment (API)
+- **5-Layer Intelligence**: AI Analysis (GPT-4o) + Enhanced Technical (Lumif-ai TradingView) + Local Technical + News (API) + Social sentiment (API)
 - **Professional-Grade API Endpoints**: 
   - `/api/lumif/enhanced-analysis/{symbol}` - 208+ indicators with confluence scoring
   - `/api/lumif/multi-timeframe/{symbol}` - Multi-timeframe confluence analysis
-  - `/api/lumif/market-scanner` - High-confluence opportunity detection
+  - `/api/lumif/market-scanner` - High-confidence opportunity detection
   - `/api/lumif/pattern-signals/{symbol}` - Advanced pattern recognition
 - **Production-Ready Stability**: All workflows running continuously without interruption
 - **Cost-Effective Enhancement**: $400/month savings with enterprise-level analysis capabilities

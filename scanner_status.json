@@ -1,80 +1,83 @@
 {
-  "current_coin": "ETC",
-  "current_index": 21,
+  "current_coin": "XRP",
+  "current_index": 3,
   "total_coins": 200,
-  "current_batch": "2/11",
-  "confidence": 42.9,
+  "current_batch": "1/11",
+  "confidence": 74.6,
   "alert_triggered": false,
-  "timestamp": "2025-08-15T03:17:56.994599",
+  "timestamp": "2025-08-15T03:27:31.598323",
   "scanning_active": true,
   "recent_scans": [
     {
-      "symbol": "ETC",
-      "confidence": 42.9,
-      "timestamp": "03:17:56",
+      "symbol": "XRP",
+      "confidence": 74.6,
+      "timestamp": "03:27:31",
+      "alert_triggered": false,
+      "status": "completed",
+      "ai_insight": "The 74.6% confidence score for XRP is primarily driven by strong technical indicators, notably the bullish MACD signal and a low RSI of 34.4 suggesting potential for a price rebound, which supports the buy recommendation. However, the lack of recent news and social momentum indicates that these technical signals are not currently supported by external catalysts or market sentiment, which traders should consider as potential limitations to this bullish outlook."
+    },
+    {
+      "symbol": "ETH",
+      "confidence": 55.3,
+      "timestamp": "03:27:10",
+      "alert_triggered": false,
+      "status": "completed",
+      "ai_insight": "Ethereum's confidence score of 55.3% is primarily driven by technical indicators, with a bullish MACD signal and an RSI of 66.7 suggesting potential overbought conditions, which contributes to a neutral recommendation. The lack of influence from news and social sentiment, reflected by their scores of zero, indicates that current market movements are largely technical rather than sentiment-driven, advising traders to proceed with caution."
+    },
+    {
+      "symbol": "BTC",
+      "confidence": 49.8,
+      "timestamp": "03:26:47",
+      "alert_triggered": false,
+      "status": "completed",
+      "ai_insight": "Bitcoin's score of 49.8% reflects a neutral technical stance, with indicators like RSI and MACD suggesting caution amidst a lack of momentum and sentiment from both news and social media. Traders should be aware that the absence of significant news or social catalysts implies limited immediate directional bias, urging a watchful approach until clearer signals emerge."
+    },
+    {
+      "symbol": "DASH",
+      "confidence": 32.6,
+      "timestamp": "03:26:37",
       "alert_triggered": false,
       "status": "completed"
     },
     {
-      "symbol": "APT",
-      "confidence": 56.9,
-      "timestamp": "03:17:36",
+      "symbol": "ZEC",
+      "confidence": 58.7,
+      "timestamp": "03:26:17",
       "alert_triggered": false,
       "status": "completed"
     },
     {
-      "symbol": "ICP",
-      "confidence": 59.1,
-      "timestamp": "03:17:16",
+      "symbol": "RUNE",
+      "confidence": 42.5,
+      "timestamp": "03:25:57",
       "alert_triggered": false,
       "status": "completed"
     },
     {
-      "symbol": "LTC",
-      "confidence": 57.3,
-      "timestamp": "03:16:56",
+      "symbol": "KAVA",
+      "confidence": 30.7,
+      "timestamp": "03:25:37",
       "alert_triggered": false,
       "status": "completed"
     },
     {
-      "symbol": "UNI",
-      "confidence": 59.5,
-      "timestamp": "03:16:36",
+      "symbol": "XTZ",
+      "confidence": 9.666666666666666,
+      "timestamp": "03:25:17",
       "alert_triggered": false,
       "status": "completed"
     },
     {
-      "symbol": "MATIC",
-      "confidence": 21.5,
-      "timestamp": "03:16:16",
+      "symbol": "FTM",
+      "confidence": 41.7,
+      "timestamp": "03:24:57",
       "alert_triggered": false,
       "status": "completed"
     },
     {
-      "symbol": "NEAR",
-      "confidence": 53.4,
-      "timestamp": "03:15:56",
-      "alert_triggered": false,
-      "status": "completed"
-    },
-    {
-      "symbol": "BCH",
-      "confidence": 42.0,
-      "timestamp": "03:15:36",
-      "alert_triggered": false,
-      "status": "completed"
-    },
-    {
-      "symbol": "LINK",
-      "confidence": 40.6,
-      "timestamp": "03:15:16",
-      "alert_triggered": false,
-      "status": "completed"
-    },
-    {
-      "symbol": "DOT",
-      "confidence": 52.3,
-      "timestamp": "03:14:56",
+      "symbol": "EGLD",
+      "confidence": 43.9,
+      "timestamp": "03:24:37",
       "alert_triggered": false,
       "status": "completed"
     }

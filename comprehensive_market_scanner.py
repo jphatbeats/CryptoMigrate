@@ -14,6 +14,7 @@ import pytz
 from typing import List, Dict, Optional
 import logging
 import os
+from openai import OpenAI
 
 # Lumif-ai TradingView Enhanced Integration
 try:
@@ -45,6 +46,16 @@ class ComprehensiveMarketScanner:
         self.current_batch = 0
         self.top_200_coins = []
         self.last_top_200_refresh = None
+        
+        # Initialize OpenAI client for AI-powered analysis
+        try:
+            self.openai_client = OpenAI(api_key=os.getenv('OPENAI_API_KEY'))
+            self.ai_enabled = True
+            print("🧠 AI-powered analysis enabled with OpenAI GPT-4o")
+        except Exception as e:
+            print(f"⚠️ OpenAI not available: {e}")
+            self.openai_client = None
+            self.ai_enabled = False
         
         # Quality thresholds for alerts
         self.alert_thresholds = {
@@ -109,12 +120,17 @@ class ComprehensiveMarketScanner:
             
             print(f"📊 {coin_symbol}: {confluence_score:.1f}% confidence")
             
+            # Get AI-powered market insight if enabled
+            ai_insight = None
+            if self.ai_enabled and analysis:
+                ai_insight = await self._get_ai_market_insight(coin_symbol, analysis, confluence_score)
+            
             # Update scanner status file for dashboard
-            self._update_scanner_status(coin_symbol, confluence_score, current_batch_num, total_batches)
+            self._update_scanner_status(coin_symbol, confluence_score, current_batch_num, total_batches, ai_insight)
             
             # Send alert if meets quality threshold
             if confluence_score >= self.alert_thresholds['min_opportunity_score']:
-                await self._send_alpha_alert(coin_symbol, analysis)
+                await self._send_alpha_alert(coin_symbol, analysis, ai_insight)
         
         # Move to next coin
         self.current_coin_index = (self.current_coin_index + 1) % len(self.top_200_coins)
@@ -431,7 +447,62 @@ class ComprehensiveMarketScanner:
         except Exception as e:
             print(f"❌ Error refreshing top coins: {e}")
     
-    def _update_scanner_status(self, symbol: str, confidence: float, batch_num: int, total_batches: int):
+    async def _get_ai_market_insight(self, symbol: str, analysis: Dict, confidence: float) -> Optional[str]:
+        """Get AI-powered market insight and explanation using GPT-4o"""
+        if not self.ai_enabled or not self.openai_client:
+            return None
+            
+        try:
+            # Prepare analysis data for AI
+            technical_data = analysis.get('technical', {})
+            news_data = analysis.get('news', {})
+            social_data = analysis.get('social', {})
+            
+            prompt = f"""You are an expert crypto trading analyst. Analyze {symbol} with this data:
+
+CONFIDENCE SCORE: {confidence:.1f}%
+
+TECHNICAL ANALYSIS:
+- RSI: {technical_data.get('rsi', 'N/A')}
+- MACD Signal: {technical_data.get('macd_signal', 'N/A')}
+- Recommendation: {technical_data.get('recommendation', 'N/A')}
+- Technical Score: {technical_data.get('technical_score', 0)}/50
+
+NEWS ANALYSIS:
+- Recent News: {news_data.get('recent_news_count', 0)} articles
+- Positive Sentiment: {news_data.get('positive_sentiment_ratio', 0)*100:.1f}%
+- News Catalyst: {'Yes' if news_data.get('news_catalyst') else 'No'}
+- News Score: {news_data.get('news_score', 0)}/30
+
+SOCIAL ANALYSIS:
+- Social Momentum: {social_data.get('social_momentum', 0)*100:.1f}%
+- Sentiment Score: {social_data.get('sentiment_score', 0)*100:.1f}%
+- Viral Potential: {'Yes' if social_data.get('viral_potential') else 'No'}
+- Social Score: {social_data.get('social_score', 0)}/20
+
+Provide a concise 2-sentence analysis explaining why this coin scored {confidence:.1f}% and what traders should know. Focus on the key factors driving the score."""
+
+            # the newest OpenAI model is "gpt-4o" which was released May 13, 2024.
+            # do not change this unless explicitly requested by the user
+            response = self.openai_client.chat.completions.create(
+                model="gpt-4o",
+                messages=[
+                    {"role": "system", "content": "You are a professional crypto trading analyst providing concise, actionable market insights."},
+                    {"role": "user", "content": prompt}
+                ],
+                max_tokens=150,
+                temperature=0.7
+            )
+            
+            insight = response.choices[0].message.content.strip()
+            print(f"🧠 AI Insight for {symbol}: {insight}")
+            return insight
+            
+        except Exception as e:
+            print(f"⚠️ AI insight error for {symbol}: {e}")
+            return None
+    
+    def _update_scanner_status(self, symbol: str, confidence: float, batch_num: int, total_batches: int, ai_insight: Optional[str] = None):
         """Update scanner status for dashboard"""
         try:
             # Keep recent scans history
@@ -452,7 +523,8 @@ class ComprehensiveMarketScanner:
                 'confidence': confidence,
                 'timestamp': datetime.now().strftime('%H:%M:%S'),
                 'alert_triggered': confidence >= 75,
-                'status': 'completed'
+                'status': 'completed',
+                'ai_insight': ai_insight
             })
             
             # Keep only last 10 scans
@@ -478,7 +550,7 @@ class ComprehensiveMarketScanner:
         except Exception as e:
             print(f"⚠️ Failed to update scanner status: {e}")
 
-    async def _send_alpha_alert(self, symbol: str, analysis: Dict):
+    async def _send_alpha_alert(self, symbol: str, analysis: Dict, ai_insight: Optional[str] = None):
         """Send high-quality alpha opportunity alert"""
         confluence_score = analysis['confluence_score']
         
@@ -489,10 +561,13 @@ class ComprehensiveMarketScanner:
             'technical': analysis.get('technical', {}),
             'news': analysis.get('news', {}),
             'social': analysis.get('social', {}),
+            'ai_insight': ai_insight,
             'timestamp': datetime.now().strftime('%H:%M:%S')
         }
         
         print(f"🚨 ALPHA ALERT: {symbol} - {confluence_score:.1f}% confluence score")
+        if ai_insight:
+            print(f"🧠 AI Analysis: {ai_insight}")
         
         # Here you would send to Discord webhook
         # await self._send_discord_alert(alert_data)
