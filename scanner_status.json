@@ -1,92 +1,92 @@
 {
-  "current_coin": "BNB",
-  "current_index": 4,
+  "current_coin": "XMR",
+  "current_index": 25,
   "total_coins": 200,
-  "current_batch": "1/11",
+  "current_batch": "2/11",
   "confidence": 15,
   "alert_triggered": false,
-  "timestamp": "2025-08-15T17:49:09.996039",
+  "timestamp": "2025-08-15T18:02:36.263962",
   "scanning_active": true,
   "recent_scans": [
     {
-      "symbol": "BNB",
-      "confidence": 15,
-      "timestamp": "17:49:09",
-      "alert_triggered": false,
-      "status": "completed",
-      "ai_insight": "BNB's low confidence score of 15.0% is primarily driven by its neutral technical indicators, including an RSI at 50 and a neutral MACD signal, combined with a lack of positive sentiment or catalysts in both news and social channels. Traders should note the absence of momentum and sentiment drivers, suggesting a cautious approach until more definitive market signals emerge."
-    },
-    {
-      "symbol": "XRP",
-      "confidence": 15,
-      "timestamp": "17:48:31",
-      "alert_triggered": false,
-      "status": "completed",
-      "ai_insight": "XRP's confidence score of 15.0% is primarily driven by a lack of positive sentiment across technical, news, and social analyses, with neutral technical indicators and no significant news or social momentum contributing to a low overall score. Traders should note the absence of catalysts and positive sentiment, suggesting limited immediate upside potential and warranting a cautious approach."
-    },
-    {
-      "symbol": "ETH",
-      "confidence": 15,
-      "timestamp": "17:47:53",
-      "alert_triggered": false,
-      "status": "completed",
-      "ai_insight": "ETH's low confidence score of 15.0% is primarily driven by a lack of positive sentiment and momentum across technical, news, and social analyses, with neutral technical indicators and no significant news catalysts contributing to a subdued market outlook. Traders should be cautious, as the absence of positive sentiment and momentum suggests limited short-term trading opportunities and a potentially stagnant price movement."
-    },
-    {
-      "symbol": "BTC",
-      "confidence": 15,
-      "timestamp": "17:47:15",
-      "alert_triggered": false,
-      "status": "completed",
-      "ai_insight": "The BTC confidence score of 15.0% is primarily driven by a neutral technical setup, indicated by an RSI of 50 and a neutral MACD signal, alongside a lack of positive sentiment or catalysts in recent news and social media activity, which collectively suggest a lack of clear market direction. Traders should note the absence of momentum and sentiment, advising caution and a wait-and-see approach until more definitive trends or catalysts emerge."
-    },
-    {
       "symbol": "XMR",
       "confidence": 15,
-      "timestamp": "17:41:40",
+      "timestamp": "18:02:36",
       "alert_triggered": false,
       "status": "completed",
-      "ai_insight": "XMR's low confidence score of 15.0% is driven by a lack of positive sentiment across technical, news, and social analyses, with neutral technical indicators and no significant news or social momentum to boost its outlook. Traders should note the absence of catalysts and sentiment support, suggesting cautious observation rather than active trading at this time."
+      "ai_insight": "XMR's low confidence score of 15.0% is primarily driven by a lack of strong market signals, as indicated by its neutral RSI and MACD readings, coupled with minimal technical momentum, scoring just 20.0 out of 50. Additionally, the absence of news catalysts and any significant social media engagement further contributes to its weak position, suggesting traders should exercise caution and possibly wait for more decisive indicators before making any moves."
     },
     {
       "symbol": "CRO",
       "confidence": 15,
-      "timestamp": "17:41:02",
+      "timestamp": "18:01:56",
       "alert_triggered": false,
       "status": "completed",
-      "ai_insight": "CRO's low confidence score of 15.0% is primarily driven by its neutral technical indicators and lack of positive sentiment in both news and social media, which suggest limited momentum and interest from traders. With a technical score of 20.0/50 and no significant news catalysts or social buzz, traders should exercise caution and consider waiting for stronger signals before making any moves."
+      "ai_insight": "CRO's low confidence score of 15.0% is primarily driven by a lack of positive sentiment across technical, news, and social analyses, with neutral indicators and stagnant social momentum suggesting limited market interest or activity. Traders should note that without significant catalysts or shifts in sentiment, the potential for immediate price movement appears minimal, warranting a cautious or neutral stance."
     },
     {
       "symbol": "XLM",
       "confidence": 15,
-      "timestamp": "17:40:23",
+      "timestamp": "18:01:18",
       "alert_triggered": false,
       "status": "completed",
-      "ai_insight": "XLM's low confidence score of 15.0% is driven by a lack of positive sentiment across technical, news, and social analyses, with neutral technical indicators and no catalysts from recent news or social momentum. Traders should note the absence of any strong directional signals or market interest, suggesting a cautious approach until clearer trends or catalysts emerge."
+      "ai_insight": "The XLM coin's low confidence score of 15.0% is primarily driven by a lack of positive sentiment across technical indicators, news, and social media channels, as evidenced by neutral technical indicators, absence of positive news sentiment, and no social momentum. Traders should note that the current market conditions and sentiment offer no strong catalysts or momentum for XLM, suggesting a wait-and-see approach until clearer signals emerge."
     },
     {
       "symbol": "STX",
       "confidence": 15,
-      "timestamp": "17:39:45",
+      "timestamp": "18:00:39",
       "alert_triggered": false,
       "status": "completed",
-      "ai_insight": "STX's low confidence score of 15.0% is primarily driven by a lack of positive sentiment and momentum across technical, news, and social analyses, with all indicators pointing to a neutral or stagnant market environment. Traders should note the absence of any significant catalysts or viral potential, suggesting limited immediate opportunities for price movement or volatility."
+      "ai_insight": "STX's low confidence score of 15.0% reflects a lack of strong directional signals, as indicated by its neutral RSI and MACD, coupled with minimal positive sentiment from news and social analysis. Traders should be cautious, as the absence of catalysts and social momentum suggests limited short-term opportunities for upward movement."
     },
     {
       "symbol": "ETC",
       "confidence": 15,
-      "timestamp": "17:39:07",
+      "timestamp": "18:00:00",
       "alert_triggered": false,
       "status": "completed",
-      "ai_insight": "Ethereum Classic (ETC) scored a low confidence score of 15.0% due to neutral technical indicators, such as an RSI of 50.0 and a lack of significant momentum from both MACD and social activity, combined with the absence of positive sentiment or impactful news catalysts. Traders should note the lack of market enthusiasm and sentiment, suggesting a cautious approach without clear bullish or bearish signals at this time."
+      "ai_insight": "ETC's confidence score of 15.0% reflects a lack of momentum and sentiment across technical, news, and social analyses, with neutral technical indicators and no significant positive news or social engagement impacting its outlook. Traders should note the absence of catalysts and positive sentiment, indicating a currently stagnant market environment for ETC."
     },
     {
       "symbol": "APT",
       "confidence": 15,
-      "timestamp": "17:38:28",
+      "timestamp": "17:59:21",
       "alert_triggered": false,
       "status": "completed",
-      "ai_insight": "APT's confidence score of 15.0% indicates weak market interest and uncertainty, driven by neutral technical indicators and a lack of positive news or social momentum. Traders should note the absence of any bullish catalysts, as reflected by the neutral RSI, MACD, and a complete lack of positive sentiment in news and social discussions."
+      "ai_insight": "APT's low confidence score of 15.0% is driven by a lack of clear direction in technical indicators, with a neutral RSI and MACD and minimal support from news and social sentiment. Traders should note the absence of positive news catalysts and social momentum, suggesting limited immediate interest or momentum in the market for this coin."
+    },
+    {
+      "symbol": "ICP",
+      "confidence": 15,
+      "timestamp": "17:58:43",
+      "alert_triggered": false,
+      "status": "completed",
+      "ai_insight": "ICP's low confidence score of 15.0% is primarily driven by neutral technical indicators, a lack of positive news sentiment, and zero social momentum, which collectively suggest an absence of strong market catalysts or investor interest. Traders should be cautious about entering positions as the current market sentiment and technical signals do not indicate a clear direction for potential growth or decline."
+    },
+    {
+      "symbol": "LTC",
+      "confidence": 15,
+      "timestamp": "17:58:04",
+      "alert_triggered": false,
+      "status": "completed",
+      "ai_insight": "Litecoin (LTC) scored a low confidence score of 15.0% primarily due to the lack of positive sentiment across technical, news, and social analyses, with indicators such as RSI and MACD remaining neutral and no significant news catalysts or social momentum to drive interest. Traders should be cautious as the absence of positive sentiment and momentum suggests limited immediate upside potential, warranting a watchful approach rather than active trading."
+    },
+    {
+      "symbol": "UNI",
+      "confidence": 15,
+      "timestamp": "17:57:26",
+      "alert_triggered": false,
+      "status": "completed",
+      "ai_insight": "UNI's low confidence score of 15.0% is primarily driven by its lackluster performance across all analytical dimensions, with technical indicators showing neutrality (RSI at 50.0 and MACD neutral) and no significant news or social media catalysts to boost sentiment. Traders should note the absence of positive momentum or sentiment in both news and social channels, suggesting a wait-and-see approach might be prudent until clearer trends or catalysts emerge."
+    },
+    {
+      "symbol": "MATIC",
+      "confidence": 15,
+      "timestamp": "17:56:47",
+      "alert_triggered": false,
+      "status": "completed",
+      "ai_insight": "MATIC's low confidence score of 15.0% is primarily driven by neutral technical indicators, including an RSI of 50 and a lack of momentum in both MACD and social sentiment, alongside a complete absence of positive news sentiment. Traders should be cautious, as the lack of positive catalysts and weak overall sentiment suggest limited short-term price movement potential."
     }
   ]
 }

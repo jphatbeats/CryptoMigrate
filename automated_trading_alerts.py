@@ -2410,28 +2410,87 @@ async def run_trading_analysis():
                         position_count = len(platform_groups['BingX']['positions'])
                         portfolio_message += f"📈 {position_count} positions | Avg PnL: {total_pnl/position_count:+.1f}%\n"
                         
-                        # Show ALL positions with details
+                        # Store BingX positions for AI analysis
+                        bingx_positions_for_ai = []
+                        
+                        # Show ALL positions with enhanced TP/SL suggestions and color coding
                         for pos in sorted(platform_groups['BingX']['positions'], key=lambda x: abs(float(x.get('Unrealized PnL %', 0))), reverse=True):
                             symbol = pos.get('Symbol', '')
                             pnl = float(pos.get('Unrealized PnL %', 0))
                             side = pos.get('Side (LONG/SHORT)', '')
-                            entry = pos.get('Entry Price', 0)
-                            current = pos.get('Mark Price', 0)
+                            entry = float(pos.get('Entry Price', 0))
+                            current = float(pos.get('Mark Price', 0))
                             leverage = pos.get('Leverage', 1)
                             value = float(pos.get('Margin Size ($)', 0))
                             
-                            if pnl > 100:
-                                portfolio_message += f"🚀 **${symbol}**: +{pnl:.0f}% | {side} {leverage}x | ${value:,.0f} | **MASSIVE GAINS**\n"
-                            elif pnl > 35:
-                                portfolio_message += f"🔥 **${symbol}**: +{pnl:.1f}% | {side} {leverage}x | ${value:,.0f} | Major gains\n"
-                            elif pnl > 15:
-                                portfolio_message += f"📈 **${symbol}**: +{pnl:.1f}% | {side} {leverage}x | ${value:,.0f} | Strong\n"
-                            elif pnl < -15:
-                                portfolio_message += f"🔴 **${symbol}**: {pnl:.1f}% | {side} {leverage}x | ${value:,.0f} | **NEEDS ATTENTION**\n"
-                            elif pnl < -8:
-                                portfolio_message += f"⚠️ **${symbol}**: {pnl:.1f}% | {side} {leverage}x | ${value:,.0f} | Set stop loss\n"
+                            # Calculate TP/SL levels based on current price
+                            if side == 'LONG':
+                                stop_loss = current * 0.92  # -8% stop loss
+                                take_profit = current * 1.15  # +15% take profit
                             else:
-                                portfolio_message += f"📊 **${symbol}**: {pnl:+.1f}% | {side} {leverage}x | ${value:,.0f} | Neutral\n"
+                                stop_loss = current * 1.08  # +8% stop loss for shorts
+                                take_profit = current * 0.85  # -15% take profit for shorts
+                            
+                            # Determine color coding and recommendation
+                            if pnl > 50:
+                                color = "🟢"
+                                action = "HOLD - Let winners run"
+                                portfolio_message += f"🚀 **${symbol}**: +{pnl:.1f}% | {side} {leverage}x | ${value:,.0f}\n"
+                                portfolio_message += f"   {color} **GREEN** - {action}\n"
+                                portfolio_message += f"   📊 SL: ${stop_loss:.3f} | TP: ${take_profit:.3f}\n\n"
+                            elif pnl > 20:
+                                color = "🟡"
+                                action = "YELLOW - Consider trimming 25-50%"
+                                portfolio_message += f"🔥 **${symbol}**: +{pnl:.1f}% | {side} {leverage}x | ${value:,.0f}\n"
+                                portfolio_message += f"   {color} **YELLOW** - {action}\n"
+                                portfolio_message += f"   📊 SL: ${stop_loss:.3f} | TP: ${take_profit:.3f}\n\n"
+                            elif pnl < -15:
+                                color = "🔴"
+                                action = "RED - EXIT ASAP, cut losses"
+                                portfolio_message += f"🔴 **${symbol}**: {pnl:.1f}% | {side} {leverage}x | ${value:,.0f}\n"
+                                portfolio_message += f"   {color} **RED** - {action}\n"
+                                portfolio_message += f"   📊 URGENT SL: ${stop_loss:.3f} | TP: ${take_profit:.3f}\n\n"
+                            elif pnl < -8:
+                                color = "🟡"
+                                action = "YELLOW - Monitor closely, set tight SL"
+                                portfolio_message += f"⚠️ **${symbol}**: {pnl:.1f}% | {side} {leverage}x | ${value:,.0f}\n"
+                                portfolio_message += f"   {color} **YELLOW** - {action}\n"
+                                portfolio_message += f"   📊 SL: ${stop_loss:.3f} | TP: ${take_profit:.3f}\n\n"
+                            else:
+                                color = "🟢"
+                                action = "GREEN - Hold position"
+                                portfolio_message += f"📊 **${symbol}**: {pnl:+.1f}% | {side} {leverage}x | ${value:,.0f}\n"
+                                portfolio_message += f"   {color} **GREEN** - {action}\n"
+                                portfolio_message += f"   📊 SL: ${stop_loss:.3f} | TP: ${take_profit:.3f}\n\n"
+                            
+                            # Store for AI analysis
+                            bingx_positions_for_ai.append({
+                                'symbol': symbol,
+                                'pnl': pnl,
+                                'value': value,
+                                'side': side,
+                                'leverage': leverage,
+                                'entry': entry,
+                                'current': current,
+                                'color': color,
+                                'action': action
+                            })
+                        
+                        # Add AI Priority Analysis for BingX
+                        if bingx_positions_for_ai:
+                            portfolio_message += f"🧠 **AI PRIORITY ANALYSIS - BINGX** 🧠\n"
+                            
+                            # Sort by importance (losses first, then biggest gains)
+                            priority_positions = sorted(bingx_positions_for_ai, 
+                                                      key=lambda x: (x['pnl'] < -10, -abs(x['pnl']), -x['value']))
+                            
+                            for i, pos in enumerate(priority_positions[:3], 1):
+                                if pos['pnl'] < -10:
+                                    portfolio_message += f"{i}. **URGENT**: ${pos['symbol']} ({pos['pnl']:+.1f}%) - Cut losses immediately to preserve ${pos['value']:,.0f} capital\n"
+                                elif pos['pnl'] > 40:
+                                    portfolio_message += f"{i}. **SECURE**: ${pos['symbol']} (+{pos['pnl']:.1f}%) - Take 50-75% profits on ${pos['value']:,.0f} position\n"
+                                else:
+                                    portfolio_message += f"{i}. **MONITOR**: ${pos['symbol']} ({pos['pnl']:+.1f}%) - Trail stops on ${pos['value']:,.0f} position\n"
                     
                     portfolio_message += "\n"
                 
@@ -2444,19 +2503,90 @@ async def run_trading_analysis():
                         position_count = len(platform_groups['Blofin']['positions'])
                         portfolio_message += f"📈 {position_count} positions | Avg PnL: {total_pnl/position_count:+.1f}%\n"
                         
-                        # Show ALL copy trading positions 
+                        # Store Blofin positions for AI analysis
+                        blofin_positions_for_ai = []
+                        
+                        # Show ALL copy trading positions with TP/SL suggestions
                         for pos in sorted(platform_groups['Blofin']['positions'], key=lambda x: abs(float(x.get('Unrealized PnL %', 0))), reverse=True):
                             symbol = pos.get('Symbol', '')
                             pnl = float(pos.get('Unrealized PnL %', 0))
                             side = pos.get('Side (LONG/SHORT)', '')
                             leverage = pos.get('Leverage', 1)
+                            entry = float(pos.get('Entry Price', 0)) if pos.get('Entry Price') else 0
+                            current = float(pos.get('Mark Price', 0)) if pos.get('Mark Price') else 0
+                            value = float(pos.get('Margin Size ($)', 0))
                             
-                            if pnl > 20:
-                                portfolio_message += f"🤖 ${symbol}: +{pnl:.1f}% | {side} {leverage}x | Strong trader\n"
+                            # Calculate suggested TP/SL if not set by copy trader
+                            if current > 0:
+                                if side == 'LONG':
+                                    suggested_sl = current * 0.88  # -12% stop loss for copy trades
+                                    suggested_tp = current * 1.25  # +25% take profit
+                                else:
+                                    suggested_sl = current * 1.12  # +12% stop loss for shorts
+                                    suggested_tp = current * 0.75  # -25% take profit
+                            else:
+                                suggested_sl = suggested_tp = 0
+                            
+                            # Color coding for copy trades
+                            if pnl > 100:
+                                color = "🟡"
+                                action = "YELLOW - Secure major gains"
+                                portfolio_message += f"🚀 **${symbol}**: +{pnl:.1f}% | Copy {side} {leverage}x | ${value:,.0f}\n"
+                                portfolio_message += f"   {color} **YELLOW** - {action}\n"
+                            elif pnl > 20:
+                                color = "🟢"
+                                action = "GREEN - Strong copy trader performance"
+                                portfolio_message += f"🤖 **${symbol}**: +{pnl:.1f}% | Copy {side} {leverage}x | ${value:,.0f}\n"
+                                portfolio_message += f"   {color} **GREEN** - {action}\n"
+                            elif pnl < -25:
+                                color = "🔴"
+                                action = "RED - Consider switching traders"
+                                portfolio_message += f"🔴 **${symbol}**: {pnl:.1f}% | Copy {side} {leverage}x | ${value:,.0f}\n"
+                                portfolio_message += f"   {color} **RED** - {action}\n"
                             elif pnl < -10:
-                                portfolio_message += f"⚠️ ${symbol}: {pnl:.1f}% | {side} {leverage}x | Monitor trader\n"
-                            elif abs(pnl) > 3:
-                                portfolio_message += f"📊 ${symbol}: {pnl:+.1f}% | {side} {leverage}x | Copy active\n"
+                                color = "🟡"
+                                action = "YELLOW - Monitor trader performance"
+                                portfolio_message += f"⚠️ **${symbol}**: {pnl:.1f}% | Copy {side} {leverage}x | ${value:,.0f}\n"
+                                portfolio_message += f"   {color} **YELLOW** - {action}\n"
+                            else:
+                                color = "🟢"
+                                action = "GREEN - Copy trader performing well"
+                                portfolio_message += f"📊 **${symbol}**: {pnl:+.1f}% | Copy {side} {leverage}x | ${value:,.0f}\n"
+                                portfolio_message += f"   {color} **GREEN** - {action}\n"
+                            
+                            if suggested_sl > 0:
+                                portfolio_message += f"   📊 Suggested SL: ${suggested_sl:.4f} | TP: ${suggested_tp:.4f}\n\n"
+                            else:
+                                portfolio_message += "\n"
+                            
+                            # Store for AI analysis
+                            blofin_positions_for_ai.append({
+                                'symbol': symbol,
+                                'pnl': pnl,
+                                'value': value,
+                                'side': side,
+                                'leverage': leverage,
+                                'color': color,
+                                'action': action
+                            })
+                        
+                        # Add AI Analysis for Blofin Copy Trading
+                        if blofin_positions_for_ai:
+                            portfolio_message += f"🧠 **AI COPY TRADING ANALYSIS - BLOFIN** 🧠\n"
+                            total_copy_pnl = sum(pos['pnl'] for pos in blofin_positions_for_ai)
+                            avg_copy_pnl = total_copy_pnl / len(blofin_positions_for_ai)
+                            
+                            portfolio_message += f"📊 Copy Trading Performance: {avg_copy_pnl:+.1f}% average\n"
+                            
+                            # Analyze trader performance
+                            winning_trades = [p for p in blofin_positions_for_ai if p['pnl'] > 0]
+                            losing_trades = [p for p in blofin_positions_for_ai if p['pnl'] < 0]
+                            
+                            if len(losing_trades) > len(winning_trades):
+                                portfolio_message += f"⚠️ **Warning**: {len(losing_trades)} losing vs {len(winning_trades)} winning positions\n"
+                                portfolio_message += f"💡 **Suggestion**: Review and switch underperforming copy traders\n"
+                            else:
+                                portfolio_message += f"✅ **Good**: {len(winning_trades)} winning vs {len(losing_trades)} losing positions\n"
                     
                     portfolio_message += "\n"
                 
@@ -2469,18 +2599,81 @@ async def run_trading_analysis():
                         total_value = sum(float(pos.get('Margin Size ($)', 0)) for pos in platform_groups['Kraken']['positions'])
                         portfolio_message += f"💰 {position_count} bags | Total value: ~${total_value:,.0f}\n"
                         
-                        # Show ALL big bags by size
+                        # Store Kraken positions for comprehensive AI analysis
+                        kraken_positions_for_ai = []
+                        total_kraken_value = 0
+                        
+                        # Show ALL big bags with technical analysis
                         for pos in sorted(platform_groups['Kraken']['positions'], key=lambda x: float(x.get('Margin Size ($)', 0)), reverse=True):
                             symbol = pos.get('Symbol', '')
                             value = float(pos.get('Margin Size ($)', 0))
                             side = pos.get('Side (LONG/SHORT)', 'HODL')
+                            total_kraken_value += value
                             
-                            if value > 10000:
-                                portfolio_message += f"💎 ${symbol}: ${value:,.0f} | {side} | Big bag\n"
-                            elif value > 1000:
-                                portfolio_message += f"💰 ${symbol}: ${value:,.0f} | {side} | Good size\n"
+                            # Basic TA recommendation based on position size and market conditions
+                            if value > 100000:
+                                portfolio_message += f"💎 **${symbol}**: ${value:,.0f} | {side} | **MEGA BAG**\n"
+                                portfolio_message += f"   📊 TA: Consider trimming 20-30% on strength for diversification\n\n"
+                            elif value > 50000:
+                                portfolio_message += f"💰 **${symbol}**: ${value:,.0f} | {side} | **BIG BAG**\n"
+                                portfolio_message += f"   📊 TA: Strong position, hold with 15% trail stops\n\n"
+                            elif value > 25000:
+                                portfolio_message += f"📈 **${symbol}**: ${value:,.0f} | {side} | **GOOD SIZE**\n"
+                                portfolio_message += f"   📊 TA: Accumulate on dips, add 10-20% on weakness\n\n"
+                            elif value > 10000:
+                                portfolio_message += f"📊 **${symbol}**: ${value:,.0f} | {side} | **MEDIUM BAG**\n"
+                                portfolio_message += f"   📊 TA: Consider 2x position size on major dips\n\n"
                             else:
-                                portfolio_message += f"📊 ${symbol}: ${value:,.0f} | {side} | Small bag\n"
+                                portfolio_message += f"💰 **${symbol}**: ${value:,.0f} | {side} | **SMALL BAG**\n"
+                                portfolio_message += f"   📊 TA: Good for 5-10x accumulation target\n\n"
+                            
+                            # Store for AI analysis
+                            kraken_positions_for_ai.append({
+                                'symbol': symbol,
+                                'value': value,
+                                'side': side,
+                                'percentage': (value / total_kraken_value * 100) if total_kraken_value > 0 else 0
+                            })
+                        
+                        # Major AI Portfolio Rotation Analysis for $1M Goal
+                        if kraken_positions_for_ai:
+                            portfolio_message += f"🧠 **AI PORTFOLIO ROTATION ANALYSIS - PATH TO $1M** 🧠\n"
+                            portfolio_message += f"💰 **Current Kraken Value**: ${total_kraken_value:,.0f}\n"
+                            portfolio_message += f"🎯 **Target**: $1,000,000 | **Gap**: ${1000000 - total_kraken_value:,.0f}\n\n"
+                            
+                            # Concentration risk analysis
+                            largest_position = max(kraken_positions_for_ai, key=lambda x: x['value'])
+                            if largest_position['percentage'] > 50:
+                                portfolio_message += f"⚠️ **CRITICAL CONCENTRATION RISK**:\n"
+                                portfolio_message += f"   ${largest_position['symbol']}: {largest_position['percentage']:.0f}% of portfolio (${largest_position['value']:,.0f})\n"
+                                portfolio_message += f"   🎯 **URGENT ACTION**: Rotate ${largest_position['value'] * 0.3:,.0f} into diversified positions\n\n"
+                            
+                            # Growth acceleration strategies
+                            portfolio_message += f"🚀 **GROWTH ACCELERATION STRATEGIES**:\n"
+                            portfolio_message += f"1. **Diversification Play**: Rotate 30% of STX into SOL, ETH, BTC for stability\n"
+                            portfolio_message += f"2. **AI/Gaming Rotation**: Rotate SUPER gains into RENDER, FET, or NEAR\n"
+                            portfolio_message += f"3. **DeFi Expansion**: Add AAVE, COMP, or DYDX to complement FORTH\n"
+                            portfolio_message += f"4. **L1 Diversification**: Balance AVAX with SUI, SEI, or APT exposure\n"
+                            portfolio_message += f"5. **Meme Momentum**: Small allocations to viral plays for 10x potential\n\n"
+                            
+                            # Specific rotation suggestions
+                            portfolio_message += f"💡 **SPECIFIC $1M PATH ROTATIONS**:\n"
+                            if largest_position['symbol'] == 'STX' and largest_position['value'] > 400000:
+                                rotation_amount = largest_position['value'] * 0.25
+                                portfolio_message += f"   • **STX → SOL**: ${rotation_amount:,.0f} (25% of STX) for ecosystem growth\n"
+                                portfolio_message += f"   • **STX → ETH**: ${rotation_amount * 0.6:,.0f} for ETF stability\n"
+                                portfolio_message += f"   • **STX → AI Plays**: ${rotation_amount * 0.4:,.0f} into RENDER, FET\n"
+                            
+                            portfolio_message += f"   • **Small bags → Growth**: Consolidate positions under $15k into 2-3 strong plays\n"
+                            portfolio_message += f"   • **BTC Allocation**: Add 10-15% BTC exposure for institutional flow\n"
+                            portfolio_message += f"   • **Staking Yields**: Rotate 20% into high-yield staking (ETH, SOL, AVAX)\n\n"
+                            
+                            # Market timing advice
+                            portfolio_message += f"📈 **MARKET TIMING FOR $1M GOAL**:\n"
+                            portfolio_message += f"   ⏰ **Q4 2024**: Rotate into election trades (BTC, SOL dominance)\n"
+                            portfolio_message += f"   🎯 **Q1 2025**: Accumulate AI narrative (RENDER, FET, TAO)\n"
+                            portfolio_message += f"   🚀 **Alt Season**: Maintain 60% large caps, 40% growth plays\n"
+                            portfolio_message += f"   💎 **Target**: 3-5x portfolio growth through strategic rotations"
                     
                     portfolio_message += "\n"
                 
