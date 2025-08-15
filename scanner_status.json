@@ -1,92 +1,92 @@
 {
-  "current_coin": "KAVA",
-  "current_index": 44,
+  "current_coin": "BTC",
+  "current_index": 1,
   "total_coins": 200,
-  "current_batch": "3/11",
+  "current_batch": "1/11",
   "confidence": 15,
   "alert_triggered": false,
-  "timestamp": "2025-08-15T21:33:21.365367",
+  "timestamp": "2025-08-15T21:41:22.165306",
   "scanning_active": true,
   "recent_scans": [
     {
-      "symbol": "KAVA",
+      "symbol": "BTC",
       "confidence": 15,
-      "timestamp": "21:33:21",
+      "timestamp": "21:41:22",
       "alert_triggered": false,
       "status": "completed",
-      "ai_insight": "KAVA's low confidence score of 15.0% is driven by neutral technical indicators, such as an RSI of 50 and a neutral MACD signal, combined with a complete lack of positive sentiment and momentum from news and social media. Traders should be cautious as the absence of catalysts and engagement suggests limited short-term movement potential."
+      "ai_insight": "BTC's low confidence score of 15.0% is primarily driven by neutral technical indicators, lack of positive sentiment in recent news, and stagnant social momentum, indicating limited enthusiasm or catalysts for price movement. Traders should note the absence of catalysts and engagement suggests limited short-term movement potential."
     },
     {
-      "symbol": "XTZ",
+      "symbol": "ZRX",
       "confidence": 15,
-      "timestamp": "21:32:43",
+      "timestamp": "21:41:02",
       "alert_triggered": false,
       "status": "completed",
-      "ai_insight": "XTZ's low confidence score of 15.0% is primarily driven by its neutral technical indicators, lack of positive news sentiment, and stagnant social momentum, indicating limited enthusiasm or catalysts for price movement. Traders should note that without significant technical signals or positive news, XTZ may continue to exhibit sideways price action in the near term."
+      "ai_insight": "ZRX's low confidence score of 15.0% is primarily driven by its neutral technical indicators, lack of positive news sentiment, and absent social momentum, indicating minimal market interest and potential. Traders should note the absence of any strong directional signals or catalysts, suggesting a cautious approach is advisable until further developments occur."
     },
     {
-      "symbol": "FTM",
+      "symbol": "BAT",
       "confidence": 15,
-      "timestamp": "21:32:06",
+      "timestamp": "21:40:24",
       "alert_triggered": false,
       "status": "completed",
-      "ai_insight": "The FTM coin's low confidence score of 15.0% is primarily driven by a lack of positive sentiment across technical, news, and social analyses, with neutral technical indicators and no significant news catalysts or social momentum contributing to its stagnant outlook. Traders should be cautious, as the absence of bullish signals suggests limited short-term price movement potential."
+      "ai_insight": "BAT's low confidence score of 15.0% is primarily driven by a lack of positive sentiment across technical, news, and social analyses, with neutral technical indicators and no bullish news or social momentum to suggest imminent price movement. Traders should exercise caution as the absence of catalysts or positive sentiment suggests limited potential for significant price action in the near term."
     },
     {
-      "symbol": "EGLD",
+      "symbol": "SUSHI",
       "confidence": 15,
-      "timestamp": "21:31:26",
+      "timestamp": "21:39:46",
       "alert_triggered": false,
       "status": "completed",
-      "ai_insight": "EGLD's confidence score of 15.0% reflects a lack of significant market movement or interest, as indicated by its neutral technical indicators, absence of news catalysts, and stagnant social momentum. Traders should note the current market indecision and consider waiting for more definitive signals or external catalysts before making trading decisions."
+      "ai_insight": "SUSHI's low confidence score of 15.0% is primarily driven by neutral technical indicators, such as the RSI at 50 and a neutral MACD signal, coupled with a lack of positive sentiment or significant news catalysts. Traders should note the absence of social momentum and positive news sentiment, suggesting limited immediate upside potential and the need for caution in the short term."
     },
     {
-      "symbol": "AXS",
+      "symbol": "YFI",
       "confidence": 15,
-      "timestamp": "21:30:48",
+      "timestamp": "21:39:07",
       "alert_triggered": false,
       "status": "completed",
-      "ai_insight": "AXS scored 15.0% due to lackluster technical indicators, with a neutral RSI and MACD, combined with negligible news and social momentum, indicating low market interest and engagement. Traders should note the absence of positive sentiment or catalysts, suggesting limited immediate upside potential barring any new developments."
+      "ai_insight": "YFI's low confidence score of 15.0% is driven by its neutral technical indicators, lack of positive sentiment in recent news, and complete absence of social momentum, suggesting limited interest and unclear market direction. Traders should remain cautious, as the current analysis indicates no strong catalysts or trends to support significant price movement."
     },
     {
-      "symbol": "AAVE",
+      "symbol": "COMP",
       "confidence": 15,
-      "timestamp": "21:30:08",
+      "timestamp": "21:38:29",
       "alert_triggered": false,
       "status": "completed",
-      "ai_insight": "AAVE's low confidence score of 15.0% is primarily driven by its neutral technical indicators, such as an RSI of 50.0 and a neutral MACD signal, combined with the absence of positive sentiment or catalysts in recent news and social media. Traders should note the lack of momentum and positive sentiment across all analysis metrics, suggesting a cautious approach until a clearer trend or catalyst emerges."
+      "ai_insight": "COMP has a low confidence score of 15.0% due to its lackluster technical indicators, with a neutral RSI and MACD signaling indecisiveness, alongside weak news and social sentiment, which show no positive momentum or catalysts. Traders should note the absence of market enthusiasm or interest, suggesting a cautious approach until more definitive trends or news emerge."
     },
     {
-      "symbol": "FLOW",
+      "symbol": "CRV",
       "confidence": 15,
-      "timestamp": "21:29:29",
+      "timestamp": "21:37:52",
       "alert_triggered": false,
       "status": "completed",
-      "ai_insight": "FLOW's low confidence score of 15.0% is primarily due to a lack of positive sentiment across technical, news, and social analyses, with all indicators remaining neutral and sentiment showing no enthusiasm or momentum. Traders should note the absence of catalysts and social buzz, suggesting limited immediate upside potential and a cautious approach may be warranted."
+      "ai_insight": "CRV's low confidence score of 15.0% is primarily driven by its neutral technical indicators, lack of positive news sentiment, and absence of social momentum, suggesting a lack of strong market interest or catalysts. Traders should note the neutral RSI and MACD, combined with the scarce positive news and social engagement, indicate a period of stagnation rather than immediate opportunity."
     },
     {
-      "symbol": "THETA",
+      "symbol": "WAVES",
       "confidence": 15,
-      "timestamp": "21:28:51",
+      "timestamp": "21:37:12",
       "alert_triggered": false,
       "status": "completed",
-      "ai_insight": "THETA currently exhibits a low confidence score of 15.0% due to a combination of neutral technical indicators and a lack of positive news or social momentum. With RSI at 50.0 and no significant catalysts or sentiment shifts, traders should exercise caution as the market lacks clear directional signals."
+      "ai_insight": "WAVES has a low confidence score of 15.0% primarily due to a lack of strong technical indicators and minimal positive sentiment from news and social channels, as evidenced by neutral RSI and MACD readings, along with zero social momentum and positive news sentiment. Traders should note the absence of significant catalysts or market enthusiasm, suggesting a cautious approach while monitoring for any emerging factors that could influence price movement."
     },
     {
-      "symbol": "SAND",
+      "symbol": "IOTA",
       "confidence": 15,
-      "timestamp": "21:28:12",
+      "timestamp": "21:36:32",
       "alert_triggered": false,
       "status": "completed",
-      "ai_insight": "SAND's low confidence score of 15.0% is primarily driven by a lack of positive sentiment across news and social media, coupled with neutral technical indicators such as the RSI and MACD. Traders should note that without strong momentum or sentiment catalysts, SAND may continue to trade sideways in the near term."
+      "ai_insight": "IOTA's low confidence score of 15.0% is primarily driven by neutral technical indicators and a lack of positive sentiment in both news and social media, indicating limited investor interest and momentum. Traders should note the absence of any compelling catalysts or positive sentiment, suggesting that IOTA may remain stagnant until more significant developments or market interest arise."
     },
     {
-      "symbol": "MANA",
+      "symbol": "NEO",
       "confidence": 15,
-      "timestamp": "21:27:34",
+      "timestamp": "21:35:54",
       "alert_triggered": false,
       "status": "completed",
-      "ai_insight": "MANA's low confidence score of 15.0% is primarily driven by a lackluster technical and news analysis, with neutral technical indicators like RSI and MACD, and no positive sentiment or catalysts in recent news articles. Additionally, the absence of social momentum and viral potential further underscores the current stagnation, suggesting traders should exercise caution and await stronger signals before making significant moves."
+      "ai_insight": "NEO's score of 15.0% reflects a lack of momentum across technical, news, and social metrics, indicating a stagnant market position with no clear catalysts for movement. Traders should note the neutral technical indicators and absence of news or social buzz, suggesting limited immediate opportunities for significant price action."
     }
   ]
 }

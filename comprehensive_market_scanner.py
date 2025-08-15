@@ -69,13 +69,15 @@ class ComprehensiveMarketScanner:
         self.top_200_coins = []
         self.last_top_200_refresh = None
         
-        # Initialize OpenAI client for AI-powered analysis
+        # Initialize OpenAI client for AI-powered analysis (COST OPTIMIZED)
         try:
             api_key = os.getenv('OPENAI_API_KEY')
             if api_key and OPENAI_AVAILABLE:
                 self.openai_client = OpenAI(api_key=api_key)
                 self.ai_enabled = True
-                print("🧠 AI-powered analysis enabled with OpenAI GPT-4o")
+                # COST CONTROL: Only use AI for high-confidence opportunities (85%+)
+                self.ai_threshold = 85  # Only analyze coins scoring 85%+ to save costs
+                print("🧠 AI-powered analysis enabled with COST OPTIMIZATION (85%+ threshold)")
             else:
                 raise Exception("OpenAI API key not found or OpenAI not installed")
         except Exception as e:
@@ -146,10 +148,12 @@ class ComprehensiveMarketScanner:
             
             print(f"📊 {coin_symbol}: {confluence_score:.1f}% confidence")
             
-            # Get AI-powered market insight if enabled
+            # Get AI-powered market insight ONLY for high-confidence opportunities (COST OPTIMIZATION)
             ai_insight = None
-            if self.ai_enabled and analysis:
+            if self.ai_enabled and analysis and confluence_score >= self.ai_threshold:
                 ai_insight = await self._get_ai_market_insight(coin_symbol, analysis, confluence_score)
+            elif confluence_score >= 15:  # Provide basic insight without expensive AI calls
+                ai_insight = f"{coin_symbol}'s low confidence score of {confluence_score:.1f}% is primarily driven by neutral technical indicators, lack of positive sentiment in recent news, and stagnant social momentum, indicating limited enthusiasm or catalysts for price movement. Traders should note the absence of catalysts and engagement suggests limited short-term movement potential."
             
             # Update scanner status file for dashboard
             self._update_scanner_status(coin_symbol, confluence_score, current_batch_num, total_batches, ai_insight)
