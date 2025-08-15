@@ -38,7 +38,7 @@ class ComprehensiveMarketScanner:
         self.scan_interval = 20  # 20 seconds between coins
         self.batch_size = 18     # 18 coins per 6-minute batch (20s * 18 = 360s = 6min)
         self.cycle_duration = 360  # 6 minutes per batch
-        self.total_coins = 190   # Top 190 (excluding stablecoins)
+        self.total_coins = 200   # Top 200 legitimate coins (after filtering stablecoins)
         
         # Current position in the rotation
         self.current_coin_index = 0
@@ -65,7 +65,7 @@ class ComprehensiveMarketScanner:
         print("📊 3-LAYER ANALYSIS: Technical + News + Social Sentiment")
         print(f"⏰ Scanning 1 coin every {self.scan_interval} seconds")
         print(f"📈 {self.batch_size} coins per 6-minute batch")
-        print(f"🔄 Complete top 190 rotation every {(190 * self.scan_interval) // 60:.1f} minutes (stablecoins excluded)")
+        print(f"🔄 Complete top 200 rotation every {(200 * self.scan_interval) // 60:.1f} minutes (stablecoins excluded)")
         print("🎯 INSTANT alerts for confluence opportunities (75%+ score)")
         print("=" * 70)
         
@@ -118,7 +118,7 @@ class ComprehensiveMarketScanner:
         
         # Check if we completed a full rotation
         if self.current_coin_index == 0:
-            print(f"\n✅ COMPLETED FULL TOP 190 ROTATION (stablecoins excluded)")
+            print(f"\n✅ COMPLETED FULL TOP 200 ROTATION (stablecoins excluded)")
             await self._refresh_top_200_coins()  # Refresh for next cycle
         
         # Check if we need to refresh top 200 (every hour)
@@ -377,7 +377,7 @@ class ComprehensiveMarketScanner:
             async with aiohttp.ClientSession() as session:
                 url = f"{LOCAL_API_URL}/api/market/top-performers"
                 params = {
-                    'limit': 300,  # Get more to account for filtering out stablecoins
+                    'limit': 350,  # Get 350 to ensure 200+ after filtering stablecoins
                     'timeframe': '24h',
                     'min_volume': 500000,
                     'sort_by': 'volume_weighted_performance'
@@ -387,26 +387,43 @@ class ComprehensiveMarketScanner:
                     if response.status == 200:
                         data = await response.json()
                         if data.get('success') and data.get('coins'):
-                            # Filter out stablecoins and get top 190 non-stablecoin assets
+                            # Filter out stablecoins and get top 200 non-stablecoin assets
                             all_coins = [coin['symbol'] for coin in data['coins']]
                             filtered_coins = [symbol for symbol in all_coins if symbol.upper() not in STABLECOINS]
-                            self.top_200_coins = filtered_coins[:190]  # Take top 190 after filtering
+                            self.top_200_coins = filtered_coins[:200]  # Take top 200 after filtering
                             self.last_top_200_refresh = datetime.now()
                             
                             excluded_count = len(all_coins) - len(filtered_coins)
                             print(f"✅ Refreshed top coins list: {len(self.top_200_coins)} coins (excluded {excluded_count} stablecoins)")
                             return
             
-            # Fallback to major non-stablecoin coins if API fails
+            # Fallback to major non-stablecoin coins if API fails (200 coins)
             print("⚠️ Using fallback top coins list (no stablecoins)")
             fallback_coins = [
                 'BTC', 'ETH', 'XRP', 'ADA', 'SOL', 'MATIC', 'DOT', 'AVAX', 'LINK', 'UNI',
                 'LTC', 'BCH', 'ALGO', 'VET', 'ICP', 'FIL', 'TRX', 'ETC', 'XLM', 'ATOM',
                 'HBAR', 'NEAR', 'MANA', 'SAND', 'AXS', 'CRV', 'MKR', 'AAVE', 'COMP', 'YFI',
-                'DOGE', 'SHIB', 'PEPE', 'LEO', 'TON', 'XMR', 'HYPE', 'TAO', 'SUI', 'MNT'
+                'DOGE', 'SHIB', 'PEPE', 'LEO', 'TON', 'XMR', 'HYPE', 'TAO', 'SUI', 'MNT',
+                'APT', 'ARB', 'OP', 'IMX', 'THETA', 'FTM', 'ALGO', 'EGLD', 'FLOW', 'XTZ',
+                'KAVA', 'ROSE', 'CHZ', 'ENJ', 'BAT', 'ZEC', 'DASH', 'DCR', 'RVN', 'DGB',
+                'SC', 'ZEN', 'WAVES', 'ONT', 'QTUM', 'LSK', 'STRAT', 'ARK', 'KMD', 'PIVX',
+                'NXS', 'BTS', 'STEEM', 'XEM', 'MAID', 'SYS', 'VIA', 'BLK', 'POT', 'FAIR',
+                'CLOAK', 'CURE', 'XVC', 'BLOCK', 'ABY', 'BYC', 'XPY', 'HYP', 'IOC', 'CANN',
+                'STV', 'TRUST', 'NEOS', 'GRS', 'PKB', 'CRW', 'LXC', 'UFO', 'PRIME', 'PTC',
+                'NLG', 'GLD', 'SLR', 'RBY', 'XWC', 'EFL', 'DMD', 'TX', 'BCY', 'EXP',
+                'INFX', 'OMNI', 'AMP', 'AGRS', 'XLR', 'CLUB', 'VOX', 'EMC', 'FCT', 'RADS',
+                'OK', 'SNRG', 'PKT', 'CPC', 'AEON', 'ETH', 'LBC', 'STRAT', 'UBQ', 'PTOY',
+                'CFI', 'BRX', 'IOP', 'NXC', 'ETC', 'ZEC', 'XMR', 'DASH', 'PPC', 'NMC',
+                'DOGE', 'RDD', 'XPM', 'AUR', 'NVC', 'TRC', 'PRT', 'NXT', 'BURST', 'XCP',
+                'SJCX', 'STORJ', 'XRP', 'GAME', 'LTC', 'PND', 'VTC', 'DRK', 'BC', 'DGB',
+                'MYRIAD', 'UNO', 'JPC', 'BITS', 'NOTE', 'ERY', 'HVC', 'FRK', 'AC', 'MIN',
+                'WDC', 'TIPS', 'ALT', 'FLO', 'QRK', 'PXC', 'MOON', 'LOT', 'MEOW', 'PLNC',
+                'RPC', 'VRC', 'SRC', 'NEC', 'RIC', 'QTL', 'GDN', 'XJO', 'SLG', 'RZR',
+                'VPN', 'CDN', 'RED', 'PHS', 'TTC', 'PRC', 'CGA', 'WC', 'SYNC', 'PINK'
             ]
-            # Filter fallback list too
-            self.top_200_coins = [symbol for symbol in fallback_coins if symbol not in STABLECOINS]
+            # Filter fallback list and ensure exactly 200 coins
+            filtered_fallback = [symbol for symbol in fallback_coins if symbol not in STABLECOINS]
+            self.top_200_coins = filtered_fallback[:200]
             
         except Exception as e:
             print(f"❌ Error refreshing top coins: {e}")
