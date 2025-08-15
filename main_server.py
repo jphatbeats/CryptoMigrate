@@ -454,8 +454,52 @@ def get_top_performers():
         timeframe = request.args.get('timeframe', '24h')
         min_volume = request.args.get('min_volume', 1000000, type=float)
         
-        # TODO: Implement CoinCap integration later, using enhanced fallback for now
-        logger.info("Using enhanced fallback coin list for comprehensive scanning")
+        # Try to get LIVE market data first, then fallback
+        try:
+            # Attempt to get live data from CoinGecko FREE API
+            import requests
+            response = requests.get('https://api.coingecko.com/api/v3/coins/markets', 
+                                  params={
+                                      'vs_currency': 'usd',
+                                      'order': 'market_cap_desc',
+                                      'per_page': min(limit, 250),
+                                      'page': 1,
+                                      'sparkline': False,
+                                      'price_change_percentage': '24h'
+                                  }, 
+                                  timeout=10)
+            
+            if response.status_code == 200:
+                gecko_data = response.json()
+                if gecko_data and len(gecko_data) > 20:
+                    # Convert CoinGecko format to scanner format
+                    live_coins = []
+                    for coin in gecko_data:
+                        if (coin.get('total_volume', 0) >= min_volume and 
+                            coin.get('price_change_percentage_24h') is not None):
+                            live_coins.append({
+                                'symbol': coin['symbol'].upper(),
+                                'performance': float(coin.get('price_change_percentage_24h', 0)),
+                                'volume_24h': float(coin.get('total_volume', 0)),
+                                'market_cap': float(coin.get('market_cap', 0)),
+                                'price': float(coin.get('current_price', 0))
+                            })
+                    
+                    if len(live_coins) >= 50:  # Ensure good coverage
+                        logger.info(f"✅ Using LIVE CoinGecko data - {len(live_coins)} coins")
+                        return jsonify({
+                            'success': True,
+                            'coins': live_coins[:limit],
+                            'timeframe': timeframe,
+                            'total_count': len(live_coins),
+                            'data_source': 'CoinGecko FREE API (LIVE)'
+                        })
+                        
+        except Exception as e:
+            logger.warning(f"Live CoinGecko data failed: {e}")
+        
+        # Enhanced fallback with top 200 comprehensive list
+        logger.info("Using comprehensive top 200 fallback list")
         
         # Comprehensive TOP 200 crypto coins by market cap for TRUE market coverage
         fallback_coins = [
