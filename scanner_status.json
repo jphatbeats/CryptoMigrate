@@ -1,92 +1,92 @@
 {
-  "current_coin": "DOGE",
-  "current_index": 6,
+  "current_coin": "GRT",
+  "current_index": 67,
   "total_coins": 200,
-  "current_batch": "1/11",
+  "current_batch": "4/11",
   "confidence": 15,
   "alert_triggered": false,
-  "timestamp": "2025-08-15T13:59:13.376298",
+  "timestamp": "2025-08-15T14:38:18.777828",
   "scanning_active": true,
   "recent_scans": [
     {
-      "symbol": "DOGE",
+      "symbol": "GRT",
       "confidence": 15,
-      "timestamp": "13:59:13",
+      "timestamp": "14:38:18",
       "alert_triggered": false,
       "status": "completed",
-      "ai_insight": "DOGE's low confidence score of 15.0% reflects a lack of significant momentum or interest across technical, news, and social metrics, with its neutral technical indicators and absence of positive sentiment or catalysts in the news and social media. Traders should note the current stagnation and absence of any strong signals or catalysts, suggesting a wait-and-see approach until a clearer trend or news event emerges."
+      "ai_insight": "GRT's low confidence score of 15.0% reflects a lack of clear market direction, characterized by neutral technical indicators such as an RSI at 50.0 and a stagnant MACD, combined with an absence of influential news or social media activity. Traders should note this indicates minimal momentum or catalysts, suggesting a hold or cautious approach until more decisive signals emerge."
     },
     {
-      "symbol": "SOL",
+      "symbol": "1INCH",
       "confidence": 15,
-      "timestamp": "13:58:35",
+      "timestamp": "14:37:41",
       "alert_triggered": false,
       "status": "completed",
-      "ai_insight": "SOL's confidence score of 15.0% reflects a lack of positive momentum across technical, news, and social indicators, with a neutral technical recommendation and no bullish catalysts in recent news or social sentiment. Traders should be cautious, as the absence of positive sentiment and momentum suggests limited upside potential in the short term."
+      "ai_insight": "1INCH's confidence score of 15.0% reflects a lack of strong market signals, characterized by neutral technical indicators and absent positive sentiment in both news and social media. Traders should note the current absence of catalysts or momentum, suggesting a cautious approach until more definitive market movements or sentiment changes occur."
     },
     {
-      "symbol": "BNB",
+      "symbol": "REEF",
       "confidence": 15,
-      "timestamp": "13:58:09",
+      "timestamp": "14:37:03",
       "alert_triggered": false,
       "status": "completed",
-      "ai_insight": "BNB's low confidence score of 15.0% is primarily driven by a lack of positive sentiment across news and social media, with no significant catalysts and stagnant social momentum, which suggests limited market interest or enthusiasm. Despite a bullish MACD signal, the neutral recommendation and moderate technical score indicate uncertainty in price movement, advising traders to remain cautious and monitor for emerging trends or news events."
+      "ai_insight": "REEF's low confidence score of 15.0% is primarily driven by the overall neutral technical indicators and a lack of positive sentiment in both news and social metrics, which suggest limited market enthusiasm. Traders should note the absence of significant catalysts or social momentum, indicating a cautious approach while awaiting clearer signals or developments."
     },
     {
-      "symbol": "XRP",
+      "symbol": "ALPHA",
       "confidence": 15,
-      "timestamp": "13:57:44",
+      "timestamp": "14:36:25",
       "alert_triggered": false,
       "status": "completed",
-      "ai_insight": "XRP's low confidence score of 15.0% is primarily driven by weak technical indicators, including a bearish MACD signal and an RSI of 38.7, suggesting oversold conditions, along with negative sentiment across news and social platforms. Traders should be cautious as the lack of positive news catalysts and social momentum further undermines bullish prospects, aligning with the sell recommendation."
+      "ai_insight": "ALPHA's low confidence score of 15.0% is primarily driven by its neutral technical indicators, lack of positive news catalysts, and stagnant social sentiment, signaling limited market interest and momentum. Traders should note the absence of strong directional signals and consider other assets with clearer trends or catalysts for better opportunities."
     },
     {
-      "symbol": "ETH",
+      "symbol": "BADGER",
       "confidence": 15,
-      "timestamp": "13:57:16",
+      "timestamp": "14:35:47",
       "alert_triggered": false,
       "status": "completed",
-      "ai_insight": "ETH's low confidence score of 15.0% is primarily driven by neutral technical indicators, with an RSI of 52.6 indicating indecisiveness and a lack of positive sentiment or momentum in news and social media. Traders should note the absence of significant catalysts or social buzz, suggesting a stagnant period where major price movements are unlikely without new developments."
+      "ai_insight": "BADGER's low confidence score of 15.0% is driven by a combination of neutral technical indicators, a lack of positive news sentiment, and stagnant social momentum, suggesting limited interest and potential movement in the near term. Traders should note the absence of any significant catalysts or sentiment shifts, indicating that BADGER may currently lack the factors necessary for substantial price action."
     },
     {
-      "symbol": "BTC",
+      "symbol": "UMA",
       "confidence": 15,
-      "timestamp": "13:56:49",
+      "timestamp": "14:35:09",
       "alert_triggered": false,
       "status": "completed",
-      "ai_insight": "Bitcoin's confidence score of 15.0% reflects a predominantly bearish outlook, driven by weak technical indicators such as a low RSI of 41.1 and a bearish MACD signal, alongside a recommendation to sell, resulting in a poor technical score of 10/50. Additionally, the absence of positive sentiment in recent news and social discussions further undermines market confidence, contributing to low news and social scores, suggesting traders should approach BTC with caution in the short term."
+      "ai_insight": "UMA's low confidence score of 15.0% is driven by a lack of positive sentiment across technical, news, and social analyses, with its technical indicators showing neutrality, no positive news catalysts, and negligible social momentum. Traders should note the absence of driving factors for price movement, suggesting a cautious stance until more definitive signals emerge."
+    },
+    {
+      "symbol": "LRC",
+      "confidence": 15,
+      "timestamp": "14:34:31",
+      "alert_triggered": false,
+      "status": "completed",
+      "ai_insight": "LRC's low confidence score of 15.0% is primarily driven by its neutral technical indicators, lack of positive news sentiment, and negligible social momentum, indicating limited current interest or catalysts for price movement. Traders should be cautious, as the absence of strong technical signals or positive market sentiment suggests potential stagnation in the short term."
+    },
+    {
+      "symbol": "BNT",
+      "confidence": 15,
+      "timestamp": "14:33:52",
+      "alert_triggered": false,
+      "status": "completed",
+      "ai_insight": "BNT's low confidence score of 15.0% reflects a lack of positive sentiment and momentum across technical, news, and social indicators, with neutral technical signals (RSI at 50.0 and MACD neutral) and no recent positive news or social engagement. Traders should note the absence of catalysts and sentiment, suggesting a cautious approach until clearer directional signals emerge."
     },
     {
       "symbol": "KNC",
       "confidence": 15,
-      "timestamp": "13:34:31",
+      "timestamp": "14:33:14",
       "alert_triggered": false,
       "status": "completed",
-      "ai_insight": "KNC's low confidence score of 15.0% is driven by its neutral technical indicators, lack of positive news sentiment, and absence of social momentum, indicating a lack of clear market direction and investor interest. Traders should be cautious, as the current data suggests no significant catalysts or trends that could drive immediate price movement for KNC."
+      "ai_insight": "KNC's low confidence score of 15.0% is driven by a lack of positive sentiment across technical, news, and social analyses, with neutral indicators such as an RSI of 50 and MACD signal contributing to a technical score of just 20/50. The absence of positive news or social momentum further underscores the coin's neutral stance, suggesting traders should remain cautious and consider waiting for clearer market signals before making any moves."
     },
     {
       "symbol": "SNX",
       "confidence": 15,
-      "timestamp": "13:33:52",
+      "timestamp": "14:32:36",
       "alert_triggered": false,
       "status": "completed",
-      "ai_insight": "The low confidence score of 15.0% for SNX is primarily driven by a lack of momentum across technical, news, and social analyses, with neutral indicators such as an RSI of 50 and no significant news or social engagement contributing to its stagnant outlook. Traders should note the absence of strong catalysts or sentiment, suggesting that SNX currently lacks the volatility or interest necessary for significant price movements."
-    },
-    {
-      "symbol": "REN",
-      "confidence": 15,
-      "timestamp": "13:33:13",
-      "alert_triggered": false,
-      "status": "completed",
-      "ai_insight": "REN's low confidence score of 15.0% is primarily driven by neutral technical indicators, lack of positive news catalysts, and negligible social momentum, all contributing to a lack of market enthusiasm. Traders should note the absence of any strong directional signals or sentiment, suggesting a cautious approach until more definitive market changes emerge."
-    },
-    {
-      "symbol": "ZRX",
-      "confidence": 15,
-      "timestamp": "13:32:35",
-      "alert_triggered": false,
-      "status": "completed",
-      "ai_insight": "The ZRX token currently exhibits low overall confidence at 15.0%, driven by neutral technical indicators with an RSI of 50.0 and a MACD signal offering no clear trend, coupled with an absence of positive news sentiment and social engagement. Traders should note the lack of momentum and catalysts, suggesting that ZRX may remain stagnant in the short term without new developments or increased market interest."
+      "ai_insight": "The SNX coin scored a low confidence score of 15.0% due to a combination of neutral technical indicators, such as an RSI of 50 and a lack of directional MACD signal, alongside minimal news impact and social engagement. Traders should note the absence of significant positive sentiment or catalysts, suggesting limited short-term momentum or market interest in SNX."
     }
   ]
 }
