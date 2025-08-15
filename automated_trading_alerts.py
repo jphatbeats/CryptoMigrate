@@ -106,7 +106,7 @@ except Exception as e:
 # Discord Bot Configuration (using Discord.py instead of webhooks)
 DISCORD_TOKEN = os.getenv('DISCORD_TOKEN')
 DISCORD_CHANNELS = {
-    'alerts': 1398000506068009032,        # Breaking news, risks
+    'news': 1398000506068009032,          # News channel (renamed from alerts)
     'portfolio': 1399451217372905584,     # Portfolio analysis  
     # 'alpha_scans': 1399790636990857277,   # DISABLED - Trading opportunities (alerts were useless)
     'degen_memes': 1401971493096915067    # Degen memes, viral plays, airdrops, early gems
@@ -1932,7 +1932,7 @@ async def send_sundown_digest():
             digest_message += f"📰 Source: {source}\n"
             digest_message += f"⏰ Next digest: Tomorrow 7:00 PM ET"
             
-            await send_discord_alert(digest_message, 'alerts')
+            await send_discord_alert(digest_message, 'news')
             
             # Mark as delivered to prevent backup delivery
             now_et = datetime.now(pytz.timezone('US/Eastern'))
@@ -2005,7 +2005,7 @@ async def send_sundown_digest_backup():
             digest_message += f"📰 Source: {source}\n"
             digest_message += f"⏰ Next digest: Tomorrow 7:00 PM ET"
             
-            await send_discord_alert(digest_message, 'alerts')
+            await send_discord_alert(digest_message, 'news')
             
             # Mark as delivered to prevent future backups today
             digest_delivery_tracker.add(today_key)
@@ -2088,7 +2088,7 @@ async def check_breaking_alerts():
                     alert_message += f" | ⚠️ {', '.join(tickers[:3])}"
                 alert_message += f"\n\n"
             
-            await send_discord_alert(alert_message, 'alerts')
+            await send_discord_alert(alert_message, 'news')
             print(f"🚨 AI-enhanced breaking alert sent: {len(breaking_alerts)} urgent items")
         else:
             print("🔍 No breaking alerts meet urgency criteria")
@@ -2290,7 +2290,7 @@ async def run_trading_analysis():
                         news_message += f" | 🎯 {', '.join(tickers[:3])}"
                     news_message += f"\n\n"
                 
-                await send_discord_alert(news_message, 'alerts')
+                await send_discord_alert(news_message, 'news')
             
             # Send risk alerts to #alerts channel with urgency indicators
             if risk_alerts and risk_alerts.get('alerts'):
@@ -2316,7 +2316,7 @@ async def run_trading_analysis():
                         risk_message += f" | ⚠️ {', '.join(tickers[:3])}"
                     risk_message += f"\n\n"
                 
-                await send_discord_alert(risk_message, 'alerts')
+                await send_discord_alert(risk_message, 'news')
             
             # Send opportunities to #alpha-scans channel with clickable links
             if opportunities and opportunities.get('data'):
@@ -2355,7 +2355,7 @@ async def run_trading_analysis():
                 if news_alerts:
                     print(f"📰 Fallback: Found {len(news_alerts)} news alerts")
                     fallback_message = f"📰 **CRYPTO NEWS UPDATE** 📰\n{str(news_alerts)[:500]}..."
-                    await send_discord_alert(fallback_message, 'alerts')
+                    await send_discord_alert(fallback_message, 'news')
             except Exception as fallback_e:
                 print(f"❌ Fallback news alerts error: {fallback_e}")
 
