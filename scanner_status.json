@@ -1,13 +1,29 @@
 {
-  "current_coin": "FTM",
-  "current_index": 42,
+  "current_coin": "KAVA",
+  "current_index": 44,
   "total_coins": 200,
   "current_batch": "3/11",
   "confidence": 15,
   "alert_triggered": false,
-  "timestamp": "2025-08-15T21:32:06.079743",
+  "timestamp": "2025-08-15T21:33:21.365367",
   "scanning_active": true,
   "recent_scans": [
+    {
+      "symbol": "KAVA",
+      "confidence": 15,
+      "timestamp": "21:33:21",
+      "alert_triggered": false,
+      "status": "completed",
+      "ai_insight": "KAVA's low confidence score of 15.0% is driven by neutral technical indicators, such as an RSI of 50 and a neutral MACD signal, combined with a complete lack of positive sentiment and momentum from news and social media. Traders should be cautious as the absence of catalysts and engagement suggests limited short-term movement potential."
+    },
+    {
+      "symbol": "XTZ",
+      "confidence": 15,
+      "timestamp": "21:32:43",
+      "alert_triggered": false,
+      "status": "completed",
+      "ai_insight": "XTZ's low confidence score of 15.0% is primarily driven by its neutral technical indicators, lack of positive news sentiment, and stagnant social momentum, indicating limited enthusiasm or catalysts for price movement. Traders should note that without significant technical signals or positive news, XTZ may continue to exhibit sideways price action in the near term."
+    },
     {
       "symbol": "FTM",
       "confidence": 15,
@@ -71,22 +87,6 @@
       "alert_triggered": false,
       "status": "completed",
       "ai_insight": "MANA's low confidence score of 15.0% is primarily driven by a lackluster technical and news analysis, with neutral technical indicators like RSI and MACD, and no positive sentiment or catalysts in recent news articles. Additionally, the absence of social momentum and viral potential further underscores the current stagnation, suggesting traders should exercise caution and await stronger signals before making significant moves."
-    },
-    {
-      "symbol": "INJ",
-      "confidence": 15,
-      "timestamp": "21:26:57",
-      "alert_triggered": false,
-      "status": "completed",
-      "ai_insight": "INJ's low confidence score of 15.0% is primarily driven by its stagnant technical indicators, including a neutral RSI and MACD, coupled with a lack of positive sentiment or catalysts in recent news and social media activity. Traders should note the absence of momentum and market enthusiasm, suggesting a cautious approach until stronger signals or developments emerge."
-    },
-    {
-      "symbol": "OP",
-      "confidence": 15,
-      "timestamp": "21:26:19",
-      "alert_triggered": false,
-      "status": "completed",
-      "ai_insight": "The low confidence score of 15.0% for OP is primarily driven by a lack of positive sentiment across technical, news, and social analyses, with neutral technical indicators and no supportive news or social momentum. Traders should note the absence of any strong catalysts or positive sentiment, suggesting a cautious approach as the market currently lacks clear directional signals for OP."
     }
   ]
 }
