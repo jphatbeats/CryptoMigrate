@@ -1,13 +1,45 @@
 {
-  "current_coin": "DENT",
-  "current_index": 71,
+  "current_coin": "DGB",
+  "current_index": 75,
   "total_coins": 200,
-  "current_batch": "4/11",
+  "current_batch": "5/11",
   "confidence": 15,
   "alert_triggered": false,
-  "timestamp": "2025-08-15T14:40:48.723031",
+  "timestamp": "2025-08-15T14:43:20.793753",
   "scanning_active": true,
   "recent_scans": [
+    {
+      "symbol": "DGB",
+      "confidence": 15,
+      "timestamp": "14:43:20",
+      "alert_triggered": false,
+      "status": "completed",
+      "ai_insight": "DigiByte (DGB) has a low confidence score of 15.0% primarily due to its neutral technical indicators, lack of news catalysts, and nonexistent social momentum, which collectively suggest minimal current interest or movement in the market. Traders should note the absence of positive sentiment and market catalysts, indicating limited short-term trading opportunities and a need for caution until more definitive market signals emerge."
+    },
+    {
+      "symbol": "SC",
+      "confidence": 15,
+      "timestamp": "14:42:42",
+      "alert_triggered": false,
+      "status": "completed",
+      "ai_insight": "The coin scored 15.0% due to a combination of neutral technical indicators, lack of positive news sentiment, and negligible social momentum, resulting in low confidence among traders. With no significant catalysts or viral potential, traders should be cautious and consider this lack of enthusiasm and direction before making investment decisions."
+    },
+    {
+      "symbol": "ZIL",
+      "confidence": 15,
+      "timestamp": "14:42:04",
+      "alert_triggered": false,
+      "status": "completed",
+      "ai_insight": "ZIL's low confidence score of 15.0% is primarily driven by a lack of strong technical indicators and minimal engagement in news and social media, as evidenced by a neutral RSI and MACD, coupled with a complete absence of positive sentiment or social momentum. Traders should exercise caution, given the lack of any significant catalysts or community interest that could drive price movement."
+    },
+    {
+      "symbol": "QTUM",
+      "confidence": 15,
+      "timestamp": "14:41:26",
+      "alert_triggered": false,
+      "status": "completed",
+      "ai_insight": "QTUM's low confidence score of 15.0% is primarily driven by its neutral technical indicators, lack of positive news sentiment, and minimal social engagement, suggesting limited current interest and momentum in the market. Traders should be cautious, as the absence of catalysts and weak sentiment across news and social platforms indicate that QTUM may not experience significant price movements in the near term."
+    },
     {
       "symbol": "DENT",
       "confidence": 15,
@@ -55,38 +87,6 @@
       "alert_triggered": false,
       "status": "completed",
       "ai_insight": "1INCH's confidence score of 15.0% reflects a lack of strong market signals, characterized by neutral technical indicators and absent positive sentiment in both news and social media. Traders should note the current absence of catalysts or momentum, suggesting a cautious approach until more definitive market movements or sentiment changes occur."
-    },
-    {
-      "symbol": "REEF",
-      "confidence": 15,
-      "timestamp": "14:37:03",
-      "alert_triggered": false,
-      "status": "completed",
-      "ai_insight": "REEF's low confidence score of 15.0% is primarily driven by the overall neutral technical indicators and a lack of positive sentiment in both news and social metrics, which suggest limited market enthusiasm. Traders should note the absence of significant catalysts or social momentum, indicating a cautious approach while awaiting clearer signals or developments."
-    },
-    {
-      "symbol": "ALPHA",
-      "confidence": 15,
-      "timestamp": "14:36:25",
-      "alert_triggered": false,
-      "status": "completed",
-      "ai_insight": "ALPHA's low confidence score of 15.0% is primarily driven by its neutral technical indicators, lack of positive news catalysts, and stagnant social sentiment, signaling limited market interest and momentum. Traders should note the absence of strong directional signals and consider other assets with clearer trends or catalysts for better opportunities."
-    },
-    {
-      "symbol": "BADGER",
-      "confidence": 15,
-      "timestamp": "14:35:47",
-      "alert_triggered": false,
-      "status": "completed",
-      "ai_insight": "BADGER's low confidence score of 15.0% is driven by a combination of neutral technical indicators, a lack of positive news sentiment, and stagnant social momentum, suggesting limited interest and potential movement in the near term. Traders should note the absence of any significant catalysts or sentiment shifts, indicating that BADGER may currently lack the factors necessary for substantial price action."
-    },
-    {
-      "symbol": "UMA",
-      "confidence": 15,
-      "timestamp": "14:35:09",
-      "alert_triggered": false,
-      "status": "completed",
-      "ai_insight": "UMA's low confidence score of 15.0% is driven by a lack of positive sentiment across technical, news, and social analyses, with its technical indicators showing neutrality, no positive news catalysts, and negligible social momentum. Traders should note the absence of driving factors for price movement, suggesting a cautious stance until more definitive signals emerge."
     }
   ]
 }

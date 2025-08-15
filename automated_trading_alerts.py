@@ -104,6 +104,21 @@ except Exception as e:
     trading_ai = None
     print(f"❌ OpenAI initialization error: {e}")
 
+# Import Exchange Manager for direct API fallbacks
+try:
+    from exchange_manager import ExchangeManager
+    exchange_manager = ExchangeManager()
+    exchange_integration_available = True
+    print("✅ Exchange integration loaded successfully")
+except ImportError as e:
+    exchange_integration_available = False
+    exchange_manager = None
+    print(f"⚠️ Exchange integration not available: {e}")
+except Exception as e:
+    exchange_integration_available = False
+    exchange_manager = None
+    print(f"❌ Exchange integration error: {e}")
+
 # Discord Bot Configuration (using Discord.py instead of webhooks)
 DISCORD_TOKEN = os.getenv('DISCORD_TOKEN')
 DISCORD_CHANNELS = {
@@ -252,7 +267,7 @@ async def fetch_live_positions():
                 print("🔄 Railway Kraken failed, trying direct API...")
                 # Direct Kraken API fallback (if credentials available)
                 try:
-                    if hasattr(exchange_manager, 'exchanges') and 'kraken' in exchange_manager.exchanges:
+                    if exchange_integration_available and exchange_manager and hasattr(exchange_manager, 'exchanges') and 'kraken' in exchange_manager.exchanges:
                         kraken_exchange = exchange_manager.exchanges['kraken']
                         balance = await asyncio.get_event_loop().run_in_executor(None, kraken_exchange.fetch_balance)
                         
@@ -309,7 +324,7 @@ async def fetch_live_positions():
                 print("🔄 Railway Blofin failed, trying direct API...")
                 try:
                     import ccxt
-                    if hasattr(exchange_manager, 'exchanges') and 'blofin' in exchange_manager.exchanges:
+                    if exchange_integration_available and exchange_manager and hasattr(exchange_manager, 'exchanges') and 'blofin' in exchange_manager.exchanges:
                         blofin_exchange = exchange_manager.exchanges['blofin']
                         positions = await asyncio.get_event_loop().run_in_executor(None, blofin_exchange.fetch_positions)
                         
