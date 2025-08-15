@@ -52,6 +52,12 @@ DISCORD_CHANNELS = {
     'calendar': 1405899035935637635       # Financial calendar - FOMC, rate decisions, market-moving events
 }
 
+# Discord Webhook URLs (backup option for when Discord.py fails)
+DISCORD_WEBHOOKS = {
+    'portfolio': 'https://discord.com/api/webhooks/1405908753588682844/9EY8HaYqfze8F-lhLbMHBWmEuCWnRxf2RBxfXW2grvWyC2pDL95Tfqcibr69lte230L8',
+    'calendar': 'https://discord.com/api/webhooks/1405899035935637635/SxmxqXmNIkyPAFruBqQXmJ7EPOKW0RjlO_W2LdYkoscVCkfMHjmEvMoTg4gXEGiY9o1u'
+}
+
 class GPTCommandBot(commands.Bot):
     """Enhanced Discord bot with GPT-5 command integration"""
     

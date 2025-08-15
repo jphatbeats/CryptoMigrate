@@ -46,6 +46,12 @@ DISCORD_CHANNELS = {
     'degen_memes': 1401971493096915067,   # Degen memes, viral plays, airdrops, early gems
     'calendar': 1405899035935637635       # Financial calendar - FOMC, rate decisions, market-moving events
 }
+
+# Discord Webhook URLs (backup option for when Discord.py fails)  
+DISCORD_WEBHOOKS = {
+    'portfolio': 'https://discord.com/api/webhooks/1405908753588682844/9EY8HaYqfze8F-lhLbMHBWmEuCWnRxf2RBxfXW2grvWyC2pDL95Tfqcibr69lte230L8',
+    'calendar': 'https://discord.com/api/webhooks/1405899035935637635/SxmxqXmNIkyPAFruBqQXmJ7EPOKW0RjlO_W2LdYkoscVCkfMHjmEvMoTg4gXEGiY9o1u'
+}
 DISCORD_WEBHOOK_ALPHA_SCANS = "https://discord.com/api/webhooks/1403928100202352731/kLY9j4wApDDSvjXbi8SDFEcytiNJIlUZhLgoZkMIqVI2RhFm6AFunl46gDOjqssqRh7w"
 DISCORD_WEBHOOK_URL = DISCORD_WEBHOOK_ALPHA_SCANS  # Backward compatibility
 

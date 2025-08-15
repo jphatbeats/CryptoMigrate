@@ -113,6 +113,12 @@ DISCORD_CHANNELS = {
     'calendar': 1405899035935637635       # Financial calendar - FOMC, rate decisions, market-moving events
 }
 
+# Discord Webhook URLs (backup option for when Discord.py fails)
+DISCORD_WEBHOOKS = {
+    'portfolio': 'https://discord.com/api/webhooks/1405908753588682844/9EY8HaYqfze8F-lhLbMHBWmEuCWnRxf2RBxfXW2grvWyC2pDL95Tfqcibr69lte230L8',
+    'calendar': 'https://discord.com/api/webhooks/1405899035935637635/SxmxqXmNIkyPAFruBqQXmJ7EPOKW0RjlO_W2LdYkoscVCkfMHjmEvMoTg4gXEGiY9o1u'
+}
+
 # Legacy single webhook support (backward compatible)
 LEGACY_DISCORD_WEBHOOK = os.getenv('DISCORD_WEBHOOK_URL')
 
@@ -799,57 +805,89 @@ async def fetch_lunarcrush_data():
 async def send_discord_alert(message, channel='portfolio', alert_data=None):
     """Enhanced Discord alert with intelligent formatting and reactions"""
     try:
-        if not DISCORD_TOKEN:
-            print("❌ No Discord token configured")
-            return False
-        
-        # Get channel ID
-        channel_id = DISCORD_CHANNELS.get(channel)
-        if not channel_id:
-            print(f"❌ No Discord channel configured for {channel}")
-            return False
-        
-        # Enhanced message formatting based on channel and alert data
-        formatted_message = await format_enhanced_message(message, channel, alert_data)
-        
-        # Create temporary Discord client for this message
-        intents = discord.Intents.default()
-        intents.message_content = True
-        intents.reactions = True
-        client = discord.Client(intents=intents)
-        
-        @client.event
-        async def on_ready():
-            try:
-                # Get the channel and send message
-                discord_channel = client.get_channel(channel_id)
-                if discord_channel:
-                    # Check if it's a text channel
-                    if hasattr(discord_channel, 'send'):
-                        sent_message = await discord_channel.send(formatted_message)
-                        
-                        # Add intelligent reactions based on channel type
-                        await add_channel_reactions(sent_message, channel, alert_data)
-                        
-                        print(f"✅ Enhanced Discord alert sent to #{channel} ({channel_id})")
-                    else:
-                        print(f"❌ Channel {channel_id} is not a text channel")
-                else:
-                    print(f"❌ Discord channel {channel_id} not found")
+        # First try Discord.py (preferred method)
+        if DISCORD_TOKEN:
+            # Get channel ID
+            channel_id = DISCORD_CHANNELS.get(channel)
+            if channel_id:
+                try:
+                    # Enhanced message formatting based on channel and alert data
+                    formatted_message = await format_enhanced_message(message, channel, alert_data)
+                    
+                    # Create temporary Discord client for this message
+                    intents = discord.Intents.default()
+                    intents.message_content = True
+                    intents.reactions = True
+                    client = discord.Client(intents=intents)
+                    
+                    @client.event
+                    async def on_ready():
+                        try:
+                            # Get the channel and send message
+                            discord_channel = client.get_channel(channel_id)
+                            if discord_channel:
+                                # Check if it's a text channel
+                                if hasattr(discord_channel, 'send'):
+                                    sent_message = await discord_channel.send(formatted_message)
+                                    
+                                    # Add intelligent reactions based on channel type
+                                    await add_channel_reactions(sent_message, channel, alert_data)
+                                    
+                                    print(f"✅ Enhanced Discord alert sent to #{channel} ({channel_id})")
+                                else:
+                                    print(f"❌ Channel {channel_id} is not a text channel")
+                            else:
+                                print(f"❌ Discord channel {channel_id} not found")
+                            
+                            # Close the connection
+                            await client.close()
+                            
+                        except Exception as e:
+                            print(f"❌ Discord send error: {e}")
+                            await client.close()
+                    
+                    # Start the bot
+                    await client.start(DISCORD_TOKEN)
+                    return True
+                    
+                except Exception as discord_error:
+                    print(f"⚠️ Discord.py failed: {discord_error}, trying webhook fallback...")
+                    # Fall through to webhook method
+            else:
+                print(f"❌ No Discord channel configured for {channel}")
                 
-                # Close the connection
-                await client.close()
-                
-            except Exception as e:
-                print(f"❌ Discord send error: {e}")
-                await client.close()
-        
-        # Start the bot
-        await client.start(DISCORD_TOKEN)
-        return True
+        # Fallback to webhook method
+        webhook_url = DISCORD_WEBHOOKS.get(channel)
+        if webhook_url:
+            return await send_webhook_alert(message, webhook_url, channel)
+        else:
+            print(f"❌ No webhook URL configured for {channel}")
+            return False
                     
     except Exception as e:
         print(f"❌ Discord connection error: {e}")
+        return False
+
+async def send_webhook_alert(message, webhook_url, channel):
+    """Send alert via Discord webhook (fallback method)"""
+    try:
+        # Create webhook payload
+        payload = {
+            "content": message,
+            "username": f"Alpha Playbook - {channel.title()}"
+        }
+        
+        async with aiohttp.ClientSession() as session:
+            async with session.post(webhook_url, json=payload) as response:
+                if response.status == 204:
+                    print(f"✅ Webhook alert sent to #{channel}")
+                    return True
+                else:
+                    print(f"❌ Webhook failed: {response.status}")
+                    return False
+                    
+    except Exception as e:
+        print(f"❌ Webhook error: {e}")
         return False
 
 
