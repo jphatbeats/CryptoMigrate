@@ -656,30 +656,8 @@ async def analyze_trading_conditions(positions):
                               f"🎯 **Entry**: ${entry_price:.6f} | **Current**: ${mark_price:.6f}"
                 })
 
-            # Enhanced stop loss alerts with position management advice
-            sl_set = position.get('SL Set?', '❌')
-            if margin_size > 150 and sl_set == '❌':
-                # Calculate suggested stop loss based on current PnL
-                if pnl_pct > 0:
-                    sl_suggestion = f"Set trailing stop at break-even or +5% to lock profits"
-                elif pnl_pct > -5:
-                    sl_suggestion = f"Set stop at -8% to limit downside risk"
-                else:
-                    sl_suggestion = f"URGENT: Set stop immediately at -10% max"
-                
-                risk_level = "HIGH" if margin_size > 1000 else "MEDIUM" if margin_size > 500 else "MODERATE"
-                
-                alerts.append({
-                    'type': 'no_stop_loss',
-                    'symbol': symbol,
-                    'platform': platform,
-                    'margin': margin_size,
-                    'risk_level': risk_level,
-                    'message': f"🛡️ **${symbol} Risk Management** (${margin_size:.0f})\n" +
-                              f"⚠️ **No Stop Loss** | Risk Level: **{risk_level}**\n" +
-                              f"💡 **Action**: {sl_suggestion}\n" +
-                              f"📊 Current PnL: **{pnl_pct:+.1f}%** | {side} @ {leverage:.0f}x"
-                })
+            # DISABLED: Old stop loss alerts - now handled by enhanced portfolio analysis
+            # Enhanced TP/SL suggestions are integrated into the new portfolio format
 
             # Enhanced high profit analysis with profit management strategies
             if pnl_pct > 35:
@@ -1384,6 +1362,9 @@ def save_alerts_for_bot(alerts):
 
 
 async def run_portfolio_analysis():
+    """DISABLED - Old portfolio analysis replaced by enhanced system in run_trading_analysis()"""
+    print("❌ Old portfolio analysis disabled - using enhanced system instead")
+    return  # Exit immediately to prevent old format alerts
     """Hourly portfolio analysis for #portfolio channel with AI insights"""
     try:
         print("\n📊 PORTFOLIO ANALYSIS - Running AI-powered hourly check...")
@@ -2867,8 +2848,8 @@ def main():
     # Schedule different frequencies for different channels
     print("\n⏰ Setting up multi-channel schedule...")
     
-    # Portfolio analysis every hour
-    schedule.every().hour.do(lambda: asyncio.run(run_portfolio_analysis()))
+    # Portfolio analysis every hour - USING ENHANCED SYSTEM
+    schedule.every().hour.do(lambda: asyncio.run(run_trading_analysis()))
     
     # Alpha scans twice daily (9 AM and 9 PM)
     schedule.every().day.at("09:00").do(lambda: asyncio.run(run_alpha_analysis()))
