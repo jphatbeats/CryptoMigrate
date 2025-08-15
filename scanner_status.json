@@ -1,92 +1,92 @@
 {
-  "current_coin": "NEO",
-  "current_index": 48,
+  "current_coin": "POLIS",
+  "current_index": 109,
   "total_coins": 200,
-  "current_batch": "3/11",
+  "current_batch": "7/11",
   "confidence": 15,
   "alert_triggered": false,
-  "timestamp": "2025-08-15T05:13:54.843457",
+  "timestamp": "2025-08-15T07:59:59.327614",
   "scanning_active": true,
   "recent_scans": [
     {
-      "symbol": "NEO",
+      "symbol": "POLIS",
       "confidence": 15,
-      "timestamp": "05:13:54",
+      "timestamp": "07:59:59",
       "alert_triggered": false,
       "status": "completed",
-      "ai_insight": "NEO's confidence score of 15.0% is driven by a lack of significant market signals, as indicated by neutral technical indicators like RSI and MACD, coupled with an absence of news and social media activity, which results in low scores across technical, news, and social analyses. Traders should note the stagnant market environment for NEO, with no current catalysts or momentum to suggest imminent price action or volatility."
+      "ai_insight": "POLIS has a low confidence score of 15.0% due to a lack of momentum across technical, news, and social analyses, with neutral technical indicators and no positive news or social sentiment to drive interest. Traders should be cautious as the coin currently lacks catalysts for significant movement, reflecting its low technical score and absence of positive sentiment in the market."
     },
     {
-      "symbol": "KAVA",
+      "symbol": "MNGO",
       "confidence": 15,
-      "timestamp": "05:13:46",
+      "timestamp": "07:59:52",
       "alert_triggered": false,
       "status": "completed",
-      "ai_insight": "KAVA's low confidence score of 15.0% is primarily due to the absence of significant news, social momentum, and technical indicators, all of which reflect a lack of market interest and clear direction. Traders should note the neutral technical indicators and absence of catalysts, suggesting a cautious approach until more definitive signals or market activity emerge."
+      "ai_insight": "MNGO's low confidence score of 15.0% is primarily driven by its neutral technical indicators, lack of positive sentiment or catalysts in recent news, and negligible social momentum. Traders should note the absence of compelling bullish signals across all analysis areas, suggesting limited market interest and potential stagnation in the short term."
     },
     {
-      "symbol": "DASH",
+      "symbol": "ATLAS",
       "confidence": 15,
-      "timestamp": "05:13:17",
+      "timestamp": "07:59:20",
       "alert_triggered": false,
       "status": "completed",
-      "ai_insight": "DASH currently has a low confidence score of 15.0% due to neutral technical indicators, a lack of positive sentiment in recent news, and minimal social media engagement, suggesting limited market interest and momentum. Traders should be cautious and monitor for any emerging catalysts or changes in sentiment that could influence price movements."
+      "ai_insight": "ATLAS has a low confidence score of 15.0% due to the lack of positive sentiment and momentum across technical, news, and social analyses, with indicators such as RSI and MACD showing neutrality and no significant news or social buzz to drive interest. Traders should note the absence of catalysts or enthusiasm in the market, suggesting caution and a wait-and-see approach until more definitive signals emerge."
     },
     {
-      "symbol": "XTZ",
+      "symbol": "PORT",
       "confidence": 15,
-      "timestamp": "05:13:09",
+      "timestamp": "07:59:14",
       "alert_triggered": false,
       "status": "completed",
-      "ai_insight": "XTZ's low confidence score of 15.0% is primarily driven by a neutral technical outlook, indicated by an RSI of 50 and a lack of direction in the MACD signal, alongside minimal engagement and neutral sentiment across news and social channels. Traders should note the absence of significant news catalysts and social momentum, reflecting limited market interest and potential volatility."
+      "ai_insight": "PORT's low confidence score of 15.0% is primarily due to a lack of market activity and sentiment, as indicated by its neutral technical indicators, absence of news coverage, and negligible social engagement. Traders should be cautious, as the current data suggests minimal interest and momentum, making it difficult to predict any significant price movement."
     },
     {
-      "symbol": "ZEC",
+      "symbol": "NINJA",
       "confidence": 15,
-      "timestamp": "05:12:39",
+      "timestamp": "07:58:42",
       "alert_triggered": false,
       "status": "completed",
-      "ai_insight": "ZEC's confidence score of 15.0% reflects a lack of momentum and positive sentiment across technical, news, and social metrics, with neutral technical indicators and no significant catalysts or social buzz to drive interest. Traders should note the absence of strong buy signals or market enthusiasm, suggesting a cautious stance until more definitive trends or news catalysts emerge."
+      "ai_insight": "NINJA's low confidence score of 15.0% is primarily driven by a lack of market signals, as indicated by neutral technical indicators such as the RSI and MACD, and an absence of news and social momentum, which contribute to its lackluster technical, news, and social scores. Traders should be cautious, as the coin currently lacks catalysts and market interest, suggesting limited potential for significant price movement in the near term."
     },
     {
-      "symbol": "FTM",
+      "symbol": "ORCA",
       "confidence": 15,
-      "timestamp": "05:12:31",
+      "timestamp": "07:58:36",
       "alert_triggered": false,
       "status": "completed",
-      "ai_insight": "FTM's low confidence score of 15.0% is primarily driven by its neutral technical indicators, lack of positive news sentiment, and absence of social media momentum, suggesting limited investor enthusiasm and market activity. Traders should be cautious, as the absence of positive catalysts and social buzz indicates that FTM may not experience significant price movements in the near term."
+      "ai_insight": "ORCA's low confidence score of 15.0% is primarily driven by its lack of positive sentiment across technical, news, and social analyses, with neutral indicators such as an RSI of 50 and a MACD signal offering no clear direction. Traders should note the absence of news catalysts and social momentum, signaling limited immediate market interest or potential for volatility in the short term."
     },
     {
-      "symbol": "RUNE",
+      "symbol": "SAMO",
       "confidence": 15,
-      "timestamp": "05:12:00",
+      "timestamp": "07:58:05",
       "alert_triggered": false,
       "status": "completed",
-      "ai_insight": "RUNE's confidence score of 15.0% reflects a lack of clear momentum across technical, news, and social analyses, with neutral RSI and MACD signals indicating indecision in market sentiment. The absence of positive news or social engagement further suggests traders should exercise caution, as there are no strong catalysts or sentiment shifts to drive significant price movement currently."
+      "ai_insight": "SAMO's low confidence score of 15.0% is primarily driven by its neutral technical indicators, lack of positive news sentiment, and negligible social momentum, indicating limited current interest or catalysts for price movement. Traders should be cautious as the absence of strong technical signals and engagement suggests a lack of immediate upside potential."
     },
     {
-      "symbol": "EGLD",
+      "symbol": "MSOL",
       "confidence": 15,
-      "timestamp": "05:11:53",
+      "timestamp": "07:57:59",
       "alert_triggered": false,
       "status": "completed",
-      "ai_insight": "EGLD's low confidence score of 15.0% is primarily driven by its stagnant technical indicators, with a neutral RSI and MACD, combined with a lack of positive news or social momentum, as reflected in its minimal news and social scores. Traders should note the absence of significant catalysts or sentiment shifts, indicating a current lack of market interest or direction for EGLD."
+      "ai_insight": "MSOL's confidence score of 15.0% is primarily driven by a lack of significant technical, news, and social indicators, as evidenced by its neutral RSI and MACD, coupled with zero news and social momentum. Traders should note that the absence of strong market signals or catalysts suggests a cautious approach, as the coin currently lacks the momentum or sentiment needed to drive substantial price movement."
     },
     {
-      "symbol": "KAVA",
+      "symbol": "SUNNY",
       "confidence": 15,
-      "timestamp": "05:11:21",
+      "timestamp": "07:57:27",
       "alert_triggered": false,
       "status": "completed",
-      "ai_insight": "KAVA's low confidence score of 15.0% is driven by a lack of positive sentiment in both news and social media, combined with a neutral technical outlook indicated by its RSI of 50 and MACD signal. Traders should note the absence of momentum or catalysts, suggesting limited immediate upside potential and a need for caution in positioning."
+      "ai_insight": "SUNNY scored a low confidence score of 15.0% primarily due to its neutral technical indicators, absence of positive news catalysts, and lackluster social momentum, all suggesting limited immediate interest or potential for price movement. Traders should exercise caution and monitor for any changes in market sentiment or technical signals before considering any positions in SUNNY."
     },
     {
-      "symbol": "AXS",
+      "symbol": "TULIP",
       "confidence": 15,
-      "timestamp": "05:11:15",
+      "timestamp": "07:57:20",
       "alert_triggered": false,
       "status": "completed",
-      "ai_insight": "AXS scored 15.0% primarily due to a lack of positive momentum across technical, news, and social metrics, with neutral technical indicators and no significant news or social engagement contributing to its low confidence. Traders should exercise caution, as the absence of catalysts or sentiment drivers suggests limited immediate upside potential."
+      "ai_insight": "The TULIP coin has a low confidence score of 15.0% due to a lack of significant technical indicators, news catalysts, and social momentum, as highlighted by its neutral RSI and MACD findings, absence of news or social engagement, and low technical and social scores. Traders should be cautious and consider this asset as having limited actionable signals or market interest currently, making it a less favorable option for active trading strategies."
     }
   ]
 }
