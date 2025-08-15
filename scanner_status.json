@@ -1,13 +1,37 @@
 {
-  "current_coin": "ETH",
-  "current_index": 2,
+  "current_coin": "DOGE",
+  "current_index": 6,
   "total_coins": 200,
   "current_batch": "1/11",
-  "confidence": 19.86,
+  "confidence": 15,
   "alert_triggered": false,
-  "timestamp": "2025-08-15T04:46:29.704614",
+  "timestamp": "2025-08-15T04:47:10.492628",
   "scanning_active": true,
   "recent_scans": [
+    {
+      "symbol": "DOGE",
+      "confidence": 15,
+      "timestamp": "04:47:10",
+      "alert_triggered": false,
+      "status": "completed",
+      "ai_insight": "DOGE currently has a low confidence score of 15.0% due to neutral technical indicators, lack of positive news sentiment, and negligible social momentum, suggesting limited market enthusiasm. Traders should be cautious, as the absence of catalysts and social interest might indicate a period of stagnation or sideways trading for DOGE."
+    },
+    {
+      "symbol": "XRP",
+      "confidence": 15,
+      "timestamp": "04:47:07",
+      "alert_triggered": false,
+      "status": "completed",
+      "ai_insight": "XRP's low confidence score of 15.0% is primarily driven by a lack of positive momentum across technical, news, and social metrics; with neutral technical indicators, a complete absence of positive news sentiment, and stagnant social engagement, the coin currently lacks the catalysts needed for upward movement. Traders should exercise caution as the overall market sentiment and technical signals provide no clear direction for potential gains or losses in the short term."
+    },
+    {
+      "symbol": "SOL",
+      "confidence": 15,
+      "timestamp": "04:46:32",
+      "alert_triggered": false,
+      "status": "completed",
+      "ai_insight": "SOL's low confidence score of 15.0% is driven by a combination of neutral technical indicators, such as an RSI of 50 and a neutral MACD signal, alongside a lack of positive sentiment or catalysts in both news and social media. Traders should note the absence of momentum and sentiment, suggesting limited immediate upside potential, and consider waiting for clearer signals or catalysts before making trading decisions."
+    },
     {
       "symbol": "ETH",
       "confidence": 19.86,
@@ -63,30 +87,6 @@
       "alert_triggered": false,
       "status": "completed",
       "ai_insight": "Ethereum's low confidence score of 15.0% is primarily driven by neutral technical indicators, lackluster news sentiment with no positive catalysts, and an absence of social momentum. Traders should note the market's indecision and lack of enthusiasm, suggesting a cautious approach until clearer directional signals emerge."
-    },
-    {
-      "symbol": "BTC",
-      "confidence": 15,
-      "timestamp": "04:44:38",
-      "alert_triggered": false,
-      "status": "completed",
-      "ai_insight": "The low confidence score of 15.0% for BTC is primarily driven by a lack of positive sentiment across technical, news, and social analyses, with neutral indicators such as RSI and MACD signal providing little directional guidance. Traders should note the absence of any news catalysts or social momentum, suggesting a period of uncertainty and potential stagnation in market activity."
-    },
-    {
-      "symbol": "BNB",
-      "confidence": 15,
-      "timestamp": "04:44:28",
-      "alert_triggered": false,
-      "status": "completed",
-      "ai_insight": "BNB's low confidence score of 15.0% reflects the lack of significant market movement or sentiment, as indicated by neutral technical indicators and the absence of news or social media buzz. Traders should note the current market indecision and lack of catalysts, which suggest limited short-term volatility or trading opportunities for BNB."
-    },
-    {
-      "symbol": "XRP",
-      "confidence": 15,
-      "timestamp": "04:43:50",
-      "alert_triggered": false,
-      "status": "completed",
-      "ai_insight": "XRP's low confidence score of 15.0% is primarily driven by a lack of positive sentiment and momentum across technical, news, and social analyses, reflected in a neutral RSI and MACD, zero positive news sentiment, and no social media buzz. Traders should be cautious as the absence of catalysts or strong sentiment signals suggests limited immediate upside potential."
     }
   ]
 }
