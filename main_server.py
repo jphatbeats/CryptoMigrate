@@ -1817,12 +1817,15 @@ def sentiment_analyze(symbol):
 
 @app.route('/api/social/momentum/<symbol>', methods=['GET'])
 def social_momentum(symbol):
-    """Real-time social momentum analysis via LunarCrush MCP"""
+    """Real-time social momentum analysis via LunarCrush Official HTTP MCP"""
     import asyncio
     import sys
     import os
     sys.path.append(os.path.join(os.path.dirname(__file__), 'mcp_servers'))
-    from lunarcrush_mcp_integration import get_social_analysis
+    try:
+        from lunarcrush_http_integration import get_social_analysis
+    except ImportError:
+        from lunarcrush_mcp_integration import get_social_analysis
     
     try:
         # Get real social data from LunarCrush
