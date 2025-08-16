@@ -28,7 +28,7 @@ class LumifTradingViewClient:
             'Upgrade-Insecure-Requests': '1'
         })
         self.last_request_time = 0
-        self.min_request_interval = 120.0  # 2 minutes between requests minimum
+        self.min_request_interval = 30.0  # 30 seconds between requests minimum
         self.session_requests = 0
         self.max_requests_per_session = 3  # Max 3 requests before new session
         

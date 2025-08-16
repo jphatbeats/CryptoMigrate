@@ -57,9 +57,9 @@ DISCORD_WEBHOOK_URL = DISCORD_WEBHOOK_ALPHA_SCANS  # Backward compatibility
 
 class ComprehensiveMarketScanner:
     def __init__(self):
-        # EXTREME RATE LIMITING: 3 minutes per coin to avoid TradingView IP ban
-        self.scan_interval = 180  # 3 minutes between coins (extreme TradingView rate limiting)
-        self.batch_size = 2       # 2 coins per 6-minute batch (180s * 2 = 360s = 6min)
+        # MODERATE RATE LIMITING: 30 seconds per coin
+        self.scan_interval = 30  # 30 seconds between coins
+        self.batch_size = 12     # 12 coins per 6-minute batch (30s * 12 = 360s = 6min)
         self.cycle_duration = 360  # 6 minutes per batch
         self.total_coins = 200   # Top 200 legitimate coins (after filtering stablecoins)
         

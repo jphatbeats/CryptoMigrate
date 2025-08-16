@@ -1,13 +1,29 @@
 {
-  "current_coin": "JTO",
-  "current_index": 120,
+  "current_coin": "BTC",
+  "current_index": 1,
   "total_coins": 200,
-  "current_batch": "15/25",
+  "current_batch": "1/16",
   "confidence": 15,
   "alert_triggered": false,
-  "timestamp": "2025-08-16T01:35:08.902375",
+  "timestamp": "2025-08-16T01:36:02.489490",
   "scanning_active": true,
   "recent_scans": [
+    {
+      "symbol": "BTC",
+      "confidence": 15,
+      "timestamp": "01:36:02",
+      "alert_triggered": false,
+      "status": "completed",
+      "ai_insight": "BTC's low confidence score of 15.0% is primarily driven by neutral technical indicators, lack of positive sentiment in recent news, and stagnant social momentum, indicating limited enthusiasm or catalysts for price movement. Traders should note the absence of catalysts and engagement suggests limited short-term movement potential."
+    },
+    {
+      "symbol": "PYTH",
+      "confidence": 15,
+      "timestamp": "01:35:55",
+      "alert_triggered": false,
+      "status": "completed",
+      "ai_insight": "PYTH's low confidence score of 15.0% is primarily driven by neutral technical indicators, lack of positive sentiment in recent news, and stagnant social momentum, indicating limited enthusiasm or catalysts for price movement. Traders should note the absence of catalysts and engagement suggests limited short-term movement potential."
+    },
     {
       "symbol": "JTO",
       "confidence": 15,
@@ -71,22 +87,6 @@
       "alert_triggered": false,
       "status": "completed",
       "ai_insight": "BONK's low confidence score of 15.0% is primarily driven by neutral technical indicators, lack of positive sentiment in recent news, and stagnant social momentum, indicating limited enthusiasm or catalysts for price movement. Traders should note the absence of catalysts and engagement suggests limited short-term movement potential."
-    },
-    {
-      "symbol": "CHEEMS",
-      "confidence": 15,
-      "timestamp": "01:28:56",
-      "alert_triggered": false,
-      "status": "completed",
-      "ai_insight": "CHEEMS's low confidence score of 15.0% is primarily driven by neutral technical indicators, lack of positive sentiment in recent news, and stagnant social momentum, indicating limited enthusiasm or catalysts for price movement. Traders should note the absence of catalysts and engagement suggests limited short-term movement potential."
-    },
-    {
-      "symbol": "SLIM",
-      "confidence": 15,
-      "timestamp": "01:28:11",
-      "alert_triggered": false,
-      "status": "completed",
-      "ai_insight": "SLIM's low confidence score of 15.0% is primarily driven by neutral technical indicators, lack of positive sentiment in recent news, and stagnant social momentum, indicating limited enthusiasm or catalysts for price movement. Traders should note the absence of catalysts and engagement suggests limited short-term movement potential."
     }
   ]
 }
