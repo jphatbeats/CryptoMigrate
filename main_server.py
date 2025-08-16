@@ -90,6 +90,40 @@ except ImportError as e:
     get_multi_timeframe_confluence = None
     scan_market_opportunities = None
 
+# Add TradingView Advanced API integration
+try:
+    from tradingview_advanced_api import (
+        initialize_advanced_tradingview, 
+        get_advanced_analysis, 
+        get_multi_symbol_data,
+        get_market_overview
+    )
+    tradingview_advanced_available = True
+    print("✅ TradingView Advanced API loaded - Multiple proven methods")
+except ImportError as e:
+    initialize_advanced_tradingview = None
+    get_advanced_analysis = None
+    get_multi_symbol_data = None
+    get_market_overview = None
+    tradingview_advanced_available = False
+    print(f"❌ TradingView Advanced API failed to load: {e}")
+
+# Add TradingView Web Scraper integration  
+try:
+    from tradingview_webscraper import (
+        initialize_tradingview_scraper,
+        get_scraper_analysis,
+        get_scraper_market_data
+    )
+    tradingview_scraper_available = True
+    print("✅ TradingView Web Scraper loaded - Direct data extraction")
+except ImportError as e:
+    initialize_tradingview_scraper = None
+    get_scraper_analysis = None
+    get_scraper_market_data = None
+    tradingview_scraper_available = False
+    print(f"❌ TradingView Web Scraper failed to load: {e}")
+
 try:
     from error_handler import handle_exchange_error, ExchangeNotAvailableError
 except ImportError:
@@ -1634,8 +1668,8 @@ def taapi_rsi():
                 "fallback_server": "https://indicators-production.up.railway.app/api/taapi/indicator/rsi"
             }), 503
             
-        # Use single indicator method for RSI
-        result = taapi_universal.get_single_indicator(symbol, 'rsi', interval, int(period) if period else 14)
+        # Use proper TAAPI method
+        result = taapi_universal.get_indicator(symbol, 'rsi', interval, int(period) if period else 14)
         
         return jsonify(result)
         
@@ -5597,8 +5631,8 @@ def direct_analysis(symbol):
     try:
         # Use TAAPI fallback for now
         if taapi_available and taapi_universal is not None:
-            # Get single RSI indicator using the direct method
-            result = taapi_universal.get_single_indicator(f"{symbol}USDT", 'rsi', '4h', 14)
+            # Get RSI indicator using the direct method
+            result = taapi_universal.get_indicator(f"{symbol}USDT", 'rsi', '4h', 14)
             
             if result and 'value' in result:
                 return jsonify({
@@ -5629,10 +5663,127 @@ def direct_analysis(symbol):
             "error": str(e)
         })
 
+# ================================
+# TRADINGVIEW COMPREHENSIVE API ENDPOINTS
+# Uses multiple proven approaches from Medium articles
+# ================================
+
+@app.route('/api/tradingview/advanced-analysis/<symbol>', methods=['GET'])
+def tradingview_advanced_analysis(symbol):
+    """Get comprehensive TradingView analysis using advanced API approach"""
+    try:
+        exchange = request.args.get('exchange', 'BINANCE')
+        
+        if tradingview_advanced_available:
+            result = get_advanced_analysis(symbol, exchange)
+            if result:
+                return jsonify(result)
+        
+        return jsonify({
+            'status': 'error',
+            'error': 'TradingView Advanced API not available'
+        }), 503
+        
+    except Exception as e:
+        logger.error(f"TradingView advanced analysis error for {symbol}: {e}")
+        return jsonify({
+            'status': 'error',
+            'symbol': symbol,
+            'error': str(e)
+        }), 500
+
+@app.route('/api/tradingview/scraper-analysis/<symbol>', methods=['GET'])
+def tradingview_scraper_analysis(symbol):
+    """Get TradingView analysis using direct web scraping approach"""
+    try:
+        exchange = request.args.get('exchange', 'BINANCE')
+        
+        if tradingview_scraper_available:
+            result = get_scraper_analysis(symbol, exchange)
+            if result:
+                return jsonify(result)
+        
+        return jsonify({
+            'status': 'error',
+            'error': 'TradingView Web Scraper not available'
+        }), 503
+        
+    except Exception as e:
+        logger.error(f"TradingView scraper analysis error for {symbol}: {e}")
+        return jsonify({
+            'status': 'error',
+            'symbol': symbol,
+            'error': str(e)
+        }), 500
+
+@app.route('/api/tradingview/comprehensive-analysis/<symbol>', methods=['GET'])
+def tradingview_comprehensive_analysis(symbol):
+    """
+    Get comprehensive TradingView analysis using all available methods
+    Uses fallback chain: Advanced API → Web Scraper → Lumif Integration
+    """
+    try:
+        exchange = request.args.get('exchange', 'BINANCE')
+        results = {}
+        
+        # Method 1: Advanced API
+        if tradingview_advanced_available:
+            try:
+                advanced_result = get_advanced_analysis(symbol, exchange)
+                if advanced_result and advanced_result.get('status') == 'success':
+                    results['advanced_api'] = advanced_result
+            except Exception as e:
+                logger.warning(f"Advanced API failed for {symbol}: {e}")
+        
+        # Method 2: Web Scraper
+        if tradingview_scraper_available:
+            try:
+                scraper_result = get_scraper_analysis(symbol, exchange)
+                if scraper_result and scraper_result.get('status') == 'success':
+                    results['web_scraper'] = scraper_result
+            except Exception as e:
+                logger.warning(f"Web scraper failed for {symbol}: {e}")
+        
+        # Method 3: Lumif Integration (existing)
+        if lumif_tradingview_available:
+            try:
+                lumif_result = get_enhanced_technical_analysis(f"{symbol}USDT")
+                if lumif_result and lumif_result.get('status') == 'success':
+                    results['lumif_integration'] = lumif_result
+            except Exception as e:
+                logger.warning(f"Lumif integration failed for {symbol}: {e}")
+        
+        # Combine results for best analysis
+        if results:
+            return jsonify({
+                'status': 'success',
+                'symbol': symbol,
+                'exchange': exchange,
+                'methods_used': list(results.keys()),
+                'methods_successful': len(results),
+                'detailed_results': results,
+                'timestamp': datetime.now().isoformat()
+            })
+        else:
+            return jsonify({
+                'status': 'error',
+                'symbol': symbol,
+                'error': 'No TradingView methods available or successful'
+            }), 503
+        
+    except Exception as e:
+        logger.error(f"Comprehensive TradingView analysis error for {symbol}: {e}")
+        return jsonify({
+            'status': 'error',
+            'symbol': symbol,
+            'error': str(e)
+        }), 500
+
 # Start Flask server when run directly
 if __name__ == '__main__':
     logger.info("🚀 Starting Trading Intelligence Server on 0.0.0.0:5000")
     logger.info("💡 Enhanced with 208+ indicators and $400/month in cost savings")
+    logger.info("📊 Multiple TradingView integration methods available")
     app.run(host='0.0.0.0', port=5000, debug=False, threaded=True)
 else:
     # The Flask app object is exported for external use

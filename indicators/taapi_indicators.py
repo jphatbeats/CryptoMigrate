@@ -26,7 +26,7 @@ class RateLimitManager:
         self.consecutive_429_count = 0
         self.total_requests = 0
         self.successful_requests = 0
-        self.circuit_breaker_until = 0  # Circuit breaker timestamp
+        self.circuit_breaker_until = 0.0  # Circuit breaker timestamp
     
     def wait_if_needed(self):
         """EXTREME rate limiting with circuit breaker"""
@@ -211,7 +211,7 @@ class TaapiIndicators:
                 
                 # Activate circuit breaker after too many 429s
                 if self.rate_limiter.consecutive_429_count > 15:
-                    self.rate_limiter.circuit_breaker_until = time.time() + 60  # 1 minute circuit breaker
+                    self.rate_limiter.circuit_breaker_until = time.time() + 60.0  # 1 minute circuit breaker
                     logger.error(f"🛑 CIRCUIT BREAKER ACTIVATED - Too many 429 errors, stopping for 60 seconds")
                 
                 # Progressive backoff
