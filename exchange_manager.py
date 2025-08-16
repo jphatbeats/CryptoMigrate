@@ -39,9 +39,11 @@ class ExchangeManager:
             'kucoin': {
                 'apiKey': os.getenv('KUCOIN_API_KEY', ''),
                 'secret': os.getenv('KUCOIN_SECRET', ''),
-                'password': os.getenv('KUCOIN_PASSPHRASE', ''),
+                'password': os.getenv('KUCOIN_PASSPHRASE', ''),  # Optional for some KuCoin setups
                 'sandbox': os.getenv('KUCOIN_SANDBOX', 'false').lower() == 'true',
                 'enableRateLimit': True,
+                'timeout': 30000,
+                'rateLimit': 100
             }
         }
         
@@ -65,8 +67,13 @@ class ExchangeManager:
                 }
                 return
             
-            # Create exchange instance
-            exchange = exchange_class(config)
+            # Create exchange instance with special handling for KuCoin
+            if exchange_name == 'kucoin' and not config.get('password'):
+                # Remove empty password for KuCoin if not provided
+                config_clean = {k: v for k, v in config.items() if k != 'password' or v}
+                exchange = exchange_class(config_clean)
+            else:
+                exchange = exchange_class(config)
             
             # Test the connection (optional, can be disabled for faster startup)
             if config.get('apiKey') and config.get('secret'):
@@ -76,7 +83,12 @@ class ExchangeManager:
                     logger.info(f"Successfully initialized {exchange_name} with API credentials")
                     status = 'connected'
                 except Exception as test_error:
-                    logger.warning(f"Failed to test {exchange_name} API connection: {str(test_error)}")
+                    if exchange_name == 'kucoin' and 'KC-API-PASSPHRASE' in str(test_error):
+                        logger.warning(f"KuCoin API passphrase authentication failed - please verify your API passphrase")
+                        logger.warning(f"Current passphrase length: {len(config.get('password', ''))}")
+                        logger.warning(f"KuCoin requires the passphrase you created when generating the API key")
+                    else:
+                        logger.warning(f"Failed to test {exchange_name} API connection: {str(test_error)}")
                     status = 'api_error'
             else:
                 logger.info(f"Initialized {exchange_name} without API credentials (public access only)")
@@ -119,7 +131,7 @@ class ExchangeManager:
         """Get list of available exchanges"""
         return list(self.exchanges.keys())
     
-    def get_exchange_status(self) -> Dict[str, Dict[str, Any]]:
+    def get_exchange_status(self) -> Dict[str, Any]:
         """Get status of all exchanges"""
         return {
             'available_exchanges': self.get_available_exchanges(),
