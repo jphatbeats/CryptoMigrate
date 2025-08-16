@@ -28,9 +28,10 @@ class LumifTradingViewClient:
             'Upgrade-Insecure-Requests': '1'
         })
         self.last_request_time = 0
-        self.min_request_interval = 30.0  # 30 seconds between requests minimum
+        self.min_request_interval = 60.0  # 1 minute between requests (conservative)
         self.session_requests = 0
-        self.max_requests_per_session = 3  # Max 3 requests before new session
+        self.max_requests_per_session = 5  # Max 5 requests before new session
+        self.last_429_time = 0  # Track when we last got rate limited
         
         # TradingView interval mappings (only supported intervals)
         self.interval_map = {
@@ -65,9 +66,16 @@ class LumifTradingViewClient:
                                  exchange: str = 'BINANCE', interval: str = '4h') -> Optional[Dict[str, Any]]:
         """Get comprehensive TradingView technical analysis - Enhanced by Lumif-ai"""
         try:
-            # EXTREME rate limiting with session rotation to avoid IP ban
+            # Smart rate limiting with 429 cooldown detection
             current_time = time.time()
             time_since_last = current_time - self.last_request_time
+            time_since_429 = current_time - self.last_429_time
+            
+            # If we got 429 recently, wait much longer
+            if self.last_429_time > 0 and time_since_429 < 300:  # 5 minutes after 429
+                additional_wait = 300 - time_since_429
+                logger.info(f"Cooling down after 429 error: waiting additional {additional_wait:.1f}s")
+                time.sleep(additional_wait)
             
             # Check if we need a new session
             if self.session_requests >= self.max_requests_per_session:
@@ -84,7 +92,7 @@ class LumifTradingViewClient:
                     'Upgrade-Insecure-Requests': '1'
                 })
                 self.session_requests = 0
-                time.sleep(30)  # Extra wait after session rotation
+                time.sleep(15)  # Wait after session rotation
             
             if time_since_last < self.min_request_interval:
                 wait_time = self.min_request_interval - time_since_last
@@ -119,10 +127,10 @@ class LumifTradingViewClient:
                     
                 except Exception as e:
                     if "429" in str(e) or "rate" in str(e).lower():
-                        # EXTREME backoff strategy - doubling min interval after rate limits
-                        self.min_request_interval = min(60.0, self.min_request_interval * 1.5)
-                        wait_time = self.min_request_interval * (attempt + 2)  # 30s, 60s, 90s
-                        logger.warning(f"Rate limited for {symbol}, increased interval to {self.min_request_interval:.1f}s, waiting {wait_time:.1f}s (attempt {attempt + 1}/{max_retries})")
+                        # Record 429 time and implement smart backoff
+                        self.last_429_time = time.time()
+                        wait_time = 120 * (attempt + 1)  # 2min, 4min, 6min
+                        logger.warning(f"Rate limited for {symbol}, waiting {wait_time:.1f}s (attempt {attempt + 1}/{max_retries})")
                         time.sleep(wait_time)
                         if attempt == max_retries - 1:
                             logger.error(f"Error getting TradingView analysis for {symbol}: {e}")

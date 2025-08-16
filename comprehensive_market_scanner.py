@@ -350,8 +350,16 @@ class ComprehensiveMarketScanner:
     async def _get_technical_analysis(self, session: aiohttp.ClientSession, symbol: str) -> Optional[Dict]:
         """Enhanced technical analysis using Lumif-ai TradingView + fallback to local"""
         try:
-            # SKIP TRADINGVIEW (IP BANNED since Aug 14) - Use TAAPI + local analysis
-            print(f"🔍 Using TAAPI.io + enhanced local analysis for {symbol} (TradingView IP banned)")
+            # RE-ENABLE TRADINGVIEW with proper cooldown strategy
+            print(f"🔍 Attempting TradingView analysis for {symbol} (with smart rate limiting)")
+            
+            # Try TradingView first - it was working earlier today
+            tradingview_analysis = await self._get_direct_technical_analysis(session, symbol)
+            if tradingview_analysis and tradingview_analysis.get('confluence_score', 0) > 15:
+                print(f"✅ TradingView Technical Analysis: {symbol} - RSI: {tradingview_analysis.get('rsi')}, Score: {tradingview_analysis.get('confluence_score')}%")
+                return tradingview_analysis
+            
+            print(f"⚠️ TradingView failed for {symbol}, trying TAAPI fallback...")
             
             # Primary: TAAPI technical analysis (real RSI, MACD data)
             taapi_analysis = await self._get_taapi_technical_analysis(session, symbol)
@@ -390,7 +398,7 @@ class ComprehensiveMarketScanner:
             # Use TAAPI.io for RSI, MACD, and basic indicators
             url = f"{LOCAL_API_URL}/api/taapi/rsi"
             params = {
-                'symbol': f"{symbol}/USDT",
+                'symbol': f"{symbol}USDT",  # Fixed: Remove slash for TAAPI format
                 'exchange': 'binance',
                 'interval': '4h'
             }
