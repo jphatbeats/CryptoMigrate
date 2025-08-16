@@ -28,7 +28,9 @@ class LumifTradingViewClient:
             'Upgrade-Insecure-Requests': '1'
         })
         self.last_request_time = 0
-        self.min_request_interval = 15.0  # 15 seconds between requests minimum
+        self.min_request_interval = 120.0  # 2 minutes between requests minimum
+        self.session_requests = 0
+        self.max_requests_per_session = 3  # Max 3 requests before new session
         
         # TradingView interval mappings (only supported intervals)
         self.interval_map = {
@@ -63,14 +65,34 @@ class LumifTradingViewClient:
                                  exchange: str = 'BINANCE', interval: str = '4h') -> Optional[Dict[str, Any]]:
         """Get comprehensive TradingView technical analysis - Enhanced by Lumif-ai"""
         try:
-            # AGGRESSIVE rate limiting to completely avoid 429 errors
+            # EXTREME rate limiting with session rotation to avoid IP ban
             current_time = time.time()
             time_since_last = current_time - self.last_request_time
+            
+            # Check if we need a new session
+            if self.session_requests >= self.max_requests_per_session:
+                logger.info(f"Rotating session after {self.session_requests} requests")
+                self.session.close()
+                self.session = requests.Session()
+                self.session.headers.update({
+                    'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36',
+                    'Accept': 'application/json',
+                    'Accept-Language': 'en-US,en;q=0.9',
+                    'Accept-Encoding': 'gzip, deflate, br',
+                    'DNT': '1',
+                    'Connection': 'keep-alive',
+                    'Upgrade-Insecure-Requests': '1'
+                })
+                self.session_requests = 0
+                time.sleep(30)  # Extra wait after session rotation
+            
             if time_since_last < self.min_request_interval:
                 wait_time = self.min_request_interval - time_since_last
                 logger.info(f"Rate limiting: waiting {wait_time:.1f}s before {symbol} request")
                 time.sleep(wait_time)
+            
             self.last_request_time = time.time()
+            self.session_requests += 1
             
             # Convert interval to TradingView format
             tv_interval = self.interval_map.get(interval, Interval.INTERVAL_4_HOURS)

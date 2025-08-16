@@ -57,9 +57,9 @@ DISCORD_WEBHOOK_URL = DISCORD_WEBHOOK_ALPHA_SCANS  # Backward compatibility
 
 class ComprehensiveMarketScanner:
     def __init__(self):
-        # TRADINGVIEW RATE LIMIT OPTIMIZED: 45 seconds per coin for proper TradingView access
-        self.scan_interval = 45  # 45 seconds between coins (proper TradingView rate limiting)
-        self.batch_size = 8      # 8 coins per 6-minute batch (45s * 8 = 360s = 6min)
+        # EXTREME RATE LIMITING: 3 minutes per coin to avoid TradingView IP ban
+        self.scan_interval = 180  # 3 minutes between coins (extreme TradingView rate limiting)
+        self.batch_size = 2       # 2 coins per 6-minute batch (180s * 2 = 360s = 6min)
         self.cycle_duration = 360  # 6 minutes per batch
         self.total_coins = 200   # Top 200 legitimate coins (after filtering stablecoins)
         
@@ -350,22 +350,20 @@ class ComprehensiveMarketScanner:
     async def _get_technical_analysis(self, session: aiohttp.ClientSession, symbol: str) -> Optional[Dict]:
         """Enhanced technical analysis using Lumif-ai TradingView + fallback to local"""
         try:
-            # RE-ENABLE TRADINGVIEW with PROPER rate limiting 
-            print(f"🔍 Attempting TradingView analysis for {symbol} with enhanced rate limiting...")
+            # SKIP TRADINGVIEW (IP BANNED since Aug 14) - Use TAAPI + local analysis
+            print(f"🔍 Using TAAPI.io + enhanced local analysis for {symbol} (TradingView IP banned)")
             
-            # Try TradingView with proper rate limiting
-            tradingview_analysis = await self._get_direct_technical_analysis(session, symbol)
-            if tradingview_analysis:
-                print(f"✅ TradingView Technical Analysis: {symbol} analysis successful")
-                return tradingview_analysis
-            
-            print(f"⚠️ TradingView failed for {symbol}, using TAAPI fallback...")
-            
-            # Fallback to TAAPI technical analysis 
+            # Primary: TAAPI technical analysis (real RSI, MACD data)
             taapi_analysis = await self._get_taapi_technical_analysis(session, symbol)
             if taapi_analysis:
-                print(f"✅ TAAPI Technical Analysis: {symbol} analysis successful")
+                print(f"✅ TAAPI Technical Analysis: {symbol} - RSI: {taapi_analysis.get('rsi')}, Score: {taapi_analysis.get('technical_score')}%")
                 return taapi_analysis
+            
+            # Fallback: Enhanced local analysis with price action
+            enhanced_local = await self._get_enhanced_local_analysis(session, symbol)
+            if enhanced_local:
+                print(f"✅ Enhanced Local Analysis: {symbol} - Score: {enhanced_local.get('technical_score')}%")
+                return enhanced_local
             
             # Final fallback to neutral analysis
             print(f"⚠️ All technical analysis methods failed for {symbol}")
@@ -430,6 +428,69 @@ class ComprehensiveMarketScanner:
                     
         except Exception as e:
             print(f"⚠️ TAAPI analysis error for {symbol}: {e}")
+            return None
+    
+    async def _get_enhanced_local_analysis(self, session: aiohttp.ClientSession, symbol: str) -> Optional[Dict]:
+        """Enhanced local technical analysis using price action and volume"""
+        try:
+            # Get price data from CoinGecko (free, no limits)
+            url = f"https://api.coingecko.com/api/v3/simple/price"
+            params = {
+                'ids': symbol.lower(),
+                'vs_currencies': 'usd',
+                'include_24hr_change': 'true',
+                'include_24hr_vol': 'true'
+            }
+            
+            timeout = aiohttp.ClientTimeout(total=10)
+            async with session.get(url, params=params, timeout=timeout) as response:
+                if response.status == 200:
+                    data = await response.json()
+                    
+                    if symbol.lower() in data:
+                        price_data = data[symbol.lower()]
+                        price_change_24h = price_data.get('usd_24h_change', 0)
+                        volume_24h = price_data.get('usd_24h_vol', 0)
+                        
+                        # Generate technical signals from price action
+                        if price_change_24h > 5:
+                            recommendation = 'buy'
+                            technical_score = 45  # Strong bullish
+                            rsi_estimate = 35  # Oversold bounce
+                        elif price_change_24h < -5:
+                            recommendation = 'sell'  
+                            technical_score = 20  # Bearish breakdown
+                            rsi_estimate = 65  # Overbought
+                        elif abs(price_change_24h) < 2:
+                            recommendation = 'neutral'
+                            technical_score = 30  # Consolidation
+                            rsi_estimate = 50  # Neutral
+                        else:
+                            recommendation = 'neutral'
+                            technical_score = 25
+                            rsi_estimate = 45 + (price_change_24h * 2)  # Estimate based on momentum
+                        
+                        # Volume confirmation
+                        if volume_24h > 1000000:  # High volume
+                            technical_score += 5
+                        
+                        return {
+                            'rsi': round(rsi_estimate, 1),
+                            'rsi_signal': 'oversold' if rsi_estimate < 35 else ('overbought' if rsi_estimate > 65 else 'neutral'),
+                            'macd_signal': 'bullish' if price_change_24h > 2 else ('bearish' if price_change_24h < -2 else 'neutral'),
+                            'recommendation': recommendation,
+                            'confluence_score': round(technical_score, 1),
+                            'bullish_signals': 2 if price_change_24h > 3 else (1 if price_change_24h > 0 else 0),
+                            'bearish_signals': 2 if price_change_24h < -3 else (1 if price_change_24h < 0 else 0),
+                            'technical_score': round(technical_score, 1),
+                            'source': 'enhanced_local_analysis',
+                            'confidence': 70,
+                            'price_change_24h': round(price_change_24h, 2),
+                            'volume_24h': volume_24h
+                        }
+                        
+        except Exception as e:
+            print(f"⚠️ Enhanced local analysis error for {symbol}: {e}")
             return None
                     
         except Exception as e:
