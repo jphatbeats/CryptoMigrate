@@ -58,8 +58,8 @@ Cost consciousness: Be mindful of Replit AI agent costs during development - avo
   - **GitHub API (`mcp_servers/tradingview_github_api.py`)**: Real-time websocket access based on Mathieu2301/TradingView-API (2.3k stars)
   - **Lumif Integration (`mcp_servers/lumifai_tradingview_integration.py`)**: Enhanced technical analysis with 208+ indicators
 - **Enhanced Market Scanner (`comprehensive_market_scanner.py`)**: Upgraded 3-layer analysis using multiple TradingView sources with intelligent fallback.
-- **Exchange Management (`exchange_manager.py`)**: Manages non-blocking initialization and credential injection for integrated exchanges.
-- **Trading Functions (`trading_functions.py`)**: Standardizes trading operations across all integrated exchanges.
+- **Exchange Management (`exchange_manager.py`)**: Manages non-blocking initialization and credential injection for integrated exchanges including KuCoin.
+- **Trading Functions (`trading_functions.py`)**: Standardizes trading operations across all integrated exchanges including KuCoin support.
 - **Automated Alert System (`automated_trading_alerts.py`)**: Monitors portfolio, performs technical analysis, generates risk alerts, detects alpha opportunities, and integrates with multi-channel Discord webhooks.
 - **Railway TAAPI Universal Indicators System**: Production-deployed system for 252+ TAAPI.io technical indicators with smart rate limiting and caching.
 
@@ -89,6 +89,7 @@ Cost consciousness: Be mindful of Replit AI agent costs during development - avo
 - BingX
 - Kraken
 - Blofin
+- KuCoin
 - CCXT Library
 
 ## News and Intelligence APIs

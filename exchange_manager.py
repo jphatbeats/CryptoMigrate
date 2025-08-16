@@ -35,6 +35,13 @@ class ExchangeManager:
                 'password': os.getenv('BLOFIN_PASSPHRASE', ''),
                 'sandbox': os.getenv('BLOFIN_SANDBOX', 'false').lower() == 'true',
                 'enableRateLimit': True,
+            },
+            'kucoin': {
+                'apiKey': os.getenv('KUCOIN_API_KEY', ''),
+                'secret': os.getenv('KUCOIN_SECRET', ''),
+                'password': os.getenv('KUCOIN_PASSPHRASE', ''),
+                'sandbox': os.getenv('KUCOIN_SANDBOX', 'false').lower() == 'true',
+                'enableRateLimit': True,
             }
         }
         

@@ -377,6 +377,52 @@ async def fetch_live_positions():
         except Exception as e:
             print(f"❌ Railway API error 500 for /api/live/blofin-positions")
         
+        # Fetch KuCoin positions - Try Railway first, fallback to direct API  
+        try:
+            kucoin_data = await fetch_railway_api("/api/kucoin/positions")
+            if kucoin_data and kucoin_data.get('positions'):
+                for pos in kucoin_data['positions']:
+                    if pos.get('contracts', 0) != 0:  # Only active positions
+                        all_positions.append({
+                            'Symbol': pos.get('symbol', '').replace('/USDT', ''),
+                            'Platform': 'KuCoin',
+                            'Entry Price': pos.get('entryPrice', 0),
+                            'Mark Price': pos.get('markPrice', 0),
+                            'Unrealized PnL %': pos.get('percentage', 0),
+                            'Side (LONG/SHORT)': pos.get('side', '').upper(),
+                            'Margin Size ($)': pos.get('initialMargin', 0),
+                            'Leverage': pos.get('leverage', 1),
+                            'SL Set?': '❌'
+                        })
+                print(f"✅ Fetched {len([p for p in kucoin_data['positions'] if p.get('contracts', 0) != 0])} KuCoin positions")
+            else:
+                # Fallback to direct KuCoin API
+                print("🔄 Railway KuCoin failed, trying direct API...")
+                try:
+                    import ccxt
+                    if exchange_integration_available and exchange_manager and hasattr(exchange_manager, 'exchanges') and 'kucoin' in exchange_manager.exchanges:
+                        kucoin_exchange = exchange_manager.exchanges['kucoin']
+                        positions = await asyncio.get_event_loop().run_in_executor(None, kucoin_exchange.fetch_positions)
+                        
+                        for pos in positions:
+                            if pos['contracts'] != 0:  # Only active positions
+                                all_positions.append({
+                                    'Symbol': pos['symbol'].replace('/USDT', ''),
+                                    'Platform': 'KuCoin',
+                                    'Entry Price': pos['entryPrice'] or 0,
+                                    'Mark Price': pos['markPrice'] or 0,
+                                    'Unrealized PnL %': pos['percentage'] or 0,
+                                    'Side (LONG/SHORT)': pos['side'].upper() if pos['side'] else 'UNKNOWN',
+                                    'Margin Size ($)': pos['initialMargin'] or 0,
+                                    'Leverage': pos['leverage'] or 1,
+                                    'SL Set?': '❌'
+                                })
+                        print(f"✅ Direct API fetched {len([p for p in positions if p['contracts'] != 0])} KuCoin positions")
+                except Exception as direct_error:
+                    print(f"❌ Direct KuCoin API also failed: {direct_error}")
+        except Exception as e:
+            print(f"❌ KuCoin positions error: {e}")
+        
         print(f"📊 Total live positions fetched: {len(all_positions)}")
         return all_positions
         

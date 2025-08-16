@@ -189,6 +189,13 @@ except ImportError:
                         'password': os.getenv('BLOFIN_PASSPHRASE', ''),
                         'sandbox': os.getenv('BLOFIN_SANDBOX', 'false').lower() == 'true',
                         'enableRateLimit': True,
+                    },
+                    'kucoin': {
+                        'apiKey': os.getenv('KUCOIN_API_KEY', ''),
+                        'secret': os.getenv('KUCOIN_SECRET', ''),
+                        'password': os.getenv('KUCOIN_PASSPHRASE', ''),
+                        'sandbox': os.getenv('KUCOIN_SANDBOX', 'false').lower() == 'true',
+                        'enableRateLimit': True,
                     }
                 }
                 
@@ -1314,14 +1321,14 @@ def debug_environment():
 
 @app.route('/api/live/all-exchanges', methods=['GET'])
 def get_all_exchanges():
-    """Get live positions and orders from all exchanges (BingX & Blofin)"""
+    """Get live positions and orders from all exchanges (BingX, Blofin & KuCoin)"""
     try:
         result = {
             'timestamp': datetime.now().isoformat(),
             'exchanges': {}
         }
         
-        for exchange_name in ['bingx', 'blofin']:
+        for exchange_name in ['bingx', 'blofin', 'kucoin']:
             try:
                 if exchange_name in exchange_manager.get_available_exchanges():
                     positions = trading_functions.get_positions(exchange_name)
@@ -1359,7 +1366,7 @@ def get_account_balances():
             'balances': {}
         }
         
-        for exchange_name in ['bingx', 'blofin']:
+        for exchange_name in ['bingx', 'blofin', 'kucoin']:
             try:
                 if exchange_name in exchange_manager.get_available_exchanges():
                     balance = trading_functions.get_balance(exchange_name)
@@ -1436,6 +1443,65 @@ def get_bingx_positions():
         return jsonify({
             'timestamp': datetime.now().isoformat(),
             'source': 'bingx',
+            'status_message': status_msg,
+            'positions': {'code': -1, 'data': {'positions': []}},
+            'orders': {'code': -1, 'data': {'orders': []}},
+            'error': str(e)
+        }), 500
+
+@app.route('/api/live/kucoin-positions', methods=['GET'])
+def get_kucoin_positions_live():
+    """Get live positions from KuCoin exchange"""
+    try:
+        result = {
+            'timestamp': datetime.now().isoformat(),
+            'source': 'kucoin'
+        }
+        
+        if 'kucoin' in exchange_manager.get_available_exchanges():
+            positions = trading_functions.get_positions('kucoin')
+            orders = trading_functions.get_orders('kucoin')
+            
+            positions_list = positions if isinstance(positions, list) else [positions]
+            orders_list = orders if isinstance(orders, list) else [orders]
+            
+            # Clear status messages
+            if not positions_list or positions_list == [None]:
+                result['status_message'] = 'KuCoin connected - No open positions found'
+                positions_list = []
+            else:
+                result['status_message'] = f'KuCoin connected - {len(positions_list)} positions found'
+            
+            # Standardize format to match BingX response structure
+            result['positions'] = {
+                'code': 0,
+                'data': {
+                    'positions': positions_list
+                }
+            }
+            result['orders'] = {
+                'code': 0,
+                'data': {
+                    'orders': orders_list if orders_list != [None] else []
+                }
+            }
+        else:
+            result['status_message'] = 'KuCoin exchange not available - Check API credentials'
+            result['positions'] = {'code': -1, 'data': {'positions': []}}
+            result['orders'] = {'code': -1, 'data': {'orders': []}}
+        
+        return jsonify(result)
+    except Exception as e:
+        logger.error(f"Error getting KuCoin positions: {str(e)}")
+        error_message = str(e)
+        if "apiKey" in error_message:
+            status_msg = "KuCoin error - API credentials required"
+        else:
+            status_msg = f"KuCoin error - {error_message}"
+        
+        return jsonify({
+            'timestamp': datetime.now().isoformat(),
+            'source': 'kucoin',
             'status_message': status_msg,
             'positions': {'code': -1, 'data': {'positions': []}},
             'orders': {'code': -1, 'data': {'orders': []}},
@@ -3433,6 +3499,55 @@ def get_kraken_trading_stats():
         return jsonify({'error': str(e), 'exchange': 'kraken'}), 503
     except Exception as e:
         logger.error(f"Error getting Kraken trading stats: {str(e)}")
+        return jsonify({'error': 'Internal server error'}), 500
+
+# KuCoin-specific endpoints
+@app.route('/api/kucoin/positions', methods=['GET'])
+def get_kucoin_positions():
+    """Get KuCoin positions"""
+    try:
+        result = trading_functions.get_positions('kucoin')
+        return jsonify({
+            'exchange': 'kucoin',
+            'positions': result,
+            'timestamp': datetime.now().isoformat()
+        })
+    except ExchangeNotAvailableError as e:
+        return jsonify({'error': str(e), 'exchange': 'kucoin'}), 503
+    except Exception as e:
+        logger.error(f"Error getting KuCoin positions: {str(e)}")
+        return jsonify({'error': 'Internal server error'}), 500
+
+@app.route('/api/kucoin/orders', methods=['GET'])
+def get_kucoin_orders():
+    """Get KuCoin orders"""
+    try:
+        result = trading_functions.get_orders('kucoin')
+        return jsonify({
+            'exchange': 'kucoin',
+            'orders': result,
+            'timestamp': datetime.now().isoformat()
+        })
+    except ExchangeNotAvailableError as e:
+        return jsonify({'error': str(e), 'exchange': 'kucoin'}), 503
+    except Exception as e:
+        logger.error(f"Error getting KuCoin orders: {str(e)}")
+        return jsonify({'error': 'Internal server error'}), 500
+
+@app.route('/api/kucoin/balances', methods=['GET'])
+def get_kucoin_balances():
+    """Get KuCoin account balances"""
+    try:
+        result = trading_functions.get_balance('kucoin')
+        return jsonify({
+            'exchange': 'kucoin',
+            'balances': result,
+            'timestamp': datetime.now().isoformat()
+        })
+    except ExchangeNotAvailableError as e:
+        return jsonify({'error': str(e), 'exchange': 'kucoin'}), 503
+    except Exception as e:
+        logger.error(f"Error getting KuCoin balances: {str(e)}")
         return jsonify({'error': 'Internal server error'}), 500
 
 # ============================================================================
