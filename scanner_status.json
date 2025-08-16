@@ -1,13 +1,21 @@
 {
-  "current_coin": "DOGE",
-  "current_index": 6,
+  "current_coin": "BTC",
+  "current_index": 1,
   "total_coins": 200,
   "current_batch": "1/16",
-  "confidence": 19.06,
+  "confidence": 15,
   "alert_triggered": false,
-  "timestamp": "2025-08-16T02:06:15.912192",
+  "timestamp": "2025-08-16T02:14:38.605691",
   "scanning_active": true,
   "recent_scans": [
+    {
+      "symbol": "BTC",
+      "confidence": 15,
+      "timestamp": "02:14:38",
+      "alert_triggered": false,
+      "status": "completed",
+      "ai_insight": "BTC's low confidence score of 15.0% is primarily driven by neutral technical indicators, lack of positive sentiment in recent news, and stagnant social momentum, indicating limited enthusiasm or catalysts for price movement. Traders should note the absence of catalysts and engagement suggests limited short-term movement potential."
+    },
     {
       "symbol": "DOGE",
       "confidence": 19.06,
@@ -79,14 +87,6 @@
       "alert_triggered": false,
       "status": "completed",
       "ai_insight": "DOT's low confidence score of 15.0% is primarily driven by neutral technical indicators, lack of positive sentiment in recent news, and stagnant social momentum, indicating limited enthusiasm or catalysts for price movement. Traders should note the absence of catalysts and engagement suggests limited short-term movement potential."
-    },
-    {
-      "symbol": "SHIB",
-      "confidence": 15,
-      "timestamp": "01:56:34",
-      "alert_triggered": false,
-      "status": "completed",
-      "ai_insight": "SHIB's low confidence score of 15.0% is primarily driven by neutral technical indicators, lack of positive sentiment in recent news, and stagnant social momentum, indicating limited enthusiasm or catalysts for price movement. Traders should note the absence of catalysts and engagement suggests limited short-term movement potential."
     }
   ]
 }
