@@ -57,9 +57,9 @@ DISCORD_WEBHOOK_URL = DISCORD_WEBHOOK_ALPHA_SCANS  # Backward compatibility
 
 class ComprehensiveMarketScanner:
     def __init__(self):
-        # RATE LIMIT OPTIMIZED TIMING: 30 seconds per coin, 12 coins per 6-minute batch
-        self.scan_interval = 30  # 30 seconds between coins (reduced TradingView rate limits)
-        self.batch_size = 12     # 12 coins per 6-minute batch (30s * 12 = 360s = 6min)
+        # TRADINGVIEW RATE LIMIT OPTIMIZED: 45 seconds per coin for proper TradingView access
+        self.scan_interval = 45  # 45 seconds between coins (proper TradingView rate limiting)
+        self.batch_size = 8      # 8 coins per 6-minute batch (45s * 8 = 360s = 6min)
         self.cycle_duration = 360  # 6 minutes per batch
         self.total_coins = 200   # Top 200 legitimate coins (after filtering stablecoins)
         
@@ -350,32 +350,25 @@ class ComprehensiveMarketScanner:
     async def _get_technical_analysis(self, session: aiohttp.ClientSession, symbol: str) -> Optional[Dict]:
         """Enhanced technical analysis using Lumif-ai TradingView + fallback to local"""
         try:
-            # SKIP TRADINGVIEW DUE TO PERSISTENT RATE LIMITS - Use local analysis
-            print(f"🔍 Using local technical analysis for {symbol} (TradingView disabled due to rate limits)")
+            # RE-ENABLE TRADINGVIEW with PROPER rate limiting 
+            print(f"🔍 Attempting TradingView analysis for {symbol} with enhanced rate limiting...")
             
-            # Skip TradingView entirely, use basic technical analysis
-            # Return neutral but realistic analysis to avoid 15% floor
-            import random
-            random.seed(hash(symbol) % 1000)  # Consistent per symbol
+            # Try TradingView with proper rate limiting
+            tradingview_analysis = await self._get_direct_technical_analysis(session, symbol)
+            if tradingview_analysis:
+                print(f"✅ TradingView Technical Analysis: {symbol} analysis successful")
+                return tradingview_analysis
             
-            rsi = 45 + random.uniform(-10, 20)  # 35-65 range
-            recommendation = random.choice(['neutral', 'hold', 'neutral'])
-            technical_score = 20 + random.uniform(0, 15)  # 20-35 range
+            print(f"⚠️ TradingView failed for {symbol}, using TAAPI fallback...")
             
-            return {
-                'rsi': round(rsi, 1),
-                'rsi_signal': 'oversold' if rsi < 35 else ('overbought' if rsi > 65 else 'neutral'),
-                'macd_signal': 'neutral',
-                'recommendation': recommendation,
-                'confluence_score': round(technical_score, 1),
-                'bullish_signals': 1 if rsi < 40 else 0,
-                'bearish_signals': 1 if rsi > 60 else 0,
-                'technical_score': round(technical_score, 1),
-                'source': 'local_analysis',
-                'confidence': 75
-            }
+            # Fallback to TAAPI technical analysis 
+            taapi_analysis = await self._get_taapi_technical_analysis(session, symbol)
+            if taapi_analysis:
+                print(f"✅ TAAPI Technical Analysis: {symbol} analysis successful")
+                return taapi_analysis
             
-            # Final fallback to basic analysis
+            # Final fallback to neutral analysis
+            print(f"⚠️ All technical analysis methods failed for {symbol}")
             return {
                 'rsi': 50,
                 'rsi_signal': 'neutral',
@@ -388,6 +381,56 @@ class ComprehensiveMarketScanner:
                 'source': 'fallback_analysis',
                 'confidence': 25
             }
+                    
+        except Exception as e:
+            print(f"⚠️ Technical analysis error for {symbol}: {e}")
+            return None
+    
+    async def _get_taapi_technical_analysis(self, session: aiohttp.ClientSession, symbol: str) -> Optional[Dict]:
+        """Get technical analysis from TAAPI.io as fallback"""
+        try:
+            # Use TAAPI.io for RSI, MACD, and basic indicators
+            url = f"{LOCAL_API_URL}/api/taapi/rsi"
+            params = {
+                'symbol': f"{symbol}/USDT",
+                'exchange': 'binance',
+                'interval': '4h'
+            }
+            
+            timeout = aiohttp.ClientTimeout(total=10)
+            async with session.get(url, params=params, timeout=timeout) as response:
+                if response.status == 200:
+                    data = await response.json()
+                    rsi = data.get('value', 50)
+                    
+                    # Generate technical analysis from TAAPI data
+                    rsi_signal = 'oversold' if rsi < 30 else ('overbought' if rsi > 70 else 'neutral')
+                    recommendation = 'buy' if rsi < 35 else ('sell' if rsi > 65 else 'neutral')
+                    
+                    # Calculate technical score based on RSI
+                    if rsi < 30:
+                        technical_score = 40  # Strong oversold signal
+                    elif rsi > 70:
+                        technical_score = 15  # Overbought (lower score)
+                    else:
+                        technical_score = 25  # Neutral
+                    
+                    return {
+                        'rsi': round(rsi, 1),
+                        'rsi_signal': rsi_signal,
+                        'macd_signal': 'neutral',
+                        'recommendation': recommendation,
+                        'confluence_score': round(technical_score, 1),
+                        'bullish_signals': 2 if rsi < 35 else 0,
+                        'bearish_signals': 2 if rsi > 65 else 0,
+                        'technical_score': round(technical_score, 1),
+                        'source': 'taapi_analysis',
+                        'confidence': 80
+                    }
+                    
+        except Exception as e:
+            print(f"⚠️ TAAPI analysis error for {symbol}: {e}")
+            return None
                     
         except Exception as e:
             print(f"⚠️ Technical analysis error for {symbol}: {e}")

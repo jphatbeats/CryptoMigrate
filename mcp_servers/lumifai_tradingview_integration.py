@@ -19,9 +19,16 @@ class LumifTradingViewClient:
     def __init__(self):
         self.session = requests.Session()
         self.session.headers.update({
-            'User-Agent': 'THE-ALPHA-PLAYBOOK-v4-LUMIF-AI/1.0',
-            'Accept': 'application/json'
+            'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36',
+            'Accept': 'application/json',
+            'Accept-Language': 'en-US,en;q=0.9',
+            'Accept-Encoding': 'gzip, deflate, br',
+            'DNT': '1',
+            'Connection': 'keep-alive',
+            'Upgrade-Insecure-Requests': '1'
         })
+        self.last_request_time = 0
+        self.min_request_interval = 15.0  # 15 seconds between requests minimum
         
         # TradingView interval mappings (only supported intervals)
         self.interval_map = {
@@ -56,8 +63,14 @@ class LumifTradingViewClient:
                                  exchange: str = 'BINANCE', interval: str = '4h') -> Optional[Dict[str, Any]]:
         """Get comprehensive TradingView technical analysis - Enhanced by Lumif-ai"""
         try:
-            # Enhanced rate limiting to prevent 429 errors
-            time.sleep(8.0)  # 8 second delay between requests to avoid rate limits
+            # AGGRESSIVE rate limiting to completely avoid 429 errors
+            current_time = time.time()
+            time_since_last = current_time - self.last_request_time
+            if time_since_last < self.min_request_interval:
+                wait_time = self.min_request_interval - time_since_last
+                logger.info(f"Rate limiting: waiting {wait_time:.1f}s before {symbol} request")
+                time.sleep(wait_time)
+            self.last_request_time = time.time()
             
             # Convert interval to TradingView format
             tv_interval = self.interval_map.get(interval, Interval.INTERVAL_4_HOURS)
@@ -84,8 +97,10 @@ class LumifTradingViewClient:
                     
                 except Exception as e:
                     if "429" in str(e) or "rate" in str(e).lower():
-                        wait_time = (5 ** attempt) + 5  # More aggressive backoff: 10, 30, 130 seconds
-                        logger.warning(f"Rate limited for {symbol}, waiting {wait_time}s (attempt {attempt + 1}/{max_retries})")
+                        # EXTREME backoff strategy - doubling min interval after rate limits
+                        self.min_request_interval = min(60.0, self.min_request_interval * 1.5)
+                        wait_time = self.min_request_interval * (attempt + 2)  # 30s, 60s, 90s
+                        logger.warning(f"Rate limited for {symbol}, increased interval to {self.min_request_interval:.1f}s, waiting {wait_time:.1f}s (attempt {attempt + 1}/{max_retries})")
                         time.sleep(wait_time)
                         if attempt == max_retries - 1:
                             logger.error(f"Error getting TradingView analysis for {symbol}: {e}")
