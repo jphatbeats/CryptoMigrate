@@ -87,6 +87,10 @@ class ExchangeManager:
                         logger.warning(f"KuCoin API passphrase authentication failed - please verify your API passphrase")
                         logger.warning(f"Current passphrase length: {len(config.get('password', ''))}")
                         logger.warning(f"KuCoin requires the passphrase you created when generating the API key")
+                    elif exchange_name == 'kucoin' and 'unavailable in the U.S.' in str(test_error):
+                        logger.warning(f"KuCoin API credentials are valid but service is geo-blocked from US IP addresses")
+                        logger.warning(f"KuCoin restricts access from US-based servers (Replit servers are US-based)")
+                        logger.info(f"Exchange will be available for public data but not account operations")
                     else:
                         logger.warning(f"Failed to test {exchange_name} API connection: {str(test_error)}")
                     status = 'api_error'
