@@ -124,6 +124,22 @@ except ImportError as e:
     tradingview_scraper_available = False
     print(f"❌ TradingView Web Scraper failed to load: {e}")
 
+# Add TradingView GitHub API integration
+try:
+    from tradingview_github_api import (
+        initialize_github_tradingview,
+        get_github_analysis,
+        get_github_market_data
+    )
+    tradingview_github_available = True
+    print("✅ TradingView GitHub API loaded - Real-time websocket access")
+except ImportError as e:
+    initialize_github_tradingview = None
+    get_github_analysis = None
+    get_github_market_data = None
+    tradingview_github_available = False
+    print(f"❌ TradingView GitHub API failed to load: {e}")
+
 try:
     from error_handler import handle_exchange_error, ExchangeNotAvailableError
 except ImportError:
@@ -5716,6 +5732,30 @@ def tradingview_scraper_analysis(symbol):
             'error': str(e)
         }), 500
 
+@app.route('/api/tradingview/github-analysis/<symbol>', methods=['GET'])
+def tradingview_github_analysis(symbol):
+    """Get TradingView analysis using GitHub API websocket approach"""
+    try:
+        exchange = request.args.get('exchange', 'BINANCE')
+        
+        if tradingview_github_available:
+            result = get_github_analysis(symbol, exchange)
+            if result:
+                return jsonify(result)
+        
+        return jsonify({
+            'status': 'error',
+            'error': 'TradingView GitHub API not available'
+        }), 503
+        
+    except Exception as e:
+        logger.error(f"TradingView GitHub analysis error for {symbol}: {e}")
+        return jsonify({
+            'status': 'error',
+            'symbol': symbol,
+            'error': str(e)
+        }), 500
+
 @app.route('/api/tradingview/comprehensive-analysis/<symbol>', methods=['GET'])
 def tradingview_comprehensive_analysis(symbol):
     """
@@ -5753,6 +5793,15 @@ def tradingview_comprehensive_analysis(symbol):
             except Exception as e:
                 logger.warning(f"Lumif integration failed for {symbol}: {e}")
         
+        # Method 4: GitHub API (websocket-based)
+        if tradingview_github_available:
+            try:
+                github_result = get_github_analysis(symbol, exchange)
+                if github_result and github_result.get('status') == 'success':
+                    results['github_api'] = github_result
+            except Exception as e:
+                logger.warning(f"GitHub API failed for {symbol}: {e}")
+        
         # Combine results for best analysis
         if results:
             return jsonify({
@@ -5783,7 +5832,7 @@ def tradingview_comprehensive_analysis(symbol):
 if __name__ == '__main__':
     logger.info("🚀 Starting Trading Intelligence Server on 0.0.0.0:5000")
     logger.info("💡 Enhanced with 208+ indicators and $400/month in cost savings")
-    logger.info("📊 Multiple TradingView integration methods available")
+    logger.info("📊 Four TradingView integration methods available for maximum reliability")
     app.run(host='0.0.0.0', port=5000, debug=False, threaded=True)
 else:
     # The Flask app object is exported for external use

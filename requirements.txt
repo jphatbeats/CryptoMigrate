@@ -31,3 +31,4 @@ tradingview_ta
 tradingview-ta
 openai
 trafilatura
+websockets
