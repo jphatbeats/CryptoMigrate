@@ -34,19 +34,21 @@ class LumifTradingViewClient:
             'Upgrade-Insecure-Requests': '1'
         })
         
-        # Since 2FA prevents direct authentication, we'll use optimized rate limits
-        # but still mark as premium for better handling
-        self.authenticated = True  # Enable premium features regardless
-        self.last_request_time = 0
-        self.min_request_interval = 15.0  # Conservative 15 seconds between requests
-        self.session_requests = 0
-        self.max_requests_per_session = 10  # Moderate session limit
-        self.last_429_time = 0
-        
-        if self.tv_username:
-            logger.info(f"✅ TradingView configured for {self.tv_username} - Premium rate limits enabled (2FA bypass)")
+        # Authenticated users get much better rate limits
+        if self.authenticated:
+            self.last_request_time = 0
+            self.min_request_interval = 2.0  # 2 seconds for authenticated accounts
+            self.session_requests = 0
+            self.max_requests_per_session = 25  # Much higher limit for authenticated users
+            self.last_429_time = 0
+            logger.info(f"✅ TradingView authenticated as {self.tv_username} - Premium limits enabled")
         else:
-            logger.info("✅ TradingView configured with premium rate limits - Smart backoff enabled")
+            self.last_request_time = 0
+            self.min_request_interval = 30.0  # 30 seconds for free users  
+            self.session_requests = 0
+            self.max_requests_per_session = 8
+            self.last_429_time = 0
+            logger.warning("⚠️ TradingView running without authentication - Limited access")
         
         # TradingView interval mappings (only supported intervals)
         self.interval_map = {
@@ -100,10 +102,10 @@ class LumifTradingViewClient:
             time_since_last = current_time - self.last_request_time
             time_since_429 = current_time - self.last_429_time
             
-            # Authenticated users skip 429 cooldowns (premium access)
-            if not self.authenticated and self.last_429_time > 0 and time_since_429 < 300:  # 5 minutes after 429
-                additional_wait = 300 - time_since_429
-                logger.info(f"Cooling down after 429 error: waiting additional {additional_wait:.1f}s")
+            # Smart 429 cooldown for all users (since auth isn't working)
+            if self.last_429_time > 0 and time_since_429 < 600:  # 10 minutes after 429
+                additional_wait = 600 - time_since_429
+                logger.info(f"Extended cooling down after 429 error: waiting additional {additional_wait:.1f}s")
                 time.sleep(additional_wait)
             
             # Check if we need a new session
@@ -123,9 +125,11 @@ class LumifTradingViewClient:
                 self.session_requests = 0
                 time.sleep(15)  # Wait after session rotation
             
-            if time_since_last < self.min_request_interval:
-                wait_time = self.min_request_interval - time_since_last
-                logger.info(f"Rate limiting: waiting {wait_time:.1f}s before {symbol} request")
+            # ULTRA conservative rate limiting to eliminate 429s
+            min_wait = 90.0  # 90 seconds minimum between ANY requests
+            if time_since_last < min_wait:
+                wait_time = min_wait - time_since_last
+                logger.info(f"Ultra-conservative rate limiting: waiting {wait_time:.1f}s before {symbol} request")
                 time.sleep(wait_time)
             
             self.last_request_time = time.time()
@@ -156,15 +160,10 @@ class LumifTradingViewClient:
                     
                 except Exception as e:
                     if "429" in str(e) or "rate" in str(e).lower():
-                        if self.authenticated:
-                            # Authenticated users get shorter waits
-                            wait_time = 30 * (attempt + 1)  # 30s, 60s, 90s for premium
-                            logger.warning(f"Premium rate limit for {symbol}, waiting {wait_time:.1f}s (attempt {attempt + 1}/{max_retries})")
-                        else:
-                            # Record 429 time and implement smart backoff for free users
-                            self.last_429_time = time.time()
-                            wait_time = 120 * (attempt + 1)  # 2min, 4min, 6min
-                            logger.warning(f"Rate limited for {symbol}, waiting {wait_time:.1f}s (attempt {attempt + 1}/{max_retries})")
+                        # Record 429 time and implement EXTREME backoff
+                        self.last_429_time = time.time()
+                        wait_time = 300 * (attempt + 1)  # 5min, 10min, 15min
+                        logger.warning(f"🚨 EXTREME RATE LIMIT for {symbol}, waiting {wait_time:.1f}s (attempt {attempt + 1}/{max_retries})")
                         time.sleep(wait_time)
                         if attempt == max_retries - 1:
                             logger.error(f"Error getting TradingView analysis for {symbol}: {e}")
@@ -312,20 +311,51 @@ class LumifTradingViewClient:
             return False
             
         try:
-            # TradingView login process
+            # Step 1: Get login page and extract CSRF token
             login_url = "https://www.tradingview.com/accounts/signin/"
-            
-            # Get initial session
             response = self.session.get(login_url)
+            
             if response.status_code != 200:
+                logger.warning(f"Failed to get login page: {response.status_code}")
                 return False
             
-            # Note: Full TradingView authentication would require handling CSRF tokens
-            # and implementing the complete login flow. For now, we'll use the 
-            # authenticated status to enable premium rate limits and features.
+            # Extract CSRF token from response
+            import re
+            csrf_match = re.search(r'name="csrfmiddlewaretoken" value="([^"]+)"', response.text)
+            if not csrf_match:
+                logger.warning("Could not find CSRF token")
+                return False
             
-            logger.info(f"TradingView authentication configured for user: {self.tv_username}")
-            return True
+            csrf_token = csrf_match.group(1)
+            
+            # Step 2: Submit login credentials
+            login_data = {
+                'username': self.tv_username,
+                'password': self.tv_password,
+                'csrfmiddlewaretoken': csrf_token,
+                'remember': 'on'
+            }
+            
+            headers = {
+                'Referer': login_url,
+                'X-CSRFToken': csrf_token,
+                'Content-Type': 'application/x-www-form-urlencoded'
+            }
+            
+            login_response = self.session.post(
+                "https://www.tradingview.com/accounts/signin/",
+                data=login_data,
+                headers=headers,
+                allow_redirects=True
+            )
+            
+            # Check if login was successful
+            if login_response.status_code == 200 and 'dashboard' in login_response.url:
+                logger.info(f"✅ Successfully authenticated with TradingView as {self.tv_username}")
+                return True
+            else:
+                logger.warning(f"Login may have failed - Status: {login_response.status_code}, URL: {login_response.url}")
+                return False
             
         except Exception as e:
             logger.error(f"TradingView authentication error: {e}")
