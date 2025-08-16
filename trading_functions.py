@@ -70,10 +70,55 @@ class TradingFunctions:
         exchange = self.exchange_manager.get_exchange(exchange_name)
         return exchange.cancel_order(order_id, symbol)
     
+    def _get_kucoin_futures_positions(self, exchange) -> List[Dict[str, Any]]:
+        """Get KuCoin futures positions - KuCoin doesn't support futures positions in CCXT yet"""
+        try:
+            # For now, KuCoin futures positions are not supported in CCXT
+            # Return empty list until KuCoin adds futures support to CCXT
+            logger.info("KuCoin futures positions not yet supported by CCXT - checking balances instead")
+            
+            # Try to get spot balances as alternative
+            balance = exchange.fetch_balance()
+            active_balances = []
+            
+            if balance and 'total' in balance:
+                for currency, amount in balance['total'].items():
+                    if isinstance(amount, (int, float)) and amount > 0.01:  # Only significant balances
+                        active_balances.append({
+                            'symbol': f"{currency}/USDT",
+                            'side': 'spot',
+                            'contracts': amount,
+                            'contractSize': 1,
+                            'entryPrice': 0,
+                            'markPrice': 0,
+                            'percentage': 0,
+                            'initialMargin': amount,
+                            'leverage': 1,
+                            'unrealisedPnl': 0,
+                            'type': 'spot_balance'
+                        })
+                        
+            logger.info(f"KuCoin: Found {len(active_balances)} spot balances")
+            return active_balances
+            
+        except Exception as e:
+            logger.error(f"Error fetching KuCoin balances: {str(e)}")
+            return []
+
     @handle_exchange_error
     def get_positions(self, exchange_name: str) -> List[Dict[str, Any]]:
         """Get positions (for derivatives exchanges) - enhanced with stop loss and take profit data"""
         exchange = self.exchange_manager.get_exchange(exchange_name)
+        
+        # Special handling for KuCoin which doesn't support standard fetchPositions
+        if exchange_name.lower() == 'kucoin':
+            try:
+                return self._get_kucoin_futures_positions(exchange)
+            except Exception as e:
+                logger.warning(f"KuCoin positions failed: {str(e)}")
+                # Return empty list instead of error for unsupported positions
+                return []
+        
         if not hasattr(exchange, 'fetch_positions'):
             raise Exception(f"Exchange {exchange_name} does not support positions")
         
