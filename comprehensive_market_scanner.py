@@ -254,24 +254,46 @@ class ComprehensiveMarketScanner:
                         if recommendation == 'buy': bullish_signals += 1  # TradingView buy signal
                         if buy_signals > sell_signals: bullish_signals += 1  # More buy than sell signals
                         
-                        # Conservative but REAL confluence scoring using TradingView data
-                        base_score = 20
+                        # Improved TradingView-based scoring - more responsive to actual signals
+                        base_score = 30  # Higher base score (was 20)
                         
                         # Add score based on TradingView recommendation
-                        if recommendation == 'buy':
-                            base_score += min(15, (buy_signals - sell_signals) * 2)  # Signal strength
-                        if macd > 0:
+                        if recommendation == 'strong_buy':
+                            base_score += 25
+                        elif recommendation == 'buy':
+                            base_score += min(20, (buy_signals - sell_signals) * 3)  # Stronger signal weight
+                        elif recommendation == 'neutral':
                             base_score += 5
-                        if tv_confidence > 70:  # High TradingView confidence
-                            base_score += 8
+                        elif recommendation == 'sell':
+                            base_score -= 10
+                        elif recommendation == 'strong_sell':
+                            base_score -= 20
+                            
+                        # MACD momentum bonus
+                        if macd > 100:  # Strong bullish MACD
+                            base_score += 10
+                        elif macd > 0:
+                            base_score += 5
+                        elif macd < -100:  # Strong bearish MACD
+                            base_score -= 10
+                        
+                        # TradingView confidence bonus
+                        if tv_confidence > 80:  # Very high confidence
+                            base_score += 15
+                        elif tv_confidence > 70:
+                            base_score += 10
                         elif tv_confidence > 60:
                             base_score += 5
+                        elif tv_confidence < 30:  # Low confidence penalty
+                            base_score -= 5
                         
-                        # Penalty for bearish conditions
-                        if recommendation == 'sell':
-                            base_score = max(10, base_score - 10)
+                        # RSI positioning bonus
+                        if rsi < 30:  # Oversold - potential bounce
+                            base_score += 8
+                        elif rsi > 70:  # Overbought - potential correction
+                            base_score -= 8
                         
-                        technical_score = min(45, base_score)  # Cap at 45% as planned
+                        technical_score = min(65, max(15, base_score))  # Better range (15-65%)
                         
                         print(f"✅ REAL TradingView Analysis: {symbol} - RSI: {rsi:.1f}, MACD: {macd:.2f}, Rec: {recommendation}")
                         print(f"   TV Confidence: {tv_confidence:.1f}%, Buy/Sell: {buy_signals}/{sell_signals}")
@@ -413,13 +435,21 @@ class ComprehensiveMarketScanner:
                     rsi_signal = 'oversold' if rsi < 30 else ('overbought' if rsi > 70 else 'neutral')
                     recommendation = 'buy' if rsi < 35 else ('sell' if rsi > 65 else 'neutral')
                     
-                    # Calculate technical score based on RSI
-                    if rsi < 30:
-                        technical_score = 40  # Strong oversold signal
+                    # Improved TAAPI scoring with better range
+                    if rsi < 25:
+                        technical_score = 50  # Very strong oversold signal
+                    elif rsi < 30:
+                        technical_score = 45  # Strong oversold signal
+                    elif rsi < 35:
+                        technical_score = 40  # Moderate oversold
+                    elif rsi > 75:
+                        technical_score = 20  # Very overbought (lower score)
                     elif rsi > 70:
-                        technical_score = 15  # Overbought (lower score)
+                        technical_score = 25  # Overbought (lower score)
+                    elif rsi > 65:
+                        technical_score = 30  # Moderately overbought
                     else:
-                        technical_score = 25  # Neutral
+                        technical_score = 35  # Neutral range
                     
                     return {
                         'rsi': round(rsi, 1),
@@ -460,27 +490,43 @@ class ComprehensiveMarketScanner:
                         price_change_24h = price_data.get('usd_24h_change', 0)
                         volume_24h = price_data.get('usd_24h_vol', 0)
                         
-                        # Generate technical signals from price action
-                        if price_change_24h > 5:
+                        # Improved price action scoring with more nuance
+                        if price_change_24h > 10:
+                            recommendation = 'strong_buy'
+                            technical_score = 55  # Very strong bullish
+                            rsi_estimate = 25  # Strong oversold bounce
+                        elif price_change_24h > 5:
                             recommendation = 'buy'
                             technical_score = 45  # Strong bullish
                             rsi_estimate = 35  # Oversold bounce
+                        elif price_change_24h > 2:
+                            recommendation = 'neutral'
+                            technical_score = 40  # Moderate bullish
+                            rsi_estimate = 45  # Slightly oversold
+                        elif price_change_24h < -10:
+                            recommendation = 'strong_sell'  
+                            technical_score = 15  # Very bearish breakdown
+                            rsi_estimate = 75  # Very overbought
                         elif price_change_24h < -5:
                             recommendation = 'sell'  
-                            technical_score = 20  # Bearish breakdown
+                            technical_score = 25  # Bearish breakdown
                             rsi_estimate = 65  # Overbought
-                        elif abs(price_change_24h) < 2:
+                        elif price_change_24h < -2:
                             recommendation = 'neutral'
-                            technical_score = 30  # Consolidation
-                            rsi_estimate = 50  # Neutral
+                            technical_score = 30  # Moderate bearish
+                            rsi_estimate = 55  # Slightly overbought
                         else:
                             recommendation = 'neutral'
-                            technical_score = 25
-                            rsi_estimate = 45 + (price_change_24h * 2)  # Estimate based on momentum
+                            technical_score = 35  # Consolidation
+                            rsi_estimate = 50  # Neutral
                         
-                        # Volume confirmation
-                        if volume_24h > 1000000:  # High volume
+                        # Volume confirmation bonuses
+                        if volume_24h > 10000000:  # Very high volume
+                            technical_score += 8
+                        elif volume_24h > 5000000:  # High volume
                             technical_score += 5
+                        elif volume_24h > 1000000:  # Moderate volume
+                            technical_score += 3
                         
                         return {
                             'rsi': round(rsi_estimate, 1),
@@ -747,40 +793,58 @@ Respond in JSON format: {"quality_score": number, "community_strength": number}"
             return None
     
     def _calculate_confluence_score(self, analysis: Dict) -> float:
-        """Calculate confluence score from all 3 layers of analysis - MUCH more conservative"""
+        """Calculate confluence score from all 3 layers of analysis - FIXED SCORING"""
         technical_score = analysis.get('technical', {}).get('technical_score', 0)
         news_score = analysis.get('news', {}).get('news_score', 0)  
         social_score = analysis.get('social', {}).get('social_score', 0)
         
-        # DRAMATICALLY reduce base scoring
-        base_score = (technical_score * 0.4) + (news_score * 0.3) + (social_score * 0.2)
+        # DEBUG: Print raw scores for troubleshooting
+        symbol = analysis.get('symbol', 'UNKNOWN')
+        print(f"📊 {symbol}: Tech={technical_score}, News={news_score}, Social={social_score}")
         
-        # Much higher thresholds for confluence bonus (updated for AI-enhanced scoring)
+        # Fixed base scoring with proper weights
+        base_score = (technical_score * 0.6) + (news_score * 0.25) + (social_score * 0.15)
+        
+        # Lower thresholds for confluence bonus - make it more achievable
         layers_positive = sum([
-            technical_score > 35,  # Technical shows STRONG strength
-            news_score > 12,       # AI-graded significant news catalyst  
-            social_score > 8       # AI-graded strong social momentum
+            technical_score > 20,  # Technical shows some strength (lowered from 35)
+            news_score > 5,        # Some positive news (lowered from 12)  
+            social_score > 3       # Some social momentum (lowered from 8)
         ])
         
         confluence_bonus = 0
-        if layers_positive >= 3:  # ALL layers must be strong (raised from 2)
-            confluence_bonus = 5 * layers_positive  # Much smaller bonus
-        elif layers_positive >= 2:
-            confluence_bonus = 2 * layers_positive  # Tiny bonus for 2 layers
+        if layers_positive >= 3:  # ALL layers positive
+            confluence_bonus = 15  # Meaningful bonus (increased from 5)
+        elif layers_positive >= 2:  # Two layers positive
+            confluence_bonus = 8   # Decent bonus (increased from 2)
+        elif layers_positive >= 1:  # One layer positive
+            confluence_bonus = 3   # Small bonus
         
-        # Apply confidence penalty for missing data
+        # Less harsh confidence penalty - don't over-penalize missing data
         successful_layers = sum([
             bool(analysis.get('technical')),
             bool(analysis.get('news')), 
             bool(analysis.get('social'))
         ])
         
-        confidence_multiplier = successful_layers / 3.0
+        # More forgiving multiplier - missing 1 layer shouldn't kill the score
+        if successful_layers == 3:
+            confidence_multiplier = 1.0      # Full score
+        elif successful_layers == 2:
+            confidence_multiplier = 0.85     # 85% (was 0.67)
+        elif successful_layers == 1:
+            confidence_multiplier = 0.65     # 65% (was 0.33)
+        else:
+            confidence_multiplier = 0.3      # 30% for no data
         
         final_score = (base_score + confluence_bonus) * confidence_multiplier
         
-        # Cap at 85% max - no coin should easily hit 90%+
-        return min(85, max(15, final_score))
+        # More realistic scoring range with higher minimum
+        result = min(85, max(25, final_score))
+        
+        print(f"📊 {symbol}: Base={base_score:.1f}, Bonus={confluence_bonus}, Multi={confidence_multiplier:.2f}, Final={result:.1f}%")
+        
+        return result
     
     async def _refresh_top_200_coins(self):
         """Refresh the top 200 coins list (excluding stablecoins)"""
