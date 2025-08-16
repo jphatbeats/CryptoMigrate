@@ -1634,15 +1634,9 @@ def taapi_rsi():
                 "fallback_server": "https://indicators-production.up.railway.app/api/taapi/indicator/rsi"
             }), 503
             
-        # Use bulk indicators method with single RSI request
-        indicators = [{'indicator': 'rsi', 'period': int(period) if period else 14}]
-        bulk_result = taapi_universal.get_bulk_indicators(symbol, indicators, interval)
+        # Use single indicator method for RSI
+        result = taapi_universal.get_single_indicator(symbol, 'rsi', interval, int(period) if period else 14)
         
-        if bulk_result and bulk_result.get('data'):
-            rsi_data = bulk_result['data'][0] if bulk_result['data'] else {}
-            result = rsi_data.get('result', {})
-        else:
-            result = {"error": "No data returned"}
         return jsonify(result)
         
     except Exception as e:
@@ -5603,15 +5597,9 @@ def direct_analysis(symbol):
     try:
         # Use TAAPI fallback for now
         if taapi_available and taapi_universal is not None:
-            # Use bulk indicators method for single RSI request
-            indicators = [{'indicator': 'rsi', 'period': 14}]
-            bulk_result = taapi_universal.get_bulk_indicators(f"{symbol}USDT", indicators, '4h')
+            # Get single RSI indicator using the direct method
+            result = taapi_universal.get_single_indicator(f"{symbol}USDT", 'rsi', '4h', 14)
             
-            if bulk_result and bulk_result.get('data'):
-                rsi_data = bulk_result['data'][0] if bulk_result['data'] else {}
-                result = rsi_data.get('result', {})
-            else:
-                result = {"value": 50.0, "error": "No data returned"}
             if result and 'value' in result:
                 return jsonify({
                     "symbol": symbol,
