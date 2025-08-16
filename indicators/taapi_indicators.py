@@ -110,6 +110,9 @@ class TaapiIndicators:
             'BSV/USDT', 'HNT/USDT', 'RSR/USDT', 'USDD/USDT', 'BTT/USDT', 
             'XAUt/USDT', 'PAXG/USDT', 'NEXO/USDT', 'XDC/USDT', 'FLR/USDT'
         }
+        
+        # Fix the mapping that got corrupted
+        self.indicator_mapping.update({
             'RSI': {'indicator': 'rsi'},
             'rsi': {'indicator': 'rsi'},
             'MACD': {'indicator': 'macd'},
@@ -121,7 +124,7 @@ class TaapiIndicators:
             'vwap': {'indicator': 'vwap'},
             'dema': {'indicator': 'dema'},
             'supertrend': {'indicator': 'supertrend'}
-        }
+        })
         
         if self.api_key:
             logger.info("✅ Taapi.io API key configured with smart rate limiting")
