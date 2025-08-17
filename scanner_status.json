@@ -1,13 +1,37 @@
 {
-  "current_coin": "XRP",
-  "current_index": 3,
+  "current_coin": "DOGE",
+  "current_index": 6,
   "total_coins": 200,
   "current_batch": "1/16",
-  "confidence": 30.55,
+  "confidence": 43.05,
   "alert_triggered": false,
-  "timestamp": "2025-08-17T19:23:47.945683",
+  "timestamp": "2025-08-17T19:25:20.347300",
   "scanning_active": true,
   "recent_scans": [
+    {
+      "symbol": "DOGE",
+      "confidence": 43.05,
+      "timestamp": "19:25:20",
+      "alert_triggered": false,
+      "status": "completed",
+      "ai_insight": "DOGE's low confidence score of 43.0% is primarily driven by neutral technical indicators, lack of positive sentiment in recent news, and stagnant social momentum, indicating limited enthusiasm or catalysts for price movement. Traders should note the absence of catalysts and engagement suggests limited short-term movement potential."
+    },
+    {
+      "symbol": "SOL",
+      "confidence": 43.05,
+      "timestamp": "19:24:49",
+      "alert_triggered": false,
+      "status": "completed",
+      "ai_insight": "SOL's low confidence score of 43.0% is primarily driven by neutral technical indicators, lack of positive sentiment in recent news, and stagnant social momentum, indicating limited enthusiasm or catalysts for price movement. Traders should note the absence of catalysts and engagement suggests limited short-term movement potential."
+    },
+    {
+      "symbol": "BNB",
+      "confidence": 48.65,
+      "timestamp": "19:24:18",
+      "alert_triggered": false,
+      "status": "completed",
+      "ai_insight": "BNB's low confidence score of 48.6% is primarily driven by neutral technical indicators, lack of positive sentiment in recent news, and stagnant social momentum, indicating limited enthusiasm or catalysts for price movement. Traders should note the absence of catalysts and engagement suggests limited short-term movement potential."
+    },
     {
       "symbol": "XRP",
       "confidence": 30.55,
@@ -63,30 +87,6 @@
       "alert_triggered": false,
       "status": "completed",
       "ai_insight": "TRX's low confidence score of 40.0% is primarily driven by neutral technical indicators, lack of positive sentiment in recent news, and stagnant social momentum, indicating limited enthusiasm or catalysts for price movement. Traders should note the absence of catalysts and engagement suggests limited short-term movement potential."
-    },
-    {
-      "symbol": "ADA",
-      "confidence": 48.55,
-      "timestamp": "19:14:14",
-      "alert_triggered": false,
-      "status": "completed",
-      "ai_insight": "ADA's low confidence score of 48.5% is primarily driven by neutral technical indicators, lack of positive sentiment in recent news, and stagnant social momentum, indicating limited enthusiasm or catalysts for price movement. Traders should note the absence of catalysts and engagement suggests limited short-term movement potential."
-    },
-    {
-      "symbol": "TON",
-      "confidence": 42.0,
-      "timestamp": "19:13:43",
-      "alert_triggered": false,
-      "status": "completed",
-      "ai_insight": "TON's low confidence score of 42.0% is primarily driven by neutral technical indicators, lack of positive sentiment in recent news, and stagnant social momentum, indicating limited enthusiasm or catalysts for price movement. Traders should note the absence of catalysts and engagement suggests limited short-term movement potential."
-    },
-    {
-      "symbol": "DOGE",
-      "confidence": 42.0,
-      "timestamp": "19:13:13",
-      "alert_triggered": false,
-      "status": "completed",
-      "ai_insight": "DOGE's low confidence score of 42.0% is primarily driven by neutral technical indicators, lack of positive sentiment in recent news, and stagnant social momentum, indicating limited enthusiasm or catalysts for price movement. Traders should note the absence of catalysts and engagement suggests limited short-term movement potential."
     }
   ]
 }
