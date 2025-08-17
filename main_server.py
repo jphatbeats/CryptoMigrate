@@ -476,6 +476,8 @@ def api_info():
             'account_balances': '/api/live/account-balances',
             'bingx_positions': '/api/live/bingx-positions',
             'blofin_positions': '/api/live/blofin-positions',
+            'kraken_balance': '/api/live/kraken-balance',
+            'kraken_positions': '/api/live/kraken-positions',
             'market_data': '/api/live/market-data/{symbol}'
         },
         'scanner_endpoints': {
@@ -1581,6 +1583,101 @@ def get_blofin_positions():
         return jsonify({
             'timestamp': datetime.now().isoformat(),
             'source': 'blofin',
+            'status_message': status_msg,
+            'positions': {'code': -1, 'data': {'positions': []}},
+            'orders': {'code': -1, 'data': {'orders': []}},
+            'error': str(e)
+        }), 500
+
+@app.route('/api/live/kraken-balance', methods=['GET'])
+def get_kraken_balance_live():
+    """Get live Kraken balance (MCP proxy route)"""
+    try:
+        result = {
+            'timestamp': datetime.now().isoformat(),
+            'source': 'kraken'
+        }
+        
+        if 'kraken' in exchange_manager.get_available_exchanges():
+            balance = trading_functions.get_balance('kraken')
+            result['status_message'] = 'Kraken connected - Balance retrieved successfully'
+            result['balance'] = {
+                'code': 0,
+                'data': balance
+            }
+        else:
+            result['status_message'] = 'Kraken exchange not available - Check API credentials'
+            result['balance'] = {'code': -1, 'data': {}}
+        
+        return jsonify(result)
+    except Exception as e:
+        logger.error(f"Error getting Kraken balance: {str(e)}")
+        error_message = str(e)
+        if "apiKey" in error_message:
+            status_msg = "Kraken error - API credentials required"
+        else:
+            status_msg = f"Kraken error - {error_message}"
+        
+        return jsonify({
+            'timestamp': datetime.now().isoformat(),
+            'source': 'kraken',
+            'status_message': status_msg,
+            'balance': {'code': -1, 'data': {}},
+            'error': str(e)
+        }), 500
+
+@app.route('/api/live/kraken-positions', methods=['GET'])
+def get_kraken_positions_live():
+    """Get live Kraken positions (MCP proxy route)"""
+    try:
+        result = {
+            'timestamp': datetime.now().isoformat(),
+            'source': 'kraken'
+        }
+        
+        if 'kraken' in exchange_manager.get_available_exchanges():
+            positions = trading_functions.get_positions('kraken')
+            orders = trading_functions.get_orders('kraken')
+            
+            positions_list = positions if isinstance(positions, list) else [positions]
+            orders_list = orders if isinstance(orders, list) else [orders]
+            
+            # Clear status messages
+            if not positions_list or positions_list == [None]:
+                result['status_message'] = 'Kraken connected - No open positions found (spot trading only)'
+                positions_list = []
+            else:
+                result['status_message'] = f'Kraken connected - {len(positions_list)} positions found'
+            
+            result['positions'] = {
+                'code': 0,
+                'data': {
+                    'positions': positions_list
+                }
+            }
+            result['orders'] = {
+                'code': 0,
+                'data': {
+                    'orders': orders_list if orders_list != [None] else []
+                }
+            }
+        else:
+            result['status_message'] = 'Kraken exchange not available - Check API credentials'
+            result['positions'] = {'code': -1, 'data': {'positions': []}}
+            result['orders'] = {'code': -1, 'data': {'orders': []}}
+        
+        return jsonify(result)
+    except Exception as e:
+        logger.error(f"Error getting Kraken positions: {str(e)}")
+        error_message = str(e)
+        if "apiKey" in error_message:
+            status_msg = "Kraken error - API credentials required"
+        else:
+            status_msg = f"Kraken error - {error_message}"
+        
+        return jsonify({
+            'timestamp': datetime.now().isoformat(),
+            'source': 'kraken',
             'status_message': status_msg,
             'positions': {'code': -1, 'data': {'positions': []}},
             'orders': {'code': -1, 'data': {'orders': []}},
