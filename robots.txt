@@ -1,0 +1,10 @@
+User-agent: *
+Disallow: /api/bingx/
+Disallow: /api/blofin/
+Disallow: /api/kucoin/
+Disallow: /api/taapi/
+Disallow: /api/live/
+Disallow: /api/lumif/
+Allow: /api/kraken/
+Allow: /health
+Allow: /

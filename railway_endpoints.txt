@@ -74,3 +74,19 @@ Dashboard Views:
 https://titan-trading-2-production.up.railway.app/scanner
 https://titan-trading-2-production.up.railway.app/dashboard
 https://titan-trading-2-production.up.railway.app/portfolio-view
+
+🤖 CLAUDE MCP STATUS UPDATE:
+✅ robots.txt FIXED - Claude can now access Kraken endpoints directly!
+✅ Server restarted with robots.txt route working
+✅ Kraken endpoints allow web_fetch access for Claude
+✅ Complete 3-exchange portfolio visibility now available
+
+Claude MCP Function Status:
+- railway-mcp:get_bingx_positions ✅  
+- railway-mcp:get_blofin_positions ✅
+- railway-mcp:get_account_balances ✅
+- Direct Kraken URL access ✅ (robots.txt allows)
+
+Immediate Access for Claude:
+✅ https://titan-trading-2-production.up.railway.app/api/kraken/balance
+✅ https://titan-trading-2-production.up.railway.app/api/kraken/positions

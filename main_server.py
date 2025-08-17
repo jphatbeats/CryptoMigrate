@@ -540,6 +540,26 @@ def dashboard_overview():
         logger.error(f"Dashboard overview error: {e}")
         return jsonify({'error': str(e)}), 500
 
+@app.route('/robots.txt', methods=['GET'])
+def robots_txt():
+    """Serve robots.txt file for search engine crawlers"""
+    robots_content = """User-agent: *
+Disallow: /api/bingx/
+Disallow: /api/blofin/
+Disallow: /api/kucoin/
+Disallow: /api/taapi/
+Disallow: /api/live/
+Disallow: /api/lumif/
+Allow: /api/kraken/
+Allow: /health
+Allow: /"""
+    response = app.response_class(
+        response=robots_content,
+        status=200,
+        mimetype='text/plain'
+    )
+    return response
+
 @app.route('/health', methods=['GET'])
 def health_check():
     """Railway health check endpoint - CRITICAL FOR DEPLOYMENT"""
