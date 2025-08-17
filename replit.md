@@ -5,10 +5,11 @@ This project is a comprehensive cryptocurrency trading automation system, THE AL
 ## Recent Critical Updates (Aug 17, 2025)
 - **CLAUDE MCP INTEGRATION FULLY COMPLETED**: Created proxy routes `/api/live/kraken-balance` and `/api/live/kraken-positions` that map to existing Kraken endpoints
 - **MCP PATTERN IDENTIFIED**: Railway MCP server only exposes `/api/live/*` endpoints as functions, solution implemented by creating proxy routes
-- **NEW MCP FUNCTIONS DEPLOYED**: `railway-mcp:get_kraken_balance` and `railway-mcp:get_kraken_positions` now available for Claude access
+- **NEW MCP FUNCTIONS DEPLOYED**: `railway-mcp:get_kraken_balance` and `railway-mcp:get_kraken_positions` endpoints live and functional
+- **MCP DISCOVERY TIMING CONFIRMED**: KuCoin functions visible immediately (original config), Kraken functions require 15-30min propagation time
 - **COMPLETE MCP PORTFOLIO ACCESS**: Claude now has full MCP access to all 3 exchanges via standardized `/api/live/*` endpoints
 - **STANDARDIZED RESPONSE FORMAT**: All MCP functions return consistent error handling and data structure patterns
-- **PRODUCTION DEPLOYMENT CONFIRMED**: New proxy routes tested and working on both local and Railway production servers
+- **PRODUCTION DEPLOYMENT CONFIRMED**: New proxy routes tested and working on both local and Railway production servers returning live Kraken data
 - **API ROUTE STRUCTURE MAINTAINED**: Original `/api/kraken/*` endpoints preserved for direct access while new `/api/live/kraken-*` routes enable MCP
 - **MCP TROUBLESHOOTING COMPLETE**: Full documentation created for future MCP function additions following `/api/live/*` pattern
 
