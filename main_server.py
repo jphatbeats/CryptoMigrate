@@ -1589,9 +1589,67 @@ def get_blofin_positions():
             'error': str(e)
         }), 500
 
+def _format_kraken_balance_for_gpt(raw_balance):
+    """Format Kraken balance data into GPT-friendly standardized format"""
+    if not raw_balance or not raw_balance.get('free'):
+        return {}
+    
+    formatted_balances = {}
+    total_usd_value = 0
+    
+    # Get current prices for major holdings
+    crypto_prices = {}
+    major_cryptos = ['AVAX', 'STX', 'JUP', 'FORTH', 'SUPER', 'BERA', 'SC', 'SOL.F']
+    
+    try:
+        import requests
+        for crypto in major_cryptos:
+            if crypto in raw_balance.get('free', {}):
+                symbol = crypto.replace('.F', '')  # Handle SOL.F -> SOL
+                try:
+                    response = requests.get(f'https://api.coingecko.com/api/v3/simple/price?ids={symbol.lower()}&vs_currencies=usd', timeout=2)
+                    if response.status_code == 200:
+                        data = response.json()
+                        if data:
+                            price_key = list(data.keys())[0]
+                            crypto_prices[crypto] = data[price_key].get('usd', 0)
+                except:
+                    crypto_prices[crypto] = 0
+    except:
+        pass
+    
+    # Format each balance
+    for symbol, amount in raw_balance.get('free', {}).items():
+        if amount > 0:  # Only include non-zero balances
+            price = crypto_prices.get(symbol, 0)
+            usd_value = amount * price
+            total_usd_value += usd_value
+            
+            formatted_balances[symbol] = {
+                'symbol': symbol,
+                'free': round(amount, 8),
+                'total': round(amount, 8),
+                'used': 0,  # Kraken spot balances don't have 'used' amounts
+                'usd_value': round(usd_value, 2),
+                'price_usd': round(price, 4),
+                'asset_type': 'spot',
+                'exchange': 'kraken'
+            }
+    
+    return {
+        'total_balances': len(formatted_balances),
+        'total_usd_value': round(total_usd_value, 2),
+        'balances': formatted_balances,
+        'summary': {
+            'largest_holding': max(formatted_balances.values(), key=lambda x: x['usd_value'])['symbol'] if formatted_balances else None,
+            'holdings_over_100_usd': len([b for b in formatted_balances.values() if b['usd_value'] > 100]),
+            'exchange_type': 'spot_only'
+        }
+    }
+
 @app.route('/api/live/kraken-balance', methods=['GET'])
 def get_kraken_balance_live():
-    """Get live Kraken balance (MCP proxy route)"""
+    """Get live Kraken balance (MCP proxy route) - GPT-friendly format"""
     try:
         result = {
             'timestamp': datetime.now().isoformat(),
@@ -1599,11 +1657,13 @@ def get_kraken_balance_live():
         }
         
         if 'kraken' in exchange_manager.get_available_exchanges():
-            balance = trading_functions.get_balance('kraken')
-            result['status_message'] = 'Kraken connected - Balance retrieved successfully'
+            raw_balance = trading_functions.get_balance('kraken')
+            formatted_balance = _format_kraken_balance_for_gpt(raw_balance)
+            
+            result['status_message'] = f'Kraken connected - {formatted_balance.get("total_balances", 0)} spot holdings found (${formatted_balance.get("total_usd_value", 0):,.2f} total)'
             result['balance'] = {
                 'code': 0,
-                'data': balance
+                'data': formatted_balance
             }
         else:
             result['status_message'] = 'Kraken exchange not available - Check API credentials'
@@ -1626,9 +1686,84 @@ def get_kraken_balance_live():
             'error': str(e)
         }), 500
 
+def _format_kraken_positions_for_gpt(raw_balance):
+    """Convert Kraken spot balances into standardized position format for GPT analysis"""
+    if not raw_balance or not raw_balance.get('free'):
+        return []
+    
+    positions = []
+    
+    # Get current prices
+    crypto_prices = {}
+    major_cryptos = ['AVAX', 'STX', 'JUP', 'FORTH', 'SUPER', 'BERA', 'SC', 'SOL.F']
+    
+    try:
+        import requests
+        for crypto in major_cryptos:
+            if crypto in raw_balance.get('free', {}):
+                symbol = crypto.replace('.F', '')
+                try:
+                    response = requests.get(f'https://api.coingecko.com/api/v3/simple/price?ids={symbol.lower()}&vs_currencies=usd', timeout=2)
+                    if response.status_code == 200:
+                        data = response.json()
+                        if data:
+                            price_key = list(data.keys())[0]
+                            crypto_prices[crypto] = data[price_key].get('usd', 0)
+                except:
+                    crypto_prices[crypto] = 0
+    except:
+        pass
+    
+    # Convert significant balances to position format
+    for symbol, amount in raw_balance.get('free', {}).items():
+        if amount > 0:  # Only include holdings
+            price = crypto_prices.get(symbol, 0)
+            usd_value = amount * price
+            
+            # Only include holdings worth more than $10 to reduce noise
+            if usd_value > 10:
+                positions.append({
+                    'symbol': f"{symbol}/USD",
+                    'symbol_display': symbol,
+                    'side': 'long',
+                    'size': round(amount, 8),
+                    'notional': round(usd_value, 2),
+                    'position_value_usd': round(usd_value, 2),
+                    'markPrice': round(price, 4),
+                    'entryPrice': round(price, 4),  # Current price as entry for spot
+                    'unrealizedPnl': 0,  # No P&L tracking for spot
+                    'realizedPnl': 0,
+                    'percentage': 0,
+                    'leverage': 1,
+                    'marginMode': 'cash',
+                    'liquidationPrice': None,
+                    'stopLossPrice': None,
+                    'takeProfitPrice': None,
+                    'stop_loss_price': None,
+                    'take_profit_price': None,
+                    'has_stop_loss': False,
+                    'has_take_profit': False,
+                    'conditional_orders_count': 0,
+                    'position_type': 'spot_holding',
+                    'exchange': 'kraken',
+                    'risk_level': 'LOW',
+                    'tp_sl_analysis': {
+                        'position_size_usd': round(usd_value, 2),
+                        'risk_assessment': 'LOW',
+                        'stop_loss_set': False,
+                        'take_profit_set': False,
+                        'stop_loss_orders': 0,
+                        'take_profit_orders': 0,
+                        'recommendation': 'SPOT_HOLD'
+                    },
+                    'timestamp': datetime.now().isoformat()
+                })
+    
+    return positions
+
 @app.route('/api/live/kraken-positions', methods=['GET'])
 def get_kraken_positions_live():
-    """Get live Kraken positions (MCP proxy route)"""
+    """Get live Kraken positions (MCP proxy route) - GPT-friendly format"""
     try:
         result = {
             'timestamp': datetime.now().isoformat(),
@@ -1636,29 +1771,23 @@ def get_kraken_positions_live():
         }
         
         if 'kraken' in exchange_manager.get_available_exchanges():
-            positions = trading_functions.get_positions('kraken')
-            orders = trading_functions.get_orders('kraken')
+            # Get balance data and convert to position format
+            raw_balance = trading_functions.get_balance('kraken')
+            formatted_positions = _format_kraken_positions_for_gpt(raw_balance)
             
-            positions_list = positions if isinstance(positions, list) else [positions]
-            orders_list = orders if isinstance(orders, list) else [orders]
+            total_value = sum(pos['position_value_usd'] for pos in formatted_positions)
             
-            # Clear status messages
-            if not positions_list or positions_list == [None]:
-                result['status_message'] = 'Kraken connected - No open positions found (spot trading only)'
-                positions_list = []
-            else:
-                result['status_message'] = f'Kraken connected - {len(positions_list)} positions found'
-            
+            result['status_message'] = f'Kraken connected - {len(formatted_positions)} spot holdings analyzed (${total_value:,.2f} total value)'
             result['positions'] = {
                 'code': 0,
                 'data': {
-                    'positions': positions_list
+                    'positions': formatted_positions
                 }
             }
             result['orders'] = {
                 'code': 0,
                 'data': {
-                    'orders': orders_list if orders_list != [None] else []
+                    'orders': []  # Kraken spot doesn't have leveraged orders
                 }
             }
         else:
