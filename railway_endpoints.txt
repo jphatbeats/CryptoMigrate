@@ -1,0 +1,65 @@
+Base URL:
+https://titan-trading-2-production.up.railway.app
+
+System Status:
+https://titan-trading-2-production.up.railway.app/health
+https://titan-trading-2-production.up.railway.app/
+https://titan-trading-2-production.up.railway.app/api
+
+Portfolio Data:
+https://titan-trading-2-production.up.railway.app/api/live/all-exchanges
+https://titan-trading-2-production.up.railway.app/api/live/account-balances
+
+Positions:
+https://titan-trading-2-production.up.railway.app/api/live/bingx-positions
+https://titan-trading-2-production.up.railway.app/api/live/blofin-positions
+https://titan-trading-2-production.up.railway.app/api/live/kraken-balances
+https://titan-trading-2-production.up.railway.app/api/kucoin/positions
+
+Balance:
+https://titan-trading-2-production.up.railway.app/api/bingx/balance
+https://titan-trading-2-production.up.railway.app/api/blofin/balance
+https://titan-trading-2-production.up.railway.app/api/kraken/balance
+
+Market Data:
+https://titan-trading-2-production.up.railway.app/api/live/market-data/{symbol}
+https://titan-trading-2-production.up.railway.app/api/bingx/klines/{symbol}
+
+Technical Analysis:
+https://titan-trading-2-production.up.railway.app/api/lumif/market-scanner
+https://titan-trading-2-production.up.railway.app/api/lumif/enhanced-analysis/{symbol}
+https://titan-trading-2-production.up.railway.app/api/lumif/multi-timeframe/{symbol}
+https://titan-trading-2-production.up.railway.app/api/lumif/pattern-signals/{symbol}
+
+News & Intelligence:
+https://titan-trading-2-production.up.railway.app/api/crypto-news/symbol/{symbol}
+https://titan-trading-2-production.up.railway.app/api/social/momentum/{symbol}
+
+Technical Indicators:
+https://titan-trading-2-production.up.railway.app/api/taapi/bulk
+https://titan-trading-2-production.up.railway.app/api/direct-analysis/{symbol}
+
+Trading Intelligence:
+https://titan-trading-2-production.up.railway.app/api/alerts/priority
+https://titan-trading-2-production.up.railway.app/api/trading-conditions
+https://titan-trading-2-production.up.railway.app/api/portfolio-analysis
+
+Market Intelligence:
+https://titan-trading-2-production.up.railway.app/api/market-data/trending
+https://titan-trading-2-production.up.railway.app/api/market-scanner/results
+https://titan-trading-2-production.up.railway.app/api/scanner/status
+
+Risk Management:
+https://titan-trading-2-production.up.railway.app/api/risk/assessment
+https://titan-trading-2-production.up.railway.app/api/positions/analysis
+https://titan-trading-2-production.up.railway.app/api/stop-loss/suggestions
+
+Advanced Analytics:
+https://titan-trading-2-production.up.railway.app/api/confluence/analysis/{symbol}
+https://titan-trading-2-production.up.railway.app/api/sentiment/analyze
+https://titan-trading-2-production.up.railway.app/api/opportunity/scanner
+
+Dashboard Views:
+https://titan-trading-2-production.up.railway.app/scanner
+https://titan-trading-2-production.up.railway.app/dashboard
+https://titan-trading-2-production.up.railway.app/portfolio-view
