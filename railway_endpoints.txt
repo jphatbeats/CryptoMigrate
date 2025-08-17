@@ -14,12 +14,23 @@ Positions:
 https://titan-trading-2-production.up.railway.app/api/live/bingx-positions
 https://titan-trading-2-production.up.railway.app/api/live/blofin-positions
 https://titan-trading-2-production.up.railway.app/api/live/kraken-balances
+https://titan-trading-2-production.up.railway.app/api/kraken/positions
 https://titan-trading-2-production.up.railway.app/api/kucoin/positions
 
 Balance:
 https://titan-trading-2-production.up.railway.app/api/bingx/balance
 https://titan-trading-2-production.up.railway.app/api/blofin/balance
 https://titan-trading-2-production.up.railway.app/api/kraken/balance
+
+Kraken Complete Suite:
+https://titan-trading-2-production.up.railway.app/api/kraken/positions
+https://titan-trading-2-production.up.railway.app/api/kraken/balance
+https://titan-trading-2-production.up.railway.app/api/kraken/orders
+https://titan-trading-2-production.up.railway.app/api/kraken/trade-history
+https://titan-trading-2-production.up.railway.app/api/kraken/market-data/{symbol}
+https://titan-trading-2-production.up.railway.app/api/kraken/portfolio-performance
+https://titan-trading-2-production.up.railway.app/api/kraken/asset-allocation
+https://titan-trading-2-production.up.railway.app/api/kraken/trading-stats
 
 Market Data:
 https://titan-trading-2-production.up.railway.app/api/live/market-data/{symbol}
