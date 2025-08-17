@@ -1686,12 +1686,75 @@ def get_kraken_balance_live():
             'error': str(e)
         }), 500
 
+def _get_kraken_trade_history_enhanced():
+    """Get Kraken trade history with entry prices and dates"""
+    try:
+        if 'kraken' not in exchange_manager.get_available_exchanges():
+            return {}
+        
+        # Get trade history for all symbols
+        all_trades = trading_functions.get_trade_history('kraken', limit=500)
+        
+        # Group trades by symbol and calculate weighted average entry prices
+        symbol_data = {}
+        
+        for trade in all_trades:
+            symbol = trade.get('symbol', '').replace('/', '')
+            if not symbol:
+                continue
+                
+            # Extract base currency (e.g., 'AVAX' from 'AVAX/USD')
+            base_symbol = symbol.split('/')[0] if '/' in symbol else symbol.replace('USD', '').replace('USDT', '')
+            
+            if base_symbol not in symbol_data:
+                symbol_data[base_symbol] = {
+                    'total_bought': 0,
+                    'total_cost': 0,
+                    'trades': [],
+                    'first_trade_date': None,
+                    'last_trade_date': None
+                }
+            
+            side = trade.get('side', '')
+            amount = trade.get('amount', 0)
+            price = trade.get('price', 0)
+            timestamp = trade.get('timestamp')
+            
+            if side == 'buy' and amount > 0 and price > 0:
+                symbol_data[base_symbol]['total_bought'] += amount
+                symbol_data[base_symbol]['total_cost'] += (amount * price)
+                symbol_data[base_symbol]['trades'].append(trade)
+                
+                # Track dates
+                if timestamp:
+                    trade_date = datetime.fromtimestamp(timestamp / 1000) if timestamp > 1e10 else datetime.fromtimestamp(timestamp)
+                    if not symbol_data[base_symbol]['first_trade_date'] or trade_date < symbol_data[base_symbol]['first_trade_date']:
+                        symbol_data[base_symbol]['first_trade_date'] = trade_date
+                    if not symbol_data[base_symbol]['last_trade_date'] or trade_date > symbol_data[base_symbol]['last_trade_date']:
+                        symbol_data[base_symbol]['last_trade_date'] = trade_date
+        
+        # Calculate weighted average entry prices
+        for symbol in symbol_data:
+            if symbol_data[symbol]['total_bought'] > 0:
+                symbol_data[symbol]['avg_entry_price'] = symbol_data[symbol]['total_cost'] / symbol_data[symbol]['total_bought']
+            else:
+                symbol_data[symbol]['avg_entry_price'] = 0
+                
+        return symbol_data
+        
+    except Exception as e:
+        logger.warning(f"Failed to get Kraken trade history: {str(e)}")
+        return {}
+
 def _format_kraken_positions_for_gpt(raw_balance):
-    """Convert Kraken spot balances into standardized position format for GPT analysis"""
+    """Convert Kraken spot balances into standardized position format with REAL entry prices and dates"""
     if not raw_balance or not raw_balance.get('free'):
         return []
     
     positions = []
+    
+    # Get real trade history with entry prices and dates
+    trade_history = _get_kraken_trade_history_enhanced()
     
     # Get current prices
     crypto_prices = {}
@@ -1714,14 +1777,31 @@ def _format_kraken_positions_for_gpt(raw_balance):
     except:
         pass
     
-    # Convert significant balances to position format
+    # Convert significant balances to position format with REAL entry data
     for symbol, amount in raw_balance.get('free', {}).items():
         if amount > 0:  # Only include holdings
-            price = crypto_prices.get(symbol, 0)
-            usd_value = amount * price
+            current_price = crypto_prices.get(symbol, 0)
+            usd_value = amount * current_price
             
             # Only include holdings worth more than $10 to reduce noise
             if usd_value > 10:
+                # Get real trade data for this symbol
+                trade_data = trade_history.get(symbol, {})
+                real_entry_price = trade_data.get('avg_entry_price', current_price)
+                entry_date = trade_data.get('first_trade_date')
+                last_trade_date = trade_data.get('last_trade_date')
+                trade_count = len(trade_data.get('trades', []))
+                
+                # Calculate real P&L if we have entry price
+                unrealized_pnl = 0
+                percentage = 0
+                if real_entry_price > 0:
+                    unrealized_pnl = (current_price - real_entry_price) * amount
+                    percentage = ((current_price - real_entry_price) / real_entry_price) * 100
+                
+                # Determine entry info status
+                entry_info_available = real_entry_price != current_price and entry_date is not None
+                
                 positions.append({
                     'symbol': f"{symbol}/USD",
                     'symbol_display': symbol,
@@ -1729,11 +1809,11 @@ def _format_kraken_positions_for_gpt(raw_balance):
                     'size': round(amount, 8),
                     'notional': round(usd_value, 2),
                     'position_value_usd': round(usd_value, 2),
-                    'markPrice': round(price, 4),
-                    'entryPrice': round(price, 4),  # Current price as entry for spot
-                    'unrealizedPnl': 0,  # No P&L tracking for spot
+                    'markPrice': round(current_price, 4),
+                    'entryPrice': round(real_entry_price, 4),
+                    'unrealizedPnl': round(unrealized_pnl, 2),
                     'realizedPnl': 0,
-                    'percentage': 0,
+                    'percentage': round(percentage, 2),
                     'leverage': 1,
                     'marginMode': 'cash',
                     'liquidationPrice': None,
@@ -1746,15 +1826,25 @@ def _format_kraken_positions_for_gpt(raw_balance):
                     'conditional_orders_count': 0,
                     'position_type': 'spot_holding',
                     'exchange': 'kraken',
-                    'risk_level': 'LOW',
+                    'risk_level': 'LOW' if abs(percentage) < 20 else 'MEDIUM' if abs(percentage) < 50 else 'HIGH',
+                    # ENHANCED ENTRY INFORMATION
+                    'entry_date': entry_date.isoformat() if entry_date else None,
+                    'last_trade_date': last_trade_date.isoformat() if last_trade_date else None,
+                    'days_held': (datetime.now() - entry_date).days if entry_date else None,
+                    'trade_count': trade_count,
+                    'entry_info_available': entry_info_available,
                     'tp_sl_analysis': {
                         'position_size_usd': round(usd_value, 2),
-                        'risk_assessment': 'LOW',
+                        'risk_assessment': 'LOW' if abs(percentage) < 20 else 'MEDIUM' if abs(percentage) < 50 else 'HIGH',
                         'stop_loss_set': False,
                         'take_profit_set': False,
                         'stop_loss_orders': 0,
                         'take_profit_orders': 0,
-                        'recommendation': 'SPOT_HOLD'
+                        'recommendation': 'SPOT_HOLD',
+                        'current_pnl_usd': round(unrealized_pnl, 2),
+                        'current_pnl_percent': round(percentage, 2),
+                        'suggested_stop_loss': round(real_entry_price * 0.85, 4) if real_entry_price > 0 else None,
+                        'suggested_take_profit': round(real_entry_price * 1.25, 4) if real_entry_price > 0 else None
                     },
                     'timestamp': datetime.now().isoformat()
                 })

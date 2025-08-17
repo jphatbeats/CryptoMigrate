@@ -12,7 +12,14 @@ The Kraken MCP endpoints were returning raw CCXT data that is difficult for GPTs
 
 ## Solution Implemented
 
-### 1. GPT-Friendly Balance Formatter (`_format_kraken_balance_for_gpt`)
+### 1. Enhanced Trade History Integration (`_get_kraken_trade_history_enhanced`)
+**Features:**
+- Retrieves last 500 trades using `fetch_my_trades` API
+- Calculates weighted average entry prices for each holding
+- Tracks first and last trade dates for timeline analysis  
+- Groups trades by symbol for comprehensive position tracking
+
+### 2. GPT-Friendly Balance Formatter (`_format_kraken_balance_for_gpt`)
 **Features:**
 - Calculates real-time USD values using CoinGecko API
 - Clean, standardized structure matching BingX/Blofin format
@@ -44,11 +51,15 @@ The Kraken MCP endpoints were returning raw CCXT data that is difficult for GPTs
 }
 ```
 
-### 2. GPT-Friendly Position Formatter (`_format_kraken_positions_for_gpt`)
+### 3. GPT-Friendly Position Formatter (`_format_kraken_positions_for_gpt`)
 **Features:**
-- Converts spot balances into standardized position format
+- Converts spot balances into standardized position format with REAL trade data
 - Matches BingX/Blofin position structure exactly
-- Includes risk analysis and recommendations
+- **REAL ENTRY PRICES**: Uses weighted average from actual trade history
+- **REAL ENTRY DATES**: Shows first and last trade dates
+- **REAL P&L CALCULATIONS**: Current price vs actual entry price
+- **TRADING TIMELINE**: Days held and total trade count
+- Includes comprehensive risk analysis and TP/SL suggestions
 - Filters holdings under $10 to reduce noise
 
 **New Structure:**
@@ -63,10 +74,10 @@ The Kraken MCP endpoints were returning raw CCXT data that is difficult for GPTs
       "notional": 8234.52,
       "position_value_usd": 8234.52,
       "markPrice": 28.84,
-      "entryPrice": 28.84,
-      "unrealizedPnl": 0,
+      "entryPrice": 23.45,  // REAL weighted average entry price
+      "unrealizedPnl": 1540.23,  // REAL P&L calculation
       "realizedPnl": 0,
-      "percentage": 0,
+      "percentage": 23.67,  // REAL percentage gain/loss
       "leverage": 1,
       "marginMode": "cash",
       "liquidationPrice": null,
@@ -80,6 +91,12 @@ The Kraken MCP endpoints were returning raw CCXT data that is difficult for GPTs
       "position_type": "spot_holding",
       "exchange": "kraken",
       "risk_level": "LOW",
+      // ENHANCED TRADE INFORMATION
+      "entry_date": "2024-11-15T14:32:00.000Z",  // First trade date
+      "last_trade_date": "2024-12-20T09:15:00.000Z",  // Last trade date
+      "days_held": 94,  // Days since first purchase
+      "trade_count": 7,  // Total number of trades
+      "entry_info_available": true,  // Whether real entry data exists
       "tp_sl_analysis": {
         "position_size_usd": 8234.52,
         "risk_assessment": "LOW",
@@ -87,7 +104,11 @@ The Kraken MCP endpoints were returning raw CCXT data that is difficult for GPTs
         "take_profit_set": false,
         "stop_loss_orders": 0,
         "take_profit_orders": 0,
-        "recommendation": "SPOT_HOLD"
+        "recommendation": "SPOT_HOLD",
+        "current_pnl_usd": 1540.23,  // Real P&L in USD
+        "current_pnl_percent": 23.67,  // Real percentage return
+        "suggested_stop_loss": 19.93,  // 15% below entry price
+        "suggested_take_profit": 29.31  // 25% above entry price
       },
       "timestamp": "2025-08-17T19:16:00.000Z"
     }

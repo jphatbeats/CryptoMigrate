@@ -70,6 +70,14 @@ class TradingFunctions:
         exchange = self.exchange_manager.get_exchange(exchange_name)
         return exchange.cancel_order(order_id, symbol)
     
+    @handle_exchange_error
+    def get_trade_history(self, exchange_name: str, symbol: Optional[str] = None, limit: int = 100) -> List[Dict[str, Any]]:
+        """Get trade history for an exchange"""
+        exchange = self.exchange_manager.get_exchange(exchange_name)
+        if hasattr(exchange, 'fetch_my_trades'):
+            return exchange.fetch_my_trades(symbol, None, limit)
+        raise Exception(f"Exchange {exchange_name} does not support trade history")
+    
     def _get_kucoin_futures_positions(self, exchange) -> List[Dict[str, Any]]:
         """Get KuCoin futures positions - KuCoin doesn't support futures positions in CCXT yet"""
         try:
