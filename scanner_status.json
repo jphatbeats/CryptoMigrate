@@ -1,13 +1,37 @@
 {
-  "current_coin": "POPCAT",
-  "current_index": 118,
+  "current_coin": "PYTH",
+  "current_index": 121,
   "total_coins": 200,
-  "current_batch": "10/16",
+  "current_batch": "11/16",
   "confidence": 25,
   "alert_triggered": false,
-  "timestamp": "2025-08-17T18:22:14.206010",
+  "timestamp": "2025-08-17T18:24:32.204391",
   "scanning_active": true,
   "recent_scans": [
+    {
+      "symbol": "PYTH",
+      "confidence": 25,
+      "timestamp": "18:24:32",
+      "alert_triggered": false,
+      "status": "completed",
+      "ai_insight": "PYTH's low confidence score of 25.0% is primarily driven by neutral technical indicators, lack of positive sentiment in recent news, and stagnant social momentum, indicating limited enthusiasm or catalysts for price movement. Traders should note the absence of catalysts and engagement suggests limited short-term movement potential."
+    },
+    {
+      "symbol": "JTO",
+      "confidence": 25,
+      "timestamp": "18:23:46",
+      "alert_triggered": false,
+      "status": "completed",
+      "ai_insight": "JTO's low confidence score of 25.0% is primarily driven by neutral technical indicators, lack of positive sentiment in recent news, and stagnant social momentum, indicating limited enthusiasm or catalysts for price movement. Traders should note the absence of catalysts and engagement suggests limited short-term movement potential."
+    },
+    {
+      "symbol": "MYRO",
+      "confidence": 25,
+      "timestamp": "18:23:00",
+      "alert_triggered": false,
+      "status": "completed",
+      "ai_insight": "MYRO's low confidence score of 25.0% is primarily driven by neutral technical indicators, lack of positive sentiment in recent news, and stagnant social momentum, indicating limited enthusiasm or catalysts for price movement. Traders should note the absence of catalysts and engagement suggests limited short-term movement potential."
+    },
     {
       "symbol": "POPCAT",
       "confidence": 25,
@@ -63,30 +87,6 @@
       "alert_triggered": false,
       "status": "completed",
       "ai_insight": "CHEEMS's low confidence score of 25.0% is primarily driven by neutral technical indicators, lack of positive sentiment in recent news, and stagnant social momentum, indicating limited enthusiasm or catalysts for price movement. Traders should note the absence of catalysts and engagement suggests limited short-term movement potential."
-    },
-    {
-      "symbol": "SLIM",
-      "confidence": 25,
-      "timestamp": "18:16:48",
-      "alert_triggered": false,
-      "status": "completed",
-      "ai_insight": "SLIM's low confidence score of 25.0% is primarily driven by neutral technical indicators, lack of positive sentiment in recent news, and stagnant social momentum, indicating limited enthusiasm or catalysts for price movement. Traders should note the absence of catalysts and engagement suggests limited short-term movement potential."
-    },
-    {
-      "symbol": "GRAPE",
-      "confidence": 25,
-      "timestamp": "18:16:02",
-      "alert_triggered": false,
-      "status": "completed",
-      "ai_insight": "GRAPE's low confidence score of 25.0% is primarily driven by neutral technical indicators, lack of positive sentiment in recent news, and stagnant social momentum, indicating limited enthusiasm or catalysts for price movement. Traders should note the absence of catalysts and engagement suggests limited short-term movement potential."
-    },
-    {
-      "symbol": "POLIS",
-      "confidence": 25,
-      "timestamp": "18:15:16",
-      "alert_triggered": false,
-      "status": "completed",
-      "ai_insight": "POLIS's low confidence score of 25.0% is primarily driven by neutral technical indicators, lack of positive sentiment in recent news, and stagnant social momentum, indicating limited enthusiasm or catalysts for price movement. Traders should note the absence of catalysts and engagement suggests limited short-term movement potential."
     }
   ]
 }
