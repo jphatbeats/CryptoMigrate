@@ -1,13 +1,21 @@
 {
-  "current_coin": "TON",
-  "current_index": 7,
+  "current_coin": "BTC",
+  "current_index": 1,
   "total_coins": 200,
   "current_batch": "1/16",
-  "confidence": 43.05,
+  "confidence": 25.05,
   "alert_triggered": false,
-  "timestamp": "2025-08-17T19:05:17.915427",
+  "timestamp": "2025-08-17T19:10:36.801748",
   "scanning_active": true,
   "recent_scans": [
+    {
+      "symbol": "BTC",
+      "confidence": 25.05,
+      "timestamp": "19:10:36",
+      "alert_triggered": false,
+      "status": "completed",
+      "ai_insight": "BTC's low confidence score of 25.1% is primarily driven by neutral technical indicators, lack of positive sentiment in recent news, and stagnant social momentum, indicating limited enthusiasm or catalysts for price movement. Traders should note the absence of catalysts and engagement suggests limited short-term movement potential."
+    },
     {
       "symbol": "TON",
       "confidence": 43.05,
@@ -79,14 +87,6 @@
       "alert_triggered": false,
       "status": "completed",
       "ai_insight": "SHIB's low confidence score of 25.1% is primarily driven by neutral technical indicators, lack of positive sentiment in recent news, and stagnant social momentum, indicating limited enthusiasm or catalysts for price movement. Traders should note the absence of catalysts and engagement suggests limited short-term movement potential."
-    },
-    {
-      "symbol": "AVAX",
-      "confidence": 48.4,
-      "timestamp": "18:55:50",
-      "alert_triggered": false,
-      "status": "completed",
-      "ai_insight": "AVAX's low confidence score of 48.4% is primarily driven by neutral technical indicators, lack of positive sentiment in recent news, and stagnant social momentum, indicating limited enthusiasm or catalysts for price movement. Traders should note the absence of catalysts and engagement suggests limited short-term movement potential."
     }
   ]
 }
