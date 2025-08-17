@@ -63,7 +63,35 @@ https://titan-trading-2-production.up.railway.app/api/kraken/trading-stats
 ## Status
 
 ✅ **robots.txt updated** - Claude can now access Kraken endpoints directly
-✅ **All Kraken endpoints working** - Complete API functionality confirmed
+✅ **All Kraken endpoints working** - Complete API functionality confirmed  
 ✅ **3-exchange integration complete** - BingX + Blofin + Kraken fully operational
+✅ **Immediate Solution Available** - Claude can use web_fetch for Kraken data
+
+## What You Need to Add to Railway MCP
+
+The Railway MCP server configuration needs these additional functions:
+
+```json
+{
+  "/api/kraken/balance": {
+    "operationId": "getKrakenBalance",
+    "description": "Get Kraken spot balances (9 currencies including AVAX, BERA, FORTH, JUP, STX, SUPER)"
+  },
+  "/api/kraken/positions": {
+    "operationId": "getKrakenPositions", 
+    "description": "Get Kraken positions (typically empty for spot trading)"
+  }
+}
+```
+
+Expected function names for Claude:
+- `railway-mcp:get_kraken_balance`
+- `railway-mcp:get_kraken_positions`
+
+## Verification
+
+Test the endpoints are working:
+- ✅ https://titan-trading-2-production.up.railway.app/api/kraken/balance
+- ✅ https://titan-trading-2-production.up.railway.app/api/kraken/positions
 
 Claude now has complete portfolio visibility across all three exchanges!

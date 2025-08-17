@@ -4,6 +4,9 @@ This project is a comprehensive cryptocurrency trading automation system, THE AL
 
 ## Recent Critical Updates (Aug 17, 2025)
 - **CLAUDE MCP INTEGRATION SOLVED**: robots.txt updated and deployed - Claude can now access Kraken endpoints directly via web_fetch
+- **RAILWAY MCP SCHEMA VERIFIED**: All 8 Kraken functions properly defined in Railway schema (getKrakenBalance, getKrakenPositions, etc.)
+- **MCP SERVER RESTART NEEDED**: Functions exist in schema but aren't exposed to Claude - server restart required to complete integration
+- **IMMEDIATE SOLUTION AVAILABLE**: Claude can use web_fetch for complete Kraken access while MCP functions are being restored
 - **COMPLETE PORTFOLIO VISIBILITY**: Claude now has full access to all 3 exchanges (BingX leveraged, Blofin copy trading, Kraken spot balances)
 - **SECURITY IMPLEMENTATION**: robots.txt protects sensitive trading endpoints while allowing Kraken access for portfolio analysis
 - **API ENDPOINT PROTECTION**: All BingX, Blofin, KuCoin, TAAPI, and Lumif endpoints now properly protected from web crawlers

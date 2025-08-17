@@ -1,0 +1,66 @@
+{
+  "kraken_functions_to_add": {
+    "/api/kraken/balance": {
+      "get": {
+        "description": "Get Kraken account balances - spot holdings and big bags",
+        "operationId": "getKrakenBalance",
+        "responses": {
+          "200": {
+            "description": "Kraken spot balances",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "AVAX": {"type": "object", "properties": {"free": {"type": "number"}, "total": {"type": "number"}, "used": {"type": "number"}}},
+                    "BERA": {"type": "object", "properties": {"free": {"type": "number"}, "total": {"type": "number"}, "used": {"type": "number"}}},
+                    "FORTH": {"type": "object", "properties": {"free": {"type": "number"}, "total": {"type": "number"}, "used": {"type": "number"}}},
+                    "JUP": {"type": "object", "properties": {"free": {"type": "number"}, "total": {"type": "number"}, "used": {"type": "number"}}},
+                    "LSK": {"type": "object", "properties": {"free": {"type": "number"}, "total": {"type": "number"}, "used": {"type": "number"}}},
+                    "SC": {"type": "object", "properties": {"free": {"type": "number"}, "total": {"type": "number"}, "used": {"type": "number"}}},
+                    "SOL.F": {"type": "object", "properties": {"free": {"type": "number"}, "total": {"type": "number"}, "used": {"type": "number"}}},
+                    "STX": {"type": "object", "properties": {"free": {"type": "number"}, "total": {"type": "number"}, "used": {"type": "number"}}},
+                    "SUPER": {"type": "object", "properties": {"free": {"type": "number"}, "total": {"type": "number"}, "used": {"type": "number"}}}
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/kraken/positions": {
+      "get": {
+        "description": "Get Kraken positions (typically empty for spot trading)",
+        "operationId": "getKrakenPositions",
+        "responses": {
+          "200": {
+            "description": "Kraken positions data",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "exchange": {"type": "string", "default": "kraken"},
+                    "positions": {"type": "array", "items": {"type": "object"}},
+                    "timestamp": {"type": "string"}
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "function_names_needed": [
+    "railway-mcp:get_kraken_balance",
+    "railway-mcp:get_kraken_positions"
+  ],
+  "expected_endpoints": [
+    "https://titan-trading-2-production.up.railway.app/api/kraken/balance",
+    "https://titan-trading-2-production.up.railway.app/api/kraken/positions"
+  ],
+  "current_status": "Working via robots.txt - web_fetch access confirmed",
+  "mcp_status": "Missing from Railway MCP server configuration"
+}
