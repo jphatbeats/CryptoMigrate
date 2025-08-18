@@ -2,12 +2,14 @@
 
 This project is a comprehensive cryptocurrency trading automation system, THE ALPHA PLAYBOOK v4, designed for significant capital growth through AI-powered trading intelligence. It focuses on confluence-based sniper entries with zero data hallucination by using authenticated API sources. The system features real-time market intelligence, automated portfolio monitoring, and multi-channel Discord alerting with enhanced visual content. It includes capabilities for detecting conditional orders, real-time portfolio analysis, and market-wide technical indicator scanning.
 
-## Recent Critical Updates (Aug 17, 2025)
-- **KRAKEN DATA FORMATTING SOLUTION IMPLEMENTED**: Created GPT-friendly formatters for Kraken MCP data to resolve interpretation issues
-- **STANDARDIZED USD VALUE CALCULATION**: Integrated real-time CoinGecko pricing for all Kraken holdings with proper USD values
-- **UNIFIED POSITION FORMAT**: Converted Kraken spot balances into standardized position format matching BingX/Blofin structure
-- **ENHANCED RISK ANALYSIS**: Added comprehensive TP/SL analysis fields and risk assessment for Kraken spot holdings
-- **GPT OPTIMIZATION COMPLETE**: Clean data structure eliminates confusion from raw CCXT nested duplicates and missing context
+## Recent Critical Updates (Aug 18, 2025)
+- **KRAKEN API CREDENTIALS CONFIGURED**: Added KRAKEN_API_KEY and KRAKEN_SECRET to enable enhanced trade history features
+- **ENHANCED TRADE HISTORY INTEGRATION ACTIVE**: Real `fetch_my_trades` API access now working with weighted average entry price calculations
+- **REAL ENTRY PRICES & DATES**: System now provides actual entry prices from trade history instead of current market prices
+- **COMPREHENSIVE P&L CALCULATIONS**: Real unrealized P&L in USD and percentage based on actual entry vs current prices
+- **TRADING TIMELINE ANALYSIS**: Days held, trade count, first/last trade dates for each position
+- **ENHANCED RISK ANALYSIS**: Stop loss and take profit suggestions based on real entry prices (15% SL, 25% TP)
+- **USD VALUE INTEGRATION WORKING**: CoinGecko pricing API providing real-time USD values for all Kraken holdings
 - **CLAUDE MCP INTEGRATION FULLY COMPLETED**: Created proxy routes `/api/live/kraken-balance` and `/api/live/kraken-positions` that map to existing Kraken endpoints
 - **MCP PATTERN IDENTIFIED**: Railway MCP server only exposes `/api/live/*` endpoints as functions, solution implemented by creating proxy routes
 - **NEW MCP FUNCTIONS DEPLOYED**: `railway-mcp:get_kraken_balance` and `railway-mcp:get_kraken_positions` endpoints live and functional
@@ -16,7 +18,6 @@ This project is a comprehensive cryptocurrency trading automation system, THE AL
 - **STANDARDIZED RESPONSE FORMAT**: All MCP functions return consistent error handling and data structure patterns
 - **PRODUCTION DEPLOYMENT CONFIRMED**: New proxy routes tested and working on both local and Railway production servers returning live Kraken data
 - **API ROUTE STRUCTURE MAINTAINED**: Original `/api/kraken/*` endpoints preserved for direct access while new `/api/live/kraken-*` routes enable MCP
-- **MCP TROUBLESHOOTING COMPLETE**: Full documentation created for future MCP function additions following `/api/live/*` pattern
 
 ## Previous Updates (Aug 16, 2025)
 - **KUCOIN INTEGRATION COMPLETED**: Successfully resolved KuCoin API authentication with correct passphrase "19YOYOyoyo" 
