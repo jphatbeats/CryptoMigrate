@@ -2,3 +2,4 @@ Force Railway redeployment - Enhanced Kraken MCP with real trade history
 Timestamp: 2025-08-17 19:26:30  
 Feature: Added real entry prices, dates, P&L calculations, and trading analysis via fetch_my_trades integration
 CRITICAL: Deploy enhanced formatters with weighted average entry prices and comprehensive trade dataTriggering Railway deployment with enhanced Kraken MCP
+Enhanced Kraken MCP deployment trigger - Mon Aug 18 12:21:58 AM UTC 2025

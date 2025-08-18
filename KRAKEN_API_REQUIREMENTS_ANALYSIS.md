@@ -12,10 +12,11 @@ The enhanced Kraken MCP formatters I implemented require API credentials to work
 - User wants stop loss and take profit information
 - User wants to know how long positions have been held
 
-### Technical Reality: API Credentials Required
-- `fetch_my_trades()` requires authenticated API access
-- Current system operates with "public access only" for Kraken
-- Error message: "kraken requires apiKey credential"
+### Technical Reality: Credentials Configured on Railway, Not Locally
+- ✅ **Railway Production**: Has Kraken API credentials, can access portfolio data
+- ❌ **Local Replit**: Missing KRAKEN_API_KEY and KRAKEN_SECRET environment variables
+- `fetch_my_trades()` works on Railway but fails locally
+- Enhanced formatters need Railway deployment to access trade history
 
 ## Enhanced Solution I Implemented
 
