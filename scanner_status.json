@@ -1,13 +1,37 @@
 {
-  "current_coin": "ETH",
-  "current_index": 2,
+  "current_coin": "SOL",
+  "current_index": 5,
   "total_coins": 200,
   "current_batch": "1/16",
   "confidence": 25.05,
   "alert_triggered": false,
-  "timestamp": "2025-08-19T14:58:45.835924",
+  "timestamp": "2025-08-19T15:00:26.484743",
   "scanning_active": true,
   "recent_scans": [
+    {
+      "symbol": "SOL",
+      "confidence": 25.05,
+      "timestamp": "15:00:26",
+      "alert_triggered": false,
+      "status": "completed",
+      "ai_insight": "SOL's low confidence score of 25.1% is primarily driven by neutral technical indicators, lack of positive sentiment in recent news, and stagnant social momentum, indicating limited enthusiasm or catalysts for price movement. Traders should note the absence of catalysts and engagement suggests limited short-term movement potential."
+    },
+    {
+      "symbol": "BNB",
+      "confidence": 25,
+      "timestamp": "14:59:51",
+      "alert_triggered": false,
+      "status": "completed",
+      "ai_insight": "BNB's low confidence score of 25.0% is primarily driven by neutral technical indicators, lack of positive sentiment in recent news, and stagnant social momentum, indicating limited enthusiasm or catalysts for price movement. Traders should note the absence of catalysts and engagement suggests limited short-term movement potential."
+    },
+    {
+      "symbol": "XRP",
+      "confidence": 30.55,
+      "timestamp": "14:59:20",
+      "alert_triggered": false,
+      "status": "completed",
+      "ai_insight": "XRP's low confidence score of 30.6% is primarily driven by neutral technical indicators, lack of positive sentiment in recent news, and stagnant social momentum, indicating limited enthusiasm or catalysts for price movement. Traders should note the absence of catalysts and engagement suggests limited short-term movement potential."
+    },
     {
       "symbol": "ETH",
       "confidence": 25.05,
@@ -63,30 +87,6 @@
       "alert_triggered": false,
       "status": "completed",
       "ai_insight": "KEEP's low confidence score of 25.0% is primarily driven by neutral technical indicators, lack of positive sentiment in recent news, and stagnant social momentum, indicating limited enthusiasm or catalysts for price movement. Traders should note the absence of catalysts and engagement suggests limited short-term movement potential."
-    },
-    {
-      "symbol": "NU",
-      "confidence": 25,
-      "timestamp": "02:17:48",
-      "alert_triggered": false,
-      "status": "completed",
-      "ai_insight": "NU's low confidence score of 25.0% is primarily driven by neutral technical indicators, lack of positive sentiment in recent news, and stagnant social momentum, indicating limited enthusiasm or catalysts for price movement. Traders should note the absence of catalysts and engagement suggests limited short-term movement potential."
-    },
-    {
-      "symbol": "RLC",
-      "confidence": 25,
-      "timestamp": "02:17:02",
-      "alert_triggered": false,
-      "status": "completed",
-      "ai_insight": "RLC's low confidence score of 25.0% is primarily driven by neutral technical indicators, lack of positive sentiment in recent news, and stagnant social momentum, indicating limited enthusiasm or catalysts for price movement. Traders should note the absence of catalysts and engagement suggests limited short-term movement potential."
-    },
-    {
-      "symbol": "BAL",
-      "confidence": 25,
-      "timestamp": "02:16:16",
-      "alert_triggered": false,
-      "status": "completed",
-      "ai_insight": "BAL's low confidence score of 25.0% is primarily driven by neutral technical indicators, lack of positive sentiment in recent news, and stagnant social momentum, indicating limited enthusiasm or catalysts for price movement. Traders should note the absence of catalysts and engagement suggests limited short-term movement potential."
     }
   ]
 }
