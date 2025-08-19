@@ -425,6 +425,18 @@ CORS(app, origins="*")  # Allow ChatGPT Custom Actions to access the API
 exchange_manager = ExchangeManager()
 trading_functions = TradingFunctions(exchange_manager)
 
+@app.route('/alpha', methods=['GET'])
+def alpha_dashboard():
+    """Serve the Alpha Detection Dashboard"""
+    try:
+        with open('alpha_dashboard.html', 'r') as f:
+            return f.read()
+    except FileNotFoundError:
+        return jsonify({
+            'error': 'Alpha Dashboard not found',
+            'message': 'Dashboard file missing. Please ensure alpha_dashboard.html exists.'
+        }), 404
+
 @app.route('/', methods=['GET'])
 def root():
     """Main dashboard - Trading Intelligence Interface"""
