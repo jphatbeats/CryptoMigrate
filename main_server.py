@@ -1483,6 +1483,235 @@ def get_bingx_positions():
             'error': str(e)
         }), 500
 
+# Regular API endpoints (for direct API calls)
+@app.route('/api/bingx-positions', methods=['GET'])
+def get_bingx_positions_regular():
+    """Get positions from BingX exchange (regular API endpoint)"""
+    try:
+        result = {
+            'timestamp': datetime.now().isoformat(),
+            'source': 'bingx'
+        }
+        
+        if 'bingx' in exchange_manager.get_available_exchanges():
+            positions = trading_functions.get_positions('bingx')
+            orders = trading_functions.get_orders('bingx')
+            
+            positions_list = positions if isinstance(positions, list) else [positions]
+            orders_list = orders if isinstance(orders, list) else [orders]
+            
+            # Clear status messages
+            if not positions_list or positions_list == [None]:
+                result['status_message'] = 'BingX connected - No open positions found'
+                positions_list = []
+            else:
+                result['status_message'] = f'BingX connected - {len(positions_list)} positions found'
+            
+            result['positions'] = {
+                'code': 0,
+                'data': {
+                    'positions': positions_list
+                }
+            }
+            result['orders'] = {
+                'code': 0,
+                'data': {
+                    'orders': orders_list if orders_list != [None] else []
+                }
+            }
+        else:
+            result['status_message'] = 'BingX exchange not available - Check API credentials'
+            result['positions'] = {'code': -1, 'data': {'positions': []}}
+            result['orders'] = {'code': -1, 'data': {'orders': []}}
+        
+        return jsonify(result)
+    except Exception as e:
+        logger.error(f"Error getting BingX positions: {str(e)}")
+        error_message = str(e)
+        if "apiKey" in error_message:
+            status_msg = "BingX error - API credentials required"
+        else:
+            status_msg = f"BingX error - {error_message}"
+        
+        return jsonify({
+            'timestamp': datetime.now().isoformat(),
+            'source': 'bingx',
+            'status_message': status_msg,
+            'positions': {'code': -1, 'data': {'positions': []}},
+            'orders': {'code': -1, 'data': {'orders': []}},
+            'error': str(e)
+        }), 500
+
+@app.route('/api/kucoin-positions', methods=['GET'])
+def get_kucoin_positions_regular():
+    """Get positions from KuCoin exchange (regular API endpoint)"""
+    try:
+        result = {
+            'timestamp': datetime.now().isoformat(),
+            'source': 'kucoin'
+        }
+        
+        if 'kucoin' in exchange_manager.get_available_exchanges():
+            positions = trading_functions.get_positions('kucoin')
+            orders = trading_functions.get_orders('kucoin')
+            
+            positions_list = positions if isinstance(positions, list) else [positions]
+            orders_list = orders if isinstance(orders, list) else [orders]
+            
+            # Clear status messages
+            if not positions_list or positions_list == [None]:
+                result['status_message'] = 'KuCoin connected - No open positions found'
+                positions_list = []
+            else:
+                result['status_message'] = f'KuCoin connected - {len(positions_list)} positions found'
+            
+            # Standardize format to match BingX response structure
+            result['positions'] = {
+                'code': 0,
+                'data': {
+                    'positions': positions_list
+                }
+            }
+            result['orders'] = {
+                'code': 0,
+                'data': {
+                    'orders': orders_list if orders_list != [None] else []
+                }
+            }
+        else:
+            result['status_message'] = 'KuCoin exchange not available - Check API credentials'
+            result['positions'] = {'code': -1, 'data': {'positions': []}}
+            result['orders'] = {'code': -1, 'data': {'orders': []}}
+        
+        return jsonify(result)
+    except Exception as e:
+        logger.error(f"Error getting KuCoin positions: {str(e)}")
+        error_message = str(e)
+        if "apiKey" in error_message:
+            status_msg = "KuCoin error - API credentials required"
+        else:
+            status_msg = f"KuCoin error - {error_message}"
+        
+        return jsonify({
+            'timestamp': datetime.now().isoformat(),
+            'source': 'kucoin',
+            'status_message': status_msg,
+            'positions': {'code': -1, 'data': {'positions': []}},
+            'orders': {'code': -1, 'data': {'orders': []}},
+            'error': str(e)
+        }), 500
+
+@app.route('/api/blofin-positions', methods=['GET'])
+def get_blofin_positions_regular():
+    """Get positions from Blofin exchange (regular API endpoint)"""
+    try:
+        result = {
+            'timestamp': datetime.now().isoformat(),
+            'source': 'blofin'
+        }
+        
+        if 'blofin' in exchange_manager.get_available_exchanges():
+            positions = trading_functions.get_positions('blofin')
+            orders = trading_functions.get_orders('blofin')
+            
+            positions_list = positions if isinstance(positions, list) else [positions]
+            orders_list = orders if isinstance(orders, list) else [orders]
+            
+            # Clear status messages
+            if not positions_list or positions_list == [None]:
+                result['status_message'] = 'Blofin connected - No open positions found'
+                positions_list = []
+            else:
+                result['status_message'] = f'Blofin connected - {len(positions_list)} positions found'
+            
+            # Standardize format to match BingX response structure
+            result['positions'] = {
+                'code': 0,
+                'data': {
+                    'positions': positions_list
+                }
+            }
+            result['orders'] = {
+                'code': 0,
+                'data': {
+                    'orders': orders_list if orders_list != [None] else []
+                }
+            }
+        else:
+            result['status_message'] = 'Blofin exchange not available - Check API credentials'
+            result['positions'] = {'code': -1, 'data': {'positions': []}}
+            result['orders'] = {'code': -1, 'data': {'orders': []}}
+        
+        return jsonify(result)
+    except Exception as e:
+        logger.error(f"Error getting Blofin positions: {str(e)}")
+        error_message = str(e)
+        if "apiKey" in error_message:
+            status_msg = "Blofin error - API credentials required"
+        else:
+            status_msg = f"Blofin error - {error_message}"
+        
+        return jsonify({
+            'timestamp': datetime.now().isoformat(),
+            'source': 'blofin',
+            'status_message': status_msg,
+            'positions': {'code': -1, 'data': {'positions': []}},
+            'orders': {'code': -1, 'data': {'orders': []}},
+            'error': str(e)
+        }), 500
+
+@app.route('/api/kraken-positions', methods=['GET'])
+def get_kraken_positions_regular():
+    """Get Kraken positions (regular API endpoint) - GPT-friendly format"""
+    try:
+        result = {
+            'timestamp': datetime.now().isoformat(),
+            'source': 'kraken'
+        }
+        
+        if 'kraken' in exchange_manager.get_available_exchanges():
+            # Get balance data and convert to position format
+            raw_balance = trading_functions.get_balance('kraken')
+            formatted_positions = _format_kraken_positions_for_gpt(raw_balance)
+            
+            total_value = sum(pos['position_value_usd'] for pos in formatted_positions)
+            
+            result['status_message'] = f'Kraken connected - {len(formatted_positions)} spot holdings analyzed (${total_value:,.2f} total value)'
+            result['positions'] = {
+                'code': 0,
+                'data': {
+                    'positions': formatted_positions
+                }
+            }
+            result['orders'] = {
+                'code': 0,
+                'data': {
+                    'orders': []  # Kraken spot doesn't have leveraged orders
+                }
+            }
+        else:
+            result['status_message'] = 'Kraken exchange not available - Check API credentials'
+            result['positions'] = {'code': -1, 'data': {'positions': []}}
+            result['orders'] = {'code': -1, 'data': {'orders': []}}
+        
+        return jsonify(result)
+    except Exception as e:
+        logger.error(f"Error getting Kraken positions: {str(e)}")
+        error_message = str(e)
+        if "apiKey" in error_message:
+            status_msg = "Kraken error - API credentials required"
+        else:
+            status_msg = f"Kraken error - {error_message}"
+        
+        return jsonify({
+            'timestamp': datetime.now().isoformat(),
+            'source': 'kraken',
+            'status_message': status_msg,
+            'positions': {'code': -1, 'data': {'positions': []}},
+            'orders': {'code': -1, 'data': {'orders': []}},
+            'error': str(e)
+        }), 500
+
 @app.route('/api/live/kucoin-positions', methods=['GET'])
 def get_kucoin_positions_live():
     """Get live positions from KuCoin exchange"""
