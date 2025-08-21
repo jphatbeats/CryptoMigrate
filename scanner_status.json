@@ -1,13 +1,21 @@
 {
-  "current_coin": "FTM",
-  "current_index": 42,
+  "current_coin": "BTC",
+  "current_index": 1,
   "total_coins": 200,
-  "current_batch": "4/16",
-  "confidence": 25.05,
+  "current_batch": "1/16",
+  "confidence": 30.3,
   "alert_triggered": false,
-  "timestamp": "2025-08-21T13:56:50.857264",
+  "timestamp": "2025-08-21T17:06:44.854782",
   "scanning_active": true,
   "recent_scans": [
+    {
+      "symbol": "BTC",
+      "confidence": 30.3,
+      "timestamp": "17:06:44",
+      "alert_triggered": false,
+      "status": "completed",
+      "ai_insight": "BTC's low confidence score of 30.3% is primarily driven by neutral technical indicators, lack of positive sentiment in recent news, and stagnant social momentum, indicating limited enthusiasm or catalysts for price movement. Traders should note the absence of catalysts and engagement suggests limited short-term movement potential."
+    },
     {
       "symbol": "FTM",
       "confidence": 25.05,
@@ -79,14 +87,6 @@
       "alert_triggered": false,
       "status": "completed",
       "ai_insight": "INJ's low confidence score of 25.0% is primarily driven by neutral technical indicators, lack of positive sentiment in recent news, and stagnant social momentum, indicating limited enthusiasm or catalysts for price movement. Traders should note the absence of catalysts and engagement suggests limited short-term movement potential."
-    },
-    {
-      "symbol": "OP",
-      "confidence": 25.05,
-      "timestamp": "13:50:51",
-      "alert_triggered": false,
-      "status": "completed",
-      "ai_insight": "OP's low confidence score of 25.1% is primarily driven by neutral technical indicators, lack of positive sentiment in recent news, and stagnant social momentum, indicating limited enthusiasm or catalysts for price movement. Traders should note the absence of catalysts and engagement suggests limited short-term movement potential."
     }
   ]
 }
