@@ -1712,6 +1712,156 @@ def get_kraken_positions_regular():
             'error': str(e)
         }), 500
 
+@app.route('/api/live/market-scanner', methods=['GET'])
+def get_market_scanner_live():
+    """Get market scanner results (MCP endpoint)"""
+    try:
+        # Get optional parameters
+        scan_type = request.args.get('scan_type', 'rsi_oversold')
+        limit = int(request.args.get('limit', 20))
+        min_confidence = float(request.args.get('min_confidence', 75.0))
+        
+        result = {
+            'timestamp': datetime.now().isoformat(),
+            'scan_type': scan_type,
+            'parameters': {
+                'limit': limit,
+                'min_confidence': min_confidence
+            }
+        }
+        
+        # Direct RSI oversold scanning (most reliable)
+        opportunities = []
+        symbols = _get_market_symbols(50)  # Get top 50 symbols
+        
+        for symbol in symbols[:limit * 2]:  # Check more to find matches
+            try:
+                if taapi_universal:
+                    rsi_data = taapi_universal.get_indicator(
+                        indicator='rsi',
+                        symbol=symbol + '/USDT',
+                        exchange='binance',
+                        interval='1h'
+                    )
+                    
+                    if rsi_data and 'value' in rsi_data:
+                        rsi_value = rsi_data['value']
+                        
+                        # Find oversold opportunities (RSI < 30)
+                        if rsi_value < 30:
+                            confidence = min(90.0, (30 - rsi_value) * 2 + 75)  # Higher confidence for lower RSI
+                            opportunities.append({
+                                'symbol': symbol,
+                                'confidence': round(confidence, 1),
+                                'type': 'oversold_opportunity',
+                                'rsi': round(rsi_value, 2),
+                                'timeframe': '1h',
+                                'reason': f'RSI {rsi_value:.1f} indicates oversold condition'
+                            })
+                            
+                            if len(opportunities) >= limit:
+                                break
+                                
+            except Exception as e:
+                logger.debug(f"Error scanning {symbol}: {e}")
+                continue
+        
+        # Sort by confidence
+        opportunities.sort(key=lambda x: x['confidence'], reverse=True)
+        
+        result['status_message'] = f'Market scanner active - {len(opportunities)} oversold opportunities found'
+        result['opportunities'] = {
+            'code': 0,
+            'data': {
+                'opportunities': opportunities[:limit]
+            }
+        }
+        
+        return jsonify(result)
+    except Exception as e:
+        logger.error(f"Error in market scanner: {str(e)}")
+        return jsonify({
+            'timestamp': datetime.now().isoformat(),
+            'status_message': f'Market scanner error - {str(e)}',
+            'opportunities': {'code': -1, 'data': {'opportunities': []}},
+            'error': str(e)
+        }), 500
+
+@app.route('/api/market-scanner', methods=['GET'])
+def get_market_scanner_regular():
+    """Get market scanner results (regular API endpoint)"""
+    try:
+        # Get optional parameters
+        scan_type = request.args.get('scan_type', 'rsi_oversold')
+        limit = int(request.args.get('limit', 20))
+        min_confidence = float(request.args.get('min_confidence', 75.0))
+        
+        result = {
+            'timestamp': datetime.now().isoformat(),
+            'scan_type': scan_type,
+            'parameters': {
+                'limit': limit,
+                'min_confidence': min_confidence
+            }
+        }
+        
+        # Direct RSI oversold scanning (most reliable)
+        opportunities = []
+        symbols = _get_market_symbols(50)  # Get top 50 symbols
+        
+        for symbol in symbols[:limit * 2]:  # Check more to find matches
+            try:
+                if taapi_universal:
+                    rsi_data = taapi_universal.get_indicator(
+                        indicator='rsi',
+                        symbol=symbol + '/USDT',
+                        exchange='binance',
+                        interval='1h'
+                    )
+                    
+                    if rsi_data and 'value' in rsi_data:
+                        rsi_value = rsi_data['value']
+                        
+                        # Find oversold opportunities (RSI < 30)
+                        if rsi_value < 30:
+                            confidence = min(90.0, (30 - rsi_value) * 2 + 75)  # Higher confidence for lower RSI
+                            opportunities.append({
+                                'symbol': symbol,
+                                'confidence': round(confidence, 1),
+                                'type': 'oversold_opportunity',
+                                'rsi': round(rsi_value, 2),
+                                'timeframe': '1h',
+                                'reason': f'RSI {rsi_value:.1f} indicates oversold condition'
+                            })
+                            
+                            if len(opportunities) >= limit:
+                                break
+                                
+            except Exception as e:
+                logger.debug(f"Error scanning {symbol}: {e}")
+                continue
+        
+        # Sort by confidence
+        opportunities.sort(key=lambda x: x['confidence'], reverse=True)
+        
+        result['status_message'] = f'Market scanner active - {len(opportunities)} oversold opportunities found'
+        result['opportunities'] = {
+            'code': 0,
+            'data': {
+                'opportunities': opportunities[:limit]
+            }
+        }
+        
+        return jsonify(result)
+    except Exception as e:
+        logger.error(f"Error in market scanner: {str(e)}")
+        return jsonify({
+            'timestamp': datetime.now().isoformat(),
+            'status_message': f'Market scanner error - {str(e)}',
+            'opportunities': {'code': -1, 'data': {'opportunities': []}},
+            'error': str(e)
+        }), 500
+
 @app.route('/api/live/kucoin-positions', methods=['GET'])
 def get_kucoin_positions_live():
     """Get live positions from KuCoin exchange"""
