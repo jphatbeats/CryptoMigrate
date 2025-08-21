@@ -1,0 +1,48 @@
+MOBILE CLAUDE - TRADING BRAIN QUICK REFERENCE
+=============================================
+Save this text file for permanent access
+
+SERVER: https://your-replit-url.replit.app
+DEVICE: android | USER: claude_mobile
+
+READ TRADING CONTEXT:
+GET /narrative
+Returns: All trading history + positions + analysis
+
+ADD MOBILE UPDATE:
+POST /narrative
+{
+  "type": "mobile_update",
+  "content": "Your message here",
+  "symbols": ["BTC"],
+  "source_device": "android", 
+  "created_by": "claude_mobile"
+}
+
+EMERGENCY ALERT:
+POST /narrative
+{
+  "type": "emergency_alert",
+  "content": "URGENT: Market condition",
+  "symbols": ["SYMBOL"],
+  "source_device": "android",
+  "created_by": "claude_mobile"
+}
+
+POSITION UPDATE:
+POST /narrative  
+{
+  "type": "position_update",
+  "content": "BTC +5.2% P&L - holding strong",
+  "symbols": ["BTC"],
+  "source_device": "android",
+  "created_by": "claude_mobile"
+}
+
+TEST CONNECTION:
+curl https://your-replit-url.replit.app/narrative
+
+DASHBOARD VIEW:
+https://your-replit-url.replit.app/alpha
+
+Mobile Claude: Save this file permanently and reference it anytime you need to access the trading brain system.
