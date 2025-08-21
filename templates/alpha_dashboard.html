@@ -1,0 +1,436 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Alpha Detection Machine - Trading Intelligence Dashboard</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #0a0f1c 0%, #1a2332 100%);
+            color: #e1e8ed;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            overflow-x: hidden;
+        }
+        
+        .header {
+            background: rgba(26, 35, 50, 0.95);
+            backdrop-filter: blur(10px);
+            padding: 20px;
+            text-align: center;
+            border-bottom: 2px solid #2d4263;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        
+        .header h1 {
+            font-size: 2.5rem;
+            background: linear-gradient(135deg, #00d4ff, #7b68ee);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 10px;
+        }
+        
+        .subtitle {
+            color: #8fa0a8;
+            font-size: 1.1rem;
+        }
+        
+        .dashboard-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            padding: 20px;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+        
+        .card {
+            background: rgba(26, 35, 50, 0.8);
+            border-radius: 15px;
+            padding: 20px;
+            border: 1px solid #2d4263;
+            backdrop-filter: blur(10px);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .card:hover {
+            transform: translateY(-5px);
+            border-color: #00d4ff;
+            box-shadow: 0 10px 30px rgba(0, 212, 255, 0.2);
+        }
+        
+        .card h3 {
+            color: #00d4ff;
+            margin-bottom: 15px;
+            font-size: 1.3rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .status-indicator {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: #4ade80;
+            animation: pulse 2s infinite;
+        }
+        
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+        
+        .metric {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin: 10px 0;
+            padding: 8px 0;
+            border-bottom: 1px solid rgba(45, 66, 99, 0.3);
+        }
+        
+        .metric:last-child {
+            border-bottom: none;
+        }
+        
+        .metric-value {
+            font-weight: 600;
+            color: #00d4ff;
+        }
+        
+        .confidence-bar {
+            width: 100%;
+            height: 8px;
+            background: rgba(45, 66, 99, 0.3);
+            border-radius: 4px;
+            overflow: hidden;
+            margin: 5px 0;
+        }
+        
+        .confidence-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #ef4444, #f59e0b, #22c55e);
+            border-radius: 4px;
+            transition: width 0.5s ease;
+        }
+        
+        .opportunities-list {
+            max-height: 300px;
+            overflow-y: auto;
+        }
+        
+        .opportunity-item {
+            background: rgba(45, 66, 99, 0.2);
+            border-radius: 8px;
+            padding: 12px;
+            margin: 8px 0;
+            border-left: 4px solid #00d4ff;
+        }
+        
+        .symbol {
+            font-weight: bold;
+            color: #00d4ff;
+            font-size: 1.1rem;
+        }
+        
+        .refresh-btn {
+            background: linear-gradient(135deg, #00d4ff, #7b68ee);
+            border: none;
+            color: white;
+            padding: 12px 24px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            margin: 10px;
+        }
+        
+        .refresh-btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 5px 15px rgba(0, 212, 255, 0.4);
+        }
+        
+        .loading {
+            display: inline-block;
+            width: 16px;
+            height: 16px;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            border-top-color: #00d4ff;
+            animation: spin 1s ease-in-out infinite;
+        }
+        
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+        
+        .narrative-entry {
+            background: rgba(45, 66, 99, 0.1);
+            border-radius: 8px;
+            padding: 10px;
+            margin: 8px 0;
+            border-left: 3px solid #7b68ee;
+        }
+        
+        .timestamp {
+            color: #8fa0a8;
+            font-size: 0.9rem;
+        }
+        
+        .scan-modes {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+            gap: 10px;
+            margin: 15px 0;
+        }
+        
+        .scan-mode {
+            background: rgba(45, 66, 99, 0.3);
+            border: 1px solid #2d4263;
+            color: #e1e8ed;
+            padding: 8px 12px;
+            border-radius: 6px;
+            cursor: pointer;
+            text-align: center;
+            transition: all 0.3s ease;
+            font-size: 0.9rem;
+        }
+        
+        .scan-mode:hover, .scan-mode.active {
+            background: rgba(0, 212, 255, 0.2);
+            border-color: #00d4ff;
+            color: #00d4ff;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>🤖 Alpha Detection Machine</h1>
+        <p class="subtitle">Multi-Claude Trading Intelligence System</p>
+    </div>
+
+    <div class="dashboard-grid">
+        <!-- System Status -->
+        <div class="card">
+            <h3><span class="status-indicator"></span> System Status</h3>
+            <div class="metric">
+                <span>Trading Brain</span>
+                <span class="metric-value" id="brain-status">Online</span>
+            </div>
+            <div class="metric">
+                <span>Market Scanner</span>
+                <span class="metric-value" id="scanner-status">Active</span>
+            </div>
+            <div class="metric">
+                <span>Connected Claudes</span>
+                <span class="metric-value" id="claude-count">3</span>
+            </div>
+            <div class="metric">
+                <span>Last Update</span>
+                <span class="metric-value" id="last-update">--</span>
+            </div>
+        </div>
+
+        <!-- Scan Controls -->
+        <div class="card">
+            <h3>📊 Scan Modes</h3>
+            <div class="scan-modes">
+                <div class="scan-mode active" onclick="runScan('morning')">Morning Scan</div>
+                <div class="scan-mode" onclick="runScan('midday')">Mid-Day Check</div>
+                <div class="scan-mode" onclick="runScan('evening')">Evening Wrap</div>
+                <div class="scan-mode" onclick="runScan('emergency')">Emergency</div>
+            </div>
+            <button class="refresh-btn" onclick="refreshData()">
+                <span id="refresh-icon">🔄</span> Refresh All Data
+            </button>
+        </div>
+
+        <!-- Current Opportunities -->
+        <div class="card">
+            <h3>🎯 Alpha Opportunities</h3>
+            <div class="opportunities-list" id="opportunities-list">
+                <div class="opportunity-item">
+                    <div class="symbol">Loading opportunities...</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Trading Narrative -->
+        <div class="card">
+            <h3>📝 Trading Narrative</h3>
+            <div id="narrative-feed" style="max-height: 300px; overflow-y: auto;">
+                <div class="narrative-entry">
+                    <div>Loading trading narrative...</div>
+                    <div class="timestamp">Initializing...</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Active Positions -->
+        <div class="card">
+            <h3>💼 Active Positions</h3>
+            <div id="positions-list">
+                <div class="metric">
+                    <span>Total Positions</span>
+                    <span class="metric-value" id="total-positions">--</span>
+                </div>
+                <div class="metric">
+                    <span>Total P&L</span>
+                    <span class="metric-value" id="total-pnl">--</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Confluence Analysis -->
+        <div class="card">
+            <h3>🔗 Confluence Scoring</h3>
+            <div id="confluence-analysis">
+                <div class="metric">
+                    <span>Technical Signals</span>
+                    <span class="metric-value" id="tech-score">--</span>
+                </div>
+                <div class="confidence-bar">
+                    <div class="confidence-fill" style="width: 75%" id="tech-bar"></div>
+                </div>
+                <div class="metric">
+                    <span>Social Momentum</span>
+                    <span class="metric-value" id="social-score">--</span>
+                </div>
+                <div class="confidence-bar">
+                    <div class="confidence-fill" style="width: 60%" id="social-bar"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let refreshInterval;
+        
+        async function fetchData() {
+            try {
+                // Fetch trading narrative
+                const narrativeResponse = await fetch('/narrative');
+                const narrativeData = await narrativeResponse.json();
+                
+                if (narrativeData.success) {
+                    updateNarrative(narrativeData);
+                    updateSystemStatus(narrativeData);
+                    updatePositions(narrativeData);
+                }
+                
+                // Fetch market scanner data
+                const scannerResponse = await fetch('/api/live/market-scanner?limit=10');
+                const scannerData = await scannerResponse.json();
+                updateOpportunities(scannerData);
+                
+            } catch (error) {
+                console.error('Error fetching data:', error);
+                document.getElementById('brain-status').textContent = 'Error';
+            }
+        }
+        
+        function updateNarrative(data) {
+            const feed = document.getElementById('narrative-feed');
+            const entries = data.narrative.slice(0, 10); // Show last 10 entries
+            
+            feed.innerHTML = entries.map(entry => `
+                <div class="narrative-entry">
+                    <div><strong>${entry.type}:</strong> ${entry.content}</div>
+                    <div class="timestamp">${new Date(entry.timestamp).toLocaleString()} - ${entry.source}</div>
+                </div>
+            `).join('');
+        }
+        
+        function updateSystemStatus(data) {
+            document.getElementById('last-update').textContent = new Date().toLocaleTimeString();
+            document.getElementById('brain-status').textContent = 'Online';
+            document.getElementById('scanner-status').textContent = 'Active';
+        }
+        
+        function updatePositions(data) {
+            document.getElementById('total-positions').textContent = data.summary.active_positions;
+            
+            const positionsList = document.getElementById('positions-list');
+            if (data.active_positions.length > 0) {
+                const totalPnL = data.active_positions.reduce((sum, pos) => sum + (pos.pnl_percent || 0), 0);
+                document.getElementById('total-pnl').textContent = `${totalPnL.toFixed(1)}%`;
+                document.getElementById('total-pnl').style.color = totalPnL >= 0 ? '#22c55e' : '#ef4444';
+            }
+        }
+        
+        function updateOpportunities(data) {
+            const list = document.getElementById('opportunities-list');
+            const opportunities = data.opportunities?.data?.opportunities || [];
+            
+            if (opportunities.length === 0) {
+                list.innerHTML = '<div class="opportunity-item"><div class="symbol">No oversold opportunities found</div><div class="timestamp">Market conditions healthy</div></div>';
+                return;
+            }
+            
+            list.innerHTML = opportunities.map(opp => `
+                <div class="opportunity-item">
+                    <div class="symbol">${opp.symbol}</div>
+                    <div>Confidence: ${opp.confidence}% - ${opp.type}</div>
+                    <div class="timestamp">RSI: ${opp.rsi} (${opp.timeframe})</div>
+                </div>
+            `).join('');
+        }
+        
+        async function runScan(mode) {
+            // Update active scan mode
+            document.querySelectorAll('.scan-mode').forEach(el => el.classList.remove('active'));
+            event.target.classList.add('active');
+            
+            // Add to narrative
+            await fetch('/narrative', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    type: 'scan_trigger',
+                    content: `${mode.charAt(0).toUpperCase() + mode.slice(1)} scan initiated from Alpha Dashboard`,
+                    confidence: 100,
+                    symbols: [],
+                    source_device: 'alpha_dashboard',
+                    created_by: 'dashboard_user',
+                    metadata: { scan_mode: mode, triggered_at: new Date().toISOString() }
+                })
+            });
+            
+            // Refresh data
+            refreshData();
+        }
+        
+        async function refreshData() {
+            const refreshIcon = document.getElementById('refresh-icon');
+            refreshIcon.innerHTML = '<div class="loading"></div>';
+            
+            await fetchData();
+            
+            setTimeout(() => {
+                refreshIcon.innerHTML = '🔄';
+            }, 1000);
+        }
+        
+        // Initialize dashboard
+        fetchData();
+        
+        // Auto-refresh every 30 seconds
+        refreshInterval = setInterval(fetchData, 30000);
+        
+        // Cleanup on page unload
+        window.addEventListener('beforeunload', () => {
+            if (refreshInterval) clearInterval(refreshInterval);
+        });
+    </script>
+</body>
+</html>

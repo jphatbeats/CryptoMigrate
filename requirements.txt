@@ -32,3 +32,5 @@ tradingview-ta
 openai
 trafilatura
 websockets
+psycopg2-binary
+sqlalchemy
