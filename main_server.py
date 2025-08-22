@@ -7027,38 +7027,6 @@ def tradingview_comprehensive_analysis(symbol):
         }), 500
 
 # Start Flask server when run directly
-# Health check endpoint for deployment
-@app.route('/health')
-def health_check():
-    """Health check endpoint for Railway deployment"""
-    try:
-        # Basic system checks
-        status = {
-            'status': 'healthy',
-            'timestamp': datetime.now().isoformat(),
-            'version': '2.1.2-FIXED',
-            'railway_ready': True,
-            'available_exchanges': ['bingx', 'kraken', 'blofin', 'kucoin'],
-            'deployment_date': '2025-08-10T13:07:00Z',
-            'endpoints_fixed': [
-                'taapi_bulk', 'crypto_news_symbol', 'sentiment_analyze', 
-                'social_momentum', 'undefined_variables'
-            ],
-            'undefined_vars_fixed': True
-        }
-        return jsonify(status), 200
-    except Exception as e:
-        return jsonify({
-            'status': 'unhealthy', 
-            'error': str(e),
-            'timestamp': datetime.now().isoformat()
-        }), 500
-
-# Root endpoint for basic connectivity test
-@app.route('/ping')
-def ping():
-    """Simple ping endpoint for deployment health checks"""
-    return jsonify({'status': 'ok', 'timestamp': datetime.now().isoformat()}), 200
 
 if __name__ == '__main__':
     logger.info("🚀 Starting Trading Intelligence Server on 0.0.0.0:5000")
