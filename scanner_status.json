@@ -1,13 +1,37 @@
 {
-  "current_coin": "FORTH",
-  "current_index": 178,
+  "current_coin": "FOX",
+  "current_index": 181,
   "total_coins": 200,
-  "current_batch": "15/16",
+  "current_batch": "16/16",
   "confidence": 25,
   "alert_triggered": false,
-  "timestamp": "2025-08-23T19:02:11.232901",
+  "timestamp": "2025-08-23T19:04:29.971410",
   "scanning_active": true,
   "recent_scans": [
+    {
+      "symbol": "FOX",
+      "confidence": 25,
+      "timestamp": "19:04:29",
+      "alert_triggered": false,
+      "status": "completed",
+      "ai_insight": "FOX's low confidence score of 25.0% is primarily driven by neutral technical indicators, lack of positive sentiment in recent news, and stagnant social momentum, indicating limited enthusiasm or catalysts for price movement. Traders should note the absence of catalysts and engagement suggests limited short-term movement potential."
+    },
+    {
+      "symbol": "TOKE",
+      "confidence": 25,
+      "timestamp": "19:03:43",
+      "alert_triggered": false,
+      "status": "completed",
+      "ai_insight": "TOKE's low confidence score of 25.0% is primarily driven by neutral technical indicators, lack of positive sentiment in recent news, and stagnant social momentum, indicating limited enthusiasm or catalysts for price movement. Traders should note the absence of catalysts and engagement suggests limited short-term movement potential."
+    },
+    {
+      "symbol": "BTRFLY",
+      "confidence": 25,
+      "timestamp": "19:02:57",
+      "alert_triggered": false,
+      "status": "completed",
+      "ai_insight": "BTRFLY's low confidence score of 25.0% is primarily driven by neutral technical indicators, lack of positive sentiment in recent news, and stagnant social momentum, indicating limited enthusiasm or catalysts for price movement. Traders should note the absence of catalysts and engagement suggests limited short-term movement potential."
+    },
     {
       "symbol": "FORTH",
       "confidence": 25,
@@ -63,30 +87,6 @@
       "alert_triggered": false,
       "status": "completed",
       "ai_insight": "MOSS's low confidence score of 25.0% is primarily driven by neutral technical indicators, lack of positive sentiment in recent news, and stagnant social momentum, indicating limited enthusiasm or catalysts for price movement. Traders should note the absence of catalysts and engagement suggests limited short-term movement potential."
-    },
-    {
-      "symbol": "CCO2",
-      "confidence": 25,
-      "timestamp": "18:56:49",
-      "alert_triggered": false,
-      "status": "completed",
-      "ai_insight": "CCO2's low confidence score of 25.0% is primarily driven by neutral technical indicators, lack of positive sentiment in recent news, and stagnant social momentum, indicating limited enthusiasm or catalysts for price movement. Traders should note the absence of catalysts and engagement suggests limited short-term movement potential."
-    },
-    {
-      "symbol": "NBO",
-      "confidence": 25,
-      "timestamp": "18:56:02",
-      "alert_triggered": false,
-      "status": "completed",
-      "ai_insight": "NBO's low confidence score of 25.0% is primarily driven by neutral technical indicators, lack of positive sentiment in recent news, and stagnant social momentum, indicating limited enthusiasm or catalysts for price movement. Traders should note the absence of catalysts and engagement suggests limited short-term movement potential."
-    },
-    {
-      "symbol": "UBO",
-      "confidence": 25,
-      "timestamp": "18:55:16",
-      "alert_triggered": false,
-      "status": "completed",
-      "ai_insight": "UBO's low confidence score of 25.0% is primarily driven by neutral technical indicators, lack of positive sentiment in recent news, and stagnant social momentum, indicating limited enthusiasm or catalysts for price movement. Traders should note the absence of catalysts and engagement suggests limited short-term movement potential."
     }
   ]
 }
