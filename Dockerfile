@@ -23,4 +23,4 @@ ENV PYTHONPATH=/app
 ENV PORT=5000
 
 # Run the application
-CMD ["python", "app.py"]
+CMD ["python", "main_server.py"]
