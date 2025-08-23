@@ -1,92 +1,92 @@
 {
-  "current_coin": "ROPE",
-  "current_index": 99,
+  "current_coin": "FORTH",
+  "current_index": 178,
   "total_coins": 200,
-  "current_batch": "9/16",
+  "current_batch": "15/16",
   "confidence": 25,
   "alert_triggered": false,
-  "timestamp": "2025-08-23T05:11:48.219848",
+  "timestamp": "2025-08-23T19:02:11.232901",
   "scanning_active": true,
   "recent_scans": [
     {
-      "symbol": "ROPE",
+      "symbol": "FORTH",
       "confidence": 25,
-      "timestamp": "05:11:48",
+      "timestamp": "19:02:11",
       "alert_triggered": false,
       "status": "completed",
-      "ai_insight": "ROPE's low confidence score of 25.0% is primarily driven by neutral technical indicators, lack of positive sentiment in recent news, and stagnant social momentum, indicating limited enthusiasm or catalysts for price movement. Traders should note the absence of catalysts and engagement suggests limited short-term movement potential."
+      "ai_insight": "FORTH's low confidence score of 25.0% is primarily driven by neutral technical indicators, lack of positive sentiment in recent news, and stagnant social momentum, indicating limited enthusiasm or catalysts for price movement. Traders should note the absence of catalysts and engagement suggests limited short-term movement potential."
     },
     {
-      "symbol": "RAY",
+      "symbol": "BASE",
       "confidence": 25,
-      "timestamp": "05:11:44",
+      "timestamp": "19:01:25",
       "alert_triggered": false,
       "status": "completed",
-      "ai_insight": "RAY's low confidence score of 25.0% is primarily driven by neutral technical indicators, lack of positive sentiment in recent news, and stagnant social momentum, indicating limited enthusiasm or catalysts for price movement. Traders should note the absence of catalysts and engagement suggests limited short-term movement potential."
+      "ai_insight": "BASE's low confidence score of 25.0% is primarily driven by neutral technical indicators, lack of positive sentiment in recent news, and stagnant social momentum, indicating limited enthusiasm or catalysts for price movement. Traders should note the absence of catalysts and engagement suggests limited short-term movement potential."
     },
     {
-      "symbol": "MEDIA",
+      "symbol": "AMPL",
       "confidence": 25,
-      "timestamp": "05:11:02",
+      "timestamp": "19:00:39",
       "alert_triggered": false,
       "status": "completed",
-      "ai_insight": "MEDIA's low confidence score of 25.0% is primarily driven by neutral technical indicators, lack of positive sentiment in recent news, and stagnant social momentum, indicating limited enthusiasm or catalysts for price movement. Traders should note the absence of catalysts and engagement suggests limited short-term movement potential."
+      "ai_insight": "AMPL's low confidence score of 25.0% is primarily driven by neutral technical indicators, lack of positive sentiment in recent news, and stagnant social momentum, indicating limited enthusiasm or catalysts for price movement. Traders should note the absence of catalysts and engagement suggests limited short-term movement potential."
     },
     {
-      "symbol": "PERP",
+      "symbol": "RSV",
       "confidence": 25,
-      "timestamp": "05:10:57",
+      "timestamp": "18:59:53",
       "alert_triggered": false,
       "status": "completed",
-      "ai_insight": "PERP's low confidence score of 25.0% is primarily driven by neutral technical indicators, lack of positive sentiment in recent news, and stagnant social momentum, indicating limited enthusiasm or catalysts for price movement. Traders should note the absence of catalysts and engagement suggests limited short-term movement potential."
+      "ai_insight": "RSV's low confidence score of 25.0% is primarily driven by neutral technical indicators, lack of positive sentiment in recent news, and stagnant social momentum, indicating limited enthusiasm or catalysts for price movement. Traders should note the absence of catalysts and engagement suggests limited short-term movement potential."
     },
     {
-      "symbol": "STEP",
+      "symbol": "SUSD",
       "confidence": 25,
-      "timestamp": "05:10:17",
+      "timestamp": "18:59:08",
       "alert_triggered": false,
       "status": "completed",
-      "ai_insight": "STEP's low confidence score of 25.0% is primarily driven by neutral technical indicators, lack of positive sentiment in recent news, and stagnant social momentum, indicating limited enthusiasm or catalysts for price movement. Traders should note the absence of catalysts and engagement suggests limited short-term movement potential."
+      "ai_insight": "SUSD's low confidence score of 25.0% is primarily driven by neutral technical indicators, lack of positive sentiment in recent news, and stagnant social momentum, indicating limited enthusiasm or catalysts for price movement. Traders should note the absence of catalysts and engagement suggests limited short-term movement potential."
     },
     {
-      "symbol": "FARM",
+      "symbol": "MATIC",
       "confidence": 25,
-      "timestamp": "05:10:11",
+      "timestamp": "18:58:22",
       "alert_triggered": false,
       "status": "completed",
-      "ai_insight": "FARM's low confidence score of 25.0% is primarily driven by neutral technical indicators, lack of positive sentiment in recent news, and stagnant social momentum, indicating limited enthusiasm or catalysts for price movement. Traders should note the absence of catalysts and engagement suggests limited short-term movement potential."
+      "ai_insight": "MATIC's low confidence score of 25.0% is primarily driven by neutral technical indicators, lack of positive sentiment in recent news, and stagnant social momentum, indicating limited enthusiasm or catalysts for price movement. Traders should note the absence of catalysts and engagement suggests limited short-term movement potential."
     },
     {
-      "symbol": "COPE",
+      "symbol": "MOSS",
       "confidence": 25,
-      "timestamp": "05:09:30",
+      "timestamp": "18:57:36",
       "alert_triggered": false,
       "status": "completed",
-      "ai_insight": "COPE's low confidence score of 25.0% is primarily driven by neutral technical indicators, lack of positive sentiment in recent news, and stagnant social momentum, indicating limited enthusiasm or catalysts for price movement. Traders should note the absence of catalysts and engagement suggests limited short-term movement potential."
+      "ai_insight": "MOSS's low confidence score of 25.0% is primarily driven by neutral technical indicators, lack of positive sentiment in recent news, and stagnant social momentum, indicating limited enthusiasm or catalysts for price movement. Traders should note the absence of catalysts and engagement suggests limited short-term movement potential."
     },
     {
-      "symbol": "CLV",
+      "symbol": "CCO2",
       "confidence": 25,
-      "timestamp": "05:09:25",
+      "timestamp": "18:56:49",
       "alert_triggered": false,
       "status": "completed",
-      "ai_insight": "CLV's low confidence score of 25.0% is primarily driven by neutral technical indicators, lack of positive sentiment in recent news, and stagnant social momentum, indicating limited enthusiasm or catalysts for price movement. Traders should note the absence of catalysts and engagement suggests limited short-term movement potential."
+      "ai_insight": "CCO2's low confidence score of 25.0% is primarily driven by neutral technical indicators, lack of positive sentiment in recent news, and stagnant social momentum, indicating limited enthusiasm or catalysts for price movement. Traders should note the absence of catalysts and engagement suggests limited short-term movement potential."
     },
     {
-      "symbol": "FIDA",
+      "symbol": "NBO",
       "confidence": 25,
-      "timestamp": "05:08:44",
+      "timestamp": "18:56:02",
       "alert_triggered": false,
       "status": "completed",
-      "ai_insight": "FIDA's low confidence score of 25.0% is primarily driven by neutral technical indicators, lack of positive sentiment in recent news, and stagnant social momentum, indicating limited enthusiasm or catalysts for price movement. Traders should note the absence of catalysts and engagement suggests limited short-term movement potential."
+      "ai_insight": "NBO's low confidence score of 25.0% is primarily driven by neutral technical indicators, lack of positive sentiment in recent news, and stagnant social momentum, indicating limited enthusiasm or catalysts for price movement. Traders should note the absence of catalysts and engagement suggests limited short-term movement potential."
     },
     {
-      "symbol": "API3",
+      "symbol": "UBO",
       "confidence": 25,
-      "timestamp": "05:08:40",
+      "timestamp": "18:55:16",
       "alert_triggered": false,
       "status": "completed",
-      "ai_insight": "API3's low confidence score of 25.0% is primarily driven by neutral technical indicators, lack of positive sentiment in recent news, and stagnant social momentum, indicating limited enthusiasm or catalysts for price movement. Traders should note the absence of catalysts and engagement suggests limited short-term movement potential."
+      "ai_insight": "UBO's low confidence score of 25.0% is primarily driven by neutral technical indicators, lack of positive sentiment in recent news, and stagnant social momentum, indicating limited enthusiasm or catalysts for price movement. Traders should note the absence of catalysts and engagement suggests limited short-term movement potential."
     }
   ]
 }
