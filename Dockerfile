@@ -22,9 +22,5 @@ EXPOSE 5000
 ENV PYTHONPATH=/app
 ENV PORT=5000
 
-# Health check for Railway
-HEALTHCHECK --interval=30s --timeout=10s --start-period=60s --retries=3 \
-  CMD curl -f http://localhost:5000/health || exit 1
-
 # Run the application
-CMD ["python", "main_server.py"]
+CMD ["python", "app.py"]
