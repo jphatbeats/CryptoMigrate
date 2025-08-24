@@ -6,8 +6,18 @@ WORKDIR /app
 # Copy requirements first for better caching
 COPY requirements.txt .
 
-# Install Python dependencies without upgrading pip
-RUN python -m pip install -r requirements.txt --no-cache-dir
+# Clean up requirements.txt to remove duplicates and conflicts that cause early build failures
+RUN cat requirements.txt | sort | uniq > requirements_sorted.txt && \
+    grep -v "^aiohttp$" requirements_sorted.txt | \
+    grep -v "^openai$" | \
+    grep -v "^Flask-CORS$" | \
+    grep -v "^trafilature$" | \
+    sed 's/tradingview_ta/tradingview-ta/g' > requirements_clean.txt && \
+    echo "Successfully cleaned requirements - removed duplicates and conflicts" && \
+    head -10 requirements_clean.txt
+
+# Install Python dependencies from cleaned requirements
+RUN python -m pip install -r requirements_clean.txt --no-cache-dir
 
 # Copy application code
 COPY . .
