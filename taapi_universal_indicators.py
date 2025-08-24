@@ -154,6 +154,42 @@ class TaapiUniversalIndicators:
             ]
         }
     
+    def _normalize_symbol_for_taapi(self, symbol: str, exchange: str = "binance") -> str:
+        """Normalize symbol format for TAAPI.io API"""
+        # Remove common suffixes and normalize
+        original_symbol = symbol
+        symbol = symbol.replace("/", "").replace("-", "").upper()
+        
+        # Extract base symbol
+        for suffix in ["USDT", "USDC", "BTC", "ETH"]:
+            if symbol.endswith(suffix):
+                symbol = symbol[:-len(suffix)]
+                break
+        
+        # Map problematic symbols to TAAPI format
+        symbol_mapping = {
+            "XRP": "XRPUSDT",
+            "NEO": "NEOUSDT", 
+            "ATOM": "ATOMUSDT",
+            "XLM": "XLMUSDT",
+            "SOL": "SOLUSDT",
+            "AVAX": "AVAXUSDT",
+            "ARB": "ARBUSDT",
+            "ETH": "ETHUSDT",
+            "BTC": "BTCUSDT"
+        }
+        
+        # If symbol is in mapping, use the mapped version
+        if symbol in symbol_mapping:
+            return symbol_mapping[symbol]
+        
+        # Otherwise, try standard USDT format
+        if not symbol.endswith("USDT"):
+            symbol = f"{symbol}USDT"
+            
+        logger.info(f"🔄 Symbol normalized: {original_symbol} → {symbol}")
+        return symbol
+
     def get_indicator(self, 
                      indicator: str,
                      symbol: str = "BTC/USDT",
@@ -177,12 +213,15 @@ class TaapiUniversalIndicators:
             # Smart rate limiting - add delay before each request
             time.sleep(random.uniform(2.0, 3.5))  # 2-3.5 second delay to prevent flooding
             
+            # Normalize symbol for TAAPI format
+            normalized_symbol = self._normalize_symbol_for_taapi(symbol, exchange)
+            
             # Build URL and parameters
             url = f"{self.base_url}/{indicator}"
             
             params = {
                 "secret": self.api_key,
-                "symbol": symbol,
+                "symbol": normalized_symbol,
                 "exchange": exchange,
                 "interval": interval
             }

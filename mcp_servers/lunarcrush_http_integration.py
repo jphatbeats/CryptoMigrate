@@ -28,7 +28,7 @@ class LunarCrushHTTPClient:
     
     async def _get_session(self):
         """Get or create aiohttp session"""
-        if self.session is None:
+        if self.session is None or self.session.closed:
             headers = {
                 'Authorization': f'Bearer {self.api_key}',
                 'Content-Type': 'application/json',
@@ -69,6 +69,14 @@ class LunarCrushHTTPClient:
                     
         except Exception as e:
             logger.error(f"LunarCrush client error for {symbol}: {str(e)}")
+            # Close and recreate session if there's an event loop error
+            if "Event loop is closed" in str(e):
+                try:
+                    if self.session and not self.session.closed:
+                        await self.session.close()
+                    self.session = None
+                except:
+                    pass
             return self._fallback_response(symbol, str(e))
     
     async def get_social_metrics(self, symbol: str) -> Dict[str, Any]:
@@ -104,6 +112,14 @@ class LunarCrushHTTPClient:
                     
         except Exception as e:
             logger.error(f"LunarCrush social client error for {symbol}: {str(e)}")
+            # Close and recreate session if there's an event loop error
+            if "Event loop is closed" in str(e):
+                try:
+                    if self.session and not self.session.closed:
+                        await self.session.close()
+                    self.session = None
+                except:
+                    pass
             return self._fallback_response(symbol, str(e))
     
     def _parse_galaxy_response(self, symbol: str, data: Dict) -> Dict[str, Any]:

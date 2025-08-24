@@ -125,11 +125,11 @@ class LumifTradingViewClient:
                 self.session_requests = 0
                 time.sleep(15)  # Wait after session rotation
             
-            # ULTRA conservative rate limiting to eliminate 429s
-            min_wait = 90.0  # 90 seconds minimum between ANY requests
+            # Conservative rate limiting to reduce 429s
+            min_wait = 45.0  # 45 seconds minimum between requests
             if time_since_last < min_wait:
                 wait_time = min_wait - time_since_last
-                logger.info(f"Ultra-conservative rate limiting: waiting {wait_time:.1f}s before {symbol} request")
+                logger.info(f"Rate limiting: waiting {wait_time:.1f}s before {symbol} request")
                 time.sleep(wait_time)
             
             self.last_request_time = time.time()
@@ -160,10 +160,10 @@ class LumifTradingViewClient:
                     
                 except Exception as e:
                     if "429" in str(e) or "rate" in str(e).lower():
-                        # Record 429 time and implement EXTREME backoff
+                        # Record 429 time and implement reasonable backoff
                         self.last_429_time = time.time()
-                        wait_time = 300 * (attempt + 1)  # 5min, 10min, 15min
-                        logger.warning(f"🚨 EXTREME RATE LIMIT for {symbol}, waiting {wait_time:.1f}s (attempt {attempt + 1}/{max_retries})")
+                        wait_time = 60 * (attempt + 1)  # 1min, 2min, 3min
+                        logger.warning(f"🚨 RATE LIMIT for {symbol}, waiting {wait_time:.1f}s (attempt {attempt + 1}/{max_retries})")
                         time.sleep(wait_time)
                         if attempt == max_retries - 1:
                             logger.error(f"Error getting TradingView analysis for {symbol}: {e}")
