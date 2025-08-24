@@ -62,8 +62,8 @@ except ImportError as e:
 # FREE MCP Integration for cost savings
 mcp_integrations_available = False
 try:
-    from coincap_mcp_integration import coincap_client, get_market_data, get_top_performers
-    from dexpaprika_mcp_integration import dexpaprika_client, get_ethereum_top_pools, get_multi_chain_overview
+    from mcp_servers.coincap_mcp_integration import coincap_client, get_market_data, get_top_performers
+    from mcp_servers.dexpaprika_mcp_integration import dexpaprika_client, get_ethereum_top_pools, get_multi_chain_overview
     mcp_integrations_available = True
     print("✅ FREE MCP integrations loaded successfully")
     print("💰 Potential savings: $400/month with CoinCap + DexPaprika MCP")
@@ -73,7 +73,7 @@ except ImportError as e:
 
 # Lumif-ai TradingView Enhanced Technical Analysis
 try:
-    from lumifai_tradingview_integration import (
+    from mcp_servers.lumifai_tradingview_integration import (
         initialize_lumif_tradingview, 
         get_enhanced_technical_analysis,
         get_multi_timeframe_confluence,
@@ -92,7 +92,7 @@ except ImportError as e:
 
 # Add TradingView Advanced API integration
 try:
-    from tradingview_advanced_api import (
+    from mcp_servers.tradingview_advanced_api import (
         initialize_advanced_tradingview, 
         get_advanced_analysis, 
         get_multi_symbol_data,
@@ -110,7 +110,7 @@ except ImportError as e:
 
 # Add TradingView Web Scraper integration  
 try:
-    from tradingview_webscraper import (
+    from mcp_servers.tradingview_webscraper import (
         initialize_tradingview_scraper,
         get_scraper_analysis,
         get_scraper_market_data
@@ -126,7 +126,7 @@ except ImportError as e:
 
 # Add TradingView GitHub API integration
 try:
-    from tradingview_github_api import (
+    from mcp_servers.tradingview_github_api import (
         initialize_github_tradingview,
         get_github_analysis,
         get_github_market_data
@@ -2817,9 +2817,9 @@ def social_momentum(symbol):
     import os
     sys.path.append(os.path.join(os.path.dirname(__file__), 'mcp_servers'))
     try:
-        from lunarcrush_http_integration import get_social_analysis
+        from mcp_servers.lunarcrush_http_integration import get_social_analysis
     except ImportError:
-        from lunarcrush_mcp_integration import get_social_analysis
+        from mcp_servers.lunarcrush_mcp_integration import get_social_analysis
     
     try:
         # Get real social data from LunarCrush
@@ -6387,7 +6387,7 @@ def initialize_mcp_integrations():
     if mcp_integrations_available:
         try:
             import asyncio
-            from coincap_mcp_integration import initialize_coincap_mcp
+            from mcp_servers.coincap_mcp_integration import initialize_coincap_mcp
             
             # Run async initializations  
             loop = asyncio.new_event_loop()
