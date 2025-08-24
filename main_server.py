@@ -1660,6 +1660,30 @@ def get_blofin_positions_regular():
             'error': str(e)
         }), 500
 
+# ====== CHATGPT LEGACY ENDPOINT COMPATIBILITY ======
+# These endpoints maintain the original ChatGPT schema paths
+# while internally calling the new endpoint logic
+
+@app.route('/api/positions/blofin', methods=['GET'])
+def get_blofin_positions_legacy():
+    """Legacy ChatGPT endpoint for Blofin positions (maps to /api/blofin-positions)"""
+    return get_blofin_positions_regular()
+
+@app.route('/api/positions/bingx', methods=['GET']) 
+def get_bingx_positions_legacy():
+    """Legacy ChatGPT endpoint for BingX positions (maps to /api/bingx-positions)"""
+    return get_bingx_positions_regular()
+
+@app.route('/api/positions/kraken', methods=['GET'])
+def get_kraken_positions_legacy():
+    """Legacy ChatGPT endpoint for Kraken positions (maps to /api/kraken-positions)"""
+    return get_kraken_positions_regular()
+
+@app.route('/api/positions/kucoin', methods=['GET'])
+def get_kucoin_positions_legacy():
+    """Legacy ChatGPT endpoint for KuCoin positions (maps to /api/kucoin-positions)"""
+    return get_kucoin_positions_regular()
+
 @app.route('/api/kraken-positions', methods=['GET'])
 def get_kraken_positions_regular():
     """Get Kraken positions (regular API endpoint) - GPT-friendly format"""

@@ -235,7 +235,9 @@ class TradingFunctions:
             has_take_profit = len(position_take_profits) > 0
             
             # Calculate risk level based on position size and TP/SL presence
-            position_value = abs(float(position.get('notional', 0)))
+            # Handle potential None values in position data
+            notional = position.get('notional', 0)
+            position_value = abs(float(notional if notional is not None else 0))
             unrealized_pnl = position.get('unrealizedPnl', 0)
             
             if position_value > 1000 and not has_stop_loss:
