@@ -4,8 +4,9 @@ dockerfilePath = "Dockerfile"
 
 [deploy]
 healthcheckPath = "/health"
-healthcheckTimeout = 300
+healthcheckTimeout = 120
 restartPolicyType = "ON_FAILURE"
+healthcheckInitialDelaySeconds = 60
 
 [environment]
 PYTHONPATH = "."

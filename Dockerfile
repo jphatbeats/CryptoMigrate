@@ -21,6 +21,12 @@ EXPOSE 5000
 # Set environment variables
 ENV PYTHONPATH=/app
 ENV PORT=5000
+ENV FLASK_ENV=production
+
+# Add health check directly in Docker - install curl first
+RUN apt-get update && apt-get install -y curl && rm -rf /var/lib/apt/lists/*
+HEALTHCHECK --interval=30s --timeout=10s --start-period=60s --retries=3 \
+  CMD curl -f http://localhost:5000/health || exit 1
 
 # Run the application
 CMD ["python", "app.py"]
