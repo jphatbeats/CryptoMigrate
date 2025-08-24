@@ -1,11 +1,17 @@
 # Overview
 
-This project, THE ALPHA PLAYBOOK v4, is a cryptocurrency trading automation system designed for significant capital growth through AI-powered trading intelligence. It focuses on confluence-based sniper entries using authenticated API sources to achieve zero data hallucination. Key capabilities include real-time market intelligence, automated portfolio monitoring, multi-channel Discord alerting with enhanced visual content, detection of conditional orders, real-time portfolio analysis, and market-wide technical indicator scanning. The system aims for professional-grade trading automation and intelligence.
+This project, THE ALPHA PLAYBOOK v4, is a cryptocurrency trading automation system designed for significant capital growth through AI-powered trading intelligence. It focuses on confluence-based sniper entries using authenticated API sources to achieve zero data hallucination. Key capabilities include real-time market intelligence, automated portfolio monitoring, multi-channel Discord alerting with enhanced visual content, detection of conditional orders, real-time portfolio analysis, and market-wide technical indicator scanning. The system features a revolutionary multi-Claude trading brain that enables persistent context sharing across Desktop Claude, Android Claude, and Replit Claude instances for collaborative trading decisions and strategy development.
 
 # User Preferences
 
 Preferred communication style: Simple, everyday language.
 Cost consciousness: Be mindful of Replit AI agent costs during development - avoid unnecessary iterations and focus on efficient solutions.
+
+## Recent Changes (August 2025)
+- **August 23-24**: Resolved Railway deployment health check failures - system restored to fully operational state
+- **Multi-Claude Trading Brain**: Confirmed operational with PostgreSQL database, persistent context sharing working
+- **Mobile Integration**: Persistent configuration guides created for Android Claude collaboration
+- **Deployment Status**: Health check endpoint working, ready for Railway production deployment
 
 # System Architecture
 
