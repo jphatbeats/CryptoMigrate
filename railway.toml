@@ -6,7 +6,6 @@ dockerfilePath = "Dockerfile"
 healthcheckPath = "/health"
 healthcheckTimeout = 300
 restartPolicyType = "ON_FAILURE"
-healthcheckInitialDelaySeconds = 180
 
 [environment]
 PYTHONPATH = "."
